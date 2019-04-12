@@ -1,5 +1,5 @@
 {**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,22 +31,23 @@
 			<h2 class="h2_general">{t}Download files{/t}</h2>
 		</div>
 		<div class="small-12 columns">
-    {if $numChildren>0}
-		<div class="alert alert-info">
-			<strong>Info!</strong> {t} The download will start immediately. If not, click here{/t}: <a href="{$tarFile}" class="tarfile destacada">{$nodeName}</a>
-		</div>
-
-    {else}
-		<div class="alert alert-info">
-			<strong>Info!</strong> {t} There aren't any files to download{/t}.
-		</div>
-    {/if}
-</div>
+            {if $numChildren > 0}
+                <div class="alert alert-info">
+                    <strong>Info!</strong> {t} The download will start immediately. If not, click here{/t}: 
+                    <a href="{$tarFile}" class="tarfile destacada">{$nodeName}</a>.
+		        </div>
+            {else}
+                <div class="alert alert-info">
+                    <strong>Info!</strong> {t}There aren't any files to download{/t}.
+                </div>
+            {/if}
+        </div>
+        <!--
 		<div class="small-12 columns">
-		<fieldset class="buttons-form">
-            {button label="{t}Download{/t}" class="button-download  btn main_action"}
-		</fieldset>
+            <fieldset class="buttons-form">
+                {button label="{t}Download{/t}" class="button-download  btn main_action"}
+            </fieldset>
 		</div>
-	</div></div>
-
-
+		-->
+    </div>
+</div>

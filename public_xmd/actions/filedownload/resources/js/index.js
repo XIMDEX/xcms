@@ -26,7 +26,9 @@
 X.actionLoaded(function(event, fn, params) {
 	
 	var url = fn('.download_link').attr('href');
-	window.location.assign(url);
+	if (url) {
+		window.location.assign(url);
+	}
 	
 	/* fn('.button-download').click(function() {
         window.location.assign(url);

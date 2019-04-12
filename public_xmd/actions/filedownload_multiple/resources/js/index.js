@@ -1,5 +1,5 @@
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,10 +24,17 @@
  */
 
 X.actionLoaded(function(event, fn, params) {
+	
 	var url = fn('.tarfile').attr('href');
+	if (url) {
+		window.location.assign(url);
+	}
+	
+	/*
 	fn('.button-download').click(function() {
         if(url){
 		    window.open(url);
         }
 	}).click();
+	*/
 });

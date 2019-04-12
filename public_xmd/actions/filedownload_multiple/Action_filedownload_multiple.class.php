@@ -35,49 +35,56 @@ class Action_filedownload_multiple extends ActionAbstract
 {
     public function index()
     {
-        $idNod = $this->request->getParam('nodeid');
+        $idNod = (int) $this->request->getParam('nodeid');
         $nod = new Node($idNod);
         $nodName = $nod->get('Name');
-        $nodes = $this->request->getParam('nodes');
         $tmpFolder = FsUtils::getUniqueFolder(XIMDEX_ROOT_PATH . App::getValue('TempRoot'), '', 'export_');
         if (! FsUtils::mkdir($tmpFolder)) {
             $this->messages->add(_('A temporal directory to export could not be created'), MSG_TYPE_ERROR);
-            $this->render(array($this->messages), NULL, 'messages.tpl');
+            $this->render([
+                    $this->messages
+                ], null, 'messages.tpl');
             return;
         }
+        $values = [
+            'numChildren' => 0,
+            'nodeTypeID' => $nod->nodeType->getID(),
+            'node_Type' => $nod->nodeType->getName(),
+            'name' => $nodName
+        ];
+        $nodes = $this->request->getParam('nodes');
         if (! empty($nodes)) {
+            $files = 0;
             foreach ($nodes as $nodeid) {
                 $node = new Node($nodeid);
                 if (! $node->get('IdNode')) {
                     continue;
                 }
                 $children = $node->getChildren();
-                $numChildren = count($children);
+                $files += $numChildren = count($children);
                 if ($numChildren > 0) {
                     $folder = $tmpFolder . '/' . $node->get('Name');
                     $this->copyContents($folder, $children);
                 }
             }
-            $tarFile = $this->tarContents($tmpFolder);
-            $this->deleteContents($tmpFolder);
+            if ($files) {
+                $values['numChildren'] = $files;
+                $tarFile = $this->tarContents($tmpFolder);
+                $this->deleteContents($tmpFolder);
+                if (! is_file($tarFile)) {
+                    Logger::error('All selected documents could not be exported. Do you have zip installed?');
+                } else {
+                    $tarFile = preg_replace(sprintf('#^%s#', XIMDEX_ROOT_PATH), App::getValue('UrlRoot'), $tarFile);
+                    $values['nodeName'] = basename($tarFile);
+                    $values['tarFile'] = $tarFile;
+                }
+            }
         }
-        if (! is_file($tarFile)) {
-            Logger::error('All selected documents could not be exported. Do you have zip installed?');
-        }
-        $tarFile = preg_replace(sprintf('#^%s#', XIMDEX_ROOT_PATH), App::getValue('UrlRoot'), $tarFile);
-        $values = array(
-            'nodeName' => basename($tarFile),
-            'tarFile' => $tarFile,
-            'numChildren' => $numChildren,
-            'nodeTypeID' => $nod->nodeType->getID(),
-            'node_Type' => $nod->nodeType->GetName(),
-            'name' => $nodName
-        );
         $this->addJs('/actions/filedownload_multiple/resources/js/index.js');
         $this->render($values, '', 'default-3.0.tpl');
     }
 
-    private function copyContents($folder, $nodes)
+    private function copyContents(string $folder, array $nodes)
     {
         if (! FsUtils::mkdir($folder)) {
             return false;
