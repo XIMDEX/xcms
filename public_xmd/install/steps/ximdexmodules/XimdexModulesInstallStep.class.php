@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -39,13 +39,13 @@ class XimdexModulesInstallStep extends GenericInstallStep
      */
     public function index()
     {
-        $this->addJs("InstallModulesController.js");
+        $this->addJs('InstallModulesController.js');
         $imManager = new InstallModulesManager(InstallModulesManager::WEB_MODE);
         $result = $imManager->buildModulesFile();
-        if (!$result) {
+        if (! $result) {
             $error = [];
-            $error["state"] = "error";
-            $error["messages"][] = "Impossible to install modules. Do you have the proper permissions on install/install-modules.php file?";
+            $error['state'] = 'error';
+            $error['messages'][] = 'Impossible to install modules. Do you have the proper permissions on install/install-modules.php file?';
             $this->exceptions[] = $error;
         }
         $this->render();
@@ -68,23 +68,21 @@ class XimdexModulesInstallStep extends GenericInstallStep
     public function installModule()
     {
         set_time_limit(0);
-        $moduleName = $this->request->getParam("module");
+        $moduleName = $this->request->getParam('module');
         $method = 'install' . $moduleName;
         $imManager = new InstallModulesManager(InstallModulesManager::WEB_MODE);
         if (method_exists($imManager, $method)) {
             if ($imManager->$method()) {
                 $installState = InstallModulesManager::SUCCESS_INSTALL;
-            }
-            else {
+            } else {
                 $installState = InstallModulesManager::ERROR_INSTALL;
             }
-        }
-        else {
+        } else {
             $imManager->uninstallModule($moduleName);
             $installState = $imManager->installModule($moduleName);
             $imManager->enableModule($moduleName);
         }
-        $values = array("result" => strtolower($installState));
+        $values = array('result' => strtolower($installState));
         $this->sendJSON($values);
     }
 }

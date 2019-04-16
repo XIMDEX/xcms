@@ -97,7 +97,7 @@ class Module_ximTOUR extends Module
     {
         $this->removeStateFile();
         $node = new Node(10000);
-        $idNode = $node->GetChildByName("Picasso");
+        $idNode = $node->getChildByName("Picasso");
         if ($idNode) {
             $nodePicasso = new Node($idNode);
             $nodePicasso->delete();

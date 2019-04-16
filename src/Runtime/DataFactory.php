@@ -396,7 +396,7 @@ class DataFactory
 
         // (1) No se pasa version determinada, se incrementa la version con el contenido nuevo
         if (is_null($versionID) && is_null($subVersion)) {
-            $idVersion = $this->addVersion(NULL, NULL, $content, $commitNode);
+            $idVersion = $this->addVersion(null, null, $content, $commitNode);
             $this->generateCaches($idVersion);
             return $idVersion;
         }

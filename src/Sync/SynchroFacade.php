@@ -344,7 +344,7 @@ class SynchroFacade
                     }
                     
                     // Create a new batch type Down
-                    $batchId = $batch->create($down, Batch::TYPE_DOWN, $node->GetID(), Batch::PRIORITY_TYPE_DOWN, $serverId, null
+                    $batchId = $batch->create($down, Batch::TYPE_DOWN, $node->getID(), Batch::PRIORITY_TYPE_DOWN, $serverId, null
                         , $idPortalFrame, Session::get('userID'), 0);
                     if (! $batchId) {
                         Logger::error('Cannot create the down batch process');

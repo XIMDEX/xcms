@@ -27,20 +27,30 @@
 
 use Ximdex\Logger;
 use Ximdex\Runtime\App;
+use Ximdex\Runtime\Request;
+use Ximdex\Runtime\Response;
 
 require_once APP_ROOT_PATH . '/install/steps/welcome/WelcomeInstallStep.class.php';
 
 class GenericInstallStep
 {
-	protected $steps;
-	protected $renderer;
-	protected $request;
-	protected $response;
-	protected $currentStep;
-	protected $installManager;
-	protected $js_files;
-	protected $exceptions;
-	const STATUSFILE = '/conf/_STATUSFILE';
+    const STATUSFILE = '/conf/_STATUSFILE';
+    
+    protected $steps;
+	
+    protected $renderer;
+	
+    protected $request;
+	
+    protected $response;
+	
+    protected $currentStep;
+	
+    protected $installManager;
+	
+    protected $js_files;
+	
+    protected $exceptions;
 
 	public function __construct()
 	{
@@ -59,7 +69,7 @@ class GenericInstallStep
 		$this->render();		
 	}
 
-	protected function render($values = array(), $view = null, $layout = 'installer.tpl')
+	protected function render(array $values = [], string $view = null, string $layout = 'installer.tpl')
 	{
 		foreach ($values as $name => $value) {
 			$$name = $value;			
@@ -98,22 +108,22 @@ class GenericInstallStep
 		die();
     }
     
-    public function setCurrentStep($currentStep)
+    public function setCurrentStep(string $currentStep)
     {
     	$this->currentStep = $currentStep;
     }
 
-    public function setRequest($request)
+    public function setRequest(Request $request)
     {
     	$this->request = $request;
     }
 
-    public function setResponse($response)
+    public function setResponse(Response $response)
     {
     	$this->response = $response;
     }
 
-    protected function addJs($jsPath)
+    protected function addJs(string $jsPath)
     {
    		$folderName = trim(strtolower($this->steps[$this->currentStep]['class-name']));
     	$this->js_files[] = "install/steps/{$folderName}/js/{$jsPath}";

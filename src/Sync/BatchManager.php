@@ -778,7 +778,7 @@ class BatchManager
         if ($serversEnabled === false) {
             return false;
         }
-        if (!$serversEnabled) {
+        if (! $serversEnabled) {
             return [];
         }
         $dbObj = new Db();
@@ -799,23 +799,23 @@ class BatchManager
             $sql .= ' b.Priority DESC, b.Cycles';
         }
         $sql .= ', b.Type = \'' . Batch::TYPE_DOWN . '\' DESC, b.IdBatch LIMIT 1';
-        if ($dbObj->Query($sql) === false) {
+        if ($dbObj->query($sql) === false) {
         	return false;
         }
-        if (!$dbObj->numRows) {
+        if (! $dbObj->numRows) {
             return array();
         }
         $list = array();
-        $list['id'] = $dbObj->GetValue('IdBatch');
-        $list['type'] = $dbObj->GetValue('Type');
-        $list['nodegenerator'] = $dbObj->GetValue('IdNodeGenerator');
-        $list['cycles'] = $dbObj->GetValue('Cycles');
-        $list['totalserverframes'] = $dbObj->GetValue('ServerFramesTotal');
+        $list['id'] = $dbObj->getValue('IdBatch');
+        $list['type'] = $dbObj->getValue('Type');
+        $list['nodegenerator'] = $dbObj->getValue('IdNodeGenerator');
+        $list['cycles'] = $dbObj->getValue('Cycles');
+        $list['totalserverframes'] = $dbObj->getValue('ServerFramesTotal');
 
         // Update portal frames cycles
         $sql = 'UPDATE PortalFrames SET CyclesTotal = CyclesTotal + 1, BoostCycles = BoostCycles + (1 / Boost) WHERE id = ' 
-            . $dbObj->GetValue('IdPortalFrame');
-        $dbObj->Execute($sql);
+            . $dbObj->getValue('IdPortalFrame');
+        $dbObj->execute($sql);
         return $list;
     }
 

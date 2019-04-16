@@ -34,18 +34,27 @@ use Ximdex\Cli\Shell,
 
 class Module implements iModule
 {
-    public $name;
-    public $path;
-    public $actions;
-    public $sql_constructor;
-    public $sql_constructor_file;
-    public $sql_destructor;
-    public $sql_destructor_file;
-    public $messages;
-
     const ERROR = 'ERROR';
+    
     const WARNING = 'WARNING';
+    
     const SUCCESS = 'SUCCESS';
+    
+    public $name;
+    
+    public $path;
+    
+    public $actions;
+    
+    public $sql_constructor;
+    
+    public $sql_constructor_file;
+    
+    public $sql_destructor;
+    
+    public $sql_destructor_file;
+    
+    public $messages;
     
     public function __construct(string $name, string $path)
     {

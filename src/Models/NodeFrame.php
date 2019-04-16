@@ -71,14 +71,14 @@ class NodeFrame extends NodeFramesOrm
     }
 
 	/**
-	 * Gets all ServerFrames associated to a NodeFrame
+	 * Gets all ServerFrames associated to a NodeFrame only in enabled servers
 	 * 
 	 * @param int $idNdFr
 	 * @param string $operation
 	 * @param array $enabledServers
 	 * @return array
 	 */
-    public function getFrames(int $idNdFr = null, string $operation = null, array $enabledServers = []) : array
+    public function getFrames(int $idNdFr = null, string $operation = null, array $enabledServers) : array
     {
         if (! $enabledServers) {
             return [];
@@ -93,11 +93,11 @@ class NodeFrame extends NodeFramesOrm
         }
         $sql .= ' AND IdServer IN (' . implode(', ', $enabledServers) . ')';
 		$dbObj = new \Ximdex\Runtime\Db();
-		$dbObj->Query($sql);
+		$dbObj->query($sql);
 		$frames = array();
 		while (! $dbObj->EOF) {
-			$frames[] = $dbObj->GetValue('IdSync');
-			$dbObj->Next();
+			$frames[] = $dbObj->getValue('IdSync');
+			$dbObj->next();
 		}
 		return $frames;
     }

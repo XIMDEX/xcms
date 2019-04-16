@@ -64,22 +64,22 @@ class ServerNode extends FolderNode
         // Find and enable servers disabled for pumping with delay time
         $sql = 'SELECT IdServer FROM Servers WHERE ActiveForPumping = 0' 
             . ' AND NOT(DelayTimeToEnableForPumping IS NULL) AND DelayTimeToEnableForPumping <= ' . time();
-        if ($dbObj->Query($sql) === false) {
+        if ($dbObj->query($sql) === false) {
             return false;
         }
         while (! $dbObj->EOF) {
-            $server = new Server($dbObj->GetValue('IdServer'));
+            $server = new Server($dbObj->getValue('IdServer'));
             $server->enableForPumping();
-            $dbObj->Next();
+            $dbObj->next();
         }
         
         // Get servers enabled and active for pumping operations
         $sql = 'SELECT IdServer FROM Servers WHERE Enabled = 1 AND ActiveForPumping = 1';
-        $dbObj->Query($sql);
+        $dbObj->query($sql);
         $enabledServers = array();
         while (! $dbObj->EOF) {
-            $enabledServers[] = $dbObj->GetValue('IdServer');
-            $dbObj->Next();
+            $enabledServers[] = $dbObj->getValue('IdServer');
+            $dbObj->next();
         }
         return $enabledServers;
     }
