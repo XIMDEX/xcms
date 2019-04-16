@@ -63,7 +63,7 @@ class FileNode extends Root
             }
             $node = new Node($this->nodeID);
             $nodetype = new NodeType($node->GetNodeType());
-            if (! $nodetype->GetHasFSEntity()){
+            if (! $nodetype->getHasFSEntity()){
                 return false;
             }
             $file = $this->getNodePath();
@@ -123,12 +123,12 @@ class FileNode extends Root
         $data = new DataFactory($this->nodeID);
         
         // Not neccesary up version here for template nodetypes (makes previously for insert correct idversion in xml wrapper)
-        if ($this->parent->nodeType->GetID() == NodeTypeConstants::XSL_TEMPLATE) {
+        if ($this->parent->nodeType->getID() == NodeTypeConstants::XSL_TEMPLATE) {
             $lastVersionID = $data->getLastVersionId();
-            list($version, $subversion) = $data->GetVersionAndSubVersion($lastVersionID);
+            list($version, $subversion) = $data->getVersionAndSubVersion($lastVersionID);
             $data->setContent($content, $version, $subversion, $commitNode);
         } else {
-            if ($this->parent->nodeType->GetID() == NodeTypeConstants::RNG_VISUAL_TEMPLATE) {
+            if ($this->parent->nodeType->getID() == NodeTypeConstants::RNG_VISUAL_TEMPLATE) {
                 $dom = new DOMDocument();
                 $dom->formatOutput = true;
                 $dom->preserveWhiteSpace = false;
@@ -180,11 +180,11 @@ class FileNode extends Root
     {
         $query = sprintf("SELECT File FROM `Versions` WHERE idNode = %d ORDER BY Version DESC, SubVersion DESC LIMIT 1",
         $this->parent->get('IdNode'));
-        $this->dbObj->Query($query);
+        $this->dbObj->query($query);
         if (! $this->dbObj->numRows) {
             Logger::error("File version not found for node: " . $this->parent->get('IdNode'));
         } else {
-            $nodeFile = $this->dbObj->GetValue('File');
+            $nodeFile = $this->dbObj->getValue('File');
             $routeToFile = sprintf("%s/data/files/%s", XIMDEX_ROOT_PATH, $nodeFile);
             if (! in_array($routeToFile, $files)) {
                 $files[] = $routeToFile;
@@ -240,7 +240,7 @@ class FileNode extends Root
     public function updatePath()
     {
         $node = new Node($this->nodeID);
-        $path = pathinfo($node->GetPath());
+        $path = pathinfo($node->getPath());
         if (isset($path['dirname'])) {
             $db = new \Ximdex\Runtime\Db();
             $db->execute(sprintf("update Nodes set Path = '%s' where IdNode = %s", $path['dirname'], $this->nodeID));

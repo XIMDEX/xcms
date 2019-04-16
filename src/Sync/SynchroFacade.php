@@ -168,12 +168,12 @@ class SynchroFacade
         $childList = [
             $nodeID
         ];
-        $workFlowSlaves = $node->GetWorkFlowSlaves();
+        $workFlowSlaves = $node->getWorkFlowSlaves();
         $workFlowSlaves = count($workFlowSlaves) > 0 ? $workFlowSlaves : array();
         if ($childList) {
             foreach ($childList as $child) {
                 $childNode = new Node($child);
-                $childList = array_merge($childList, $childNode->TraverseTree(), $workFlowSlaves);
+                $childList = array_merge($childList, $childNode->traverseTree(), $workFlowSlaves);
             }
             if (sizeof($childList) > 0) {
                 foreach ($childList as $nodeID) {
@@ -313,7 +313,7 @@ class SynchroFacade
             }
             
             // Obtain the frames to be cancelled
-            $nodeFrames = $nodeFrame->getFutureNodeFramesForDate($id, $down, $enabledServers);
+            $nodeFrames = $nodeFrame->getFutureNodeFramesForDate($id, $down);
             if ($nodeFrames === false) {
                 return false;
             }

@@ -80,6 +80,9 @@ class NodeFrame extends NodeFramesOrm
 	 */
     public function getFrames(int $idNdFr = null, string $operation = null, array $enabledServers = []) : array
     {
+        if (! $enabledServers) {
+            return [];
+        }
         if (! $idNdFr) {
             $idNdFr = $this->IdNodeFrame;
         }
@@ -88,9 +91,7 @@ class NodeFrame extends NodeFramesOrm
             $sql .= ' AND State NOT IN (\'' . ServerFrame::REMOVED . '\', \'' . ServerFrame::REPLACED . '\', \'' 
                 . ServerFrame::CANCELLED . '\', \'' . ServerFrame::OUT . '\')';
         }
-        if ($enabledServers) {
-            $sql .= ' AND IdServer IN (' . implode(', ', $enabledServers) . ')';
-        }
+        $sql .= ' AND IdServer IN (' . implode(', ', $enabledServers) . ')';
 		$dbObj = new \Ximdex\Runtime\Db();
 		$dbObj->Query($sql);
 		$frames = array();
@@ -230,7 +231,6 @@ class NodeFrame extends NodeFramesOrm
 	 * 
 	 * @param int $nodeId
 	 * @param int $time
-	 * @param array $enabledServers
 	 * @return array
 	 */
 	public function getFutureNodeFramesForDate(int $nodeId, int $time) : array

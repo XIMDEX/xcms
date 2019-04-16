@@ -1977,10 +1977,10 @@ class Node extends NodesOrm
 
     /**
      * Function which makes the node to have a new independent workflow
-     *
-     * @return array
+     * 
+     * @return array|boolean
      */
-    function GetWorkFlowSlaves()
+    public function getWorkFlowSlaves()
     {
         return $this->find('IdNode', 'SharedWorkflow = %s', array($this->get('IdNode')), MONO);
     }

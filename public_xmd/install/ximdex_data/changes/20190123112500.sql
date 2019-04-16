@@ -39,10 +39,8 @@ ALTER TABLE `NodeAllowedContents` ENGINE = InnoDB;
 ALTER TABLE `NodeAllowedContents` CHANGE `IdNodeType` `IdNodeType` INT(12) UNSIGNED NOT NULL, 
 CHANGE `NodeType` `NodeType` INT(12) UNSIGNED NOT NULL;
 
-delete from NodeAllowedContents where IdNodeType in (
-        select distinct nac.IdNodeType from NodeAllowedContents nac
-        left join NodeTypes nt on nac.IdNodeType = nt.IdNodeType
-        where nt.IdNodeType is null
+delete from NodeAllowedContents where IdNodeType not in (
+        select IdNodeType from NodeTypes
 );
 
 ALTER TABLE `NodeAllowedContents` ADD CONSTRAINT `NodeAllowedContents_Nodetype_Container` FOREIGN KEY (`IdNodeType`) 

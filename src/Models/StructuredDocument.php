@@ -982,4 +982,13 @@ class StructuredDocument extends StructuredDocumentsOrm
         }
         return $targetNode;
     }
+    
+    public function getByTemplate(int $templateId) : array
+    {
+        $docs = $this->find('IdDoc', "IdTemplate = {$templateId}", null, MONO);
+        if ($docs === false) {
+            throw new \Exception("Cannot get the documents related to the template {$templateId}");
+        }
+        return $docs;
+    }
 }

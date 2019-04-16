@@ -442,8 +442,8 @@ abstract class AbstractStructuredDocument extends FileNode
         $this->dbObj->query($query);
         if ($this->dbObj->numRows == 1) {
             $targetLink = $this->dbObj->getValue('TargetLink');
-            if ((int)$targetLink > 0) {
-                $returnValue = sprintf(' targetLink="%d"', $targetLink);
+            if ((int) $targetLink > 0) {
+                $returnValue = sprintf('targetLink="%d"', $targetLink);
             }
         }
         return $returnValue;
