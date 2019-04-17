@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,20 +31,28 @@ use Ximdex\Data\GenericData;
 
 class RelNodeSetsUsersOrm extends GenericData
 {
-    var $_idField = 'Id';
-    var $_table = 'RelNodeSetsUsers';
-    var $_metaData = array(
+    public $_idField = 'Id';
+    
+    public $_table = 'RelNodeSetsUsers';
+    
+    public $_metaData = array(
         'Id' => array('type' => "int(10)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'IdSet' => array('type' => "int(10)", 'not_null' => 'true'),
         'IdUser' => array('type' => "int(12)", 'not_null' => 'true'),
         'Owner' => array('type' => "tinyint(1)", 'not_null' => 'true')
     );
-    var $_uniqueConstraints = array(
+    
+    public $_uniqueConstraints = array(
         'U_SETUSERS' => array('IdSet', 'IdUser')
     );
-    var $_indexes = array('Id');
-    var $Id;
-    var $IdSet;
-    var $IdUser;
-    var $Owner = 0;
+    
+    public $_indexes = array('Id');
+    
+    public $Id;
+    
+    public $IdSet;
+    
+    public $IdUser;
+    
+    public $Owner = 0;
 }

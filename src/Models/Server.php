@@ -31,7 +31,11 @@ use Ximdex\Logger;
 use Ximdex\Models\ORM\ServersOrm;
 use Ximdex\NodeTypes\ServerNode;
 use Ximdex\Utils\Date;
+use Ximdex\Utils\Sitemap;
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\Db;
+use Ximdex\NodeTypes\NodeTypeConstants;
+use Ximdex\Sync\SynchroFacade;
 
 class Server extends ServersOrm
 {
@@ -186,5 +190,85 @@ class Server extends ServersOrm
             $db->next();
         }
         return $servers;
+    }
+    
+    public static function generateSitemaps() : void
+    {
+        $server = new static();
+        $interval = (int) App::getValue('SitemapInterval', 3600);
+        $servers = $server->find('IdServer, Url, IdNode'
+            , "Enabled = 1 AND Indexable IS TRUE AND (LastSitemapGenerationTime + {$interval} < UNIX_TIMESTAMP() OR LastSitemapGenerationTime IS NULL)");
+        if (! $servers) {
+            return;
+        }
+        $db = new Db();
+        $node = new Node();
+        $sitemaps = [];
+        $flagsPublication = [
+            'recursive' => false,
+            'childtype' => NodeTypeConstants::SITEMAP,
+            'workflow' => false,
+            'force' => false,
+            'lastPublished' => true,
+            'publicateSection' => true,
+            'level' => null,
+            'nodeType' => NodeTypeConstants::SITEMAP,
+            'expireAll' => true,
+            'structure' => true
+        ];
+        $syncFac = new SynchroFacade();
+        foreach ($servers as $server) {
+            $query = 'SELECT sf.DateUp, sf.RemotePath, sf.FileName FROM ServerFrames sf';
+            $query .= ' JOIN Nodes n ON n.IdNode = sf.NodeId';
+            $query .= ' JOIN NodeTypes nt ON nt.IdNodeType = n.IdNodeType AND nt.IsPublishable = 1 AND nt.HasMetadata = 1';
+            $query .= ' WHERE sf.State = \'' . ServerFrame::IN . "' AND sf.IdServer = {$server['IdServer']}";
+            if ($db->query($query) === false) {
+                throw new \Exception($db->getDesErr());
+            }
+            if (! $db->numRows) {
+                continue;
+            }
+            $fileName = "sitemap-{$server['IdServer']}.xml";
+            $res = $node->find('IdNode', "Name LIKE '{$fileName}' AND IdParent = {$server['IdNode']}", null, MONO);
+            if ($res) {
+                $id = $res[0];
+            } else {
+                $id = $node->createNode($fileName, $server['IdNode'], NodeTypeConstants::SITEMAP);
+                if (! $id) {
+                    continue;
+                }
+            }
+            $node = new Node($id);
+            if (! $node->getID()) {
+                continue;
+            }
+            $links = [];
+            while (! $db->EOF) {
+                $links[] = [
+                    'loc' => trim($server['Url'], '/') . '/' . trim($db->getValue('RemotePath'), '/') . '/' . $db->getValue('FileName'),
+                    'lastmod' => Date::formatTime($db->getValue('DateUp'), 'Y-m-d')
+                ];
+                $db->next();
+            }
+            $sitemap = Sitemap::generate($links);
+            if ($node->setContent($sitemap) === false) {
+                continue;
+            }
+            $sitemaps[$server['IdNode']][] = $server['IdServer'];
+        }
+        foreach (array_keys($sitemaps) as $id) {
+            $result = $syncFac->pushDocInPublishingPool($id, time(), null, $flagsPublication);
+            if (! $result) {
+                continue;
+            }
+            foreach ($sitemaps[$id] as $serverId) {
+                $server = new static($serverId);
+                if (! $server->get('IdServer')) {
+                    continue;
+                }
+                $server->set('LastSitemapGenerationTime', time());
+                $server->update();
+            }
+        }
     }
 }

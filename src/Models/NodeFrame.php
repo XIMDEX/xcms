@@ -78,9 +78,9 @@ class NodeFrame extends NodeFramesOrm
 	 * @param array $enabledServers
 	 * @return array
 	 */
-    public function getFrames(int $idNdFr = null, string $operation = null, array $enabledServers) : array
+    public function getFrames(int $idNdFr = null, string $operation = null, array $enabledServers = null) : array
     {
-        if (! $enabledServers) {
+        if ($enabledServers !== null and ! $enabledServers) {
             return [];
         }
         if (! $idNdFr) {
@@ -91,7 +91,9 @@ class NodeFrame extends NodeFramesOrm
             $sql .= ' AND State NOT IN (\'' . ServerFrame::REMOVED . '\', \'' . ServerFrame::REPLACED . '\', \'' 
                 . ServerFrame::CANCELLED . '\', \'' . ServerFrame::OUT . '\')';
         }
-        $sql .= ' AND IdServer IN (' . implode(', ', $enabledServers) . ')';
+        if ($enabledServers) {
+            $sql .= ' AND IdServer IN (' . implode(', ', $enabledServers) . ')';
+        }
 		$dbObj = new \Ximdex\Runtime\Db();
 		$dbObj->query($sql);
 		$frames = array();

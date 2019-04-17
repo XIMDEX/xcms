@@ -221,8 +221,8 @@ class SyncManager
             if (sizeof($docsToPublish) > 0) {
                 $docsToPublish = array_unique(array_merge(array($node->GetID()), $docsToPublish));
             } else {
-                $docsToPublish = array($node->GetID());
-                $this->docsToPublishByLevel = array($node->GetID());
+                $docsToPublish = array($node->getID());
+                $this->docsToPublishByLevel = [$node->GetID()];
             }
         } elseif ($node->GetNodeType() != NodeTypeConstants::XML_ROOT_FOLDER and $node->GetNodeType() != NodeTypeConstants::XML_CONTAINER 
             and $node->GetNodeType() != NodeTypeConstants::HTML_CONTAINER) {

@@ -21,30 +21,30 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- * @author Ximdex DevTeam <dev@ximdex.com>
- * @version $Revision$
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
  */
 
-namespace Ximdex\Models\ORM;
+namespace Ximdex\Utils;
 
-use Ximdex\Data\GenericData;
-
-class NodeSetsOrm extends GenericData
+class Sitemap
 {
-    public $_idField = 'Id';
-    
-    public $_table = 'NodeSets';
-    
-    public $_metaData = array(
-        'Id' => array('type' => "int(10)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'Name' => array('type' => "varchar(100)", 'not_null' => 'false')
-    );
-    
-    public $_uniqueConstraints = array();
-    
-    public $_indexes = array('Id');
-    
-    public $Id;
-    
-    public $Name;
+    public static function & generate(array $links) : string
+    {
+        $sitemap = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL;
+        $sitemap .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . PHP_EOL;
+        foreach ($links as $link) {
+            if (! isset($link['loc'])) {
+                continue;
+            }
+            $sitemap .= '<url>' . PHP_EOL;
+            $sitemap .= "<loc>{$link['loc']}</loc>" . PHP_EOL;
+            if (isset($link['lastmod'])) {
+                $sitemap .= "<lastmod>{$link['lastmod']}</lastmod>" . PHP_EOL;
+            }
+            $sitemap .= '</url>' . PHP_EOL;
+        }
+        $sitemap .= '</urlset>';
+        return $sitemap;
+    }
 }

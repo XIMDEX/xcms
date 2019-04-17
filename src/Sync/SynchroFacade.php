@@ -286,6 +286,9 @@ class SynchroFacade
         
         // Load enabled servers
         $enabledServers = ServerNode::getServersForPumping();
+        if ($enabledServers === false) {
+            return false;
+        }
         
         // Generate a list with server frames per enabled server
         $nodeFrame = new NodeFrame();

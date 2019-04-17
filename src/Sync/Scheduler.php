@@ -87,7 +87,7 @@ class Scheduler
                 die();
             }
             $activeAndEnabledServers = ServerNode::getServersForPumping();
-            if (! $activeAndEnabledServers || count($activeAndEnabledServers) == 0) {
+            if (! $activeAndEnabledServers) {
                 
                 // There aren't Active & Enable servers...
                 Logger::warning('No active server');
@@ -115,6 +115,9 @@ class Scheduler
                     if (! $tasks) {
                         $batchManager->checkFramesIntegrity();
                     }
+                    
+                    // Generate sitemaps
+                    Server::generateSitemaps();
     
                     // Sleeping...
                     Logger::info('Sleeping...');

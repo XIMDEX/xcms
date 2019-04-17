@@ -32,7 +32,6 @@ use Ximdex\Models\Batch;
 use Ximdex\Models\NodeFrame;
 use Ximdex\Models\ServerFrame;
 use Ximdex\Models\ChannelFrame;
-use Ximdex\NodeTypes\ServerNode;
 
 /**
 *	@brief Handles the activity of a NodeFrame
@@ -41,9 +40,7 @@ use Ximdex\NodeTypes\ServerNode;
 *	It have 2 posibles values for its activity 1 (published), 0 (not published)
 */
 class NodeFrameManager
-{
-    private $enabledServers = null;
-    
+{   
 	/**
 	 * Checks whether the NodeFrame must be active or not
 	 * 
@@ -222,14 +219,6 @@ class NodeFrameManager
 			$i++;
 			$dbObj->next();
 		}
-		if ($nodeFrames) {
-		    $servers = ServerNode::getServersForPumping();
-		    if ($servers === false) {
-		        Logger::error('Cannot obtain the enabled servers');
-		        return null;
-		    }
-		    $this->enabledServers = $servers;
-		}
 		return $nodeFrames;
     }
 
@@ -358,15 +347,7 @@ class NodeFrameManager
 	        $operation = 'Down';
 	    }
 	    $sfOK = true;
-	    if ($this->enabledServers === null) {
-	        $servers = ServerNode::getServersForPumping();
-	        if ($servers === false) {
-	            Logger::error('Cannot obtain the enabled servers to set the activity');
-	            return null;
-	        }
-	        $this->enabledServers = $servers;
-	    }
-	    $frames = $nodeFrame->getFrames($nodeFrId, $operation, $this->enabledServers);
+	    $frames = $nodeFrame->getFrames($nodeFrId, $operation);
 	    $channelFrameManager = new ChannelFrameManager();
 	    foreach($frames as $serverFrId) {
 	        Logger::info('Processing serverFrame ' . $serverFrId . ' for nodeFrameID: ' . $nodeFrId . ' and nodeID: ' . $nodeId);

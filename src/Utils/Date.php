@@ -29,11 +29,11 @@ namespace Ximdex\Utils;
 
 class Date
 {
-    public static function formatTime(? int $timestamp) : string
+    public static function formatTime(? int $timestamp, string $format = 'd/m/Y H:i') : string
     {
         if ($timestamp === null) {
             return '';
         }
-        return date('d/m/Y H:i', $timestamp);
+        return date($format, $timestamp);
     }
 }
