@@ -222,6 +222,7 @@ class Server extends ServersOrm
             $query .= ' JOIN Nodes n ON n.IdNode = sf.NodeId';
             $query .= ' JOIN NodeTypes nt ON nt.IdNodeType = n.IdNodeType AND nt.IsPublishable = 1 AND nt.HasMetadata = 1';
             $query .= ' WHERE sf.State = \'' . ServerFrame::IN . "' AND sf.IdServer = {$server['IdServer']}";
+            $query .= ' AND sf.FileName NOT LIKE \'\_%\'';
             if ($db->query($query) === false) {
                 throw new \Exception($db->getDesErr());
             }

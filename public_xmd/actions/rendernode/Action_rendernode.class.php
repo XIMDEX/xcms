@@ -44,7 +44,7 @@ class Action_rendernode extends ActionAbstract
         if ($this->request->getParam('nodeid')) {
             
             // Receives request node param
-            $idNode = $this->request->getParam('nodeid');
+            $idNode = (int) $this->request->getParam('nodeid');
             
             // Checks node existence
             $node = new Node($idNode);
@@ -62,7 +62,7 @@ class Action_rendernode extends ActionAbstract
             Logger::info('Call to rendernode from expresion: ' . $expression);
             
             // Some times a id from parent node will be necesary
-            $id = $this->request->getParam('id');
+            $id = (int) $this->request->getParam('id');
             
             // Generate the node ID using pathTo parser
             $parserPathTo = new ParsingPathTo();
@@ -78,24 +78,22 @@ class Action_rendernode extends ActionAbstract
             }
             $node = $parserPathTo->getNode();
         }
+        $version = $this->request->getParam('version');
+        $subversion = $this->request->getParam('subversion');
         if ($node->nodeType->getIsStructuredDocument()) {
             
             // Receives request params for structured documents
-            $idChannel = $this->request->getParam('channelid');
-            if (empty($idChannel)) {
+            $idChannel = (int) $this->request->getParam('channelId');
+            if (! $idChannel) {
                 $idChannel = $this->request->getParam('channel');
             }
-            $showprev = $this->request->getParam('showprev');
+            $showprev = (bool) $this->request->getParam('showprev');
             $content = stripslashes($this->request->getParam('content'));
-            $version = $this->request->getParam('version');
-            $subversion = $this->request->getParam('sub_version');
             $mode = $this->request->getParam('mode');
         } else {
             $idChannel = null;
-            $showprev = null;
+            $showprev = false;
             $content = null;
-            $version = null;
-            $subversion = null;
             $mode = null;
         }
         

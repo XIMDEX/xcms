@@ -27,7 +27,6 @@
 
 namespace Ximdex\NodeTypes;
 
-use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use DOMDocument;
 use Ximdex\Deps\DepsManager;
@@ -55,23 +54,24 @@ class FileNode extends Root
      */
     public function renderizeNode() : bool
     {
-        if (App::getValue('RenderizeAll') or $this->nodeType->getID() == NodeTypeConstants::XSL_TEMPLATE) {
-            $parentID = $this->parent->GetParent();
-            $parent = new Node($parentID);
-            if (! $parent->isRenderized()) {
-                $parent->renderizeNode();
-            }
-            $node = new Node($this->nodeID);
-            $nodetype = new NodeType($node->GetNodeType());
-            if (! $nodetype->getHasFSEntity()){
-                return false;
-            }
-            $file = $this->getNodePath();
-            $data = new DataFactory($this->nodeID);
-            $content = $data->GetContent();
-            if (! FsUtils::file_put_contents($file, $content)) {
-                return false;
-            }
+        if (! $this->parent->isRenderizable()) {
+            return true;
+        }
+        $parentID = $this->parent->getParent();
+        $parent = new Node($parentID);
+        if (! $parent->isRenderized()) {
+            $parent->renderizeNode();
+        }
+        $node = new Node($this->nodeID);
+        $nodetype = new NodeType($node->getNodeType());
+        if (! $nodetype->getHasFSEntity()){
+            return false;
+        }
+        $file = $this->getNodePath();
+        $data = new DataFactory($this->nodeID);
+        $content = $data->getContent();
+        if (! FsUtils::file_put_contents($file, $content)) {
+            return false;
         }
         return true;
     }
@@ -150,12 +150,13 @@ class FileNode extends Root
     /**
      * Gets the content of the file
      * 
-     * @return string|bool
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\Root::getContent()
      */
-    public function getContent()
+    public function getContent(int $version = null, int $subversion = null)
     {
         $data = new DataFactory($this->nodeID);
-        $content = $data->getContent();
+        $content = $data->getContent($version, $subversion);
         return $content;
     }
 

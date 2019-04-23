@@ -252,6 +252,9 @@ class SyncManager
         }
         $docsToPublish = $this->getPublishableDocs($node, $up, $down);
         $userID = \Ximdex\Runtime\Session::get('userID');
+        if (! $userID) {
+            $userID = User::XIMDEX_ID;
+        }
         $force = $this->getFlag('globalForcePublication') ? true : $this->getFlag('force');
         $nodesToPublish = new NodesToPublish();
         foreach ($docsToPublish as $idDoc) {

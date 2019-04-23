@@ -1,5 +1,5 @@
 {**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,21 +27,22 @@
 	<fieldset class="action-controls">
 		<input type="hidden" name="node_id" class="node_id" value="{$id_node}" />
 		{*  If it is a document, it shows combo with channels *}
-		{if ($nameNodeType != 'TextFile' and $nameNodeType != 'ImageFile' and $nameNodeType !='BinaryFile' and $nameNodeType != 'NodeHt')}
+		{if isset($channelId) and $channelId > 0}
 		    {t}Channel{/t}:&nbsp;
 		    <select id="channellist{$id_node}" name="channellist" class="prevdoc-channel-selector" style="width: auto;">
-				{foreach from=$channels item=_channel}
-					<option value='{$_channel.Id}'>{$_channel.Name}</option>
+				{foreach from=$channels item=channel}
+					<option value='{$channel.Id}' {if $channel.Id eq $channelId} selected="selected" {/if}>{$channel.Name}</option>
 				{/foreach}
 			</select>
 		{/if}
-		<a id="prevdoc-button" href="{url}/?action=rendernode&nodeid={$id_node}&token={$token}{/url}"
+		<a id="prevdoc-button" href="{url}/?action=rendernode&nodeid={$id_node}&channelId={$channelId}&version={$version}&subversion={$subversion}&token={$token}{/url}"
 				class="btn main_action ui-state-default ui-corner-all button submit-button ladda-button"><span 
 				class="ladda-label">{t}View in a new window{/t}</span></a>
 	</fieldset>
 </div>
 <div class="content_container prevdoc">
-	<iframe id="preview{$id_node}" src="{url}/?action=rendernode&nodeid={$id_node}&channel=10001&token={$token}{/url}" height="100%" width="100%">
+	<iframe id="preview{$id_node}" height="100%" width="100%" 
+	       src="{url}/?action=rendernode&nodeid={$id_node}&channelId={$channelId}&version={$version}&subversion={$subversion}&token={$token}{/url}">
 		<p>Your browser does not support iframes.</p>
 	</iframe>
 </div>

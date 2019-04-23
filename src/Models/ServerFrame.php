@@ -459,9 +459,9 @@ class ServerFrame extends ServerFramesOrm
     public function getCompleteServerList(int $nodeId, int $channelID = null)
     {
         $sql = "SELECT distinct IdServer From ServerFrames sf INNER JOIN ChannelFrames cf ON sf.idChannelFrame = cf.idChannelFrame"
-            . " WHERE cf.nodeid = $nodeId";
+            . " WHERE cf.nodeid = {$nodeId}";
         if ($channelID != null) {
-            $sql .= " AND cf.channelid = $channelID";
+            $sql .= " AND cf.channelId = {$channelID}";
         }
         $dbObj = new Db();
         $dbObj->query($sql);

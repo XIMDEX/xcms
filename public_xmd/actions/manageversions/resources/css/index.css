@@ -1,5 +1,5 @@
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -22,50 +22,76 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+
 #previewer {
-  position: absolute;
-  top: 30px;
-  left: 85%;
-  font: 12px verdana,arial,helvetica;
-  color: #000000;
-  background: #000000;
-  padding: 10px;
-  border: none;
-  z-index: 5; }
+	position: absolute;
+	top: 30px;
+	left: 85%;
+	font: 12px verdana, arial, helvetica;
+	color: #000000;
+	background: #000000;
+	padding: 10px;
+	border: none;
+	z-index: 5;
+}
 
 .version-info {
-  padding: 0 18.8em 0 2%;
-  position: relative;
-  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); }
-  .version-info::before {
-    display: block;
-    position: absolute;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    border-radius: 50%;
-    width: 2em;
-    height: 2em;
-    background: #b2e0d9;
-    margin-top: .5em;
-    margin-left: .4em; }
+	padding: 0 18.8em 0 2%;
+	position: relative;
+	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+	-moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.version-info::before {
+	display: block;
+	position: absolute;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border-radius: 50%;
+	width: 2em;
+	height: 2em;
+	background: #b2e0d9;
+	margin-top: .5em;
+	margin-left: .4em;
+}
 
 .version {
-  padding: 0 2em 0 0;
-  position: relative; }
-  .version strong {
-    background: #b2e0d9;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    border-radius: 2px;
-    display: inline-block;
-    min-width: 3.5em;
-    text-align: center;
-    padding: .6em .2em; }
+	padding: 0 2em 0 0;
+	position: relative;
+}
+
+.version strong {
+	background: #b2e0d9;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	display: inline-block;
+	min-width: 3.5em;
+	text-align: center;
+	padding: .6em .2em;
+}
 
 .version-preview, .buttons, .version-name, .version-date {
-  display: inline-block; }
+	display: inline-block;
+}
 
 .version-name, .version-date {
-  padding: 1em; }
+	padding: 1em;
+}
+
+.publish-status {
+	width: 20%;
+}
+
+.version-actions {
+	top: 40% !important;
+}
+
+.channellist {
+	width: 40%;
+}
+
+.version-name {
+	width: 20%;
+}

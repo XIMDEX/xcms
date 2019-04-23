@@ -27,13 +27,18 @@
 <div class="action_content">
 	<div class="row tarjeta">
 		<div class="small-12 columns title_tarjeta">
-			<h2 class="h2_general">{t}Download file{/t}</h2>
+			<h2 class="h2_general">
+                {t}Download file{/t}
+                {if $version !== null}
+                    &nbsp;({t}version{/t} {$version}.{$subversion})
+                {/if}
+			</h2>
 		</div>
 		<div class="small-12 columns">
 			<div class="alert alert-info">
 				<strong>Info!</strong> {t}File download will start immediately. If it does not start, click on:{/t} 
-			    <a href="{url}/?action=filedownload&method=downloadFile&nodeid={$id_node}{/url}" class="destacada download_link" 
-                        title="{t nodename=$node_name}Download %1{/t}">{$node_name}</a>.
+			    <a href="{url}/?action=filedownload&method=downloadFile&nodeid={$id_node}{/url}&version={$version}&subversion={$subversion}" 
+                        class="destacada download_link" title="{t nodename=$node_name}Download %1{/t}">{$node_name}</a>.
 			</div>
 		</div>
 		<!--

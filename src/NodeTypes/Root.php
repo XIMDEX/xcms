@@ -130,7 +130,7 @@ class Root
             return "";
         }
         $parentPath = $parentNode->class->getPathList();
-        if (! $this->nodeType->GetIsRenderizable()) {
+        if (! $this->nodeType->getIsRenderizable()) {
             Logger::warning('Se ha solicitado el path de un nodo no renderizable con id ' . $this->parent->get('IdNode'));
             return $parentPath;
         }
@@ -139,7 +139,7 @@ class Root
         Obtenemos el path donde el nodo padre guarda a sus hijos
         Unimos el path del padre y el nombre del nodo para obtener el path de este nodo si este nodo no es virtual
         */
-        if ($this->nodeType->GetHasFSEntity()) {
+        if ($this->nodeType->getHasFSEntity()) {
             
             // CON ENTIDAD EN EL FS O NO VIRTUAL (ROOT, XML, IMAGES)
             return $parentPath . "/" . $this->parent->get('Name');
@@ -221,9 +221,11 @@ class Root
     /**
      * Gets the content of the Node
      * 
+     * @param int $version
+     * @param int $subversion
      * @return string
      */
-    public function getContent()
+    public function getContent(int $version = null, int $subversion = null)
     {
         return '';
     }
@@ -326,7 +328,7 @@ class Root
      */
     public function getNodePath()
     {
-        $pathList = $this->GetPathList();
+        $pathList = $this->getPathList();
         $relativePath = $pathList;
         return XIMDEX_ROOT_PATH . App::getValue("NodeRoot") . $relativePath;
     }
@@ -357,7 +359,7 @@ class Root
             $nodes[] = $node->getPublishedNodeName($channelID);
             $db->next();
         }
-        if ($addNodeName && !$this->nodeType->get('IsVirtualFolder')) {
+        if ($addNodeName && ! $this->nodeType->get('IsVirtualFolder')) {
             $parent = new Node($this->parent->get('IdNode'));
             $nodes[] = $parent->getPublishedNodeName($channelID);
         }

@@ -862,13 +862,15 @@ class Node extends NodesOrm
     /**
      * Returns a node content
      * 
-     * @return string|null|boolean
+     * @param int $version
+     * @param int $subversion
+     * @return string|boolean|NULL
      */
-    public function getContent()
+    public function getContent(int $version = null, int $subversion = null)
     {
         $this->clearError();
         if ($this->get('IdNode') > 0) {
-            return $this->class->getContent();
+            return $this->class->getContent($version, $subversion);
         }
         return null;
     }
@@ -1085,18 +1087,12 @@ class Node extends NodesOrm
      */
     public function isRenderized() : bool
     {
-        $this->ClearError();
+        $this->clearError();
         if ($this->get('IdNode')) {
             if (! $this->nodeType->get('IsRenderizable')) {
                 return false;
             }
-            if (! App::getValue('RenderizeAll') and ! in_array($this->getNodeType(), [
-                NodeTypeConstants::XSL_TEMPLATE,
-                NodeTypeConstants::TEMPLATES_ROOT_FOLDER,
-                NodeTypeConstants::SECTION,
-                NodeTypeConstants::SERVER,
-                NodeTypeConstants::PROJECT
-            ])) {
+            if (! $this->isRenderizable()) {
                 return true;
             }
             
@@ -1402,13 +1398,7 @@ class Node extends NodesOrm
 
         // Deleting from file system
         if ($this->nodeType->get('HasFSEntity')) {
-            if (App::getValue('RenderizeAll') or in_array($this->getNodeType(), [
-                NodeTypeConstants::XSL_TEMPLATE, 
-                NodeTypeConstants::TEMPLATES_ROOT_FOLDER,
-                NodeTypeConstants::SECTION,
-                NodeTypeConstants::SERVER,
-                NodeTypeConstants::PROJECT
-            ])) {
+            if ($this->isRenderizable()) {
                 $absPath = XIMDEX_ROOT_PATH . App::getValue("NodeRoot");
                 $deletablePath = $this->class->getPathList();
                 $nodePath = $absPath . $deletablePath;
@@ -1419,11 +1409,7 @@ class Node extends NodesOrm
                 }
             }
         }
-        /*
-        // Deleting properties it may has
-        $nodeProperty = new NodeProperty();
-        $nodeProperty->deleteByNode($this->get('IdNode'));
-        */
+
         // first invoking the particular Delete...
         if ($this->getNodeType() != NodeTypeConstants::XSL_TEMPLATE) {
             if ($this->class->deleteNode() === false) {
@@ -1460,14 +1446,6 @@ class Node extends NodesOrm
                 return false;
             }
         }
-        /*
-        $nodeDependencies = new NodeDependencies();
-        $nodeDependencies->deleteBySource($this->get('IdNode'));
-        $nodeDependencies->deleteByTarget($this->get('IdNode'));
-        $dbObj->execute(sprintf("DELETE FROM FastTraverse WHERE IdNode = %d OR  IdChild = %d", $this->get('IdNode'), $this->get('IdNode')));
-        $dependencies = new Dependencies();
-        $dependencies->deleteDependentNode($this->get('IdNode'));
-        */
         $rtn = new RelSemanticTagsNodes();
         $rtn->deleteTags($this->nodeID);
         $res = parent::delete();
@@ -1577,7 +1555,7 @@ class Node extends NodesOrm
                 ignore_user_abort(true);
             }
             if ($isFile) {
-                if (App::getValue('RenderizeAll')or $this->getNodeType() == NodeTypeConstants::XSL_TEMPLATE) {
+                if ($this->isRenderizable()) {
                     $absPath = XIMDEX_ROOT_PATH . App::getValue("NodeRoot");
                     $deletablePath = $this->class->getPathList();
                     FsUtils::delete($absPath . $deletablePath);
@@ -1600,7 +1578,7 @@ class Node extends NodesOrm
                 $node->renderizeNode();
             }
             if ($isDir) {
-                if (App::getValue('RenderizeAll') or $this->getNodeType() == NodeTypeConstants::TEMPLATES_ROOT_FOLDER) {
+                if ($this->isRenderizable()) {
                     
                     // Temporal backup of children nodes. In this case, it is passed the path and a flag to specify that it is a path
                     $folderPath = XIMDEX_ROOT_PATH . App::getValue("NodeRoot") . $this->class->getChildrenPath();
@@ -1670,11 +1648,7 @@ class Node extends NodesOrm
                     }
                     
                     // Remove old folder or file in data / nodes file system
-                    if ($this->nodeType->isRenderizable() and (App::getValue('RenderizeAll') or in_array($this->getNodeType(), [
-                        NodeTypeConstants::XSL_TEMPLATE,
-                        NodeTypeConstants::SECTION, 
-                        NodeTypeConstants::SERVER
-                    ]))) {
+                    if ($this->isRenderizable()) {
                         if ($this->getNodeType() == NodeTypeConstants::XSL_TEMPLATE) {
                             FsUtils::delete($folderPath);
                         } else {
@@ -3445,17 +3419,17 @@ class Node extends NodesOrm
 
     /**
      * Return data to render the node to desired output with response headers
-     *
-     * @param string $idChannel
-     * @param string $showprev
+     * 
+     * @param int $idChannel
+     * @param bool $showprev
      * @param string $content
-     * @param string $version
-     * @param string $subversion
+     * @param int $version
+     * @param int $subversion
      * @param string $mode
      * @return boolean|array
      */
-    public function filemapper(string $idChannel = null, string $showprev = null, string $content = null
-        , string $version = null, string $subversion = null, string $mode = null)
+    public function filemapper(int $idChannel = null, bool $showprev = false, string $content = null, int $version = null
+        , int $subversion = null, string $mode = null)
     {
         // Checks node existence
         if (! $this->IdNode) {
@@ -3567,7 +3541,7 @@ class Node extends NodesOrm
         } else {
 
             // Node is not a structured document (common view)
-            $content = $this->getContent();
+            $content = $this->getContent($version, $subversion);
             if ($content === false) {
                 $this->messages->add('Cannot get the content from file ' . $this->getNodeName() . ' for a preview operation', MSG_TYPE_WARNING);
                 return false;
@@ -3705,5 +3679,22 @@ class Node extends NodesOrm
             }
         }
         return array_values($result);
+    }
+    
+    /**
+     * Return true if the node can be stored in data/nodes directory
+     *
+     * @return boolean
+     */
+    public function isRenderizable() : bool
+    {
+        if (App::getValue('RenderizeAll')) {
+            return true;
+        }
+        if (in_array($this->getNodeType(), [NodeTypeConstants::XSL_TEMPLATE, NodeTypeConstants::TEMPLATES_ROOT_FOLDER,
+                NodeTypeConstants::SECTION, NodeTypeConstants::SERVER, NodeTypeConstants::PROJECT])) {
+            return true;
+        }
+        return false;
     }
 }

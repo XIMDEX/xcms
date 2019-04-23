@@ -73,8 +73,8 @@ class Action_poolPreview extends ActionAbstract
     		foreach ($versionList as $value) {
     		    
     			// Get all subversion for each version
-    			$subVersionList = $datafactory->GetSubVersionList($value);
-    			$verAndSubVerList[$value] = $subVersionList;
+    			$subversionList = $datafactory->getSubversionList($value);
+    			$verAndSubVerList[$value] = $subversionList;
     		}
     	}
     	$this->render(array('verAndSubVerList' => $verAndSubVerList));

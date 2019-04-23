@@ -45,28 +45,23 @@ class FolderNode extends Root
      */
     public function renderizeNode() : bool
     {
-        if (App::getValue('RenderizeAll') or in_array($this->nodeType->getID(), [
-            NodeTypeConstants::TEMPLATES_ROOT_FOLDER,
-            NodeTypeConstants::SECTION,
-            NodeTypeConstants::SERVER,
-            NodeTypeConstants::PROJECT
-        ])) {
-            $parentID = $this->parent->GetParent();
-            $parent = new Node($parentID);
-            if (! $parent->isRenderized()) {
-                $parent->renderizeNode();
-            }
-            $folder = $this->GetChildrenPath();
-            $folder = XIMDEX_ROOT_PATH . App::getValue("NodeRoot") . $folder;
-            if (file_exists($folder)) {
-                // FsUtils::deltree($folder);
-                return true;
-            }
-            if (! @mkdir($folder, 0777)) {
-                $this->parent->SetError(7);
-                Logger::error('Cannot create the folder: ' . $folder);
-                return false;
-            }
+        if (! $this->parent->isRenderizable()) {
+            return true;
+        }
+        $parentID = $this->parent->getParent();
+        $parent = new Node($parentID);
+        if (! $parent->isRenderized()) {
+            $parent->renderizeNode();
+        }
+        $folder = $this->getChildrenPath();
+        $folder = XIMDEX_ROOT_PATH . App::getValue("NodeRoot") . $folder;
+        if (file_exists($folder)) {
+            return true;
+        }
+        if (! @mkdir($folder, 0777)) {
+            $this->parent->setError(7);
+            Logger::error('Cannot create the folder: ' . $folder);
+            return false;
         }
         return true;
     }

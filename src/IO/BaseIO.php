@@ -774,6 +774,7 @@ class BaseIO
             case 'COMMONNODE':
             case 'IMAGENODE':
             case 'FILENODE':
+            case 'VIDEONODE':
                 if (isset($data['CHILDRENS'])) {
                     if ($this->_searchNodeInChildrens($data['CHILDRENS'], 'PATH', Constants::MODE_NODETYPE)) {
                         $paths = $this->_getValueFromChildren($data['CHILDRENS'], 'SRC');

@@ -60,8 +60,8 @@ abstract class AbstractStructuredDocument extends FileNode
      * {@inheritDoc}
      * @see \Ximdex\NodeTypes\FileNode::createNode()
      */
-    public function createNode(string $name = null, int $parentID = null, int $nodeTypeID = null, int $stateID = null, string $templateID = null
-        , int $IdLanguage = null, string $aliasName = '', array $channelList = null)
+    public function createNode(string $name = null, int $parentID = null, int $nodeTypeID = null, int $stateID = null
+        , string $templateID = null, int $IdLanguage = null, string $aliasName = '', array $channelList = null)
     {
         $loginID = Session::get("userID");
         $templateNode = new Node($templateID);
@@ -155,12 +155,13 @@ abstract class AbstractStructuredDocument extends FileNode
     }
 
     /**
-     * @return mixed|string
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\FileNode::getContent()
      */
-    public function GetContent()
+    public function getContent(int $version = null, int $subversion = null)
     {
         $strDoc = new StructuredDocument($this->nodeID);
-        return $strDoc->GetContent();
+        return $strDoc->getContent($version, $subversion);
     }
 
     /**
@@ -251,7 +252,7 @@ abstract class AbstractStructuredDocument extends FileNode
      * @param string $tagName
      * @return string
      */
-    public function getDocHeader(int $channel, int $idLanguage, int $documentType, string $tagName = 'docxap') : string
+    public function getDocHeader(?int $channel, ?int $idLanguage, int $documentType, string $tagName = 'docxap') : string
     {
         $schema = new Node($documentType);
         $schemaName = $schema->get('Name');

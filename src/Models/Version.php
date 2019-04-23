@@ -61,12 +61,12 @@ class Version extends VersionsOrm
      * 
      * @param int $idNode
      * @param int $version
-     * @param int $subVersion
+     * @param int $subversion
      * @return int|NULL
      */
-    public function getIdVersion(int $idNode, int $version, int $subVersion) : ?int
+    public function getIdVersion(int $idNode, int $version, int $subversion) : ?int
     {
-        $res = $this->find('IdVersion', 'IdNode = %s and Version = %s and SubVersion = %s', [$idNode, $version, $subVersion]);
+        $res = $this->find('IdVersion', 'IdNode = %s and Version = %s and SubVersion = %s', [$idNode, $version, $subversion]);
         if ($res and count($res) == 1){
             return $res[0]['IdVersion'];
         }
@@ -75,6 +75,7 @@ class Version extends VersionsOrm
     
     /**
      * Remove all cache generated for the current version
+     * 
      * @throws \Exception
      */
     public function deleteCache()

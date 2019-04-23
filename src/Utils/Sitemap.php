@@ -37,12 +37,12 @@ class Sitemap
             if (! isset($link['loc'])) {
                 continue;
             }
-            $sitemap .= '<url>' . PHP_EOL;
-            $sitemap .= "<loc>{$link['loc']}</loc>" . PHP_EOL;
+            $sitemap .= "\t<url>" . PHP_EOL;
+            $sitemap .= "\t\t<loc>{$link['loc']}</loc>" . PHP_EOL;
             if (isset($link['lastmod'])) {
-                $sitemap .= "<lastmod>{$link['lastmod']}</lastmod>" . PHP_EOL;
+                $sitemap .= "\t\t<lastmod>{$link['lastmod']}</lastmod>" . PHP_EOL;
             }
-            $sitemap .= '</url>' . PHP_EOL;
+            $sitemap .= "\t</url>" . PHP_EOL;
         }
         $sitemap .= '</urlset>';
         return $sitemap;
