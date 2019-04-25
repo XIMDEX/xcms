@@ -57,8 +57,11 @@ include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
 class BatchManager
 {
     public $idBatchUp;
+    
     public $idBatchDown;
+    
     public $syncStatObj;
+    
     private $channels;
 
     /**
@@ -104,11 +107,11 @@ class BatchManager
         $timer = new Timer();
         $timer->start();
         $node = new Node($idNode);
-        if (! $node->GetID()) {
+        if (! $node->getID()) {
             Logger::error('Cannot load the node with ID: ' . $idNode . ' in order to create the publication batch');
             return false;
         }
-        $idServer = $node->GetServer();
+        $idServer = $node->getServer();
         Logger::info('Publication starts for ' . $node->GetPath() . ' (' . $idNode . ')');
         $unchangedDocs = array();
         $docsToUpVersion = array();
@@ -742,20 +745,20 @@ class BatchManager
         }
 
         // Batchs to start
-        if (!$testTime) {
+        if (! $testTime) {
             $now = time();
         } else {
             $now = $testTime;
         }
         $query = 'SELECT b.IdBatch FROM Batchs b INNER JOIN PortalFrames pf ON pf.id = b.IdPortalFrame AND pf.Playing IS TRUE' 
             . ' WHERE b.State = \'' . Batch::WAITING . '\' AND b.TimeOn < ' . $now . ' AND b.ServerId IN (' . implode(',', $servers) . ')';
-        if ($dbObj->Query($query) === false) {
+        if ($dbObj->query($query) === false) {
         	return false;
         }
-        while (!$dbObj->EOF) {
-            $batch = new Batch($dbObj->GetValue('IdBatch'));
+        while (! $dbObj->EOF) {
+            $batch = new Batch($dbObj->getValue('IdBatch'));
             if ($batch->get('IdBatch')) {
-                Logger::info('Starting batch ' . $dbObj->GetValue('IdBatch'));
+                Logger::info('Starting batch ' . $dbObj->getValue('IdBatch'));
                 $batch->set('State', Batch::INTIME);
                 $batch->update();
                 try {
@@ -764,7 +767,7 @@ class BatchManager
                     Logger::error($e->getMessage());
                 }
             }
-            $dbObj->Next();
+            $dbObj->next();
         }
         return $dbObj->numRows;
     }

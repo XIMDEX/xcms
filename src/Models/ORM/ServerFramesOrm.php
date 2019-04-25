@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,7 +32,9 @@ use Ximdex\Data\GenericData;
 class ServerFramesOrm extends GenericData
 {
     public $_idField = 'IdSync';
+    
     public $_table = 'ServerFrames';
+    
     public $_metaData = array(
         'IdSync' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true'),
         'IdServer' => array('type' => 'int(12)', 'not_null' => 'true'),
@@ -55,24 +57,44 @@ class ServerFramesOrm extends GenericData
         'IdBatchDown' => array('type' => 'int(12)', 'not_null' => 'false'),
         'IdPortalFrame' => array('type' => 'int(12)', 'not_null' => 'true')
     );
+    
     public $IdSync;
+    
     public $IdServer;
+    
     public $DateUp;
+    
     public $DateDown;
+    
     public $State = 'DUE';
+    
     public $ErrorLevel;
+    
     public $RemotePath;
+    
     public $FileName;
+    
     public $FileSize;
+    
     public $Retry = 0;
+    
     public $Linked = 1;
+    
     public $IdNodeFrame;
+    
     public $IdBatchUp;
+    
     public $IdChannelFrame;
+    
     public $PumperId;
+    
     public $cache;
+    
     public $NodeId;
+    
     public $ChannelId;
+    
     public $IdBatchDown;
+    
     public $IdPortalFrame;
 }

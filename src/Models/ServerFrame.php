@@ -46,38 +46,63 @@ include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
 class ServerFrame extends ServerFramesOrm
 {
     const PENDING = 'Pending';
+    
     const DUE2IN = 'Due2In';
+    
     const DUE2IN_ = 'Due2In_';
+    
     const DUE2OUT = 'Due2Out';
+    
     const DUE2OUT_ = 'Due2Out_';
+    
     const PUMPED = 'Pumped';
+    
     const OUT = 'Out';
+    
     const IN = 'In';
+    
     const REPLACED = 'Replaced';
+    
     const REMOVED = 'Removed';
+    
     const CANCELLED = 'Canceled';
+    
     const DUE2INWITHERROR = 'Due2InWithError';
+    
     const DUE2OUTWITHERROR = 'Due2OutWithError';
+    
     const OUTDATED = 'Outdated';
+    
     const DELAYED = 'Delayed';
     
     // Error levels
+    
     const ERROR_LEVEL_SOFT = 1;
+    
     const ERROR_LEVEL_HARD = 2;
     
     // Group of status
+    
     const FINAL_STATUS = [self::IN, self::OUT, self::REMOVED, self::REPLACED, self::CANCELLED, self::OUTDATED, self::DELAYED
         , self::DUE2INWITHERROR, self::DUE2OUTWITHERROR];
+    
     const FINAL_STATUS_OUT = [self::OUT, self::REMOVED, self::REPLACED, self::CANCELLED, self::OUTDATED, self::DELAYED];
+    
     const FINAL_STATUS_IN = [self::IN, self::REMOVED, self::REPLACED, self::CANCELLED, self::OUTDATED, self::DELAYED];
+    
     const PUBLISHING_STATUS = [self::PENDING, self::DUE2IN_, self::DUE2IN, self::PUMPED, self::IN, self::DELAYED, self::DUE2INWITHERROR
         , self::DUE2OUTWITHERROR];
 
     public $initialStatus;
+    
     public $errorStatus;
+    
     public $finalStatus;
+    
     public $finalStatusOk;
+    
     public $finalStatusLimbo;
+    
     public $finalStatusFailed;
 
     public function __construct(int $id = null)
@@ -136,7 +161,7 @@ class ServerFrame extends ServerFramesOrm
      * @return int|null|bool
      */
     public function create(int $nodeId, int $server, int $dateUp, string $path, string $name, int $publishLinked, int $idNodeFrame
-        , ?int $idChannel, int $idChannelFrame, int $idBatchUp, int $idPortalFrame, int $dateDown = null, int $size = 0, bool $cache = true
+        , ?int $idChannel, ?int $idChannelFrame, int $idBatchUp, int $idPortalFrame, int $dateDown = null, int $size = 0, bool $cache = true
         , int $idbatchDown = null) : ?int
     {
         $this->set('IdServer', $server);

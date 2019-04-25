@@ -42,22 +42,37 @@ include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
 class SyncManager
 {
     public $workflow;
+    
     public $deleteOld;
+    
     public $markEnd;
+    
     public $linked;
+    
     public $type;
+    
     public $mail;
     
     private $lastPublished;
+    
     private $publicateSection;
+    
     private $level;
+    
     private $nodeType;
+    
     private $docsToPublishByLevel = [];
+    
     private $computedDocsToPublish = [];
+    
     private $pendingDocsToPublish = [];
+    
     private $generatorNodes = [];
+    
     private $useCache;
+    
     private $expireAll;
+    
     private $recursive;
 
     public function __construct()

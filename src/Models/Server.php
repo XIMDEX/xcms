@@ -194,38 +194,29 @@ class Server extends ServersOrm
     
     public static function generateSitemaps() : void
     {
+        Logger::info('Checking sitemap servers...');
         $server = new static();
         $interval = (int) App::getValue('SitemapInterval', 3600);
-        $servers = $server->find('IdServer, Url, IdNode'
-            , "Enabled = 1 AND Indexable IS TRUE AND (LastSitemapGenerationTime + {$interval} < UNIX_TIMESTAMP() OR LastSitemapGenerationTime IS NULL)");
+        $servers = $server->find('IdServer, Url, IdNode, Description'
+                , "Enabled = 1 AND Indexable IS TRUE AND (LastSitemapGenerationTime + {$interval} < UNIX_TIMESTAMP()"
+            . " OR LastSitemapGenerationTime IS NULL)");
         if (! $servers) {
             return;
         }
         $db = new Db();
         $node = new Node();
-        $sitemaps = [];
-        $flagsPublication = [
-            'recursive' => false,
-            'childtype' => NodeTypeConstants::SITEMAP,
-            'workflow' => false,
-            'force' => false,
-            'lastPublished' => true,
-            'publicateSection' => true,
-            'level' => null,
-            'nodeType' => NodeTypeConstants::SITEMAP,
-            'expireAll' => true,
-            'structure' => true
-        ];
-        $syncFac = new SynchroFacade();
+        $sync = new SynchroFacade();
         foreach ($servers as $server) {
+            Logger::info("Checking sitemap links for server {$server['Description']}");
             $query = 'SELECT sf.DateUp, sf.RemotePath, sf.FileName FROM ServerFrames sf';
             $query .= ' JOIN Nodes n ON n.IdNode = sf.NodeId';
             $query .= ' JOIN NodeTypes nt ON nt.IdNodeType = n.IdNodeType AND nt.IsPublishable = 1 AND nt.HasMetadata = 1';
             $query .= ' WHERE sf.State = \'' . ServerFrame::IN . "' AND sf.IdServer = {$server['IdServer']}";
-            $query .= ' AND sf.FileName NOT LIKE \'\_%\'';
+            $query .= ' AND sf.FileName NOT LIKE \'\_%\' AND sf.ChannelId IS NOT NULL';
             if ($db->query($query) === false) {
                 throw new \Exception($db->getDesErr());
             }
+            Logger::info("Found {$db->numRows} links for sitemap");
             if (! $db->numRows) {
                 continue;
             }
@@ -246,7 +237,8 @@ class Server extends ServersOrm
             $links = [];
             while (! $db->EOF) {
                 $links[] = [
-                    'loc' => trim($server['Url'], '/') . '/' . trim($db->getValue('RemotePath'), '/') . '/' . $db->getValue('FileName'),
+                    'loc' => trim($server['Url'], '/') . '/' . (($db->getValue('RemotePath')) ? trim($db->getValue('RemotePath'), '/') . '/' : '')
+                        . $db->getValue('FileName'),
                     'lastmod' => Date::formatTime($db->getValue('DateUp'), 'Y-m-d')
                 ];
                 $db->next();
@@ -255,21 +247,21 @@ class Server extends ServersOrm
             if ($node->setContent($sitemap) === false) {
                 continue;
             }
-            $sitemaps[$server['IdNode']][] = $server['IdServer'];
-        }
-        foreach (array_keys($sitemaps) as $id) {
-            $result = $syncFac->pushDocInPublishingPool($id, time(), null, $flagsPublication);
-            if (! $result) {
+            Logger::info('Sitemap generated');
+            
+            // Publish in this server with the generated sitemap
+            $sync->publicate($id, $server['IdServer'], 'sitemap.xml');
+            Logger::info('Sitemap publicated');
+            
+            
+            // Update the physical servers (sitemap generation time) for this server node
+            $server = new static($server['IdServer']);
+            if (! $server->get('IdServer')) {
                 continue;
             }
-            foreach ($sitemaps[$id] as $serverId) {
-                $server = new static($serverId);
-                if (! $server->get('IdServer')) {
-                    continue;
-                }
-                $server->set('LastSitemapGenerationTime', time());
-                $server->update();
-            }
+            $server->set('LastSitemapGenerationTime', time());
+            $server->update();
+            Logger::info("Server {$server->get('Description')} updated (sitemap update time)");
         }
     }
 }

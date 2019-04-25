@@ -976,16 +976,17 @@ class DataFactory
         return false;
     }
 
-    public function GetLastVersionId() : ?int
+    public function getLastVersionId() : ?int
     {
         $dbObj = new \Ximdex\Runtime\Db();
-        $this->ClearError();
+        $this->clearError();
         if (! is_null($this->nodeID)) {
-            $dbObj->Query('SELECT MAX(IdVersion) FROM Versions WHERE IdNode = ' . $this->nodeID);
-            $version = $dbObj->GetValue('MAX(IdVersion)');
+            $dbObj->query('SELECT MAX(IdVersion) FROM Versions WHERE IdNode = ' . $this->nodeID);
+            $version = $dbObj->getValue('MAX(IdVersion)');
             return $version;
         }
-        $this->SetError(1);
+        $this->setError(1);
+        return null;
     }
 
     public function GetVersionFromId(int $idVersion) : array

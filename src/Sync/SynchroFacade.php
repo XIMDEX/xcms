@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -33,10 +33,14 @@ use Ximdex\Models\NodeFrame;
 use Ximdex\Models\Server;
 use Ximdex\Models\ServerFrame;
 use Ximdex\Models\Node;
+use Ximdex\Models\User;
 use Ximdex\Logger;
 use Ximdex\Runtime\Session;
 use Ximdex\Models\PortalFrames;
 use Ximdex\NodeTypes\ServerNode;
+use Ximdex\Runtime\DataFactory;
+
+include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
 
 class SynchroFacade
 {
@@ -51,12 +55,12 @@ class SynchroFacade
     public function getServer(int $idTargetNode, ?int $idTargetChannel, int $idServer) : ?int
     {
         $targetNode = new Node(($idTargetNode));
-        if (! ($targetNode->get('IdNode') > 0)) {
+        if (! $targetNode->get('IdNode')) {
             Logger::error(_('No correct node received'));
             return null;
         }
         $server = new Server($idServer);
-        if (! ($server->get('IdServer') > 0)) {
+        if (! $server->get('IdServer')) {
             Logger::error(_('No correct server received'));
             return null;
         }
@@ -401,6 +405,68 @@ class SynchroFacade
             $portal->delete();
         }
         return true;
+    }
+    
+    /**
+     * Publish a node in a physical server, always forced. Channels not supported at this time
+     * 
+     * @param int $nodeId
+     * @param int $serverId
+     * @param string $name
+     * @throws \Exception
+     */
+    public function publicate(int $nodeId, int $serverId, string $name = null) : void
+    {
+        $node = new Node($nodeId);
+        if (! $node->getID()) {
+            throw new \Exception("Node {$nodeId} does not exists");
+        }
+        $time = time();
+        $userId = Session::get('userID');
+        if (! $userId) {
+            $userId = User::XIMDEX_ID;
+        }
+        if (! $name) {
+            $name = $node->getPublishedNodeName();
+        }
+        $portal = new PortalFrames();
+        $portalId = $portal->upPortalFrameVersion($nodeId, $time, $userId, PortalFrames::TYPE_UP, true);
+        if (! $portalId) {
+            throw new \Exception('Cannot generate a new portal frame version');
+        }
+        $batch = new Batch();
+        $batchId = $batch->create($time, Batch::TYPE_UP, $nodeId, DEFAULT_BATCH_PRIORITY, $serverId, null, $portalId, $userId);
+        if (! $batchId) {
+            throw new \Exception('Cannot generate a publication batch');
+        }
+        
+        // Creating nodeFrame
+        $data = new DataFactory($nodeId);
+        $versionId = $data->getLastVersionId();
+        if (! $versionId) {
+            throw new \Exception("Can not obtain the last version for node {$nodeId}");
+        }
+        $nodeFrame = new NodeFrame();
+        $nodeFrameId = $nodeFrame->create($nodeId, $name, $versionId, $time, $portalId);
+        if (! $nodeFrameId) {
+            throw new \Exception("A node frame could not be obtained for node {$nodeId}");
+        }
+        
+        // Creating server frame
+        $serverFrame = new ServerFrame();
+        $id = $serverFrame->create($nodeId, $serverId, $time, $node->getPublishedPath(), $name, 0, $nodeFrameId, null, null, $batchId
+            , $portalId, null, 0, false);
+        if (! $id) {
+            throw new \Exception("A server frame could not be created for node {$nodeId}");
+        }
+        
+        // Update batch and portal frames information
+        $batch = new Batch($batchId);
+        $frames = 1;
+        $this->setBatchToWaiting($batch, $frames);
+        $portal = new PortalFrames($portalId);
+        $portal->set('Playing', true);
+        $portal->update();
     }
     
     private function setBatchToWaiting(Batch $batch, int & $numFrames)

@@ -34,12 +34,17 @@ use Ximdex\Models\ORM\PortalFramesOrm;
 class PortalFrames extends PortalFramesOrm
 {
     const TYPE_UP = 'Up';
+    
     const TYPE_DOWN = 'Down';
+    
     const STATUS_CREATED = 'Created';
+    
     const STATUS_ACTIVE = 'Active';
+    
     const STATUS_ENDED = 'Ended';
     
-    public function upPortalFrameVersion(int $nodeId, int $scheduledTime, int $idUser = null, string $type = self::TYPE_UP) : int
+    public function upPortalFrameVersion(int $nodeId, int $scheduledTime, int $idUser = null, string $type = self::TYPE_UP
+        , bool $hidden = false) : int
     {
         if (! $nodeId or ! $scheduledTime) {
             Logger::error('Cannot generate a portal version without a node or scheduled time');
@@ -54,6 +59,7 @@ class PortalFrames extends PortalFramesOrm
         $this->set('PublishingType', $type);
         $this->set('CreatedBy', $idUser);
         $this->set('Status', self::STATUS_CREATED);
+        $this->set('Hidden', (int) $hidden);
         $idPortalFrameVersion = parent::add();
         return ($idPortalFrameVersion > 0) ? (int) $idPortalFrameVersion : 0;
     }
@@ -222,7 +228,7 @@ class PortalFrames extends PortalFramesOrm
     }
     
     /**
-     * Get a list of portal frames with a given state
+     * Get a list of portal frames with a given state, now avoid the hidden portals
      * 
      * @param string $state
      * @param int $endTime
@@ -233,7 +239,7 @@ class PortalFrames extends PortalFramesOrm
      */
     public static function getByState(string $state, int $endTime = null, int $idNodeGenerator = null, string $type = null) : array
     {
-        $query = 'SELECT id FROM PortalFrames WHERE Status = \'' . $state . '\' AND SFtotal > 0';
+        $query = 'SELECT id FROM PortalFrames WHERE Status = \'' . $state . '\' AND SFtotal > 0 AND Hidden IS FALSE';
         if ($endTime) {
             
             // Maximum time in seconds to get ended portal frames

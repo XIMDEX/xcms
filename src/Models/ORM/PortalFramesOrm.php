@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,7 +32,9 @@ use Ximdex\Data\GenericData;
 class PortalFramesOrm extends GenericData
 {
     public $_idField = 'id';
+    
     public $_table = 'PortalFrames';
+    
     public $_metaData = array(
         'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'IdNodeGenerator' => array('type' => 'int(12)', 'not_null' => 'false'),
@@ -57,32 +59,61 @@ class PortalFramesOrm extends GenericData
         'SuccessRate' => array('type' => 'float', 'not_null' => 'true'),
         'Boost' => array('type' => 'varchar(1)', 'not_null' => 'true'),
         'BoostCycles' => array('type' => 'float', 'not_null' => 'true'),
-        'CyclesTotal' => array('type' => 'int(12)', 'not_null' => 'true')
+        'CyclesTotal' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'Hidden' => array('type' => 'tinyint(1)', 'not_null' => 'true')
     );
+    
     public $_uniqueConstraints = array();
+    
     public $_indexes = array('id');
+    
     public $id;
-    public $IdNodeGenerator = null;
+    
+    public $IdNodeGenerator;
+    
     public $Version = 0;
+    
     public $CreationTime;
+    
     public $PublishingType;
-    public $CreatedBy = null;
+    
+    public $CreatedBy;
+    
     public $ScheduledTime;
-    public $StartTime = null;
-    public $EndTime = null;
+    
+    public $StartTime;
+    
+    public $EndTime;
+    
     public $Status;
-    public $StatusTime = null;
+    
+    public $StatusTime;
+    
     public $SFtotal = 0;
+    
     public $SFactive = 0;
+    
     public $SFpending = 0;
+    
     public $SFsuccess = 0;
+    
     public $SFfatalError = 0;
+    
     public $SFsoftError = 0;
+    
     public $SFdelayed = 0;
+    
     public $SFstopped = 0;
+    
     public $Playing = 0;
+    
     public $SuccessRate = 0;
+    
     public $Boost = 1;
+    
     public $BoostCycles = 0;
+    
     public $CyclesTotal = 0;
+    
+    public $Hidden = 0;
 }
