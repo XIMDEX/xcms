@@ -121,7 +121,7 @@ class User extends UsersOrm
         $this->clearError();
         return $this->get('IdUser');
     }
-
+    
     /**
      * Returns the user name associated to an idUser
      * 
