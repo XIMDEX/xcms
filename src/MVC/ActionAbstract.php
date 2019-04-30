@@ -527,7 +527,7 @@ abstract class ActionAbstract extends IController
             return false;
         }
         $numReps = App::getValue('ximTourRep');
-        $user = new User (Session::get('userID'));
+        $user = new User(Session::get('userID'));
         $result = $user->getNumAccess();
         return ($result === null || $result < $numReps) ? true : false;
     }

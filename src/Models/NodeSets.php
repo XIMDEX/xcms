@@ -192,8 +192,11 @@ class NodeSets extends NodeSetsOrm
 
     /**
      * Deletes an user from the current set
+     * 
+     * @param int $idUser
+     * @return \RelNodeSetsUsers
      */
-    public function deleteUser($idUser)
+    public function deleteUser(int $idUser)
     {
         $rel = new RelNodeSetsUsers();
         $rel = $rel->find(ALL, 'IdSet = %s and IdUser = %s', array($this->getId(), $idUser));

@@ -1,9 +1,0 @@
-ALTER TABLE `RelRolesActions` ENGINE = InnoDB;
-ALTER TABLE `Roles` ENGINE = InnoDB;
-
-ALTER TABLE `RelRolesActions` CHANGE `IdAction` `IdAction` INT(12) UNSIGNED NOT NULL;
-
-ALTER TABLE `RelRolesActions` ADD CONSTRAINT `RelRolesActions_Actions` FOREIGN KEY (`IdAction`) 
-    REFERENCES `Actions`(`IdAction`) ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE `RelRolesActions` ADD CONSTRAINT `RelRoldesActions_Rol` FOREIGN KEY (`IdRol`) 
-    REFERENCES `Roles`(`IdRole`) ON DELETE CASCADE ON UPDATE CASCADE;

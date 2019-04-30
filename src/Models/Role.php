@@ -494,9 +494,9 @@ class Role extends RolesOrm
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $sql = sprintf('INSERT INTO RelRolesStates (IdRole,IdState) VALUES (%d, %d)', $this->get('IdRole'), $state);
-        $dbObj->Execute($sql);
+        $dbObj->execute($sql);
         if ($dbObj->numErr != 0) {
-            $this->SetError(1);
+            $this->setError(1);
         }
     }
 
@@ -509,9 +509,9 @@ class Role extends RolesOrm
     {
         $sql = sprintf('DELETE FROM RelRolesStates WHERE IdRole = %d AND IdState = %d', $this->get('IdRole'), $state);
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Execute($sql);
+        $dbObj->execute($sql);
         if ($dbObj->numErr != 0) {
-            $this->SetError(1);
+            $this->setError(1);
         }
     }
 
@@ -522,9 +522,9 @@ class Role extends RolesOrm
     {
         $sql = sprintf('DELETE FROM RelRolesStates WHERE IdRole = %d', $this->get('IdRole'));
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Execute($sql);
+        $dbObj->execute($sql);
         if ($dbObj->numErr != 0) {
-            $this->SetError(1);
+            $this->setError(1);
         }
     }
 
@@ -538,15 +538,15 @@ class Role extends RolesOrm
     {
         $sql = sprintf('SELECT IdState FROM RelRolesStates WHERE IdRole = %d', $this->get('IdRole'));
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Query($sql);
+        $dbObj->query($sql);
         if ($dbObj->numErr != 0) {
-            $this->SetError(1);
+            $this->setError(1);
             return null;
         }
         $salida = [];
         while (! $dbObj->EOF) {
             $salida[] = $dbObj->row['IdState'];
-            $dbObj->Next();
+            $dbObj->next();
         }
         return $salida;
     }
@@ -559,11 +559,11 @@ class Role extends RolesOrm
     {
         $db = new \Ximdex\Runtime\Db();
         $query = sprintf('SELECT IdRole FROM RelRolesStates WHERE IdState = %d', $idStatus);
-        $db->Query($query);
+        $db->query($query);
         $foundRoles = array();
         while (! $db->EOF) {
             $foundRoles[] = $db->getValue('IdRole');
-            $db->Next();
+            $db->next();
         }
         return $foundRoles;
     }
@@ -611,11 +611,11 @@ class Role extends RolesOrm
         }
         $dbObj = new \Ximdex\Runtime\Db();
         $query = sprintf('SELECT IdState FROM RelRolesStates WHERE IdRole = %s AND IdState > 0', $dbObj->sqlEscapeString($this->get('IdRole')));
-        $dbObj->Query($query);
+        $dbObj->query($query);
         $result = [];
         while (! $dbObj->EOF) {
-            $result[] = $dbObj->GetValue('IdState');
-            $dbObj->Next();
+            $result[] = $dbObj->getValue('IdState');
+            $dbObj->next();
         }
         return $result;
     }
@@ -630,9 +630,9 @@ class Role extends RolesOrm
     {
         $sql = 'SELECT IdRole FROM Roles where Name like "' . $roleName . '"';
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Query($sql);
+        $dbObj->query($sql);
         if ($dbObj->numErr != 0) {
-            $this->SetError(1);
+            $this->setError(1);
             return null;
         }
         return $dbObj->row['IdRole'];

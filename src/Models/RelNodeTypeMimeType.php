@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -28,41 +28,44 @@
 namespace Ximdex\Models;
 
 use Ximdex\Data\GenericData;
+use Ximdex\NodeTypes\NodeTypeConstants;
 
 class RelNodeTypeMimeType extends GenericData
 {
-    var $_idField = 'idRelNodeTypeMimeType';
-    var $_table = 'RelNodeTypeMimeType';
-    var $_metaData = array(
-        'idRelNodeTypeMimeType' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'idNodeType' => array('type' => "int(12)", 'not_null' => 'true'),
-        'extension' => array('type' => "varchar(255)", 'not_null' => 'false'),
-        'filter' => array('type' => "char(50)", 'not_null' => 'false')
+    public $_idField = 'idRelNodeTypeMimeType';
+    
+    public $_table = 'RelNodeTypeMimeType';
+    
+    public $_metaData = array(
+        'idRelNodeTypeMimeType' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'idNodeType' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'extension' => array('type' => 'varchar(255)', 'not_null' => 'false'),
+        'filter' => array('type' => 'char(50)', 'not_null' => 'false')
     );
-    var $_uniqueConstraints = array();
-    var $_indexes = array('idRelNodeTypeMimeType');
-    var $idRelNodeTypeMimeType;
-    var $idNodeType = 0;
-    var $extension;
-    var $filter;
+    
+    public $_uniqueConstraints = array();
+    
+    public $_indexes = array('idRelNodeTypeMimeType');
+    
+    public $idRelNodeTypeMimeType;
+    
+    public $idNodeType = 0;
+    
+    public $extension;
+    
+    public $filter;
 
-    function getFileExtension($nodetype)
+    public function getFileExtension(int $nodetype) : ?string
     {
-        if (!$nodetype)
-        {
+        if (! $nodetype) {
             return null;
         }
         $filter = $this->find('filter', 'idnodetype = %s', array($nodetype), MONO);
-        if (strcmp($filter[0], 'ptd') == 0)
-        {
-            $ext = ($nodetype == \Ximdex\NodeTypes\NodeTypeConstants::TEMPLATE) ? "xml" : "xsl";
-        }
-        elseif (strcmp($filter[0], 'pvd') == 0)
-        {
-            $ext = "xml";
-        }
-        else
-        {
+        if (strcmp($filter[0], 'ptd') == 0) {
+            $ext = ($nodetype == NodeTypeConstants::TEMPLATE) ? 'xml' : 'xsl';
+        } elseif (strcmp($filter[0], 'pvd') == 0) {
+            $ext = 'xml';
+        } else {
             $ext = $filter[0];
         }
         return $ext;

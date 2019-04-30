@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -34,6 +34,8 @@ class SearchFilters extends SearchFiltersOrm
 {
     /**
      * Returns the filter id
+     * 
+     * @return int
      */
     public function getId()
     {
@@ -42,6 +44,8 @@ class SearchFilters extends SearchFiltersOrm
 
     /**
      * Returns the filter name
+     * 
+     * @return string
      */
     public function getName()
     {
@@ -50,16 +54,14 @@ class SearchFilters extends SearchFiltersOrm
 
     /**
      * Returns the handler
+     * 
+     * @return string
      */
     public function getHandler()
     {
         return $this->Handler;
     }
 
-    /**
-     * @param string $format
-     * @return mixed
-     */
     public function getFilter($format = 'JSON')
     {
         unset($format);
@@ -70,21 +72,22 @@ class SearchFilters extends SearchFiltersOrm
      * Static method that creates a new SearchFilter and returns the related object
      * Filter must by an XML string
      * 
-     * @param $name
-     * @param $handler
-     * @param $filter
-     * @return SearchFilters
+     * @param string $name
+     * @param string $handler
+     * @param string $filter
+     * @return \Ximdex\Models\SearchFilters
      */
-    static public function & create($name, $handler, $filter)
+    static public function create(string $name, string $handler, string $filter)
     {
-        // TODO: Create a unique key in SearchFilters table.
+        // TODO: Create a unique key in SearchFilters table
+        
         // Key length for Filter field must be specified....
         $checksum = md5(sprintf('%s:%s', $handler, serialize($filter)));
         $db = new \Ximdex\Runtime\Db();
         $sql = sprintf("select Name from SearchFilters where md5(concat(Handler, ':', Filter)) = '%s'", $checksum);
         $db->query($sql);
         $ns = new SearchFilters();
-        if (!$db->EOF) {
+        if (! $db->EOF) {
             $ns->messages->add(sprintf('The filter exists with name %s', $db->getValue('Name')), MSG_TYPE_ERROR);
             return $ns;
         }
@@ -97,6 +100,9 @@ class SearchFilters extends SearchFiltersOrm
 
     /**
      * Deletes the current filter
+     * 
+     * {@inheritDoc}
+     * @see \Ximdex\Data\GenericData::delete()
      */
     public function delete()
     {
@@ -109,17 +115,18 @@ class SearchFilters extends SearchFiltersOrm
 
     /**
      * Returns an iterator of all node filters
+     * 
+     * @return \Ximdex\Models\Iterators\IteratorSearchFilters
      */
-    static public function & getFilters()
+    static public function getFilters()
     {
-        $it = new IteratorSearchFilters('', array());
-        return $it;
+        return new IteratorSearchFilters('', array());
     }
 
     /**
      * Executes the filter and returns an array of nodes
      */
-    public function & getNodes()
+    public function getNodes()
     {
         // TODO: Use QueryProcessor here or parametrize an instance...
     }

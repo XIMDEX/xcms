@@ -59,7 +59,7 @@ class Channel extends ChannelsOrm
     const RENDER_TYPES = [self::RENDERTYPE_STATIC => 'Static', self::RENDERTYPE_INCLUDE => 'Include', self::RENDERTYPE_DYNAMIC => 'Dynamic'
         , self::RENDERTYPE_INDEX => 'Ximdex Index Format'];
     
-    const JSON_CHANNEL = 10010;
+    const JSON_CHANNEL = 10005;
 
     public function getChannelsForNode(int $idNode)
     {

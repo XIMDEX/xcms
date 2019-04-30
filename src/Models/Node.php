@@ -3630,13 +3630,13 @@ class Node extends NodesOrm
     {
         switch ($this->IdNodeType) {
             case NodeTypeConstants::GROUP:
-                $range = [100, 199];
+                $range = [110, 199];
                 break;
             case NodeTypeConstants::ROLE:
-                $range = [200, 299];
+                $range = [210, 299];
                 break;
             case NodeTypeConstants::USER:
-                $range = [300, 399];
+                $range = [310, 399];
                 break;
             case NodeTypeConstants::WORKFLOW:
                 $range = [400, 499];

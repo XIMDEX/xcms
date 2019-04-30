@@ -31,7 +31,7 @@ $I->fillField('root_user', 'ximdex');
 $I->fillField('root_pass', 'ximdex');
 $I->fillField('name', 'ximdex');
 $I->click('Create Database');
-$I->wait(60);
+$I->wait(35);
 
 $I->see('Set the password for this admin user');
 $I->fillField('pass', 'ximdex');
@@ -101,11 +101,10 @@ while (fileExistAndIsNotEmpty('data/previos/en/picasso.html') && $count < 45) {
     sleep(2);
     $count++;
 }
-// $I->dontSeeFileFound('picasso.html','data/previos/en');
 $I->dontSeeFileFound('en','data/previos');
 
 // Load the XML editor
-$I->amOnPage('?action=xmleditor2&method=load&nodeid=10098');
+$I->amOnPage('?action=xmleditor2&method=load&nodeid=10092');
 $I->wait(3);
 
 $I->switchToIframe('kupu-editor');

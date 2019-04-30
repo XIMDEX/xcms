@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -41,31 +41,30 @@ class RelSemanticTagsNodes extends RelSemanticTagsNodesOrm
      */
 	public function getTags(int $_id_node, bool $keysWithID = false) : ?array
 	{
-		$this->ClearError();
+		$this->clearError();
 		$dbObj = new \Ximdex\Runtime\Db();
 		$sql = sprintf("SELECT Tag, Name, n.idNamespace as Type, Link, Description, IdTagDescription 
                 FROM SemanticTags tag inner join SemanticNamespaces n on n.idNamespace = tag.idNamespace
                 , RelSemanticTagsNodes rel, RelSemanticTagsDescriptions relD 
                 WHERE tag.IdTag = relD.Tag AND relD.IdTagDescription = rel.TagDesc AND Node = '%s'", $_id_node);
-		$dbObj->Query($sql);
+		$dbObj->query($sql);
 		$out = array();
-		if (!$dbObj->numErr) {
-			while (!$dbObj->EOF) {
+		if (! $dbObj->numErr) {
+			while (! $dbObj->EOF) {
 			    $tag = array(
-					"Name" => $dbObj->GetValue("Name"),
-					"IdNamespace" => $dbObj->GetValue("Type"),
-					"Link" => $dbObj->GetValue("Link"),
-					"Description" => $dbObj->GetValue("Description"),
-					"iddesc" => $dbObj->GetValue("IdTagDescription"),
-					"idtag" => $dbObj->GetValue("Tag")
+					'Name' => $dbObj->getValue('Name'),
+					'IdNamespace' => $dbObj->getValue('Type'),
+					'Link' => $dbObj->getValue('Link'),
+					'Description' => $dbObj->getValue('Description'),
+					'iddesc' => $dbObj->getValue('IdTagDescription'),
+					'idtag' => $dbObj->getValue('Tag')
 				);
 			    if ($keysWithID) {
-			        $out[$dbObj->GetValue("Tag")] = $tag;
-			    }
-			    else {
+			        $out[$dbObj->getValue('Tag')] = $tag;
+			    } else {
 			        $out[] = $tag;
 			    }
-				$dbObj->Next();
+				$dbObj->next();
 			}
 			return $out;
 		}
@@ -74,8 +73,12 @@ class RelSemanticTagsNodes extends RelSemanticTagsNodesOrm
 
 	/**
 	 * Get rel between tag and node
+	 * 
+	 * @param int $_idNode
+	 * @param int $_tag
+	 * @return array|NULL
 	 */
-	function getRel(int $_idNode, int $_tag = -1) : ?array
+	public function getRel(int $_idNode, int $_tag = -1) : ?array
 	{
 		if (-1 != $_tag) {
 			$tag = new SemanticTags($_tag);
@@ -98,9 +101,9 @@ class RelSemanticTagsNodes extends RelSemanticTagsNodesOrm
 	 * @param array $previousTags
 	 * @return bool
 	 */
-	function saveAll(array $tags = [], array $previousTags = []) : bool
+	public function saveAll(array $tags = [], array $previousTags = []) : bool
 	{
-	    if (!$this->get('Node')) {
+	    if (! $this->get('Node')) {
 	        Logger::error('Cannot save the semantic tags without a node ID');
 	        return false;
 	    }
@@ -111,15 +114,15 @@ class RelSemanticTagsNodes extends RelSemanticTagsNodesOrm
 	        
 	        // Look for a tag description with the same given data
 	        $relinfo = $relTagsDesc->getId($tag->Name, $tag->IdNamespace, '#');
-	        if (!$relinfo["IdTagDescription"]) {
+	        if (! $relinfo['IdTagDescription']) {
 	            
 	            // Save tag description
-	            $tagID = $relTagsDesc->save($tag->Name, $tag->IdNamespace, !isset($tag->Link) || empty($tag->Link) ? '#' : $tag->Link
+	            $tagID = $relTagsDesc->save($tag->Name, $tag->IdNamespace, ! isset($tag->Link) || empty($tag->Link) ? '#' : $tag->Link
 	                   , isset($tag->Description) ? $tag->Description : '');
 	        } else {
 	            
 	            // Obtain the tag ID
-	            $tagID = $relinfo["IdTagDescription"];
+	            $tagID = $relinfo['IdTagDescription'];
 	        }
 	        if (isset($previousTags[$tagID])) {
 	            
@@ -127,7 +130,7 @@ class RelSemanticTagsNodes extends RelSemanticTagsNodesOrm
 	            unset($previousTags[$tagID]);
 	            continue;
 	        }
-	        if (!$this->createRel($tagID)) {
+	        if (! $this->createRel($tagID)) {
 	            return false;
 	        }
 	    }
@@ -136,7 +139,7 @@ class RelSemanticTagsNodes extends RelSemanticTagsNodesOrm
         foreach ($previousTags as $tag) {
             
             // Remove relation between tag and node
-            if (!$this->removeRel($tag['iddesc'])) {
+            if (! $this->removeRel($tag['iddesc'])) {
                 return false;
             }
         }
@@ -158,7 +161,7 @@ class RelSemanticTagsNodes extends RelSemanticTagsNodesOrm
 		
 		// Increment the count of semantic tags usage 
 		$sql = 'UPDATE SemanticTags SET Total = Total + 1 WHERE IdTag = ' . $_id_tag;
-		if (!$this->execute($sql)) {
+		if (! $this->execute($sql)) {
 		    return false;
 		}
 		return true;
@@ -173,7 +176,7 @@ class RelSemanticTagsNodes extends RelSemanticTagsNodesOrm
 	private function removeRel(int $_id_tag) : bool
 	{
 	    $sql = sprintf("DELETE FROM RelSemanticTagsNodes WHERE TagDesc = '%d' AND Node = '%d'", $_id_tag, $this->get('Node'));
-	    if (!$this->execute($sql)) {
+	    if (! $this->execute($sql)) {
 	        return false;
 	    }
 		
@@ -192,24 +195,24 @@ class RelSemanticTagsNodes extends RelSemanticTagsNodesOrm
 	 * 
 	 * @param int $idnode
 	 */
-	public function deleteTags($idnode)
+	public function deleteTags(int $idnode)
 	{
 		// Get the tags to delete
-		$tagsToDelete = $this->find("TagDesc", "node = %s", array($idnode), MONO);
+		$tagsToDelete = $this->find('TagDesc', 'node = %s', array($idnode), MONO);
 
 		// Delete the rows for this idnode
-		$sql = sprintf("DELETE FROM RelSemanticTagsNodes WHERE Node='%d'", $idnode);
+		$sql = sprintf("DELETE FROM RelSemanticTagsNodes WHERE Node = '%d'", $idnode);
 		$this->execute($sql);
 
 		// Check if every tag is linked to other node. If it isn't must to delete the node.
 		if ($tagsToDelete) {
 			foreach ($tagsToDelete as $idTag) {
-				$currentExistingRelations = $this->count("TagDesc = %s", array($idTag));
+				$currentExistingRelations = $this->count('TagDesc = %s', array($idTag));
 				if ($currentExistingRelations === 0) {
 				    
 					// Deleting tag
 				    $tag = new SemanticTags($idTag);
-					if ($tag->get("IdTag")) {
+					if ($tag->get('IdTag')) {
 						$tag->delete();
 					}
 				}

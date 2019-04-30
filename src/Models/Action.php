@@ -27,6 +27,7 @@
 
 namespace Ximdex\Models;
 
+use Ximdex\Logger;
 use Ximdex\Models\ORM\ActionsOrm;
 
 class Action extends ActionsOrm
@@ -411,6 +412,10 @@ class Action extends ActionsOrm
     public function setByCommandAndModule(string $name, int $idNode, string $module = null)
     {
         $node = new Node($idNode);
+        if (! $node->getID()) {
+            Logger::error("Cannot load a node with ID: {$idNode} for command: {$name} and module: {$module}");
+            return false;
+        }
         $idNodeType = $node->getNodeType();
         if (! $module) {
             return $this->setByCommand($name, $idNodeType);

@@ -38,7 +38,7 @@ CREATE TABLE `XimIONodeTranslations` (
 
 CREATE TABLE `XimIOExportations` (
   `idXimIOExportation` int(11) NOT NULL auto_increment,
-  `idXimIO` int(11) NOT NULL,
+  `idXimIO` VARCHAR(50) NOT NULL,
   `timeStamp` varchar(200) NOT NULL,
   PRIMARY KEY  (`idXimIOExportation`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

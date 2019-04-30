@@ -71,13 +71,17 @@ class NodeType extends NodeTypesOrm
     
     /**
      * Class error list
+     * 
      * @var array
      */
     public $errorList = [];
     
     public $_cache = 0;
+    
     public $_useMemCache = 0;
+    
     public $_fieldsToTraduce = array('Description');
+    
     public $autoCleanErr = true;
     
     public function __construct(int $nodeTypeID = null)
@@ -813,21 +817,21 @@ class NodeType extends NodeTypesOrm
             NodeAllowedContents as nac INNER JOIN RelNodeTypeMimeType rntmt on
             nac.NodeType = rntmt.IdNodeType INNER JOIN NodeTypes nt on nac.NodeType = nt.IdNodeType
             where nac.IdNodeType = %s and nt.IsFolder = 0', $this->GetID());
-        $dbObj->Query($sql);
+        $dbObj->query($sql);
         $returnArray = array();
         while (! $dbObj->EOF) {
             if ($onlyExtensions) {
-                $returnArray = array_merge($returnArray, explode(';', trim($dbObj->GetValue('extension'), ';'))); 
+                $returnArray = array_merge($returnArray, explode(';', trim($dbObj->getValue('extension'), ';'))); 
             }
             else {
                 $returnElement = array();
-                $returnElement['id'] = $dbObj->GetValue('idRelNodeTypeMimeType');
-                $returnElement['description'] = _($dbObj->GetValue('Description'));
+                $returnElement['id'] = $dbObj->getValue('idRelNodeTypeMimeType');
+                $returnElement['description'] = _($dbObj->getValue('Description'));
                 $returnElement['extension'] = implode(',',
-                    preg_split('/;/', $dbObj->GetValue('extension'), 0, PREG_SPLIT_NO_EMPTY));
+                    preg_split('/;/', $dbObj->getValue('extension'), 0, PREG_SPLIT_NO_EMPTY));
                 $returnArray[] = $returnElement;
             }
-            $dbObj->Next();
+            $dbObj->next();
         }
         return $returnArray;
     }
