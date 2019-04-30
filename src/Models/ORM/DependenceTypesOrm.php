@@ -35,8 +35,7 @@ class DependenceTypesOrm extends GenericData
     
     public $_table = 'DependenceTypes';
     
-    public $_metaData = array
-    (
+    public $_metaData = array(
         'IdDepType' => array('type' => "int(6)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true), 
         'Type' => array('type' => "varchar(30)", 'not_null' => 'true')
     );

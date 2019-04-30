@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -29,11 +29,13 @@ namespace Ximdex\Models\ORM;
 
 use Ximdex\Data\GenericData;
 
-class  MessagesOrm extends GenericData
+class MessagesOrm extends GenericData
 {
-    var $_idField = 'IdMessage';
-    var $_table = 'Messages';
-    var $_metaData = array(
+    public $_idField = 'IdMessage';
+    
+    public $_table = 'Messages';
+    
+    public $_metaData = array(
         'IdMessage' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'IdFrom' => array('type' => "int(12)", 'not_null' => 'true'),
         'IdOwner' => array('type' => "int(12)", 'not_null' => 'true'),
@@ -43,14 +45,24 @@ class  MessagesOrm extends GenericData
         'Content' => array('type' => "blob", 'not_null' => 'false'),
         'IsRead' => array('type' => "int(1)", 'not_null' => 'true')
     );
-    var $_uniqueConstraints = array();
-    var $_indexes = array('IdMessage');
-    var $IdMessage;
-    var $IdFrom = 0;
-    var $IdOwner = 0;
-    var $ToString;
-    var $Folder = 1;
-    var $Subject;
-    var $Content;
-    var $IsRead = 0;
+    
+    public $_uniqueConstraints = array();
+    
+    public $_indexes = array('IdMessage');
+    
+    public $IdMessage;
+    
+    public $IdFrom = 0;
+    
+    public $IdOwner = 0;
+    
+    public $ToString;
+    
+    public $Folder = 1;
+    
+    public $Subject;
+    
+    public $Content;
+    
+    public $IsRead = 0;
 }

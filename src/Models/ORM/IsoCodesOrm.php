@@ -43,7 +43,9 @@ class IsoCodesOrm extends GenericData
     );
     
     public $_uniqueConstraints = array(
-        'iso3' => array('Iso3'), 'iso2' => array('Iso2'), 'name' => array('Name')
+        'iso3' => array('Iso3'), 
+        'iso2' => array('Iso2'), 
+        'name' => array('Name')
     );
     
     public $_indexes = array('IdIsoCode');

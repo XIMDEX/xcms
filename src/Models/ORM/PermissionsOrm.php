@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,17 +32,24 @@ use Ximdex\Data\GenericData;
 class PermissionsOrm extends GenericData
 {
     public $_idField = 'IdPermission';
+    
     public $_table = 'Permissions';
+    
     public $_metaData = array(
         'IdPermission' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'Name' => array('type' => "varchar(255)", 'not_null' => 'true'),
         'Description' => array('type' => "varchar(255)", 'not_null' => 'false')
     );
+    
     public $_uniqueConstraints = array(
         'IdName' => array('Name')
     );
+    
     public $_indexes = array('IdPermission');
+    
     public $IdPermission;
+    
     public $Name;
+    
     public $Description;
 }

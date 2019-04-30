@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,18 +31,26 @@ use Ximdex\Data\GenericData;
 
 class ListOrm extends GenericData
 {
-    var $_idField = 'id';
-    var $_table = 'List';
-    var $_metaData = array(
+    public $_idField = 'id';
+    
+    public $_table = 'List';
+    
+    public $_metaData = array(
         'id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'IdList' => array('type' => "int(11)", 'not_null' => 'true'),
         'Name' => array('type' => "varchar(250)", 'not_null' => 'true'),
         'Description' => array('type' => "varchar(250)", 'not_null' => 'false')
     );
-    var $_uniqueConstraints = array();
-    var $_indexes = array('id');
-    var $id;
-    var $IdList;
-    var $Name;
-    var $Description;
+    
+    public $_uniqueConstraints = array();
+    
+    public $_indexes = array('id');
+    
+    public $id;
+    
+    public $IdList;
+    
+    public $Name;
+    
+    public $Description;
 }

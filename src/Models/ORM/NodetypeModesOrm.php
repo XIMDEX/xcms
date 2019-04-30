@@ -35,8 +35,7 @@ class NodetypeModesOrm extends GenericData
     
     public $_table = 'NodetypeModes';
     
-    public $_metaData = array
-    (
+    public $_metaData = array(
         'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'IdNodeType' => array('type' => "int(12)", 'not_null' => 'true'),
         'Mode' => array('type' => "enum('C', 'R', 'U', 'D')", 'not_null' => 'true'),

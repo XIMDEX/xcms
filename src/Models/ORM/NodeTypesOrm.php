@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -37,7 +37,9 @@ use Ximdex\Data\GenericData;
 class NodeTypesOrm extends GenericData
 {
     public $_idField = 'IdNodeType';
+    
     public $_table = 'NodeTypes';
+    
     public $_metaData = array(
         'IdNodeType' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'Name' => array('type' => "varchar(255)", 'not_null' => 'true'),
@@ -61,29 +63,52 @@ class NodeTypesOrm extends GenericData
         'IsEnriching' => array('type' => "tinyint(1)", 'not_null' => 'true'),
         'workflowId' => array('type' => "int(4)", 'not_null' => 'false')
     );
+    
     public $_uniqueConstraints = array(
         'IdType' => array('Name')
     );
+    
     public $_indexes = array('IdNodeType', 'workflowId');
+    
     public $IdNodeType;
+    
     public $Name;
+    
     public $Class;
+    
     public $Icon;
+    
     public $Description;
+    
     public $IsRenderizable;
+    
     public $HasFSEntity;
+    
     public $CanAttachGroups;
+    
     public $IsSection;
+    
     public $IsFolder;
+    
     public $IsVirtualFolder;
+    
     public $IsPlainFile;
+    
     public $IsStructuredDocument;
+    
     public $IsPublishable;
+    
     public $IsHidden;
+    
     public $CanDenyDeletion;
+    
     public $System;
+    
     public $Module;
+    
     public $isGenerator;
+    
     public $IsEnriching;
+    
     public $workflowId;
 }
