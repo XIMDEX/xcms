@@ -18,11 +18,12 @@ before_install:
   - curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
-  - cd tests
-  - docker-compose up -d db ximdex
+  - cd tests/
+  # - docker-compose up -d ximdex
+  - docker-compose up db ximdex test
 
-script:
-  - docker-compose run test
+# script:
+  # - docker-compose run test
   
 notifications:
   email:
