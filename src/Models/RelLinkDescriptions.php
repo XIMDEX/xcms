@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -46,24 +46,18 @@ class RelLinkDescriptions extends RelLinkDescriptionsOrm
         return $this->Description;
     }
 
-    static public function & create($idLink, $description)
+    public static function create(int $idLink, string $description) : RelLinkDescriptions
     {
         $rel = new RelLinkDescriptions();
         $node = new Node($idLink);
         $idNode = $node->get('IdNode');
         if ($idNode <= 0) {
-            $rel->messages->add("Can't append a description to the link, the node id $idNode doesn't exists.", MSG_TYPE_ERROR);
+            $rel->messages->add(_("Can't append a description to the link, the node id $idNode doesn't exists"), MSG_TYPE_ERROR);
         } else {
             $rel->set('IdLink', $idLink);
             $rel->set('Description', $description);
             $rel->add();
         }
         return $rel;
-    }
-
-    public function delete()
-    {
-        $ret = parent::delete();
-        return $ret;
     }
 }

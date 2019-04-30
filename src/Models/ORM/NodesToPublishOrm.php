@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,7 +32,9 @@ use Ximdex\Data\GenericData;
 class NodesToPublishOrm extends GenericData
 {
     public $_idField = 'Id';
+    
     public $_table = 'NodesToPublish';
+    
     public $_metaData = array(
         'Id' => array('type' => "int(10)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'IdNode' => array('type' => "int(11)", 'not_null' => 'true'),
@@ -47,18 +49,32 @@ class NodesToPublishOrm extends GenericData
         'DeepLevel' => array('type' => "int(12)", 'not_null' => 'false'),
         'UseCache' => array('type' => "tinyint(1)", 'not_null' => 'true'),
     );
+    
     public $_uniqueConstraints = array();
+    
     public $_indexes = array('Id');
+    
     public $Id;
+    
     public $IdNode;
+    
     public $IdNodeGenerator;
+    
     public $Version;
+    
     public $Subversion;
+    
     public $DateUp;
+    
     public $DateDown;
+    
     public $State; // 0: Pending, 1: Locked, 2: Processed
+    
     public $UserId;
+    
     public $ForcePublication = false;
+    
     public $DeepLevel;
+    
     public $UseCache = true;
 }

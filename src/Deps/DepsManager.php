@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -33,29 +33,36 @@ use Ximdex\Utils\Factory;
 class DepsManager
 {
     const SECTION_XIMLET = 'RelSectionXimlet';
+    
     const STRDOC_XIMLET = 'RelStrdocXimlet';
+    
     const STRDOC_TEMPLATE = 'RelStrdocTemplate';
+    
     const NODE2ASSET = 'RelNode2Asset';
+    
     const XML2XML = 'RelXml2Xml';
+    
     const DOCFOLDER_TEMPLATESINC = 'RelDocumentFolderToTemplatesIncludeFile';
 
     /**
      * Returns the model object specified by "$tableName" name or NULL
      * 
-     * @param $rel
-     * @param $idSource
-     * @param $idTarget
+     * @param string $rel
+     * @param int $idSource
+     * @param int $idTarget
      * @return bool
      */
-    function set($rel, $idSource, $idTarget) : bool
+    public function set(string $rel, int $idSource, int $idTarget) : bool
     {
         $object = $this->getModel($rel);
-        if (!is_object($object)) return false;
+        if (! is_object($object)) {
+            return false;
+        }
         $res = $object->find(ALL, 'source = %s and target = %s', array($idSource, $idTarget));
         if (empty($res)) {
             $object->set('target', $idTarget);
             $object->set('source', $idSource);
-            if (!$object->add()) {
+            if (! $object->add()) {
                 Logger::error('Inserting dependency');
                 return false;
             }
@@ -64,58 +71,43 @@ class DepsManager
     }
 
     /**
-     * Inserts a row in a relation table
-     * 
-     * @param $tableName
-     * @param null $id
-     * @return mixed
-     */
-    private function getModel($tableName, $id = null)
-    {
-        $factory = new Factory(XIMDEX_ROOT_PATH . "/src/Models/", $tableName);
-        $object = $factory->instantiate(null, [$id], '\Ximdex\Models');
-        if (! is_object($object)) {
-            Logger::error(sprintf("Can't instantiate a %s model", $tableName));
-        }
-        return $object;
-    }
-
-    /**
      * From a given target node returns its source node
      * 
-     * @param $rel
-     * @param $target
-     * @return bool|null|array
+     * @param string $rel
+     * @param int $target
+     * @return boolean|NULL|array
      */
-    function getByTarget($rel, $target)
+    public function getByTarget(string $rel, int $target)
     {
         $object = $this->getModel($rel);
-        if (!is_object($object)) {
+        if (! is_object($object)) {
             return false;
         }
         $result = $object->find('source', 'target = %s', array($target), MONO);
-        return count($result) > 0 ? $result : NULL;
+        return count($result) > 0 ? $result : null;
     }
 
     /**
      * From a given source node returns its target nodes
      * 
-     * @param $rel
-     * @param $source
+     * @param string $rel
+     * @param string $source
      * @param array An array with Dependencies types ID that will be exclude in the search
-     * @return array|bool|array
+     * @return boolean|array
      */
-    function getBySource($rel, $source, array $exclude = [])
+    public function getBySource(string $rel, string $source, array $exclude = [])
     {
         $object = $this->getModel($rel);
-        if (!is_object($object)) return false;
+        if (! is_object($object)) {
+            return false;
+        }
         $sqlConditions = 'source = %s';
-        if ($exclude)
-        {
+        if ($exclude) {
             $sqlConditions .= ' and target not in (select distinct idNodeDependent from Dependencies where idNodeMaster = ' 
                 . $source . ' and (false';
-            foreach ($exclude as $exclusionType)
+            foreach ($exclude as $exclusionType) {
                 $sqlConditions .= ' or DepType = ' . $exclusionType;
+            }
             $sqlConditions .= '))';
         }
         $result = $object->find('target', $sqlConditions, array($source), MONO);
@@ -125,15 +117,15 @@ class DepsManager
     /**
      * Deletes a row in a relation table
      * 
-     * @param $rel
-     * @param $idSource
-     * @param $idTarget
-     * @return bool
+     * @param string $rel
+     * @param int $idSource
+     * @param int $idTarget
+     * @return boolean|int
      */
-    function delete($rel, $idSource, $idTarget)
+    public function delete(string $rel, int $idSource, int $idTarget)
     {
         $object = $this->getModel($rel);
-        if (!is_object($object)) {
+        if (! is_object($object)) {
             return false;
         }
         $object->set('target', $idTarget);
@@ -150,19 +142,21 @@ class DepsManager
     /**
      * Deletes all relations for a source node
      * 
-     * @param $rel
-     * @param $idSource
-     * @return bool
+     * @param string $rel
+     * @param int $idSource
+     * @return boolean
      */
-    function deleteBySource($rel, $idSource)
+    public function deleteBySource(string $rel, int $idSource) : bool
     {
         $object = $this->getModel($rel);
-        if (!is_object($object)) {
+        if (! is_object($object)) {
             return false;
         }
         $result = $object->find('id', 'source = %s', array($idSource), MONO);
         if (sizeof($result) > 0) {
-            $object->deleteAll('id in (%s)', array(implode(', ', $result)), false);
+            if ($object->deleteAll('id in (%s)', array(implode(', ', $result)), false) === false) {
+                return false;
+            }
         }
         return true;
     }
@@ -170,20 +164,39 @@ class DepsManager
     /**
      * Deletes all relations for a target node
      * 
-     * @param $rel
-     * @param $idTarget
-     * @return bool
+     * @param string $rel
+     * @param int $idTarget
+     * @return boolean
      */
-    function deleteByTarget($rel, $idTarget)
+    public function deleteByTarget(string $rel, int $idTarget) : bool
     {
         $object = $this->getModel($rel);
-        if (!is_object($object)) {
+        if (! is_object($object)) {
             return false;
         }
         $result = $object->find('id', 'target = %s', array($idTarget), MONO);
         if (sizeof($result) > 0) {
-            $object->deleteAll('id in (%s)', array(implode(', ', $result)), false);
+            if ($object->deleteAll('id in (%s)', array(implode(', ', $result)), false) === false) {
+                return false;
+            }
         }
         return true;
+    }
+    
+    /**
+     * Inserts a row in a relation table
+     *
+     * @param string $tableName
+     * @param int $id
+     * @return mixed
+     */
+    private function getModel(string $tableName, int $id = null)
+    {
+        $factory = new Factory(XIMDEX_ROOT_PATH . "/src/Models/", $tableName);
+        $object = $factory->instantiate(null, [$id], '\Ximdex\Models');
+        if (! is_object($object)) {
+            Logger::error(sprintf("Can't instantiate a %s model", $tableName));
+        }
+        return $object;
     }
 }

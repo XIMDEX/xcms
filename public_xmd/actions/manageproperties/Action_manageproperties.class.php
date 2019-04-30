@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,7 +31,6 @@ use Ximdex\Properties\InheritedPropertiesManager;
 use Ximdex\Runtime\App;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Models\NodeProperty;
-use Ximdex\Properties\InheritableProperty;
 
 /**
  * Manage properties action.
@@ -59,35 +58,29 @@ class Action_manageproperties extends ActionAbstract
         $nodeId = $this->request->getParam('nodeid');
         $nodeId = $nodeId < 10000 ? 10000 : $nodeId;
         $node = new Node($nodeId);
-        
-        // Get Values for all the dependencies
-        if (in_array($node->GetNodeType(), [NodeTypeConstants::COMMON_ROOT_FOLDER, NodeTypeConstants::COMMON_FOLDER])) {
-            
-            // Common folders only show channels properties
-            $propertiesToUse = [InheritableProperty::CHANNEL];
-        } else {
-            
-            // Get all properties for this node
-            $propertiesToUse = null;
-        }
-        $properties = InheritedPropertiesManager::getValues($nodeId, false, $propertiesToUse);
+        $properties = InheritedPropertiesManager::getValues($nodeId);
+        $inProject = ($node->GetNodeType() == NodeTypeConstants::PROJECT);
         $values = array(
             'properties' => $properties,
             'go_method' => 'save_changes',
             'name' => $node->GetNodeName(),
             'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName(),
-            'inProject' => ($node->getParent() == 10000)
+            'inProject' => $inProject
         );
         
         // Update the checked properties in the array (inherit or overwrite option)
         foreach ($properties as $name => $prop) {
-            $checked = false;
-            if (!empty($prop)) {
-                foreach ($prop as $value) {
-                    if ($value['Checked'] == 1) {
-                        $checked = true;
-                        break;
+            if ($inProject) {
+                $checked = true;
+            } else {
+                $checked = false;
+                if (! empty($prop)) {
+                    foreach ($prop as $value) {
+                        if ($value['Checked'] == 1) {
+                            $checked = true;
+                            break;
+                        }
                     }
                 }
             }
@@ -113,9 +106,8 @@ class Action_manageproperties extends ActionAbstract
 
     /**
      * Save the results from the form
-     *
-     * @uses  InheritedPropertiesManager::getAffectedNodes
-     * @uses  InheritedPropertiesManager::setValues
+     * 
+     * @uses InheritedPropertiesManager::setValues
      *
      * Request params:
      * * nodeid
@@ -136,24 +128,41 @@ class Action_manageproperties extends ActionAbstract
         $nodeId = $nodeId < 10000 ? 10000 : $nodeId;
         $confirmed = $this->request->getParam('confirmed');
         $confirmed = $confirmed == 'YES' ? true : false;
+        
+        // Channels
         $inherited_channels = $this->request->getParam('inherited_channels');
         $channel_recursive = $this->request->getParam('Channel_recursive') ? true : false;
         $channels = $this->request->getParam('Channel');
         $channels = empty($channels) || $inherited_channels == 'inherited' ? array() : $channels;
+        
+        // Languages
         $inherited_languages = $this->request->getParam('inherited_languages');
         $languages = $this->request->getParam('Language');
         $languages = empty($languages) || $inherited_languages == 'inherited' ? array() : $languages;
         $language_recursive = $this->request->getParam('Language_recursive') ? true : false;
+        
+        // Schemas
         $inherited_schemas = $this->request->getParam('inherited_schemas');
         $schemas = $this->request->getParam('Schema');
         $schemas = empty($schemas) || $inherited_schemas == 'inherited' ? array() : $schemas;
+        
+        // Transformer
         $transformer = $this->request->getParam('Transformer');
         $transformer = empty($transformer) ? array() : $transformer;
+        
+        // Metadata schemes
+        $inherited_metadata = $this->request->getParam('inherited_metadata');
+        $metadata_recursive = $this->request->getParam('metadata_recursive') ? true : false;
+        $metadata = $this->request->getParam('metadata');
+        $metadata = empty($metadata) || $inherited_metadata == 'inherited' ? array() : $metadata;
+        
+        // Properties information
         $properties = array(
             'Channel' => $channels,
             'Language' => $languages,
             'Schema' => $schemas,
             'Transformer' => $transformer,
+            'Metadata' => $metadata
         );
         $confirm = false;
         
@@ -164,17 +173,20 @@ class Action_manageproperties extends ActionAbstract
             InheritedPropertiesManager::setValues($nodeId, $properties);
             $applyResults = array();
             if ($channel_recursive) {
-                $applyResults = array_merge($applyResults, $this->_applyPropertyRecursively('Channel', $nodeId, $channel_recursive));
+                $applyResults = array_merge($applyResults, $this->_applyPropertyRecursively('Channel', $nodeId, $channels));
             }
             if ($language_recursive) {
-                $applyResults = array_merge($applyResults, $this->_applyPropertyRecursively('Language', $nodeId, $language_recursive));
+                $applyResults = array_merge($applyResults, $this->_applyPropertyRecursively('Language', $nodeId, $languages));
+            }
+            if ($metadata_recursive) {
+                $applyResults = array_merge($applyResults, $this->_applyPropertyRecursively('Metadata', $nodeId, $metadata));
             }
             $node = new Node($nodeId);
             if ($node->GetNodeType() == NodeTypeConstants::SERVER and App::getValue('PublishPathFormat') == App::PREFIX) {
                 
                 // Save the value of the default server language property
                 $defaultServerLanguage = (int) $this->request->getParam('default_server_language');
-                if (!$defaultServerLanguage) {
+                if (! $defaultServerLanguage) {
                     
                     // If there is not checked any language, the first one from the project will be the selected
                     $properties = InheritedPropertiesManager::getValues($nodeId);
@@ -216,7 +228,7 @@ class Action_manageproperties extends ActionAbstract
         }
     }
 
-    private function showConfirmation($nodeId, $properties, $affected = [])
+    private function showConfirmation(int $nodeId, array $properties, array $affected = [])
     {
         $this->addJs('/actions/manageproperties/resources/js/dialog.js');
         $this->addJs('/actions/manageproperties/resources/js/confirm.js');
@@ -244,7 +256,7 @@ class Action_manageproperties extends ActionAbstract
         $this->render($values, 'confirm', 'default-3.0.tpl');
     }
 
-    private function showResult($nodeId, $results, $applyResults, $confirmed)
+    private function showResult(int $nodeId, array $results, array $applyResults, bool $confirmed)
     {
         foreach ($results as $prop => $value) {
             if ($value !== false) {
@@ -324,15 +336,15 @@ class Action_manageproperties extends ActionAbstract
     
     public function applyPropertyRecursively()
     {   
-        $nodeId = $this->request->getParam('nodeid');
+        $nodeId = (int) $this->request->getParam('nodeid');
         $nodeId = $nodeId < 10000 ? 10000 : $nodeId;
         $property = $this->request->getParam('property');
-        $values = $this->request->getParam('values');
+        $values = (array) $this->request->getParam('values');
         $result = $this->_applyPropertyRecursively($property, $nodeId, $values);
         $this->sendJSON(array('nodeId' => $nodeId, 'property' => $property, 'result' => $result[$property]));
     }
     
-    private function _applyPropertyRecursively($property, $nodeId, $values)
+    private function _applyPropertyRecursively(string $property, int $nodeId, array $values)
     {
         $result = InheritedPropertiesManager::applyPropertyRecursively($property, $nodeId, $values);
         return $result;

@@ -44,7 +44,7 @@ class Action_modifyusergroups extends ActionAbstract
         $this->addJs('/actions/modifyusergroups/resources/js/helper.js');
         $user = new User($idNode);
         $group = new Group();
-        $generalRole = $user->GetRoleOnGroup($group->GetGeneralGroup());
+        $generalRole = $user->GetRoleOnGroup(Group::getGeneralGroup());
         $rol = new Role();
         $roles = $rol->find('IdRole, Name');
         $userGroups = $user->GetGroupList();
@@ -62,11 +62,11 @@ class Action_modifyusergroups extends ActionAbstract
         if (is_array($userGroups)) {
             $index = 0;
             foreach ($userGroups as $value) {
-                if (!is_array($value) ||  !array_key_exists('IdGroup', $value) || $value['IdGroup'] != $group->GetGeneralGroup()) {
+                if (! is_array($value) || ! array_key_exists('IdGroup', $value) || $value['IdGroup'] != Group::getGeneralGroup()) {
                     $userGroupsWithRole[$index]['IdGroup'] = $value;
                     $tmpGroup = new Group($value);
                     $userGroupsWithRole[$index]['Name'] = $tmpGroup->get('Name');
-                    $userGroupsWithRole[$index]['IdRole'] = $user->GetRoleOnGroup($value);
+                    $userGroupsWithRole[$index]['IdRole'] = $user->getRoleOnGroup($value);
                     $userGroupsWithRole[$index]['dirty'] = false;
                     $index ++;
                 }

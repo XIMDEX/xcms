@@ -1,5 +1,5 @@
 {**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -23,16 +23,14 @@
  *  @version $Revision$
  *}
 
-{if ($formType == 'simple') }
+{if ($formType == 'simple')}
 	{include file="actions/deletenode/template/Smarty/forms/simple.tpl"}
 {/if}
 
-{if ($formType == 'no_permisos') }
+{if ($formType == 'no_permisos')}
 	{include file="actions/deletenode/template/Smarty/forms/no_permisos.tpl"}
 {/if}
 
-{if ($formType == 'dependencies') }
+{if ($formType == 'dependencies')}
 	{include file="actions/deletenode/template/Smarty/forms/dependencies.tpl"}
 {/if}
-
-

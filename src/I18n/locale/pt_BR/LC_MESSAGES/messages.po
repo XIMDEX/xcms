@@ -9639,8 +9639,7 @@ msgstr ""
 
 #: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:109
 msgid ""
-"Use drafts for linked documents instead of already published \n"
-"\t\t\t\t\t\t\t\t\t\t\t\tversions."
+"Use drafts for linked documents instead of already published versions"
 msgstr ""
 
 #: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:120

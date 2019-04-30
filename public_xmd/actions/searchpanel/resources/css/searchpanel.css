@@ -1,6 +1,5 @@
-@charset "UTF-8";
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -23,6 +22,9 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+
+@charset "UTF-8";
+
 .simple-results .row-cell-action-icon, .fields-selector-launcher {
   display: block;
   text-indent: 110%;
@@ -195,9 +197,6 @@
 
 .fields-selector-options {
   background: #4C4C4C;
-  /*  -webkit-transition:all linear 0.5s;
-   transition:all linear 0.5s;
-   opacity:1;*/
   overflow: hidden;
   padding: 1em 3em 1em 6em; }
   .fields-selector-options li {
@@ -216,3 +215,8 @@
 
 .prev, .next {
   cursor: pointer; }
+
+#searchFilterText {
+	width: 70%;
+    float: right;
+}

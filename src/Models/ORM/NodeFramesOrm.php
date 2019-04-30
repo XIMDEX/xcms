@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,7 +32,9 @@ use Ximdex\Data\GenericData;
 class NodeFramesOrm extends GenericData
 {
     public $_idField = 'IdNodeFrame';
+    
     public $_table = 'NodeFrames';
+    
     public $_metaData = array(
         'IdNodeFrame' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true'),
         'NodeId' => array('type' => 'int(12)', 'not_null' => 'true'),
@@ -50,19 +52,34 @@ class NodeFramesOrm extends GenericData
         'SF_Total' => array('type' => 'int(4)', 'not_null' => 'false'),
         'SF_IN' => array('type' => 'int(4)', 'not_null' => 'false')
     );
+    
     public $IdNodeFrame;
-    public $NodeId = 0;
-    public $VersionId = 0;
+    
+    public $NodeId;
+    
+    public $VersionId;
+    
     public $TimeUp;
+    
     public $TimeDown;
+    
     public $Active = 0;
+    
     public $GetActivityFrom = 0;
+    
     public $IsProcessUp = 0;
+    
     public $IsProcessDown = 0;
+    
     public $Name;
+    
     public $IdPortalFrame;
+    
     public $TimeStampState;
+    
     public $TimeStampProccesed;
+    
     public $SF_Total = 0;
+    
     public $SF_IN = 0;
 }

@@ -38,13 +38,8 @@ use Ximdex\Logger;
  */
 class LinkNode extends Root
 {
-	var $link = null;
+	public $link;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param object parent
-	 */
 	public function __construct($parent = null)
 	{
  		parent::__construct($parent);
@@ -63,21 +58,24 @@ class LinkNode extends Root
 		$link = new Link();
 		$link->set('IdLink', $this->nodeID);
 		$link->set('Url', $url);
-		$result = $this->parent->SetDescription($description);
+		$result = $this->parent->setDescription($description);
 		$insertedId = $link->add();
 		if (! $insertedId || ! $result) {
 			$this->messages->add(_('The link could not be inserted'), MSG_TYPE_ERROR);
 			$this->messages->mergeMessages($link->messages);
+			return false;
 		}
 		$this->link = new Link($link->get('IdLink'));
-		$relDescription = !empty($description) ? $description : $this->link->get('Name');
+		$relDescription = ! empty($description) ? $description : $this->link->getName();
 		$rel = RelLinkDescriptions::create($this->nodeID, $relDescription);
-		if ($rel->getIdRel() < 0) {
-			Logger::warning(sprintf('No se ha podido crear la descripcion para el enlace %s en su tabla relacionada.', $link->get('IdLink')));
+		if (! $rel->getIdRel()) {
+		    $this->messages->add(sprintf(_('Unable to create the description for link %s in its related table'), $link->get('IdLink'))
+		        , MSG_TYPE_ERROR);
+			$this->messages->mergeMessages($rel->messages);
+			return false;
 		}
-		$ret = $this->link->get('IdLink');
-		$this->UpdatePath();
-		return $ret;
+		$this->updatePath();
+		return $this->link->get('IdLink');
 	}
 
 	/**
@@ -158,7 +156,7 @@ class LinkNode extends Root
 	 * {@inheritDoc}
 	 * @see \Ximdex\NodeTypes\Root::toXml()
 	 */
-	public function toXml(int $depth, array & $files, bool $recurrence = false)
+	public function toXml(int $depth, array & $files, bool $recursive = false)
 	{
 		$indexTabs = str_repeat("\t", $depth + 1);
 		return sprintf("%s<LinkInfo Url=\"%s\">\n"

@@ -36,7 +36,7 @@ class Action_deleteuser extends ActionAbstract
      */
     public function index()
     {
-		$idNode = $this->request->getParam('nodeid');
+		$idNode = (int) $this->request->getParam('nodeid');
 		$user = new User($idNode);
 		if (! $user->get('IdUser')) {
 			$this->messages->add(_('User could not be found'), MSG_TYPE_ERROR);
@@ -51,14 +51,14 @@ class Action_deleteuser extends ActionAbstract
 			'realname' => $user->get('Name'),
 			'email' => $user->get('Email'),
 		    'nodeTypeID' => $node->nodeType->getID(),
-		    'node_Type' => $node->nodeType->GetName(),
+		    'node_Type' => $node->nodeType->getName(),
 			'messages' => $this->messages->messages);
 		$this->render($values, null, 'default-3.0.tpl');
     }
 
     public function deleteuser()
     {
-		$idParent = $idNode = $this->request->getParam('id_node');
+		$idParent = $idNode = (int) $this->request->getParam('id_node');
 		$user = new Node($idNode);
 		if (! $user->get('IdNode')) {
 			$user->messages->add(_('User could not be found'), MSG_TYPE_ERROR);
@@ -69,7 +69,6 @@ class Action_deleteuser extends ActionAbstract
 				$user->messages->add(_('User has been successfully deleted'), MSG_TYPE_NOTICE);
 			}
 		}
-		//$this->reloadNode($idParent);
 		$values = array('messages' => $user->messages->messages, 'parentID' => $idParent, 'action_with_no_return' => true);
 		$this->sendJSON($values);
     }

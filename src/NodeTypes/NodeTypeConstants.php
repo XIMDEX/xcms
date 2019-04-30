@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -116,4 +116,6 @@ class NodeTypeConstants
     const JS_FOLDER = 5091;
     const XOTF_FOLDER = 5110;
     const PERMISSION = 5038;
+    const METADATA_MANAGER = 5019;
+    const SITEMAP = 5111;
 }

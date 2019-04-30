@@ -42,31 +42,30 @@ class Action_filepreview extends ActionAbstract
     {
         $this->response->set('Cache-Control', array('no-store, no-cache, must-revalidate', 'post-check=0, pre-check=0'));
         $this->response->set('Pragma', 'no-cache');
-        $idNode = $this->request->getParam('nodeid');
+        $idNode = (int) $this->request->getParam('nodeid');
         $version = $this->request->getParam('version');
-        $subVersion = $this->request->getParam('sub_version');
-        if (is_numeric($version) && is_numeric($subVersion)) {
+        $subversion = $this->request->getParam('subversion');
+        if (is_numeric($version) && is_numeric($subversion)) {
             $dataFactory = new DataFactory($idNode);
-            $selectedVersion = $dataFactory->getVersionId($version, $subVersion);
+            $selectedVersion = $dataFactory->getVersionId($version, $subversion);
         } else {
             $dataFactory = new DataFactory($idNode);
-            $selectedVersion = $dataFactory->GetLastVersionId();
+            $selectedVersion = $dataFactory->getLastVersionId();
         }
         if (! $selectedVersion) {
-
             $this->messages->add(_('There is no version selected'), MSG_TYPE_ERROR);
         }
         $node = new Node($idNode);
-        $nodetype = new NodeType($node->GetNodeType());
+        $nodetype = new NodeType($node->getNodeType());
         $values = array(
             'messages' => $this->messages->messages,
             'id_node' => $idNode,
-            'path' => App::getValue('UrlRoot') . '/?action=rendernode&nodeid=' . $node->GetID() . '&version=' . $version 
-                . '&sub_version=' . $subVersion,
+            'path' => App::getValue('UrlRoot') . '/?action=rendernode&nodeid=' . $node->getID() . '&version=' . $version 
+                . '&subversion=' . $subversion,
             'Name' => $node->get('Name'),
             'nodeTypeID' => $node->nodeType->getID(),
-            'node_Type' => $node->nodeType->GetName(),
-            'type' => $nodetype->GetName()
+            'node_Type' => $node->nodeType->getName(),
+            'type' => $nodetype->getName()
         );
         $this->render($values, null, 'default-3.0.tpl');
     }
@@ -76,19 +75,19 @@ class Action_filepreview extends ActionAbstract
      */
     public function showAll()
     {
-        $idNode = $this->request->getParam('nodeid');
+        $idNode = (int) $this->request->getParam('nodeid');
         $node = new Node($idNode);
-        if (! $node->get('IdNode') || ($node->get('IdNodeType') != \Ximdex\NodeTypes\NodeTypeConstants::IMAGES_ROOT_FOLDER 
-                && $node->get('IdNodeType') != \Ximdex\NodeTypes\NodeTypeConstants::IMAGES_FOLDER)) {
+        if (! $node->get('IdNode') || ($node->get('IdNodeType') != NodeTypeConstants::IMAGES_ROOT_FOLDER 
+                && $node->get('IdNodeType') != NodeTypeConstants::IMAGES_FOLDER)) {
             $message = _('Forbidden access');
             $this->render(array('mesg' => $message), null, 'default-3.0.tpl');
             return;
         }
-        $parentID = $node->GetParent();
+        $parentID = $node->getParent();
         $parentNode = new Node($parentID);
 
         // Gets all child nodes of type image (nodetype IMAGE_FILE) of this node
-        $nodes = $node->GetChildren(NodeTypeConstants::IMAGE_FILE);
+        $nodes = $node->getChildren(NodeTypeConstants::IMAGE_FILE);
         $imageNodes = array();
         $nodePath = App::getValue('UrlRoot') . App::getValue('NodeRoot');
         if (count($nodes) > 0) {
@@ -98,7 +97,7 @@ class Action_filepreview extends ActionAbstract
                     continue;
                 }
                 $dataFactory = new DataFactory($idNode);
-                $selectedVersion = $dataFactory->GetLastVersionId();
+                $selectedVersion = $dataFactory->getLastVersionId();
                 $version = new Version($selectedVersion);
                 $hash = $version->get('File');
                 $filepath = XIMDEX_ROOT_PATH . App::getValue('FileRoot') . DIRECTORY_SEPARATOR . $hash;
@@ -110,8 +109,8 @@ class Action_filepreview extends ActionAbstract
                 $height = $imageInfo[1];
                 $mime = $imageInfo['mime'];
                 array_push($imageNodes, array(
-                    'name' => $n->GetNodeName(),
-                    'original_path' => $nodePath . str_replace('/Ximdex/Projects', '', $n->GetPath()),
+                    'name' => $n->getNodeName(),
+                    'original_path' => $nodePath . str_replace('/Ximdex/Projects', '', $n->getPath()),
                     'src' => App::getValue('UrlRoot') . '/?action=rendernode&nodeid=' . $idNode,
                     'width' => $width,
                     'height' => $height,
@@ -129,7 +128,7 @@ class Action_filepreview extends ActionAbstract
                 'serverName' => $parentNode->get('Name'),
                 'folderName' => $node->get('Name'),
                 'nodeTypeID' => $node->nodeType->getID(),
-                'node_Type' => $node->nodeType->GetName()
+                'node_Type' => $node->nodeType->getName()
             );
             $this->render($values, null, 'default-3.0.tpl');
         } else {
@@ -138,7 +137,7 @@ class Action_filepreview extends ActionAbstract
         }
     }
 
-    private function humanReadableFilesize($size)
+    private function humanReadableFilesize(int $size)
     {
         $mod = 1024;
         $units = explode(' ', 'B KB MB GB TB PB');

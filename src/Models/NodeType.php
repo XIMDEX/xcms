@@ -71,13 +71,17 @@ class NodeType extends NodeTypesOrm
     
     /**
      * Class error list
+     * 
      * @var array
      */
     public $errorList = [];
     
     public $_cache = 0;
+    
     public $_useMemCache = 0;
+    
     public $_fieldsToTraduce = array('Description');
+    
     public $autoCleanErr = true;
     
     public function __construct(int $nodeTypeID = null)
@@ -97,9 +101,9 @@ class NodeType extends NodeTypesOrm
     {
         $query = sprintf('SELECT IdAction FROM NodeConstructors WHERE IdNodeType = %d', $this->get('IdNodeType'));
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Query($query);
+        $dbObj->query($query);
         if ($dbObj->numRows == 1) {
-            return $dbObj->GetValue('IdAction');
+            return $dbObj->getValue('IdAction');
         }
         return 0;
     }
@@ -186,7 +190,7 @@ class NodeType extends NodeTypesOrm
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $query = sprintf('SELECT IdNodeType FROM NodeTypes WHERE Name LIKE %s', $dbObj->sqlEscapeString($name));
-        $dbObj->Query($query);
+        $dbObj->query($query);
         if (! $dbObj->numRows) {
             $backtrace = debug_backtrace();
             error_log(sprintf('Se ha intentado cargar obtener un tipo de nodo por el nombre %s'
@@ -197,8 +201,8 @@ class NodeType extends NodeTypesOrm
                 $backtrace[0]['line']));
             return false;
         }
-        if ($dbObj->GetValue('IdNodeType')) {
-            return $this->SetID($dbObj->GetValue('IdNodeType'));
+        if ($dbObj->getValue('IdNodeType')) {
+            return $this->setID($dbObj->getValue('IdNodeType'));
         }
         return false;
     }
@@ -697,41 +701,26 @@ class NodeType extends NodeTypesOrm
      * 
      * @return int (status) | null
      */
-    public function deleteNodeType()
+    public function deleteNodeType() : bool
     {
         $sql = sprintf('DELETE FROM NodeAllowedContents WHERE idNodeType = %d', $this->get('IdNodeType'));
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Execute($sql);
-        $salida = $dbObj->numErr;
-        if ($dbObj->numErr != 0) {
-            $this->SetError(1);
-            return null;
-        }
-        if ($salida != 0) {
-            return $salida;
+        if ($dbObj->execute($sql) === false) {
+            $this->setError(1);
+            return false;
         }
         $sql = sprintf('DELETE FROM NodeDefaultContents WHERE idNodeType = %d', $this->get('IdNodeType'));
-        $dbObj->Execute($sql);
-        $salida = $dbObj->numErr;
-        if ($dbObj->numErr != 0) {
-            $this->SetError(1);
-            return null;
-        }
-        if ($salida != 0) {
-            return $salida;
+        if ($dbObj->execute($sql) === false) {
+            $this->setError(1);
+            return false;
         }
         $sql = sprintf('DELETE FROM NodeTypes WHERE idNodeType = %d', $this->get('IdNodeType'));
-        $dbObj->Execute($sql);
-        $salida = $dbObj->numErr;
-        if ($dbObj->numErr != 0) {
-            $this->SetError(1);
-            return null;
-        }
-        if ($salida != 0) {
-            return $salida;
+        if ($dbObj->execute($sql) === false) {
+            $this->setError(1);
+            return false;
         }
         $this->ID = null;
-        return $salida;
+        return true;
     }
 
     /**
@@ -828,21 +817,21 @@ class NodeType extends NodeTypesOrm
             NodeAllowedContents as nac INNER JOIN RelNodeTypeMimeType rntmt on
             nac.NodeType = rntmt.IdNodeType INNER JOIN NodeTypes nt on nac.NodeType = nt.IdNodeType
             where nac.IdNodeType = %s and nt.IsFolder = 0', $this->GetID());
-        $dbObj->Query($sql);
+        $dbObj->query($sql);
         $returnArray = array();
         while (! $dbObj->EOF) {
             if ($onlyExtensions) {
-                $returnArray = array_merge($returnArray, explode(';', trim($dbObj->GetValue('extension'), ';'))); 
+                $returnArray = array_merge($returnArray, explode(';', trim($dbObj->getValue('extension'), ';'))); 
             }
             else {
                 $returnElement = array();
-                $returnElement['id'] = $dbObj->GetValue('idRelNodeTypeMimeType');
-                $returnElement['description'] = _($dbObj->GetValue('Description'));
+                $returnElement['id'] = $dbObj->getValue('idRelNodeTypeMimeType');
+                $returnElement['description'] = _($dbObj->getValue('Description'));
                 $returnElement['extension'] = implode(',',
-                    preg_split('/;/', $dbObj->GetValue('extension'), 0, PREG_SPLIT_NO_EMPTY));
+                    preg_split('/;/', $dbObj->getValue('extension'), 0, PREG_SPLIT_NO_EMPTY));
                 $returnArray[] = $returnElement;
             }
-            $dbObj->Next();
+            $dbObj->next();
         }
         return $returnArray;
     }

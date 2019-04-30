@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -37,10 +38,10 @@ use Ximdex\Runtime\Constants ;
  */
 class NodetypeMode extends NodetypeModesOrm
 {
-    function getActionForOperation($idNodeType, $mode)
+    function getActionForOperation(int $idNodeType, string $mode)
     {
         $validModes = array(Constants::CREATE, Constants::READ, Constants::UPDATE, Constants::DELETE);
-        if (!(in_array($mode, $validModes))) {
+        if (! in_array($mode, $validModes)) {
             return false;
         }
         $result = $this->find('IdAction',

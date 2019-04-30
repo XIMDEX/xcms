@@ -32,19 +32,28 @@ use Ximdex\Data\GenericData;
 class LocalesOrm extends GenericData
 {
     public $_idField = 'ID';
+    
     public $_table = 'Locales';
-    public $_metaData = array(
+    
+    public $_metaData = array
+    (
         'ID' => array('type' => "smallint(5)", 'not_null' => 'true', 'primary_key' => true),
         'Code' => array('type' => "varchar(6)", 'not_null' => 'true',),
         'Name' => array('type' => "varchar(20)", 'not_null' => 'true'),
         'Enabled' => array('type' => "tinyint(1)", 'not_null' => 'false')
     );
+    
     public $_uniqueConstraints = array(
         'Code' => array('Code'), 'ID' => array('ID')
     );
+    
     public $_indexes = array('ID');
+    
     public $ID;
+    
     public $Code;
+    
     public $Name;
+    
     public $Enabled = 1;
 }

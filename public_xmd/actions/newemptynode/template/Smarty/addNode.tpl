@@ -1,5 +1,5 @@
 {**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -26,39 +26,41 @@
 <form method="post" id="print_form" action="{$action_url}">
 	{include file="actions/components/title_Description.tpl"}
     <div class="message-warning message">
-        {t}<p>The <strong>file extension</strong> is not needed.</p>{/t}</div>
-
-        <div class="action_content">
-            <div class="row tarjeta">
-                <div class="small-12 columns title_tarjeta">
-                    <h2 class="h2_general">{t}Create a new file{/t}</h2>
+        {t}<p>The <strong>file extension</strong> is not needed.</p>{/t}
+    </div>
+    <div class="action_content">
+        <div class="row tarjeta">
+            <div class="small-12 columns title_tarjeta">
+                <h2 class="h2_general">{t}Create a new file{/t}</h2>
+            </div>
+            <div class="small-12 columns">
+                <div class="input">
+                    <label for="name" class="label_title label_general">{t}Name{/t} *</label>
+                    <input type="hidden" name="nodeid" value="{$nodeID}">
+        	        <p class="icon document input-select icon-positioned">
+                        <input type="text" name="name" id="foldername" class="input_general_icon cajaxg validable not_empty full-size" 
+                                placeholder="{t}File name{/t}">
+                    </p>
                 </div>
-                <div class="small-12 columns">
-                    <div class="input">
-                        <label for="name" class="label_title label_general">{t}Name{/t} *</label>
-            <input type="hidden" name="nodeid" value="{$nodeID}">
-        	    <p class="icon document input-select icon-positioned">
-                    <input type="text" name="name" id="foldername" class="input_general_icon cajaxg validable not_empty full-size" placeholder="{t}File name{/t}">
-                </p></div>
 			    {if $countChilds > 1}
                     <select name="nodetype" class="caja validable not_empty">
-                    {foreach from=$childs item=child}
-                        {if $child.nodetypename=='NodeHt'}
-                            <option value="{$child.idnodetype}">{t}HTML File{/t}</option>
-                        {else}
-                            <option value="{$child.idnodetype}">{$child.description} ({t}{$child.nodetypename}{/t})</option>
-                        {/if}
-                    {/foreach}
+                        {foreach from=$childs item=child}
+                            {if $child.nodetypename=='NodeHt'}
+                                <option value="{$child.idnodetype}">{t}HTML File{/t}</option>
+                            {else}
+                                <option value="{$child.idnodetype}">{$child.description} ({t}{$child.nodetypename}{/t})</option>
+                            {/if}
+                        {/foreach}
                     </select>
       			{else}
                 	<input name="nodetype" type="hidden" value="{$childs[0].idnodetype}" />
                 {/if}
 			</div>
-
-                <div class="small-12 columns">
-        <fieldset class="buttons-form">
-            {button label="Create" class='validate btn main_action' }
-        </fieldset>
-                </div>
-            </div></div>
+            <div class="small-12 columns">
+                <fieldset class="buttons-form">
+                    {button label="Create" class='validate btn main_action'}
+                </fieldset>
+            </div>
+        </div>
+    </div>
 </form>

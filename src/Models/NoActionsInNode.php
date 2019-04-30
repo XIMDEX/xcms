@@ -37,11 +37,11 @@ class NoActionsInNode extends GenericData
     
     public $_metaData = array
     (
-        'IdNode' => array('type' => "int(11)", 'not_null' => 'true'),
-        'IdAction' => array('type' => "varchar(255)", 'not_null' => 'true')
+        'IdNode' => array('type' => "int(12)", 'not_null' => 'true'),
+        'IdAction' => array('type' => "int(12)", 'not_null' => 'true')
     );
     
-    var $_uniqueConstraints = array
+    public $_uniqueConstraints = array
     (
         'uniq' => array('IdNode', 'IdAction')
     );

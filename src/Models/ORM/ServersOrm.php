@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,7 +32,9 @@ use Ximdex\Data\GenericData;
 class ServersOrm extends GenericData
 {
     public $_idField = 'IdServer';
+    
     public $_table = 'Servers';
+    
     public $_metaData = array(
         'IdServer' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'IdNode' => array('type' => 'int(12)', 'not_null' => 'true'),
@@ -51,26 +53,52 @@ class ServersOrm extends GenericData
         'ActiveForPumping' => array('type' => 'int(1)', 'not_null' => 'false'),
         'DelayTimeToEnableForPumping' => array('type' => 'int(12)', 'not_null' => 'false'),
         'CyclesToRetryPumping' => array('type' => 'int(12)', 'not_null' => 'true'),
-        'Token' => array('type' => 'varchar(255)', 'not_null' => 'false')
+        'Token' => array('type' => 'varchar(255)', 'not_null' => 'false'),
+        'Indexable' => array('type' => 'int(1)', 'not_null' => 'true'),
+        'LastSitemapGenerationTime' => array('type' => 'int(12)', 'not_null' => 'false')
     );
+    
     public $_uniqueConstraints = array();
+    
     public $_indexes = array('IdServer');
+    
     public $IdServer;
+    
     public $IdNode = 0;
+    
     public $IdProtocol;
+    
     public $Login;
+    
     public $Password;
+    
     public $Host;
+    
     public $Port;
+    
     public $Url;
+    
     public $InitialDirectory;
+    
     public $OverrideLocalPaths = 0;
+    
     public $Enabled = 1;
+    
     public $Previsual = 0;
+    
     public $Description;
+    
     public $idEncode;
+    
     public $ActiveForPumping = 1;
-    public $DelayTimeToEnableForPumping = null;
+    
+    public $DelayTimeToEnableForPumping;
+    
     public $CyclesToRetryPumping = 0;
+    
     public $Token;
+    
+    public $Indexable;
+    
+    public $LastSitemapGenerationTime;
 }

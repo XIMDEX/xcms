@@ -1,5 +1,5 @@
 {**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -25,36 +25,43 @@
 
 <form method="post" name="ml_form" id="ml_form" action="{$action_url}">
 	{include file="actions/components/title_Description.tpl"}
-
 	<div class="action_content">
 		<div class="row tarjeta">
 			<div class="small-12 columns title_tarjeta">
 				<h2 class="h2_general">{t}Modify language{/t}</h2>
 			</div>
+            <div class="small-12 columns">
+				<div class="input">
+                    <label for="name" class="label_title label_general">{t}Language name{/t}</label>
+                    <input type="text" name="Name" id="name" value="{$name}" class="input_general cajag validable not_empty full_size" />
+				</div>
+	        </div>
 			<div class="small-12 columns">
 				<div class="input">
-            <label for="name" class="label_title label_general">{t}Language name{/t}</label>
-			<input type="text" name="Name" id="name" value="{$name}" class="input_general cajag validable not_empty full_size"/>
-				</div></div>
+                    <label for="description" class="label_title label_general">{t}Description{/t}</label>
+			        <input type="text" name="Description" id="description" value="{$description}" 
+                            class="input_general full_size cajag validable not_empty" />
+				</div>
+		    </div>
+		    <div class="small-12 columns">
+                <div class="input">
+	                <label for="iso_name" class="label_title label_general">{t}ISO code{/t}</label>
+	                <input type="text" name="iso_name" id="iso_name" value="{$iso_name}" class="input_general full_size cajag" 
+	                        disabled="disabled" />
+                </div>
+		    </div>
 			<div class="small-12 columns">
 				<div class="input">
-            <label for="description" class="label_title label_general">{t}Description{/t}</label>
-			<input type="text" name="Description" id="description" value="{$description}" class="input_general full_size cajag validable not_empty"/>
-				</div></div>
-			<div class="small-12 columns">
-				<div class="input">
-            <label class="label_title label_general">{t}ISO code{/t}: {$iso_name}</label>
-
-			<input class="hidden-focus" type="checkbox" name="enabled" id="enabled_{$iso_name}" value="1"{if $enabled == 1} checked="checked"{/if}/>
-		    <label for="enabled_{$iso_name}" class="icon checkbox-label">{t}Activated{/t}</label>
-		</div></div>
+                    <input class="hidden-focus" type="checkbox" name="enabled" id="enabled_{$iso_name}" 
+                            value="1" {if $enabled == 1} checked="checked" {/if} />
+                    <label for="enabled_{$iso_name}" class="icon checkbox-label">{t}Activated{/t}</label>
+                </div>
+            </div>
 			<div class="small-12 columns">
 				<fieldset class="buttons-form">
-                    {button label="Modify" class="validate btn main_action" }{*message="Would you like to modify this language?"*}
+                    {button label="Modify" class="validate btn main_action" }{* message="Would you like to modify this language?" *}
 				</fieldset>
 			</div>
-
-		</div></div>
+		</div>
+	</div>
 </form>
-
-

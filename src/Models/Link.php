@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -33,20 +33,22 @@ use Ximdex\Models\ORM\LinksOrm;
 
 class Link extends LinksOrm
 {
-    var $actsAs = array('\Ximdex\Behaviours\Search' => array('field' => 'IdLink'));
-
     const LINK_FAIL = "fail";
+    
     const LINK_OK = "ok";
+    
     const LINK_WAITING = "waiting";
+    
     const LINK_NOT_CHECKED = "not checked";
+    
+    public $actsAs = ['\Ximdex\Behaviours\Search' => ['field' => 'IdLink']];
 
-    function checkUrl($url, $name = null)
+    public function checkUrl(string $url, string $name = null)
     {
         $conditions = array('conditions' => array('Url' => $url));
-        if (!empty($name)) {
+        if (! empty($name)) {
             $conditions['conditions']['name'] = $name;
         }
-
         $result = $this->search($conditions);
         if (count($result) > 0) {
             return ($result[0]);
@@ -54,11 +56,11 @@ class Link extends LinksOrm
         return null;
     }
 
-    public function & getName()
+    public function getName()
     {
         $name = null;
         $node = new Node($this->get('IdLink'));
-        if (!($node->get('IdNode') > 0)) {
+        if (! $node->get('IdNode')) {
             Logger::warning('The name of the ximlink with ID ' . $this->get('IdLink') . ' could not be obtained');
         } else {
             $name = $node->get('Name');
@@ -66,19 +68,17 @@ class Link extends LinksOrm
         return $name;
     }
 
-    public function & getDescriptions()
+    public function getDescriptions()
     {
-        $it = new IteratorLinkDescriptions('IdLink = %s', array($this->get('IdLink')));
-        return $it;
+        return new IteratorLinkDescriptions('IdLink = %s', array($this->get('IdLink')));
     }
 
-    public function & addDescription($description)
+    public function addDescription(string $description)
     {
-        $rel = RelLinkDescriptions::create($this->get('IdLink'), $description);
-        return $rel;
+        return RelLinkDescriptions::create($this->get('IdLink'), $description);
     }
 
-    public function deleteDescription($description)
+    public function deleteDescription(string $description)
     {
         $rel = new RelLinkDescriptions();
         $rel = $rel->find(ALL, 'IdLink = %s and Description = %s', array($this->get('IdLink'), $description));

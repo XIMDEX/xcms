@@ -29,10 +29,11 @@ use Ximdex\Logger;
 use Ximdex\Models\Link;
 use Ximdex\Models\Node;
 use Ximdex\NodeTypes\NodeTypeConstants;
+use Ximdex\IO\BaseIO;
 
 class ximlinkResolver
 {
-	public function resolveximlinkUrl($idnode, $idchannel = null)
+	public function resolveximlinkUrl(int $idnode, int $idchannel = null)
 	{
 		$node = new Link($idnode);
 		if (! $node->get('IdLink')) {
@@ -46,7 +47,8 @@ class ximlinkResolver
 		while ($desc = $it->next()) {
 			$descArray[] = $desc->get('Description');
 		}
-		$data = array(
+		$data = array
+		(
 			'idnode' => $idnode,
 			'name' => $name,
 			'url' => $url,
@@ -56,9 +58,13 @@ class ximlinkResolver
 	}
 
 	/**
-	* Get the available ximlinks from a term or idnode
-	*/
-	public function getAvailableximlinks($docid, $term)
+	 * Get the available ximlinks from a term or idnode
+	 * 
+	 * @param int $docid
+	 * @param string $term
+	 * @return array
+	 */
+	public function getAvailableximlinks(int $docid, string $term = null)
 	{
 		$node = new Node($docid);
 		if (! $node->get('IdNode')) {
@@ -89,14 +95,14 @@ class ximlinkResolver
 		return $data;
 	}
 
-	public function saveximlink($iddoc, $idnode, $idchannel, $name, $url, $text)
+	public function saveximlink(int $iddoc, int $idnode, int $idchannel, string $name, string $url, string $text)
 	{
 		$idlink = $this->nodeExistsByName($iddoc, $name);
 		if ($idlink === false) {
 			$ret = $this->createNewximlink($iddoc, $name, $url, $text, $idchannel);
 			$idlink = $ret[0];
 			$link = new Link($idlink);
-			if ($link->get('IdLink') > 0) {
+			if ($link->get('IdLink') > 0 and $text) {
 				$link->addDescription($text);
 			}
 		} else {
@@ -107,13 +113,15 @@ class ximlinkResolver
 					$link->set('Url', $url);
 					$link->update();
 				}
-				$link->addDescription($text);
+				if ($text) {
+				    $link->addDescription($text);
+				}
 			}
 		}
 		return array($idlink, $idchannel);
 	}
 
-	private function getProjectId($idnode)
+	private function getProjectId(int $idnode)
 	{
 		$node = new Node($idnode);
 		if (! $node->get('IdNode')) {
@@ -123,7 +131,7 @@ class ximlinkResolver
 		return $idprj;
 	}
 
-	private function nodeExistsByName($iddoc, $name)
+	private function nodeExistsByName(int $iddoc, string $name)
 	{
 		$idprj = $this->getProjectId($iddoc);
 		if ($idprj === false) {
@@ -141,7 +149,7 @@ class ximlinkResolver
 		return $idlink;
 	}
 
-	private function createNewximlink($iddoc, $name, $url, $text, $idchannel)
+	private function createNewximlink(int $iddoc, string $name, string $url, string $text, int $idchannel)
 	{
 		$idprj = $this->getProjectId($iddoc);
 		$prj = new Node($idprj);
@@ -155,7 +163,7 @@ class ximlinkResolver
 				array('DESCRIPTION' => $text)
 			)
 		);
-		$bio = new \Ximdex\IO\BaseIO();
+		$bio = new BaseIO();
 		$result = $bio->build($data);
 		if ($result < 1) {
 			Logger::error(_('A new ximlink could not be created: ') . $url);

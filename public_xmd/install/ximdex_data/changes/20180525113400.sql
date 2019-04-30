@@ -1,1 +1,0 @@
-INSERT INTO `Config` (`IdConfig`, `ConfigKey`, `ConfigValue`) VALUES (NULL, 'XmodulesRoot', '/xmodules');

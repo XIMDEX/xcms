@@ -40,7 +40,7 @@ use Ximdex\Models\ChannelFrame;
 *	It have 2 posibles values for its activity 1 (published), 0 (not published)
 */
 class NodeFrameManager
-{
+{   
 	/**
 	 * Checks whether the NodeFrame must be active or not
 	 * 
@@ -145,61 +145,6 @@ class NodeFrameManager
     }
 
 	/**
-	 * Sets the NodeFrame Activity and modifies the state of its associated ServerFrames
-	 * The replacedBy param  sets the nodeFrameId which replaces this NodeFrame when it become inactive
-	 *
-	 * @param int activity
-	 * @param int nodeFrId
-	 * @param int nodeId
-	 * @param int up
-	 * @param int replacedBy
-	 * @return bool
-	 */
-    private function setActivity(int $activity, int $nodeFrId, int $nodeId, int $up, int $replacedBy = null) : bool
-    {
-        if (is_null($nodeFrId)) {
-            Logger::error('Empty IdNodeFrame - setActivity');
-            return false;
-        }
-		$nodeFrame = new NodeFrame($nodeFrId);
-		$nodeFrame->set('Active', $activity);
-		$cancelled = null;
-		if (! is_null($replacedBy) ) {
-			$nodeFrame->set('GetActivityFrom', $replacedBy);
-			$cancelled = 1;
-		}
-		if ($up == 1) {
-			$nodeFrame->set('IsProcessUp', 1);
-		} else {
-			$nodeFrame->set('IsProcessDown', 1);
-		}
-		$result = $nodeFrame->update();
-		if (! $result) {
-			Logger::error(sprintf('Setting NodeFrame %s activity to %s', $nodeFrId, $activity));
-			return false;
-		}
-		if ($activity == 1) {
-			$operation = 'Up';
-		} else {
-			$operation = 'Down';
-		}
-		$sfOK = true;
-		
-		// todo: make foreach channelframes (not serverframes)
-		$frames = $nodeFrame->getFrames($nodeFrId, $operation);
-		$channelFrameManager = new ChannelFrameManager();
-		foreach($frames as $serverFrId) {
-			Logger::info('Processing serverFrame ' . $serverFrId . ' for nodeFrameID: ' . $nodeFrId . ' and nodeID: ' . $nodeId);
-			$result = $channelFrameManager->changeState($serverFrId, $operation, $nodeId, $cancelled);
-			if ($result === false) {
-				Logger::error('The Serverframe state change has failed ' . $serverFrId);
-				$sfOK = false;
-			}
-		}
-		return $sfOK;
-    }
-
-	/**
 	 * Gets all NodeFrames whose time interval is on the current time
 	 * If two NodeFrames are the same VersionId, is seted as active the newest
 	 * For solve the problem of consider the infinite as zero, TimeDown2 is introduce
@@ -209,20 +154,20 @@ class NodeFrameManager
 	 * @param int $now
 	 * @return array
 	 */
-    function getNodeFramesInTime(int $nodeId, ?int $up, int $now) : array
+    public function getNodeFramesInTime(int $nodeId, ?int $up, int $now) : array
     {
 		$dbObj = new \Ximdex\Runtime\Db();
 		$sql = 'SELECT IdNodeFrame, Active, if(TimeDown IS NULL, 1988146800, TimeDown) as TimeDown2 FROM NodeFrames 
 			WHERE TimeUp < ' . $now . ' AND (TimeDown > ' . $now . ' OR TimeDown IS NULL) AND (IsProcessUp = 0 OR Active = 1) 
 			AND NodeId = ' . $nodeId . ' ORDER BY VersionId DESC, TimeDown2 DESC, IdNodeFrame DESC';
-		$dbObj->Query($sql);
-		$nodeFrames = array();
+		$dbObj->query($sql);
+		$nodeFrames = [];
 		$i = 0;
 		while(! $dbObj->EOF) {
-			$nodeFrames[$i]['Id'] = $dbObj->GetValue('IdNodeFrame');
-			$nodeFrames[$i]['Active'] = $dbObj->GetValue('Active');
+			$nodeFrames[$i]['Id'] = $dbObj->getValue('IdNodeFrame');
+			$nodeFrames[$i]['Active'] = $dbObj->getValue('Active');
 			$i++;
-			$dbObj->Next();
+			$dbObj->next();
 		}
 		return $nodeFrames;
     }
@@ -235,7 +180,7 @@ class NodeFrameManager
 	 * @param string $batchType
 	 * @return array|NULL
 	 */
-    function getNodeFramesToProcess(int $batchId, int $chunk, string $batchType) : ?array
+    public function getNodeFramesToProcess(int $batchId, int $chunk, string $batchType) : ?array
     {
         $sql = 'SELECT NodeFrames.IdNodeFrame, NodeFrames.NodeId, NodeFrames.VersionId, NodeFrames.TimeUp, ' 
             . 'NodeFrames.TimeDown, NodeFrames.Active FROM NodeFrames, ServerFrames';
@@ -261,18 +206,18 @@ class NodeFrameManager
 			return null;
 		}
 		$dbObj = new \Ximdex\Runtime\Db();
-		$dbObj->Query($sql);
-		$nodeFrames = array();
+		$dbObj->query($sql);
+		$nodeFrames = [];
 		$i = 0;
-		while(! $dbObj->EOF) {
-			$nodeFrames[$i]['nodeFrId'] = $dbObj->GetValue('IdNodeFrame');
-			$nodeFrames[$i]['nodeId'] = $dbObj->GetValue('NodeId');
-			$nodeFrames[$i]['version'] = $dbObj->GetValue('VersionId');
-			$nodeFrames[$i]['up'] = $dbObj->GetValue('TimeUp');
-			$nodeFrames[$i]['down'] = $dbObj->GetValue('TimeDown');
-			$nodeFrames[$i]['active'] = $dbObj->GetValue('Active');
+		while (! $dbObj->EOF) {
+			$nodeFrames[$i]['nodeFrId'] = $dbObj->getValue('IdNodeFrame');
+			$nodeFrames[$i]['nodeId'] = $dbObj->getValue('NodeId');
+			$nodeFrames[$i]['version'] = $dbObj->getValue('VersionId');
+			$nodeFrames[$i]['up'] = $dbObj->getValue('TimeUp');
+			$nodeFrames[$i]['down'] = $dbObj->getValue('TimeDown');
+			$nodeFrames[$i]['active'] = $dbObj->getValue('Active');
 			$i++;
-			$dbObj->Next();
+			$dbObj->next();
 		}
 		return $nodeFrames;
     }
@@ -281,17 +226,17 @@ class NodeFrameManager
 	 * Gets the NodeFrames which matching the values of IsProcessUp = 0 and Active = 0
 	 * 
 	 * @param int $nodeID
-	 * @return NULL[]|string[]
+	 * @return array
 	 */
-	function getPendingNodeFrames(int $nodeID)
+	public function getPendingNodeFrames(int $nodeID)
 	{
 		$dbObj = new \Ximdex\Runtime\Db();
 		$sql = 'SELECT IdNodeFrame FROM NodeFrames WHERE NodeId = ' . $nodeID . ' AND IsProcessUp = 0 AND Active = 0';
-		$dbObj->Query($sql);
+		$dbObj->query($sql);
 		$nodeFrames = array();
 		while(! $dbObj->EOF) {
-			$nodeFrames[] = $dbObj->GetValue('IdNodeFrame');
-			$dbObj->Next();
+			$nodeFrames[] = $dbObj->getValue('IdNodeFrame');
+			$dbObj->next();
 		}
 		return $nodeFrames;
 	}
@@ -302,7 +247,7 @@ class NodeFrameManager
 	 * @param int $nodeId
 	 * @return array|boolean
 	 */
-    function getByNode(int $nodeId)
+    public function getByNode(int $nodeId)
     {
 		$nodeFrame = new NodeFrame();
 		$result = $nodeFrame->find('IdNodeFrame', 'NodeId = %s', array('NodeId' => $nodeId), MULTI);
@@ -316,7 +261,7 @@ class NodeFrameManager
 	 * @param int $idNodeFrame
 	 * @param bool $unPublish
 	 */
-	function delete(int $idNodeFrame, bool $unPublish = false)
+	public function delete(int $idNodeFrame, bool $unPublish = false)
 	{
 		$nodeFrame = new NodeFrame($idNodeFrame);
 		$nodeId = $nodeFrame->get('NodeId');
@@ -360,5 +305,58 @@ class NodeFrameManager
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Sets the NodeFrame Activity and modifies the state of its associated ServerFrames
+	 * The replacedBy param  sets the nodeFrameId which replaces this NodeFrame when it become inactive
+	 *
+	 * @param int activity
+	 * @param int nodeFrId
+	 * @param int nodeId
+	 * @param int up
+	 * @param int replacedBy
+	 * @return bool
+	 */
+	private function setActivity(int $activity, int $nodeFrId, int $nodeId, int $up, int $replacedBy = null) : bool
+	{
+	    if (is_null($nodeFrId)) {
+	        Logger::error('Empty IdNodeFrame - setActivity');
+	        return false;
+	    }
+	    $nodeFrame = new NodeFrame($nodeFrId);
+	    $nodeFrame->set('Active', $activity);
+	    $cancelled = null;
+	    if (! is_null($replacedBy) ) {
+	        $nodeFrame->set('GetActivityFrom', $replacedBy);
+	        $cancelled = 1;
+	    }
+	    if ($up == 1) {
+	        $nodeFrame->set('IsProcessUp', 1);
+	    } else {
+	        $nodeFrame->set('IsProcessDown', 1);
+	    }
+	    $result = $nodeFrame->update();
+	    if (! $result) {
+	        Logger::error(sprintf('Setting NodeFrame %s activity to %s', $nodeFrId, $activity));
+	        return false;
+	    }
+	    if ($activity == 1) {
+	        $operation = 'Up';
+	    } else {
+	        $operation = 'Down';
+	    }
+	    $sfOK = true;
+	    $frames = $nodeFrame->getFrames($nodeFrId, $operation);
+	    $channelFrameManager = new ChannelFrameManager();
+	    foreach($frames as $serverFrId) {
+	        Logger::info('Processing serverFrame ' . $serverFrId . ' for nodeFrameID: ' . $nodeFrId . ' and nodeID: ' . $nodeId);
+	        $result = $channelFrameManager->changeState($serverFrId, $operation, $nodeId, $cancelled);
+	        if ($result === false) {
+	            Logger::error('The Serverframe state change has failed ' . $serverFrId);
+	            $sfOK = false;
+	        }
+	    }
+	    return $sfOK;
 	}
 }

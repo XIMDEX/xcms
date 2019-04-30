@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -34,12 +34,12 @@ class DefManager
     private $prefix;
     private $postfix;
     
-    public function __construct($fileName)
+    public function __construct(string $fileName)
     {
         $this->configFilename = $fileName;
 
         // Check config presence
-        if (!file_exists($this->configFilename)) {
+        if (! file_exists($this->configFilename)) {
             $this->createConfigFile();
         }
 
@@ -58,12 +58,12 @@ class DefManager
         }
     }
 
-    public function setPrefix($prefix)
+    public function setPrefix(string $prefix)
     {
         $this->prefix = $prefix;
     }
 
-    public function setPostfix($postfix)
+    public function setPostfix(string $postfix)
     {
         $this->postfix = $postfix;
     }
@@ -92,7 +92,7 @@ class DefManager
         return $consts;
     }
 
-    public function enableItem($name)
+    public function enableItem(string $name)
     {
         if ($this->isEnabledItem($name) === FALSE) {
             $str = $this->prefix . $name . $this->postfix;
@@ -102,7 +102,7 @@ class DefManager
         }
     }
 
-    public function disableItem($name)
+    public function disableItem(string $name)
     {
         if (($key = $this->isEnabledItem($name)) !== FALSE) {
             unset($this->configData[$key]);
@@ -110,7 +110,7 @@ class DefManager
         }
     }
 
-    public function isEnabledItem($name)
+    public function isEnabledItem(string $name)
     {
         $str = $this->prefix . $name . $this->postfix;
         return array_search($str, $this->configData);

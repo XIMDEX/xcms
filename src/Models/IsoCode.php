@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,5 +31,5 @@ use Ximdex\Models\ORM\IsoCodesOrm;
 
 class IsoCode extends IsoCodesOrm
 {
-    var $_fieldsToTraduce = array('Name');
+    public $_fieldsToTraduce = array('Name');
 }

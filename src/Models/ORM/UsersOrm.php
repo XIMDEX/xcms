@@ -32,7 +32,9 @@ use Ximdex\Data\GenericData;
 class UsersOrm extends GenericData
 {
     public $_idField = 'IdUser';
+    
     public $_table = 'Users';
+    
     public $_metaData = array(
         'IdUser' => array('type' => "int(12)", 'not_null' => 'true', 'primary_key' => true),
         'Login' => array('type' => "varchar(255)", 'not_null' => 'true'),
@@ -43,16 +45,26 @@ class UsersOrm extends GenericData
         'LastLogin' => array('type' => "int(14)", 'not_null' => 'false'),
         'NumAccess' => array('type' => "int(12)", 'not_null' => 'true')
     );
+    
     public $_uniqueConstraints = array(
         'login' => array('Login')
     );
+    
     public $_indexes = array('IdUser');
+    
     public $IdUser;
-    public $Login = 0;
-    public $Pass = 0;
-    public $Name = 0;
+    
+    public $Login;
+    
+    public $Pass;
+    
+    public $Name;
+    
     public $Email;
+    
     public $Locale;
+    
     public $LastLogin;
+    
     public $NumAccess;
 }

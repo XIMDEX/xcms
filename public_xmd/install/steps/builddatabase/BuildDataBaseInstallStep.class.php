@@ -133,12 +133,12 @@ class BuildDataBaseInstallStep extends GenericInstallStep
             $values["errors"] = 'Cannot connect to database';
             $this->sendJSON($values);
         }
-        if (! $idbManager->loadData($host, $port, $user, $pass, $name)) {
+        if (! $idbManager->loadData()) {
             $values["failure"] = true;
             $values["errors"] = 'Cannot generate the database schema and data';
             $this->sendJSON($values);
         }
-        if (! $idbManager->checkDataBase($host, $port, $user, $pass, $name)) {
+        if (! $idbManager->checkDataBase($name)) {
             $values["failure"] = true;
             if ($idbManager->getErrors()) {
             	$values["errors"] = $idbManager->getErrors();

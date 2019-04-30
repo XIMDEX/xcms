@@ -29,7 +29,7 @@
 }
 
 html{
-  background: url(../images/wood_pattern.png) repeat;
+  background: url(@@@RMximdex.pathto(/images/wood_pattern.png)@@@) repeat;
 }
 
 body {
@@ -47,7 +47,7 @@ h1{
 h1:after{
 	content: ' ';
         position: absolute;
-        background: url(../images/sketch_h1.png) no-repeat center bottom;
+        background: url(@@@RMximdex.pathto(/images/sketch_h1.png)@@@) no-repeat center bottom;
         height: 60px;
         width: 100%;
         bottom: -49px;
@@ -57,14 +57,14 @@ h1:after{
 fieldset{
 	border: 0;
         padding: 10px 15px 60px;
-        background: url(../images/bg_imgs.png) no-repeat 10px 8px;  
+        background: url(@@@RMximdex.pathto(/images/bg_imgs.png)@@@) no-repeat 10px 8px;  
         position:relative;
 }
 
 
 fieldset:before{
 	content: ' ';
-        background: url(../images/clip.png) no-repeat left top;
+        background: url(@@@RMximdex.pathto(/images/clip.png)@@@) no-repeat left top;
         position: absolute;
         width: 69px;
         height: 69px;
@@ -83,7 +83,7 @@ fieldset legend{
 }
 fieldset legend:before{
 	content: ' ';
-        background: url(../images/legend_arrow.png) no-repeat center center;
+        background: url(@@@RMximdex.pathto(/images/legend_arrow.png)@@@) no-repeat center center;
         position:absolute;
         width: 60px;
         height: 36px;
@@ -112,11 +112,11 @@ fieldset ul{
 	width: 570px;
 	margin-left: auto;
 	margin-right: auto;
-        background: url(../images/notebook_bottom.png) no-repeat -20px bottom;
+        background: url(@@@RMximdex.pathto(/images/notebook_bottom.png)@@@) no-repeat -20px bottom;
         padding-bottom: 35px;
         }
 .header {
-	background: url(../images/notebook_top.png) no-repeat center 15px;
+	background: url(@@@RMximdex.pathto(/images/notebook_top.png)@@@) no-repeat center 15px;
 	text-align: center;
         margin-top: 12px;
         padding-top: 125px;
@@ -124,7 +124,7 @@ fieldset ul{
 .title {
 }
 .container {
-	background: url(../images/notebook_middle.png) repeat-y center top;
+	background: url(@@@RMximdex.pathto(/images/notebook_middle.png)@@@) repeat-y center top;
         padding-top: 60px;
 }
 .addressBook {
@@ -140,7 +140,7 @@ fieldset ul{
 	width: 33px;
 	display:inline-block;
         padding: 0 28px;
-  	background: url(../images/label_arrows.png) no-repeat right -7px;
+  	background: url(@@@RMximdex.pathto(/images/label_arrows.png)@@@) no-repeat right -7px;
         margin-right: 10px;
         position: relative;
         margin-left: 44px;
@@ -148,7 +148,7 @@ fieldset ul{
 }
 .label:before {
 	content: ' ';
-        background: url(../images/label_icon.png) no-repeat left -11px;
+        background: url(@@@RMximdex.pathto(/images/label_icon.png)@@@) no-repeat left -11px;
         width: 20px;
         height: 20px;
         position: absolute;
@@ -156,26 +156,26 @@ fieldset ul{
     	top: 3px;
         }
 .email:before {
-	background: url(../images/label_icon.png) no-repeat -5px -37px;
+	background: url(@@@RMximdex.pathto(/images/label_icon.png)@@@) no-repeat -5px -37px;
 
         }
 .note:before {
-	background: url(../images/label_icon.png) no-repeat -5px -61px;
+	background: url(@@@RMximdex.pathto(/images/label_icon.png)@@@) no-repeat -5px -61px;
 
         }       
         
 li:nth-child(1) .label{
-    	background: url(../images/label_arrows.png) no-repeat right -32px;
+    	background: url(@@@RMximdex.pathto(/images/label_arrows.png)@@@) no-repeat right -32px;
                 margin-left: 30px;
 }
 
 li:nth-child(2) .label{
-    	background: url(../images/label_arrows.png) no-repeat right -32px;
+    	background: url(@@@RMximdex.pathto(/images/label_arrows.png)@@@) no-repeat right -32px;
                 margin-left: 33px;
 }
 
 li:nth-child(3) .label{
-    	background: url(../images/label_arrows.png) no-repeat right -56px;
+    	background: url(@@@RMximdex.pathto(/images/label_arrows.png)@@@) no-repeat right -56px;
                 margin-left: 36px;
 }
 

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -28,71 +28,85 @@
 use Ximdex\Models\Link;
 use Ximdex\Models\Node;
 
-
-class FormValidation {
-    
+class FormValidation
+{    
     /**
-    * Check if exists a node with a specific name like child of the selected one.
-    * 
-    * @return boolean True if not exists this name under the current node.
-    */
-    public static function isUniqueName($params){
-        
-        if (!isset($params["nodeid"]) or !$params["nodeid"])
-            die('true');
-        
-        $idnode = $params["nodeid"];
-        $inputName = $params["inputName"];
-        $name=$params[$inputName];
-        if (!empty($params["process"]) && $params["process"] == "normalize") {
+     * Check if exists a node with a specific name like child of the selected one
+     * 
+     * @param array $params
+     * @param bool $returnText
+     * @throws Exception
+     * @return bool
+     */
+    public static function isUniqueName(array $params, bool $returnText = true) : bool
+    {       
+        if (! isset($params['nodeid']) or ! $params['nodeid']) {
+            throw new Exception('Node Id is needed for unique name operation');
+        }
+        $idnode = $params['nodeid'];
+        $inputName = $params['inputName'];
+        $name = trim($params[$inputName]);
+        if (! empty($params['process']) && $params['process'] == 'normalize') {
             $name = \Ximdex\Utils\Strings::normalize($name);
         }
         $node = new Node($idnode);
-        if($node->nodeType->get("IsFolder")==0){
-            $idnode=$node->get("IdParent");
+        if (! $node->nodeType->get('IsFolder')){
+            $parentId = $node->get('IdParent');
+        } else {
+            $parentId = $node->getID();
         }
-        $names = $node->find("Name","idparent=%s",array($idnode),MONO);
-        $names = $names? $names: array();
-        $result = in_array($name, $names)? "false": "true";
-        die($result);
+        $names = $node->find('Name', 'IdParent = %s AND Name LIKE %s AND IdNode <> %s',  [$parentId, $name, $idnode], MONO);
+        if ($returnText) {
+            die($names ? 'false' : 'true');
+        }
+        return ! $names;
     }
     
     /**
-    * Check if exists a link with a specific url.
-    * 
-    * @return boolean True if not exists this url.
-    */
-    public static function isUniqueUrl($params){
-        
-        if (!isset($params["nodeid"]) or !$params["nodeid"])
-            die('true');
-        $inputName = $params["inputName"];
-        $idNode = $params["nodeid"];
-
+     * Check if exists a link with a specific url
+     * 
+     * @param array $params
+     * @param bool $returnText
+     * @throws Exception
+     * @return bool
+     */
+    public static function isUniqueUrl(array $params, bool $returnText = true) : bool
+    {
+        if (! isset($params['nodeid']) or ! $params['nodeid']) {
+            throw new Exception('Node ID is needed for unique URL operation');
+        }
+        $inputName = $params['inputName'];
+        $idNode = $params['nodeid'];
         $url = trim($params[$inputName]);
         $link = new Link();
-        $links = $link->find("IdLink", "url=%s AND (IdLink <> %s)", array($url,$idNode), MONO);
-        if (!$links)
-            die (true);
-        else
-        die(!self::inSameProject($idNode, $links)?"true":"false");
-        
+        $links = $link->find('IdLink', 'url = %s AND IdLink <> %s', array($url, $idNode), MONO);
+        if (! $links) {
+            if ($returnText) {
+                die('true');
+            }
+            return true;
+        }
+        $res = ! self::inSameProject($idNode, $links);
+        if ($returnText) {
+            die($res ? 'false' : 'true');
+        }
+        return ! $res;
     }
     
     /**
-     * 
      * @param int $idNode
      * @param array $links
-     * @return boolean True if some link is in the same project than idnode.
+     * @return boolean True if some link is in the same project than idnode
      */
-    private static function inSameProject($idNode, $links){
-        
+    private static function inSameProject(int $idNode, array $links) : bool
+    {    
         $node = new Node($idNode);
         $idProject = $node->getProject();
         foreach ($links as $idLink) {
             $linkNode = new Node($idLink);
-            if ($linkNode->getProject() == $idProject)
+            if ($linkNode->getProject() == $idProject) {
                 return true;
+            }
         }
         return false;        
     }

@@ -134,7 +134,7 @@ class DexPumper
         if (! $this->pumper->get('PumperId')) {
             $this->fatal('Pumper Id NOT found for id: ' . $params['--pumperid']);
         }
-        $this->debug('NEW PUMPER: ' . print_r($params,true));
+        $this->debug('NEW PUMPER: ' . $params['--pumperid']);
         $this->localBasePath = trim($params['--localbasepath']);
     }
     
@@ -470,7 +470,14 @@ class DexPumper
         } else {
             $id = null;
         }
-        return $this->connection->rm($remoteFile, $id);
+        $res = $this->connection->rm($remoteFile, $id);
+        if ($res === false) {
+            $this->error($this->connection->getError());
+            if ($this->connection->getType() == Connector::TYPE_API and $this->connection->getCode() == 400) {
+                return null;
+            }
+        }
+        return $res;
     }
     
     private function taskRename(string $targetFile, string $targetFolder, string $newFile, int $idSync = null) : ?bool
@@ -506,7 +513,6 @@ class DexPumper
         $this->info('Processing ' . $this->serverFrame->get('IdSync'));
         if (! $result) {
             $retries = $serverFrame->get('Retry');
-            // $serverFrame->set('Retry', $retries);
             if ($result === null) {
                 
                 // The error is alocated in the local server, no more retries
@@ -587,7 +593,6 @@ class DexPumper
     
     private function info(string $_msg, string $color = '')
     {
-        // $this->msg_log('INFO PUMPER: ' . $_msg);
         Logger::info($_msg, false, $color);
     }
     
@@ -606,7 +611,6 @@ class DexPumper
     private function debug(string $_msg)
     {
         if (App::debug()) {
-            // $this->msg_log('DEBUG PUMPER: ' . $_msg);
             Logger::debug($_msg);
         }
     }

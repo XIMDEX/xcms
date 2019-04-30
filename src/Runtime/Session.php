@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,20 +27,19 @@
 
 namespace Ximdex\Runtime;
 
+use Ximdex\Models\User;
+
 /** @const DEFAULT_SESSION - Name of default session */
 define('DEFAULT_SESSION', 'SessionID');
 
 /** @const HTTP_SESSION_STARTED - The session was started with the current request */
-define('HTTP_SESSION_STARTED',      1);
+define('HTTP_SESSION_STARTED', 1);
 
 /** @const HTTP_SESSION_STARTED - No new session was started with the current request */
-define('HTTP_SESSION_CONTINUED',    2);
-
+define('HTTP_SESSION_CONTINUED', 2);
 
 class Session
 {
-    // session_set_save_handler, permite modificar la manera en que se gestionan las sesiones. (bd, etc..)
-
     /**
      * Set new name of a session
      *
@@ -49,7 +48,7 @@ class Session
      * @param string $name New name of a session
      * @return string
      */
-    public static function name($name = NULL)
+    public static function name(string $name = null)
     {
         if (session_status() != PHP_SESSION_ACTIVE and $name) {
             return session_name($name);
@@ -59,16 +58,16 @@ class Session
 
     /**
      * @param string $name
-     * @param $id
+     * @param int $id
      */
-    public static function start($name = DEFAULT_SESSION, $id = null) {
+    public static function start(string $name = DEFAULT_SESSION, int $id = null) {
         if (session_status() != PHP_SESSION_ACTIVE) {
             unset($id);
             self::name($name);
             session_cache_limiter('none');
             session_cache_expire(60);
             session_start();
-            if (!isset($_SESSION['__HTTP_Session_Info'])) {
+            if (! isset($_SESSION['__HTTP_Session_Info'])) {
                 $_SESSION['__HTTP_Session_Info'] = HTTP_SESSION_STARTED;
             } else {
                 $_SESSION['__HTTP_Session_Info'] = HTTP_SESSION_CONTINUED;
@@ -94,10 +93,10 @@ class Session
 
     public static function isNew()
     {
-        return !isset($_SESSION['__HTTP_Session_Info']) || $_SESSION['__HTTP_Session_Info'] == HTTP_SESSION_STARTED;
+        return ! isset($_SESSION['__HTTP_Session_Info']) || $_SESSION['__HTTP_Session_Info'] == HTTP_SESSION_STARTED;
     }
 
-    public static function set($key, $data)
+    public static function set(string $key, $data)
     {
         $sid = session_id();
         if (empty($sid)) {
@@ -106,14 +105,14 @@ class Session
         $_SESSION[$key] = $data;
     }
 
-    public static function delete($key)
+    public static function delete(string $key)
     {
         if (self::exists($key)) {
             unset($_SESSION[$key]);
         }
     }
 
-    public static function get($key)
+    public static function get(string $key)
     {
         $ret = null;
         if (self::exists($key)) {
@@ -122,7 +121,7 @@ class Session
         return $ret;
     }
 
-    public static function exists($key)
+    public static function exists(string $key)
     {
         $sid = session_id();
         if (empty($sid)) {
@@ -132,12 +131,12 @@ class Session
         return $ret;
     }
 
-    public static function serialize($key, & $var)
+    public static function serialize(string $key, string & $var)
     {
         $_SESSION[$key] = serialize($var);
     }
 
-    public static function & unserialize($key)
+    public static function & unserialize(string $key)
     {
         if (self::exists($key)) {
             $o = unserialize($_SESSION[$key]);
@@ -149,32 +148,20 @@ class Session
     public static function destroy()
     {
         self::start();
-        if (!empty($_SESSION)) {
+        if (! empty($_SESSION)) {
             session_unset();
             $_SESSION = array();
             session_destroy();
         }
     }
 
-    function display()
-    {
-        echo '<pre>';
-        print_r($_SESSION);
-        echo '</pre>';
-    }
-
-    function getDisplay()
-    {
-        return print_r($_SESSION, true);
-    }
-
-    public static function check($redirect = true)
+    public static function check(bool $redirect = true)
     {
         self::start();
-        if (!array_key_exists('action', $_GET) ) {
+        if (! array_key_exists('action', $_GET) ) {
             $_GET['action'] = null;
         }
-        if (!self::exists('logged') && 'installer' != $_GET['action']) {
+        if (! self::exists('logged') && 'installer' != $_GET['action']) {
             if ($redirect) {
                 $response = new Response();
                 $response->sendStatus(sprintf('Location: %s/', App::getValue('UrlRoot')), true, 301);
@@ -189,7 +176,7 @@ class Session
     public static function checkUserID()
     {
         $userID = self::get('userID');
-        if ($userID == '301') {
+        if ($userID == User::XIMDEX_ID) {
             return true;
         }
         return false;

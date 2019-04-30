@@ -36,7 +36,7 @@ class UserNode extends Root
      * {@inheritDoc}
      * @see \Ximdex\NodeTypes\Root::createNode()
      */
-    public function createNode(string $login = null, int $parentID = null, int $nodeTypeID = null, int $stateID = null, string $realName = null
+	public function createNode(string $login = null, int $parentID = null, int $nodeTypeID = null, int $stateID = null, string $realName = null
 	    , string $pass = null, string $email = null, string $locale = null, string $generalRole = null)
 	{
 		$user = new User();
@@ -57,7 +57,9 @@ class UserNode extends Root
 	public function deleteNode() : bool
 	{
 		$user = new User($this->parent->get('IdNode'));
-		$user->deleteUser();
+		if ($user->deleteUser() === false) {
+		    return false;
+		}
 		return true;
 	}
 }

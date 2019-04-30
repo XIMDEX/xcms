@@ -40,7 +40,6 @@ use Ximdex\Models\Node;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Utils\Messages;
 use Ximdex\Models\Transition;
-use Ximdex\Utils\FsUtils;
 
 class ParsingDependencies
 {
@@ -58,7 +57,7 @@ class ParsingDependencies
      * @param string $content xml's content
      * @return array
      */
-    function GetStructuredDocumentXimletsExtended($content)
+    function GetStructuredDocumentXimletsExtended(string $content)
     {
         $matches = [];
         if (preg_match_all('/<ximlet(\s*idExportationXimlet\="(\d*?)"\s*)?>@@@GMximdex.ximlet\((\d+)\)/i', $content, $matches) > 0) {
@@ -100,7 +99,7 @@ class ParsingDependencies
      * @param string $content
      * @return boolean
      */
-    public function parseAllDependencies($idNode, $content)
+    public function parseAllDependencies(int $idNode, string $content)
     {
         $node = new Node($idNode);
         if (!($node->get('IdNode') > 0)) {
@@ -114,7 +113,7 @@ class ParsingDependencies
             return false;
         }
         $dataFactory = new DataFactory($idNode);
-        $idVersion = $dataFactory->GetLastVersionId();
+        $idVersion = $dataFactory->getLastVersionId();
         switch ($node->get("IdNodeType")) {
             case NodeTypeConstants::XHTML5_DOC:
             case NodeTypeConstants::XML_DOCUMENT:
@@ -147,7 +146,7 @@ class ParsingDependencies
      * @param int $idVersion
      * @return bool
      */
-    public static function parseXMLDependencies($node, $content, $idVersion)
+    public static function parseXMLDependencies(Node $node, string $content, int $idVersion)
     {
         $idNode = $node->get("IdNode");
         $structuredDocument = new StructuredDocument($idNode);
@@ -180,22 +179,19 @@ class ParsingDependencies
     }
 
     /**
-     * Search Dependencies in $content for the css $node and save it.
+     * Search Dependencies in $content for the css $node and save it
      *
      * @param Node $node
-     * @param null $content
+     * @param string $content
      * @return bool
      */
-    public static function parseCssDependencies($node, $content = NULL)
+    public static function parseCssDependencies(Node $node, string $content = null)
     {
-        if (is_numeric($node)) {
-            $node = new Node($node);
-        }
         $patron = "/url\(([^\)]*)?\)/";
         $type = 'ASSET';
         $matches = array();
         $idNode = $node->getID();
-        if (!($node->get('IdNode') > 0)) {
+        if (! $node->get('IdNode')) {
             Logger::error('Error while node loading');
             return false;
         }
@@ -208,13 +204,13 @@ class ParsingDependencies
         $nodeDependencies = new NodeDependencies();
         $nodeDependencies->deleteBySource($idNode);
         $dependencies = new Dependencies();
-        $dependencies->deleteMasterNodeandType($idNode, $type);
+        $dependencies->deleteMasterNodeAndType($idNode, $type);
         $depsMngr = new DepsManager();
         $depsMngr->deleteBySource(DepsManager::NODE2ASSET, $idNode);
 
         // Search for images inside the css file content
         preg_match_all($patron, $content, $matches);
-        if (!empty($matches) && !empty($matches[1])) {
+        if (! empty($matches) && ! empty($matches[1])) {
             $images = array_unique(array_values($matches[1]));
 
             // Inserting new dependencies between css file and images
@@ -241,24 +237,24 @@ class ParsingDependencies
     /**
      * Save dependencies for channels, languages and schema
      *
-     * @param $node
-     * @param $structuredDocument
+     * @param Node $node
+     * @param StructuredDocument $structuredDocument
      * @return array
      */
-    private static function buildDependenciesFromStructuredDocument($node, $structuredDocument)
+    private static function buildDependenciesFromStructuredDocument(Node $node, StructuredDocument $structuredDocument)
     {
         $channels = $structuredDocument->GetChannels();
         $schemas = (array)$structuredDocument->get('IdTemplate');
         $languages = (array)$structuredDocument->get('IdLanguage');
-        if (!self::addDependencies($node, $channels, "channel")) {
+        if (! self::addDependencies($node, $channels, "channel")) {
             $GLOBALS['parsingDependenciesError'] = 'Can\'t add the dependencies for channels';
             return false;
         }
-        if (!self::addDependencies($node, $languages, "language")) {
+        if (! self::addDependencies($node, $languages, "language")) {
             $GLOBALS['parsingDependenciesError'] = 'Can\'t add the dependencies for language';
             return false;
         }
-        if (!self::addDependencies($node, $schemas, "schema")) {
+        if (! self::addDependencies($node, $schemas, "schema")) {
             $GLOBALS['parsingDependenciesError'] = 'Can\'t add the dependencies for schemas';
             return false;
         }
@@ -272,13 +268,13 @@ class ParsingDependencies
 
     /**
      * Search dependencies with ximlets in $content for $node and save these
-     *
-     * @param $node
-     * @param $structuredDocument
-     * @param $content
-     * @return array
+     * 
+     * @param Node $node
+     * @param StructuredDocument $structuredDocument
+     * @param string $content
+     * @return boolean|array
      */
-    private static function buildDependenciesWithXimlets($node, $structuredDocument, $content)
+    private static function buildDependenciesWithXimlets(Node $node, StructuredDocument $structuredDocument, string $content)
     {
         $sectionXimlets = self::getSectionXimlets($node, $structuredDocument->get('IdLanguage'));
         $ximlets = self::getXimletsInContent($content);
@@ -288,12 +284,12 @@ class ParsingDependencies
 
     /**
      * Search dependencies with xsl templates in $content and save these
-     *
-     * @param $node
-     * @param $content
-     * @return array
+     * 
+     * @param Node $node
+     * @param string $content
+     * @return boolean|array
      */
-    private static function buildDependenciesWithXsl($node, $content)
+    private static function buildDependenciesWithXsl(Node $node, string $content)
     {
         $xslTemplates = self::getXslDependencies($node, $content);
         return self::addDependencies($node, $xslTemplates, "template") ? $xslTemplates : false;
@@ -306,9 +302,9 @@ class ParsingDependencies
      * @param Node $node master Node
      * @param String $content
      * @param $idVersion
-     * @return array|bool
+     * @return array|boolean
      */
-    private static function buildDependenciesWithAssetsAndLinks($node, $content, $idVersion)
+    private static function buildDependenciesWithAssetsAndLinks(Node $node, string $content, int $idVersion)
     {
         $dotDots = $pathTos = array();
         $idNode = $node->get('IdNode');
@@ -369,11 +365,12 @@ class ParsingDependencies
     /**
      * Save into NodeDependencies relations between nodes by channel
      * The relations depends on the transformation for a specific channel
-     *
-     * @param $idNode
-     * @param $nodesByChannel
+     * 
+     * @param int $idNode
+     * @param array $nodesByChannel
+     * @return boolean
      */
-    private static function addIntoNodeDependencies($idNode, $nodesByChannel)
+    private static function addIntoNodeDependencies(int $idNode, array $nodesByChannel)
     {
         $nodeDependencies = new NodeDependencies();
         foreach ($nodesByChannel as $idChannel => $nodes) {
@@ -389,12 +386,12 @@ class ParsingDependencies
 
     /**
      * Get xsl Dependencies from Content
-     *
-     * @param $node
-     * @param $content
-     * @return array
+     * 
+     * @param Node $node
+     * @param string $content
+     * @return boolean|array
      */
-    private static function getXslDependencies($node, $content)
+    private static function getXslDependencies(Node $node, string $content)
     {
         $section = new Node($node->GetSection());
         $sectionTemplates = new Node($section->GetChildByName('templates'));
@@ -417,11 +414,11 @@ class ParsingDependencies
         $parsedTags = array();
         foreach ($nodeList as $element) {
             $tagName = $element->nodeName;
-            if (!in_array($tagName, $parsedTags)) {
+            if (! in_array($tagName, $parsedTags)) {
                 $xsltId = $sectionTemplates->GetChildByName($tagName . '.xsl');
 
                 // If not found in section it searchs in project
-                if (!($xsltId > 0)) {
+                if (! ($xsltId > 0)) {
                     $xsltId = $projectTemplates->GetChildByName($tagName . '.xsl');
                 }
                 if ($xsltId > 0) {
@@ -437,9 +434,9 @@ class ParsingDependencies
      * Remove from Data Base every dependence for current node
      *
      * @param Node $node Node master
-     * @return bool
+     * @return boolean
      */
-    private static function clearDependencies($node)
+    private static function clearDependencies(Node $node)
     {
         // Deletes old dependency (if exists)
         $idNode = $node->get("IdNode");
@@ -465,18 +462,18 @@ class ParsingDependencies
     }
 
     /**
-     * Add into Data Base every dependence between master and dependent nodes.
-     *
-     * @param int $master
-     * @param array /int $idDeps
+     * Add into Data Base every dependence between master and dependent nodes
+     * 
+     * @param Node $master
+     * @param array $idDeps
      * @param string $type
-     * @return bool
+     * @return boolean
      */
-    private static function addDependencies($master, $idDeps, $type = null)
+    private static function addDependencies(Node $master, array $idDeps, string $type = null)
     {
         $result = true;
         $idMaster = $master->get("IdNode");
-        if (!is_array($idDeps)) {
+        if (! is_array($idDeps)) {
             $idDeps = (array)$idDeps;
         }
         if (count($idDeps)) {
@@ -521,9 +518,9 @@ class ParsingDependencies
      * Infer the type for dependence of $idNode
      *
      * @param int $idNode
-     * @return bool|string
+     * @return boolean|string
      */
-    private static function inferType($idNode)
+    private static function inferType(int $idNode)
     {
         $type = false;
         $depNode = new Node($idNode);
@@ -558,7 +555,7 @@ class ParsingDependencies
         return $type;
     }
 
-    private static function getLinks($content, $nodeTypeName = NULL)
+    private static function getLinks(string $content, string $nodeTypeName = null)
     {
         $matches = [];
         preg_match_all('/ a_enlaceid[_|\w|\d]*\s*=\s*[\'|"](\d)(,\d)?[\'|"]/i', $content, $matches);
@@ -568,7 +565,7 @@ class ParsingDependencies
         return array_merge($links, $importLinks);
     }
 
-    private static function getAssets($content, $nodeTypeName = NULL)
+    private static function getAssets(string $content, string $nodeTypeName = null)
     {
         $matches = [];
         preg_match_all('/<url.*>\s*(\d+)\s*<\/url>/i', $content, $matches);
@@ -576,7 +573,7 @@ class ParsingDependencies
         return $assets;
     }
 
-    public static function getDotDot($content, $idServer)
+    public static function getDotDot(string $content, int $idServer)
     {
         $matches = [];
         preg_match_all("/@@@RMximdex\.dotdot\((css|common)([^\)]*)\)@@@/", $content, $matches);
@@ -627,12 +624,13 @@ class ParsingDependencies
      * @param int $nodeId
      * @return array
      */
-    public static function getPathTo($content, $nodeId)
+    public static function getPathTo(string $content, int $nodeId)
     {
         $matches = [];
         preg_match_all("/@@@RMximdex\.pathto\(([^\)]*)\)@@@/", $content, $matches);
         $links = array();
         if (count($matches[1])) {
+            Logger::info('Parsing pathTo macros for node ' . $nodeId);
             $node = new Node($nodeId);
             $server = $node->getServer();
             $parserPathTo = new ParsingPathTo();
@@ -646,7 +644,7 @@ class ParsingDependencies
                     $GLOBALS['parsingDependenciesError'] = $error;
                 } else {
                     if ($parserPathTo->getNode() !== null) {
-                        $links[$parserPathTo->getNode()->GetID()] = $parserPathTo->getNode()->GetID();
+                        $links[$parserPathTo->getNode()->getID()] = $parserPathTo->getNode()->getID();
                     }
                 }
             }
@@ -654,11 +652,7 @@ class ParsingDependencies
         return $links;
     }
 
-    /**
-     * @param $_path
-     * @return null|int
-     */
-    private static function _getIdNode($_path)
+    private static function _getIdNode(string $_path)
     {
         // Building file and path
         $file = pathinfo($_path);
@@ -682,12 +676,12 @@ class ParsingDependencies
 
     /**
      * Checks if section has ximlet dependencies and returns these dependencies
-     *
-     * @param int $idSection
+     * 
+     * @param Node $node
      * @param int $idLanguage
-     * @return array
+     * @return array|boolean
      */
-    private static function getSectionXimlets($node, $idLanguage)
+    private static function getSectionXimlets(Node $node, int $idLanguage)
     {
         $sectionId = $node->getSection();
         $depsManager = new DepsManager();
@@ -712,9 +706,9 @@ class ParsingDependencies
      * Find ximlets id in content by Regexp ximlet([0-9]+)
      *
      * @param String $content
-     * @return array Dependencies found.
+     * @return array Dependencies found
      */
-    private static function getXimletsInContent($content)
+    private static function getXimletsInContent(string $content)
     {
         $matches = [];
         preg_match_all('/ximlet\((\d+)\)/i', $content, $matches);

@@ -585,10 +585,21 @@ button::-moz-focus-inner {
   -o-transition: left .4s;
   transition: left .4s; }
 
-.browser-action-view-content iframe.action_iframe{
+.browser-action-view-content iframe.action_iframe {
     overflow-y: hidden;
 }
-.browser-action-view-content{
+
+.browser-action-view-content {
     height: calc(100 - 41px);
     overflow-y: hidden;
+}
+
+#header .logo_text
+{
+	color: white;
+	font-size: 1.5em;
+	position: absolute;
+	/* font-weight: bold; */
+	margin-top: 6pt;
+	color: #EEE;
 }

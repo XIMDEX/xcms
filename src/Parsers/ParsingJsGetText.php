@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -59,9 +59,9 @@ class ParsingJsGetText
     /**
      * Selecting a language by default to get the file translated to this langauge in case of the passed language is not existing
      * 
-     * @param $_lang
+     * @param string $_lang
      */
-    public function setDefaultLang($_lang)
+    public function setDefaultLang(string $_lang)
     {
         $this->_default_lang = $_lang;
 
@@ -70,7 +70,7 @@ class ParsingJsGetText
         
         // Checking if the asociated language folder is ixisting, if not, we create it
         $_pathname = XIMDEX_ROOT_PATH . $this->PATH_CACHE . $this->_default_lang;
-        if (!is_dir($_pathname)) {
+        if (! is_dir($_pathname)) {
             @mkdir($_pathname, 0777);
         }
     }
@@ -78,13 +78,13 @@ class ParsingJsGetText
     /**
      * Selecting the language in which gettext the file
      * 
-     * @param $_lang
+     * @param string $_lang
      */
-    public function setLang($_lang = null)
+    public function setLang(string $_lang = null)
     {
         $this->_lang = ($_lang) ? $_lang : $this->_default_lang;
         $_pathname = XIMDEX_ROOT_PATH . $this->PATH_CACHE . $this->_lang;
-        if (!is_dir($_pathname)) {
+        if (! is_dir($_pathname)) {
             @mkdir($_pathname, 0777);
         }
     }
@@ -92,18 +92,19 @@ class ParsingJsGetText
     /**
      * Selecting the file where apply gettext
      * 
-     * @param $_js
-     * @return bool
+     * @param string $_js
+     * @return boolean
      */
-    public function setFile($_js = null)
+    public function setFile(string $_js = null)
     {
         if ($_js != null) {
             $info = pathinfo($_js);
-            if (!isset($info['extension']) or !$info['extension']) {
+            if (! isset($info['extension']) or ! $info['extension']) {
                 return true;
             }
-            if (!file_exists(XIMDEX_ROOT_PATH . $_js)) {
-                Logger::error('The file ' . $_js . ' could not be included because of it is not existing in the path: ' . XIMDEX_ROOT_PATH . $_js);
+            if (! file_exists(XIMDEX_ROOT_PATH . $_js)) {
+                Logger::error('The file ' . $_js . ' could not be included because of it is not existing in the path: ' 
+                    . XIMDEX_ROOT_PATH . $_js);
                 return false;
             }
             $this->_file_orig = $_js;
@@ -123,10 +124,10 @@ class ParsingJsGetText
     /**
      * Quick and unified way to manage params in some of this class methods
      * 
-     * @param $_lang
-     * @param $_js
+     * @param string $_lang
+     * @param string $_js
      */
-    public function setParam($_lang = null, $_js = null)
+    public function setParam(string $_lang = null, string $_js = null)
     {
         if ($_js != NULL) {
             $this->setFile($_js);
@@ -138,11 +139,11 @@ class ParsingJsGetText
     /**
      * Gettexting the file and returning the path to final gettexted and cached js file
      * 
-     * @param $_js
-     * @param $_lang
+     * @param string $_js
+     * @param string $_lang
      * @return NULL|string
      */
-    public function process($_js = null, $_lang = null)
+    public function process(string $_js = null, string $_lang = null)
     {
         $this->setParam($_lang, $_js);
 
@@ -154,14 +155,14 @@ class ParsingJsGetText
         
         // Opening the source file to start to gettext it
         $file_in = @fopen(XIMDEX_ROOT_PATH . $this->_file_orig, "r");
-        if (!$file_in) {
+        if (! $file_in) {
             Logger::warning("ERROR, the file " . XIMDEX_ROOT_PATH . $this->_file_orig . " could not be opened");
             return null;
         }
         
         // Opening the destiny file to start to create it
         $file_out = @fopen(XIMDEX_ROOT_PATH . $this->PATH_CACHE . $this->_lang . "/" . $this->_file, "w");
-        if (!$file_out) {
+        if (! $file_out) {
             Logger::error('You have not permits, or the language directory is not existing. Review permits in \'' 
                 . App::getValue('TempRoot') . '/js\'. Error opening the file '
                 . XIMDEX_ROOT_PATH . $this->PATH_CACHE . $this->_lang . "/" . $this->_file);
@@ -170,7 +171,7 @@ class ParsingJsGetText
         Logger::debug("Caching: " . XIMDEX_ROOT_PATH . $this->_file_orig . " --> " . XIMDEX_ROOT_PATH . $this->PATH_CACHE 
             . $this->_lang . "/" . $this->_file);
         if ($file_in && $file_out) {
-            while (!feof($file_in)) {
+            while (! feof($file_in)) {
                 $content = fgets($file_in);
                 $content = $this->parseContent($content);
                 fputs($file_out, $content);
@@ -186,23 +187,23 @@ class ParsingJsGetText
      * Obtaining the name and path to the (selected) file gettexted to the specified language (if it does not exist 
      * for selected language, in the language by default
      * 
-     * @param $_js
-     * @param $_lang
+     * @param string $_js
+     * @param string $_lang
      * @return string|NULL
      */
-    public function getFile($_js = null, $_lang = null)
+    public function getFile(string $_js = null, string $_lang = null)
     {
         static $no_cacheable = null;
-        if (!isset($no_cacheable) ) {
+        if (! isset($no_cacheable) ) {
             $no_cacheable = array(App::getUrl("/assets/js/"), App::getUrl('/vendors/') );
         }
         $this->setParam($_lang, $_js);
         foreach ($no_cacheable as $n_c) {
-            if (!substr_compare($_js, $n_c, 0, strlen($n_c))) {
+            if (! substr_compare($_js, $n_c, 0, strlen($n_c))) {
                 return $_js;
             }
         }
-        if (!is_file(XIMDEX_ROOT_PATH . $_js)) { // dinamic call
+        if (! is_file(XIMDEX_ROOT_PATH . $_js)) { // dinamic call
             return App::getValue('UrlRoot') . $_js;
         }
 
@@ -224,7 +225,7 @@ class ParsingJsGetText
      * @param $_js
      * @return boolean
      */
-    public function fileExists($_lang = null, $_js = null)
+    public function fileExists(string $_lang = null, string $_js = null)
     {
         $this->setParam($_lang, $_js);
         $nombre_file_cacheado = XIMDEX_ROOT_PATH . $this->PATH_CACHE . $this->_lang . "/" . $this->_file;
@@ -245,7 +246,7 @@ class ParsingJsGetText
         return false;
     }
 
-    public function getTextArrayOfJs($_arrayjs, $_lang = null)
+    public function getTextArrayOfJs(array $_arrayjs, string $_lang = null)
     {
         $_files = Array();
         if (count($_arrayjs) > 0) {
@@ -259,7 +260,7 @@ class ParsingJsGetText
         return $_files;
     }
 
-    public static function parseContent($content)
+    public static function parseContent(string $content)
     {
         $patron = '/_\(\s*([\'"])(.*)(?<!\\\\)\1\s*(\\/[*](.*)[*]\\/)?\s*\)/Usi';
         $content = preg_replace_callback(

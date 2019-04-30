@@ -1,5 +1,30 @@
 <?php
 
+/**
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
+ */
+
 namespace Ximdex\Models;
 
 use Ximdex\Logger;
@@ -78,12 +103,12 @@ class FastTraverse extends FastTraverseOrm
                 } else {
                     $operator = 'in';
                 }
-                if (!is_array($opFilters)) {
+                if (! is_array($opFilters)) {
                     Logger::error(ucfirst($operation) . ' filters parameter must be an array of fields');
                     return false;
                 }
                 foreach ($opFilters as $field => $values) {
-                    if (!is_array($values)) {
+                    if (! is_array($values)) {
                         Logger::error('Filter parameter for ' . $field . ' field must be an array of fields');
                         return false;
                     }
@@ -91,10 +116,10 @@ class FastTraverse extends FastTraverseOrm
                 }
             }
         }
-        if (!self::$db) {
+        if (! self::$db) {
             self::$db = new Db();
         }
-        if (self::$db->Query($sql) === false) {
+        if (self::$db->query($sql) === false) {
             return false;
         }
         $children = array();
@@ -104,17 +129,17 @@ class FastTraverse extends FastTraverseOrm
             while (! self::$db->EOF) {
                 foreach ($fields as $source => $sourceFields) {
                     foreach ($sourceFields as $field) {
-                        $children[self::$db->GetValue('Depth')][self::$db->GetValue('IdChild')][$source][$field] = self::$db->GetValue($field);
+                        $children[self::$db->getValue('Depth')][self::$db->getValue('IdChild')][$source][$field] = self::$db->getValue($field);
                     }
                 }
-                self::$db->Next();
+                self::$db->next();
             }
         } else {
             
             // The returned array will have the Depth as key with the node ID as the value
             while (! self::$db->EOF) {
-                $children[self::$db->GetValue('Depth')][] = self::$db->GetValue('IdChild');
-                self::$db->Next();
+                $children[self::$db->getValue('Depth')][] = self::$db->getValue('IdChild');
+                self::$db->next();
             }
         }
         return $children;
@@ -153,7 +178,7 @@ class FastTraverse extends FastTraverseOrm
         if ($nodeTypeFlags) {
             
             // Filter by node type flags
-            if (!$index and !$value) {
+            if (! $index and ! $value) {
                 
                 // If the fields contain node or nodetype values, or node type flags, we need to make a join with Nodes table
                 $sql .= ' inner join Nodes node on (node.IdNode = ft.IdNode)';
@@ -170,17 +195,17 @@ class FastTraverse extends FastTraverseOrm
         if ($limit > 0) {
             $sql .= ' limit ' . $limit;
         }
-        if (!self::$db) {
+        if (! self::$db) {
             self::$db = new Db();
         }
-        if (self::$db->Query($sql) === false) {
+        if (self::$db->query($sql) === false) {
             Logger::error('Getting parents in FastTraverse with node: ' . $idNode . ' (' . self::$db->desErr . ')');
             return false;
         }
         $parents = array();
         while (! self::$db->EOF) {
-            $parents[self::$db->GetValue('_index')] = self::$db->GetValue('_value');
-            self::$db->Next();
+            $parents[self::$db->getValue('_index')] = self::$db->getValue('_value');
+            self::$db->next();
         }
         return $parents;
     }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,25 +32,36 @@ use Ximdex\Models\ORM\ChannelsOrm;
 class Channel extends ChannelsOrm
 {
     public $nodeID;
+    
     public $autoCleanErr;
+    
     public $msgErr;
-    public $errorList = array(
+    
+    public $errorList = array
+    (
         1 => 'Database connection error',
         2 => 'Channel does not exist',
         3 => 'Database inconsistency'
     );
+    
     public $flagErr;
+    
     public $numErr;
     
     const RENDERTYPE_STATIC = 'static';
+    
     const RENDERTYPE_INCLUDE = 'include';
+    
     const RENDERTYPE_DYNAMIC = 'dynamic';
+    
     const RENDERTYPE_INDEX = 'index';
+    
     const RENDER_TYPES = [self::RENDERTYPE_STATIC => 'Static', self::RENDERTYPE_INCLUDE => 'Include', self::RENDERTYPE_DYNAMIC => 'Dynamic'
         , self::RENDERTYPE_INDEX => 'Ximdex Index Format'];
-    const JSON_CHANNEL = 10010;
+    
+    const JSON_CHANNEL = 10005;
 
-    function getChannelsForNode($idNode)
+    public function getChannelsForNode(int $idNode)
     {
         $node = new Node($idNode);
         $channs = $node->getProperty('channel');
@@ -77,7 +88,7 @@ class Channel extends ChannelsOrm
         return count($channels) > 0 ? $channels : null;
     }
 
-    function GetAllChannels($order = null)
+    public function getAllChannels(array $order = null)
     {
         $validDirs = array('ASC', 'DESC');
         $sql = 'SELECT IdChannel FROM Channels';
@@ -99,54 +110,16 @@ class Channel extends ChannelsOrm
         return $salida ? $salida : NULL;
     }
 
-    /**
-     * @return bool|string
-     */
-    function GetID()
+    public function getID()
     {
         if ($this->get('IdChannel')) {
             return $this->get('IdChannel');
-        } else {
-            $this->SetError(2);
-            return false;
         }
+        $this->setError(2);
+        return false;
     }
 
-    /**
-     * Load a channel with a given id //TODO try to delete this functions in the code
-     * 
-     * @param $nodeID
-     * @return null
-     */
-    function SetID($nodeID)
-    {
-        parent::__construct($nodeID);
-        if (! $this->IdChannel) {
-            $this->SetError(2);
-            return null;
-        }
-        return $this->IdChannel;
-    }
-
-    /**
-     * Changes the current channel id
-     * 
-     * @param $name
-     * @return null
-     */
-    function SetByName($name)
-    {
-        $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Query(sprintf('SELECT IdChannel FROM Channels WHERE Name = \'%s\'', $dbObj->sqlEscapeString($name)));
-        parent::__construct($dbObj->GetValue('IdChannel'));
-        if (! $this->IdChannel) {
-            $this->SetError(2);
-            return null;
-        }
-        return $this->IdChannel;
-    }
-
-    function GetName()
+    public function getName()
     {
         return $this->get('Name');
     }
@@ -154,10 +127,10 @@ class Channel extends ChannelsOrm
     /**
      * Changes the current channel name
      * 
-     * @param $name
-     * @return bool|int|null|string
+     * @param string $name
+     * @return boolean|string|NULL|number
      */
-    function SetName($name)
+    public function setName(string $name)
     {
         if (! $this->get('IdChannel')) {
             $this->SetError(2);
@@ -175,17 +148,18 @@ class Channel extends ChannelsOrm
      * 
      * @return string (description)
      */
-    function GetDescription()
+    public function getDescription()
     {
         return $this->get('Description');
     }
 
     /**
      * Changes the current channel description.
-     * @param $description
-     * @return int (status)
+     * 
+     * @param string $description
+     * @return boolean|string|NULL|number
      */
-    function SetDescription($description)
+    public function setDescription(string $description)
     {
         if (! $this->get('IdChannel')) {
             $this->SetError(2);
@@ -203,7 +177,7 @@ class Channel extends ChannelsOrm
      * 
      * @return string (description)
      */
-    function GetExtension()
+    public function getExtension()
     {
         return $this->get('DefaultExtension');
     }
@@ -211,10 +185,10 @@ class Channel extends ChannelsOrm
     /**
      * Changes the default extension for current channel
      * 
-     * @param $ext
-     * @return int (status)
+     * @param string $ext
+     * @return boolean|string|NULL|number
      */
-    function SetExtension($ext)
+    public function SetExtension(string $ext)
     {
         if (! $this->get('IdChannel')) {
             $this->SetError(2);
@@ -227,7 +201,7 @@ class Channel extends ChannelsOrm
         return false;
     }
 
-    function GetFormat()
+    public function GetFormat()
     {
         return $this->get('Format');
     }
@@ -235,10 +209,10 @@ class Channel extends ChannelsOrm
     /**
      * Changes the default format for the current channel
      * 
-     * @param $format
+     * @param string $format
      * @return bool|int|null|string
      */
-    function SetFormat($format)
+    public function SetFormat(string $format)
     {
         if (! $this->get('IdChannel')) {
             $this->SetError(2);
@@ -254,19 +228,21 @@ class Channel extends ChannelsOrm
     /**
      * Creates a new channel and loads its id in the class docID
      * 
-     * @param $name
-     * @param $defaultExtension
-     * @param $format
-     * @param $description
-     * @param $idChannel
+     * @param string $name
+     * @param string $defaultExtension
+     * @param string $format
+     * @param string $description
+     * @param int $idChannel
      * @param string $filter
      * @param string $renderMode
      * @param string $outputType
      * @param string $renderType
-     * @return bool|string
+     * @param string $language
+     * @return boolean|string
      */
-    function CreateNewChannel($name, $defaultExtension, $format, $description, $idChannel, $filter = '', $renderMode = '', $outputType = ''
-            , $renderType = null, $language = null)
+    public function createNewChannel(string $name, string $defaultExtension, string $format = null, string $description = null
+        , int $idChannel = null, string $filter = '', string $renderMode = null, string $outputType = '', string $renderType = null
+        , string $language = null)
     {
         $this->set('IdChannel', (int) $idChannel);
         $this->set('Name', $name);
@@ -288,23 +264,23 @@ class Channel extends ChannelsOrm
     /**
      * Deletes current channel
      * 
-     * @return bool|int|string
+     * @return boolean|number|string
      */
-    function DeleteChannel()
+    public function deleteChannel()
     {
         if (! $this->get('IdChannel')) {
-            $this->SetError(2);
+            $this->setError(2);
             return false;
         }
         return $this->delete();
     }
 
-    function GetFilter()
+    public function getFilter()
     {
         return $this->get('Filter');
     }
 
-    function SetFilter($filter)
+    public function setFilter(string $filter)
     {
         if (! $this->get('IdChannel')) {
             $this->SetError(2);
@@ -317,23 +293,24 @@ class Channel extends ChannelsOrm
         return false;
     }
     
-    function ClearError()
+    public function clearError()
     {
-        $this->flagErr = FALSE;
+        $this->flagErr = false;
     }
 
-    function SetError($code)
+    public function setError(int $code)
     {
-        $this->flagErr = TRUE;
+        $this->flagErr = true;
         $this->numErr = $code;
         $this->msgErr = $this->errorList[$code];
     }
 
-    function HasError()
+    public function hasError()
     {
         $aux = $this->flagErr;
-        if ($this->autoCleanErr)
-            $this->ClearError();
+        if ($this->autoCleanErr) {
+            $this->clearError();
+        }
         return $aux;
     }
 
@@ -341,10 +318,10 @@ class Channel extends ChannelsOrm
      * Set property Default_Channel to 0 for all
      * Channels except the channel with id $idchannel
      * 
-     * @param $idchannel
-     * @return bool
+     * @param int $idchannel
+     * @return boolean
      */
-    function setDefaultChannelToZero($idchannel)
+    public function setDefaultChannelToZero(int $idchannel)
     {
         $dbObj = new \Ximdex\Runtime\Db();
         return $dbObj->Execute(sprintf('UPDATE Channels SET Default_Channel = 0 WHERE IdChannel <> %s', $idchannel));
@@ -368,5 +345,18 @@ class Channel extends ChannelsOrm
     public function setIdLanguage(string $idLanguage) : void
     {
         $this->idLanguage = $idLanguage;
+    }
+    
+    public function hasServers() : bool
+    {
+        if (! $this->IdChannel) {
+            return false;
+        }
+        $relServers = new RelServersChannels();
+        $servers = $relServers->count('IdChannel = ' . $this->IdChannel);
+        if ($servers === false) {
+            return false;
+        }
+        return $servers > 0;
     }
 }

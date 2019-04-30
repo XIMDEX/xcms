@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,9 +31,12 @@ use Ximdex\Data\GenericData;
 
 class NodeDefaultContents extends GenericData
 {
-    var $_idField = 'IdNodeDefaultContent';
-    var $_table = 'NodeDefaultContents';
-    var $_metaData = array(
+    public $_idField = 'IdNodeDefaultContent';
+    
+    public $_table = 'NodeDefaultContents';
+    
+    public $_metaData = array
+    (
         'IdNodeDefaultContent' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'IdNodeType' => array('type' => "int(12)", 'not_null' => 'true'),
         'NodeType' => array('type' => "int(12)", 'not_null' => 'true'),
@@ -41,40 +44,46 @@ class NodeDefaultContents extends GenericData
         'State' => array('type' => "int(12)", 'not_null' => 'false'),
         'Params' => array('type' => "varchar(255)", 'not_null' => 'false')
     );
-    var $_uniqueConstraints = array(
+    
+    public $_uniqueConstraints = array
+    (
         'UniqueName' => array('Name', 'IdNodeType')
     );
-    var $_indexes = array('IdNodeDefaultContent');
-    var $IdNodeDefaultContent;
-    var $IdNodeType = 0;
-    var $NodeType = 0;
-    var $Name = 0;
-    var $State;
-    var $Params;
+    
+    public $_indexes = array('IdNodeDefaultContent');
+    
+    public $IdNodeDefaultContent;
+    
+    public $IdNodeType = 0;
+    
+    public $NodeType = 0;
+    
+    public $Name = 0;
+    
+    public $State;
+    
+    public $Params;
 
     /**
-     * Returns all the allowed children for a given nodetype. 
+     * Returns all the allowed children for a given nodetype
      * 
-     * Request params: 
-     * 
-     * * idnodetype: Nodetype identificator. 
-     * @return Array result: 
+     * @param int $idnodetype
+     * @return array|boolean
      */
-    function getDefaultChilds($idnodetype)
+    public function getDefaultChilds(int $idnodetype)
     {
-        $result = $this->find('NodeType, Name', 'IdNodeType = %s AND Nodetype <> %s', array($idnodetype, $idnodetype), MULTI, true, null, 'Name');
+        $result = $this->find('NodeType, Name', 'IdNodeType = %s AND Nodetype <> %s', array($idnodetype, $idnodetype)
+            , MULTI, true, null, 'Name');
         return $result;
     }
 
     /**
-     * Returns the name of the default folder a given nodetype. 
+     * Returns the name of the default folder a given nodetype.
      * 
-     * Request params: 
-     *  
-     * * idnodetype: Nodetype identificator. 
-     * @return Array result: 
+     * @param int $idnodetype
+     * @return string
      */
-    function getDefaultName($idnodetype)
+    public function getDefaultName(int $idnodetype)
     {
         $result = $this->find('Name', 'NodeType = %s', array($idnodetype), MONO);
         return $result[0];

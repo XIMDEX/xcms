@@ -90,7 +90,7 @@ class Action_searchpanel extends ActionAbstract
 				'target' => 'versionnumber'
 			)
 		);
-        $fieldsJSON = json_encode($fields,JSON_UNESCAPED_UNICODE);
+        $fieldsJSON = json_encode($fields, JSON_UNESCAPED_UNICODE);
 		$this->render(array('fields' => $fieldsJSON), 'results', 'default-3.0.tpl');
 	}
 

@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,45 +25,42 @@
  *  @version $Revision$
  */
 
-class Module_ximIO extends \Ximdex\Modules\Module {
+use Ximdex\Modules\Module;
 
-
-	public function __construct()  {
-		
-		// Call Module constructor.
+class Module_ximIO extends Module
+{
+	public function __construct()
+	{
+		// Call Module constructor
 		parent::__construct('ximIO', dirname(__FILE__));
 
-		// Initialization stuff.
-	
+		// Initialization stuff
 	}
 
-	function install() {
-
-        // Install logic.
+	public function install()
+	{
+        // Install logic
         
-        // get module from ftp, webdav, subversion, etc...?
-        // need to be extracted?
-        // extract and copy files to modules location.
+        // Get module from ftp, webdav, subversion, etc...?
+        // Need to be extracted?
+        // Extract and copy files to modules location.
         
-        // get constructor SQL   
+        // Get constructor SQL   
 		$this->loadConstructorSQL("ximIO.constructor.sql");
 		
         // Install !      
 		$install_ret = parent::install();
-		return $install_ret;		
-		
+		return $install_ret;
 	}
 
-	function uninstall() {
-		
-		// Uninstall logic.
+	public function uninstall()
+	{	
+		// Uninstall logic
           
-        // get destructor SQL          
+        // Get destructor SQL          
 		$this->loadDestructorSQL("ximIO.destructor.sql");
 
         // Uninstall !      
 		parent::uninstall();
-
 	}
-
 }

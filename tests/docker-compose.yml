@@ -2,18 +2,6 @@ version: "2"
 
 services:
 
-  ximdex:
-    image: ximdex/nginx-php:php7-xdebug
-    environment:
-      WEB_DOCUMENT_ROOT: /var/www/html
-    ports:
-      - 82:80
-    volumes:
-      - ../:/var/www/html
-    links:
-      - db
-
-  # MYSQL or MARIADB
   db:
     image: "${DB_SERVER}"
     ports:
@@ -25,6 +13,20 @@ services:
       MYSQL_DATABASE: ximdex
     volumes:
       - ../docker/db.cnf:/etc/mysql/conf.d/db.cnf
+
+  ximdex:
+    image: ximdex/nginx-php:php7-xdebug
+    environment:
+      WEB_DOCUMENT_ROOT: /var/www/html
+      PHP_DISPLAY_ERRORS: 1
+      php.html_errors:  0
+      php.error_reporting: E_ALL
+    ports:
+      - 83:80
+    volumes:
+      - ../:/var/www/html
+    links:
+      - db
 
   selenium:
     image: selenium/standalone-chrome

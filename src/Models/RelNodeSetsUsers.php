@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,10 +32,13 @@ use Ximdex\Models\User;
 class RelNodeSetsUsers extends RelNodeSetsUsersOrm
 {
     const OWNER_YES = 1;
+    
     const OWNER_NO = 0;
 
     /**
      * Returns the rel id
+     * 
+     * @return int
      */
     public function getId()
     {
@@ -44,6 +47,8 @@ class RelNodeSetsUsers extends RelNodeSetsUsersOrm
 
     /**
      * Returns the set id
+     * 
+     * @return int
      */
     public function getIdSet()
     {
@@ -52,6 +57,8 @@ class RelNodeSetsUsers extends RelNodeSetsUsersOrm
 
     /**
      * Returns the user id
+     * 
+     * @return int
      */
     public function getIdUser()
     {
@@ -60,6 +67,8 @@ class RelNodeSetsUsers extends RelNodeSetsUsersOrm
 
     /**
      * Returns the owner attribute
+     * 
+     * @return number
      */
     public function getOwner()
     {
@@ -68,39 +77,44 @@ class RelNodeSetsUsers extends RelNodeSetsUsersOrm
 
     /**
      * Returns the user object
+     * 
+     * @return \Ximdex\Models\User
      */
-    public function & getUser()
+    public function getUser()
     {
-        $user = new User($this->IdUser);
-        return $user;
+        return new User($this->IdUser);
     }
 
     /**
      * Return the set that is associated to
+     * 
+     * @return \Ximdex\Models\NodeSets
      */
-    public function & getSet()
+    public function getSet()
     {
-        $set = new NodeSets($this->getIdSet());
-        return $set;
+        return new NodeSets($this->getIdSet());
     }
 
     /**
      * Static method that creates a new SetUser relation and returns the related object
+     * 
+     * @param int $idSet
+     * @param int $idUser
+     * @param int $owner
+     * @return RelNodeSetsUsers
      */
-    static public function & create($idSet, $idUser, $owner = RelNodeSetsUsers::OWNER_NO)
+    static public function create(int $idSet, int $idUser, int $owner = RelNodeSetsUsers::OWNER_NO)
     {
         $rel = new RelNodeSetsUsers();
         $user = new User($idUser);
         if ($user->get('IdUser') <= 0) {
             $rel->messages->add("Can't append the user to the set, the user id $idUser doesn't exists.", MSG_TYPE_ERROR);
         } else {
-
             $rel->set('IdSet', $idSet);
             $rel->set('IdUser', $idUser);
             $rel->set('Owner', $owner);
             $rel->add();
         }
-
         return $rel;
     }
 
@@ -111,24 +125,14 @@ class RelNodeSetsUsers extends RelNodeSetsUsersOrm
      * @param $idUser
      * @return null|RelNodeSetsUsers
      */
-    static public function & getByUserId($idSet, $idUser)
+    static public function getByUserId(int $idSet, int $idUser)
     {
         $ret = null ;
-        $user = null;
         $rel = new RelNodeSetsUsers();
         $rel = $rel->find(ALL, 'IdSet = %s and IdUser = %s', array($idSet, $idUser));
-        if (count($user) > 0) {
+        if ($rel) {
             $ret = new RelNodeSetsUsers($rel['Id']);
         }
-        return $ret;
-    }
-
-    /**
-     * @return bool|int|string
-     */
-    public function delete()
-    {
-        $ret = parent::delete();
         return $ret;
     }
 }

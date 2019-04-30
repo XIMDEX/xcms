@@ -32,12 +32,21 @@ class Action_filedownload extends ActionAbstract
 {
     public function index()
     {
-        $idNode = $this->request->getParam('nodeid');
-        $node = new Node ($idNode);
-        $values = array('node_name' => $node->get('Name'),
+        $idNode = (int) $this->request->getParam('nodeid');
+        $node = new Node($idNode);
+        if (! $node->getID()) {
+            return;
+        }
+        $version = $this->request->getParam('version');
+        $subversion = $this->request->getParam('subversion');
+        $values = [
+            'node_name' => $node->get('Name'),
             'nodeTypeID' => $node->nodeType->getID(),
-            'node_Type' => $node->nodeType->GetName(),
-            'id_node' => $node->get('IdNode'));
+            'node_Type' => $node->nodeType->getName(),
+            'id_node' => $node->get('IdNode'),
+            'version' => $version,
+            'subversion' => $subversion
+        ];
         $this->addJs('/actions/filedownload/resources/js/index.js');
         $this->render($values, '', 'default-3.0.tpl');
     }
@@ -45,17 +54,22 @@ class Action_filedownload extends ActionAbstract
     public function downloadFile()
     {
         if ($this->request->getParam('nodeid')) {
-            $idNode = $this->request->getParam('nodeid');
-            $this->echoNode($idNode);
+            $idNode = (int) $this->request->getParam('nodeid');
+            $version = $this->request->getParam('version');
+            $subversion = $this->request->getParam('subversion');
+            $this->echoNode($idNode, $version, $subversion);
         }
     }
 
-    private function echoNode($idNode)
+    private function echoNode(int $idNode, int $version = null, int $subversion = null)
     {
         $fileNode = new Node($idNode);
+        if (! $fileNode->getID()) {
+            return;
+        }
         $fileName = $fileNode->get('Name');
         $gmDate =  gmdate('D, d M Y H:i:s');
-        $fileContent = $fileNode->GetContent();
+        $fileContent = $fileNode->getContent($version, $subversion);
 
         /// Expiration headers
         $this->response->set('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT');

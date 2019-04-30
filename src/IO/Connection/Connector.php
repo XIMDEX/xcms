@@ -31,12 +31,17 @@ use Ximdex\Models\Server;
 
 class Connector
 {
-    protected $isFile = false;
-    protected $server;
-    protected $error;
-    protected $code;
-    protected $type;
     const TYPE_API = 'API';
+    
+    protected $isFile = false;
+    
+    protected $server;
+    
+    protected $error;
+    
+    protected $code;
+    
+    protected $type;
     
     public function __construct(Server $server = null)
     {
@@ -57,10 +62,7 @@ class Connector
     {
         return $this->type;
     }
-    
-    /**
-     * @param string $type
-     */
+
     public function setType(string $type) : void
     {
         $this->type = $type;

@@ -163,7 +163,7 @@ function loadPreview(idnode, version, subversion){
 	selectedChannel = $('.channel:options:selected').attr('value');
 	urlAction = window.url_root +"?action=rendernode&mode=dinamic&nodeid="+idnode+"&channel=" + selectedChannel;
 	if (version >= 0 && subversion >= 0) {
-		urlAction = urlAction + '&version=' + version + '&sub_version=' + subversion;
+		urlAction = urlAction + '&version=' + version + '&subversion=' + subversion;
 	}
 	$('.preview_loader').attr('src', urlAction);
 	updateInfoAboutDocPreview(idnode, version, subversion, selectedChannel);

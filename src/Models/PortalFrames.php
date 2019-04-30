@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -34,14 +34,19 @@ use Ximdex\Models\ORM\PortalFramesOrm;
 class PortalFrames extends PortalFramesOrm
 {
     const TYPE_UP = 'Up';
+    
     const TYPE_DOWN = 'Down';
+    
     const STATUS_CREATED = 'Created';
+    
     const STATUS_ACTIVE = 'Active';
+    
     const STATUS_ENDED = 'Ended';
     
-    public function upPortalFrameVersion(int $nodeId, int $scheduledTime, int $idUser = null, string $type = self::TYPE_UP) : int
+    public function upPortalFrameVersion(int $nodeId, int $scheduledTime, int $idUser = null, string $type = self::TYPE_UP
+        , bool $hidden = false) : int
     {
-        if (!$nodeId or !$scheduledTime) {
+        if (! $nodeId or ! $scheduledTime) {
             Logger::error('Cannot generate a portal version without a node or scheduled time');
             return false;
         }
@@ -54,6 +59,7 @@ class PortalFrames extends PortalFramesOrm
         $this->set('PublishingType', $type);
         $this->set('CreatedBy', $idUser);
         $this->set('Status', self::STATUS_CREATED);
+        $this->set('Hidden', (int) $hidden);
         $idPortalFrameVersion = parent::add();
         return ($idPortalFrameVersion > 0) ? (int) $idPortalFrameVersion : 0;
     }
@@ -222,7 +228,7 @@ class PortalFrames extends PortalFramesOrm
     }
     
     /**
-     * Get a list of portal frames with a given state
+     * Get a list of portal frames with a given state, now avoid the hidden portals
      * 
      * @param string $state
      * @param int $endTime
@@ -233,7 +239,7 @@ class PortalFrames extends PortalFramesOrm
      */
     public static function getByState(string $state, int $endTime = null, int $idNodeGenerator = null, string $type = null) : array
     {
-        $query = 'SELECT id FROM PortalFrames WHERE Status = \'' . $state . '\' AND SFtotal > 0';
+        $query = 'SELECT id FROM PortalFrames WHERE Status = \'' . $state . '\' AND SFtotal > 0 AND Hidden IS FALSE';
         if ($endTime) {
             
             // Maximum time in seconds to get ended portal frames
@@ -247,13 +253,13 @@ class PortalFrames extends PortalFramesOrm
         }
         $query .= ' ORDER BY ScheduledTime DESC, StartTime, id';
         $db = new Db();
-        if ($db->Query($query) === false) {
+        if ($db->query($query) === false) {
             throw new \Exception('Could not obtain a list of portal frames with ' . $state);
         }
         $portals = [];
-        while (!$db->EOF) {
-            $portals[] = new static($db->GetValue('id'));
-            $db->Next();
+        while (! $db->EOF) {
+            $portals[] = new static($db->getValue('id'));
+            $db->next();
         }
         return $portals;
     }
@@ -266,17 +272,17 @@ class PortalFrames extends PortalFramesOrm
         $db = new Db();
         foreach ($states as $state) {
             $query = 'SELECT count(id) AS total FROM PortalFrames WHERE Status = \'' . $state . '\'';
-            if ($db->Query($query) === false) {
+            if ($db->query($query) === false) {
                 throw new \Exception('Could not obtain the states portal frames resume');
             }
-            $resume['states'][$state] = $db->GetValue('total');
+            $resume['states'][$state] = $db->getValue('total');
         }
         foreach ($types as $type) {
             $query = 'SELECT count(id) AS total FROM PortalFrames WHERE PublishingType = \'' . $type . '\'';
-            if ($db->Query($query) === false) {
+            if ($db->query($query) === false) {
                 throw new \Exception('Could not obtain the types portal frames resume');
             }
-            $resume['types'][$type] = $db->GetValue('total');
+            $resume['types'][$type] = $db->getValue('total');
         }
         return $resume;
     }
@@ -295,13 +301,13 @@ class PortalFrames extends PortalFramesOrm
             $query .= ' AND CreationTime < ' . (time() - $time);
         }
         $db = new Db();
-        if ($db->Query($query) === false) {
+        if ($db->query($query) === false) {
             throw new \Exception('Could not obtain the void portal frame');
         }
         $portals = [];
         while (! $db->EOF) {
-            $portals[] = $db->GetValue('id');
-            $db->Next();
+            $portals[] = $db->getValue('id');
+            $db->next();
         }
         return $portals;
     }
@@ -311,13 +317,13 @@ class PortalFrames extends PortalFramesOrm
         $query = 'SELECT s.IdServer as id, s.Description as name FROM Servers s';
         $query .= ' INNER JOIN Batchs b ON (b.IdPortalFrame = ' . $this->id . ' AND b.ServerId = s.IdServer)';
         $db = new Db();
-        if ($db->Query($query) === false) {
+        if ($db->query($query) === false) {
             throw new \Exception('Could not obtain the void portal frame');
         }
         $servers = [];
         while (! $db->EOF) {
-            $servers[(string) $db->GetValue('id')] = $db->GetValue('name');
-            $db->Next();
+            $servers[(string) $db->getValue('id')] = $db->getValue('name');
+            $db->next();
         }
         return $servers;
     }
@@ -329,20 +335,20 @@ class PortalFrames extends PortalFramesOrm
         $sql .= ' WHERE IdPortalFrame = ' . $this->id . ' AND ServerFramesTotal > 0 AND State != \'' . Batch::NOFRAMES . '\'';
         $sql .= ' ORDER BY IdBatch';
         $db = new Db();
-        if ($db->Query($sql) === false) {
+        if ($db->query($sql) === false) {
             throw new \Exception('Could not obtain the batchs for the portal frame ' . $this->id);
         }
         $batchs = [];
         $delayedServers = Server::getDelayed();
         while (! $db->EOF) {
-            if (isset($delayedServers[$db->GetValue('ServerId')]) and ($db->GetValue('State') == Batch::INTIME 
-                    or $db->GetValue('State') == Batch::CLOSING)) {
+            if (isset($delayedServers[$db->getValue('ServerId')]) and ($db->getValue('State') == Batch::INTIME 
+                    or $db->getValue('State') == Batch::CLOSING)) {
                 $state = Batch::DELAYED;
             } else {
-                $state = $db->GetValue('State');
+                $state = $db->getValue('State');
             }
-            $batchs[$db->GetValue('IdBatch')] = $state;
-            $db->Next();
+            $batchs[$db->getValue('IdBatch')] = $state;
+            $db->next();
         }
         return $batchs;
     }
@@ -351,6 +357,7 @@ class PortalFrames extends PortalFramesOrm
      * Retrieve a list of node frames identificators related to this portal
      * 
      * @param string $operation
+     * @param bool $withLostActivity
      * @throws \Exception
      * @return array
      */
@@ -387,7 +394,7 @@ class PortalFrames extends PortalFramesOrm
     {
         $sql = 'UPDATE PortalFrames SET BoostCycles = 0 WHERE Status = \'' . self::STATUS_ACTIVE . '\'';
         $db = new Db();
-        if ($db->Execute($sql) === false) {
+        if ($db->execute($sql) === false) {
             throw new \Exception('Could not reset portal frames boost cycles');
         }
     }
@@ -426,7 +433,7 @@ class PortalFrames extends PortalFramesOrm
         $sql = 'SELECT COUNT(IdBatch) AS total FROM Batchs where IdPortalFrame = ' . $idPortalFrame 
             . ' AND State NOT IN (\'' . Batch::ENDED . '\', \'' . Batch::NOFRAMES . '\')';
         $db = new Db();
-        if ($db->Query($sql) === false) {
+        if ($db->query($sql) === false) {
             throw new \Exception('Could not obtain the number of batchs not ended for the portal frame ' . $idPortalFrame);
         }
         return (int) $db->getValue('total');

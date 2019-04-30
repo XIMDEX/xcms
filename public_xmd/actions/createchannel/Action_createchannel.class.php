@@ -87,7 +87,7 @@ class Action_createchannel extends ActionAbstract
         $description = $this->request->getParam('description');
         $renderMode = $this->request->getParam('rendermode');
         $nodeType = new NodeType();
-        $nodeType->SetByName('Channel');
+        $nodeType->setByName('Channel');
 
         // Control uniqueness of tupla, channel, format
         $node = new Node();

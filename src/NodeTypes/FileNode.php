@@ -27,7 +27,6 @@
 
 namespace Ximdex\NodeTypes;
 
-use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use DOMDocument;
 use Ximdex\Deps\DepsManager;
@@ -55,23 +54,24 @@ class FileNode extends Root
      */
     public function renderizeNode() : bool
     {
-        if (App::getValue('RenderizeAll') or $this->nodeType->getID() == NodeTypeConstants::XSL_TEMPLATE) {
-            $parentID = $this->parent->GetParent();
-            $parent = new Node($parentID);
-            if (! $parent->isRenderized()) {
-                $parent->renderizeNode();
-            }
-            $node = new Node($this->nodeID);
-            $nodetype = new NodeType($node->GetNodeType());
-            if (! $nodetype->GetHasFSEntity()){
-                return false;
-            }
-            $file = $this->getNodePath();
-            $data = new DataFactory($this->nodeID);
-            $content = $data->GetContent();
-            if (! FsUtils::file_put_contents($file, $content)) {
-                return false;
-            }
+        if (! $this->parent->isRenderizable()) {
+            return true;
+        }
+        $parentID = $this->parent->getParent();
+        $parent = new Node($parentID);
+        if (! $parent->isRenderized()) {
+            $parent->renderizeNode();
+        }
+        $node = new Node($this->nodeID);
+        $nodetype = new NodeType($node->getNodeType());
+        if (! $nodetype->getHasFSEntity()){
+            return false;
+        }
+        $file = $this->getNodePath();
+        $data = new DataFactory($this->nodeID);
+        $content = $data->getContent();
+        if (! FsUtils::file_put_contents($file, $content)) {
+            return false;
         }
         return true;
     }
@@ -123,12 +123,12 @@ class FileNode extends Root
         $data = new DataFactory($this->nodeID);
         
         // Not neccesary up version here for template nodetypes (makes previously for insert correct idversion in xml wrapper)
-        if ($this->parent->nodeType->GetID() == NodeTypeConstants::XSL_TEMPLATE) {
-            $lastVersionID = $data->GetLastVersionId();
-            list($version, $subversion) = $data->GetVersionAndSubVersion($lastVersionID);
+        if ($this->parent->nodeType->getID() == NodeTypeConstants::XSL_TEMPLATE) {
+            $lastVersionID = $data->getLastVersionId();
+            list($version, $subversion) = $data->getVersionAndSubVersion($lastVersionID);
             $data->setContent($content, $version, $subversion, $commitNode);
         } else {
-            if ($this->parent->nodeType->GetID() == NodeTypeConstants::RNG_VISUAL_TEMPLATE) {
+            if ($this->parent->nodeType->getID() == NodeTypeConstants::RNG_VISUAL_TEMPLATE) {
                 $dom = new DOMDocument();
                 $dom->formatOutput = true;
                 $dom->preserveWhiteSpace = false;
@@ -139,7 +139,10 @@ class FileNode extends Root
             $data->setContent($content, null, null, $commitNode);
         }
         if ($this->parent->nodeType->get('Name') == 'CssFile') {
-            ParsingDependencies::parseCssDependencies($this->nodeID, $content);
+            if (! $node) {
+                $node = new Node($this->nodeID);
+            }
+            ParsingDependencies::parseCssDependencies($node, $content);
         }
         return true;
     }
@@ -147,12 +150,13 @@ class FileNode extends Root
     /**
      * Gets the content of the file
      * 
-     * @return string|bool
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\Root::getContent()
      */
-    public function getContent()
+    public function getContent(int $version = null, int $subversion = null)
     {
         $data = new DataFactory($this->nodeID);
-        $content = $data->getContent();
+        $content = $data->getContent($version, $subversion);
         return $content;
     }
 
@@ -173,15 +177,15 @@ class FileNode extends Root
      * {@inheritDoc}
      * @see \Ximdex\NodeTypes\Root::ToXml()
      */
-    public function toXml(int $depth, array & $files, bool $recurrence = false)
+    public function toXml(int $depth, array & $files, bool $recursive = false)
     {
         $query = sprintf("SELECT File FROM `Versions` WHERE idNode = %d ORDER BY Version DESC, SubVersion DESC LIMIT 1",
         $this->parent->get('IdNode'));
-        $this->dbObj->Query($query);
+        $this->dbObj->query($query);
         if (! $this->dbObj->numRows) {
             Logger::error("File version not found for node: " . $this->parent->get('IdNode'));
         } else {
-            $nodeFile = $this->dbObj->GetValue('File');
+            $nodeFile = $this->dbObj->getValue('File');
             $routeToFile = sprintf("%s/data/files/%s", XIMDEX_ROOT_PATH, $nodeFile);
             if (! in_array($routeToFile, $files)) {
                 $files[] = $routeToFile;
@@ -200,12 +204,14 @@ class FileNode extends Root
     {
         // Deletes dependencies in rel tables
         $depsMngr = new DepsManager();
-        $result = $depsMngr->deleteByTarget(DepsManager::NODE2ASSET, $this->parent->get('IdNode'));
-        $result = $depsMngr->deleteBySource(DepsManager::NODE2ASSET, $this->parent->get('IdNode')) && $result;
-        if ($result) {
-            Logger::info('Filenode dependencies deleted');
+        if ($depsMngr->deleteByTarget(DepsManager::NODE2ASSET, $this->parent->get('IdNode')) === false) {
+            return false;
         }
-        return $result;
+        if ($depsMngr->deleteBySource(DepsManager::NODE2ASSET, $this->parent->get('IdNode')) === false) {
+            return false;
+        }
+        Logger::info('Filenode dependencies deleted');
+        return true;
     }
 
     /**
@@ -227,7 +233,7 @@ class FileNode extends Root
     public function getLastVersionFile()
     {
         $data = new DataFactory($this->nodeID);
-        $idVersion = $data->GetLastVersionId();
+        $idVersion = $data->getLastVersionId();
         $version = new Version($idVersion);
         return $version->get('File');
     }
@@ -235,7 +241,7 @@ class FileNode extends Root
     public function updatePath()
     {
         $node = new Node($this->nodeID);
-        $path = pathinfo($node->GetPath());
+        $path = pathinfo($node->getPath());
         if (isset($path['dirname'])) {
             $db = new \Ximdex\Runtime\Db();
             $db->execute(sprintf("update Nodes set Path = '%s' where IdNode = %s", $path['dirname'], $this->nodeID));

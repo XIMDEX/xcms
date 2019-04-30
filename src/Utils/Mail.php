@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,21 +27,19 @@
 
 namespace Ximdex\Utils;
 
-require_once(XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/phpmailer/phpmailer/src/Exception.php');
-require_once(XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/phpmailer/phpmailer/src/PHPMailer.php');
-require_once(XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/phpmailer/phpmailer/src/SMTP.php');
-
 use PHPMailer\PHPMailer\PHPMailer;
 use Ximdex\Runtime\App;
 
-// Include mail configuration.
-include_once(XIMDEX_ROOT_PATH . "/conf/mail.php");
+require_once XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/phpmailer/phpmailer/src/Exception.php';
+require_once XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/phpmailer/phpmailer/src/PHPMailer.php';
+require_once XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/phpmailer/phpmailer/src/SMTP.php';
 
-// Default values.
+// Include mail configuration
+include_once XIMDEX_ROOT_PATH . "/conf/mail.php";
 
 class Mail extends PHPMailer
 {
-    function __construct()
+    public function __construct()
     {
         $this->From = FROM;
         $this->FromName = FROM_NAME;
@@ -56,7 +54,7 @@ class Mail extends PHPMailer
         }
     }
 
-    function setFrom($address, $name = '', $auto = true)
+    public function setFrom(string $address, string $name = '', bool $auto = true)
     {
         parent::setFrom($address, $name, $auto);
         $this->From = $address;
@@ -64,15 +62,15 @@ class Mail extends PHPMailer
         $this->Sender = $this->From;
     }
 
-    function error_handler($msg)
+    public function error_handler(string $msg)
     {
         // Write to logging system.
         echo "Mail ERROR: $msg\n";
     }
 
-    function Send()
+    public function send()
     {
-        $ret_send = parent::Send();
+        $ret_send = parent::send();
         if (defined('MAIL_DEBUG') && MAIL_DEBUG) {
             $tmp_path = XIMDEX_ROOT_PATH .  App::getValue('TempRoot');
             $filename = tempnam($tmp_path, 'mail_');

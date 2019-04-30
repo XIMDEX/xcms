@@ -241,13 +241,13 @@ class Action_workflow_forward extends ActionAbstract
         $nextState = $this->request->getParam('nextstate');
         $conf = Manager::file('/conf/notifications.php', 'XIMDEX');
         $workflow = new Workflow($node->nodeType->getWorkflow(), $nextState);
-        $sendNotifications = $this->request->getParam('sendNotifications');
+        $sendNotifications = (bool) $this->request->getParam('sendNotifications');
         $notificableUsers = $this->request->getParam('users');
         $idState = (int) $this->request->getParam('nextstate');
         $texttosend = $this->request->getParam('texttosend');
         
         // If must send notifications
-        if ((bool) $sendNotifications) {
+        if ($sendNotifications) {
             $sent = $this->sendNotification($idNode, $idState, $notificableUsers, $texttosend);
             if (! $sent) {
                 $values = array(
@@ -257,7 +257,7 @@ class Action_workflow_forward extends ActionAbstract
                     'node_Type' => $node->nodeType->GetName()
                 );
                 $this->render($values, 'show_results', 'default-3.0.tpl');
-                return false;
+                return;
             }
         }
         
@@ -298,7 +298,8 @@ class Action_workflow_forward extends ActionAbstract
                     'nextState' => $nextState,
                     'currentState' => $node->GetState(),
                     'nodeTypeID' => $node->nodeType->getID(),
-                    'node_Type' => $node->nodeType->GetName()
+                    'node_Type' => $node->nodeType->GetName(),
+                    'parentID' => $node->get('IdParent')
                 );
                 $this->addCss('/actions/workflow_forward/resources/css/style.css');
                 $this->render($values, 'success.tpl', 'default-3.0.tpl');
@@ -653,7 +654,7 @@ class Action_workflow_forward extends ActionAbstract
             'structure' => $structure,
             'deeplevel' => $deepLevel,
             'force' => $force,
-            'recurrence' => false,
+            'recursive' => false,
             'workflow' => true,
             'lastPublished' => $lastPublished,
             'useCache' => $useCache

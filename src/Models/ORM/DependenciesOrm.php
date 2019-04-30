@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,20 +31,29 @@ use Ximdex\Data\GenericData;
 
 class DependenciesOrm extends  GenericData
 {
-	var $_idField = 'IdDep';
-	var $_table = 'Dependencies';
-	var $_metaData = array(
+	public $_idField = 'IdDep';
+	
+	public $_table = 'Dependencies';
+	
+	public $_metaData = array(
 		'IdDep' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
 		'IdNodeMaster' => array('type' => "int(12)", 'not_null' => 'true'),
 		'IdNodeDependent' => array('type' => "int(12)", 'not_null' => 'true'),
 		'DepType' => array('type' => "varchar(10)", 'not_null' => 'true'),
 		'version' => array('type' => "int(10)", 'not_null' => 'true')
 	);
-	var $_uniqueConstraints = array();
-	var $_indexes = array('IdDep');
-	var $IdDep;
-	var $IdNodeMaster;
-	var $IdNodeDependent;
-	var $DepType;
-	var $version = 0;
+	
+	public $_uniqueConstraints = array();
+	
+	public $_indexes = array('IdDep');
+	
+	public $IdDep;
+	
+	public $IdNodeMaster;
+	
+	public $IdNodeDependent;
+	
+	public $DepType;
+	
+	public $version = 0;
 }

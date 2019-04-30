@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,11 +31,16 @@ use Ximdex\Logger;
 use Ximdex\Models\ORM\ServersOrm;
 use Ximdex\NodeTypes\ServerNode;
 use Ximdex\Utils\Date;
+use Ximdex\Utils\Sitemap;
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\Db;
+use Ximdex\NodeTypes\NodeTypeConstants;
+use Ximdex\Sync\SynchroFacade;
 
 class Server extends ServersOrm
 {
     const MAX_CYCLES_TO_RETRY_PUMPING = 0;
+    
     const SECONDS_TO_WAIT_FOR_RETRY_PUMPING = 60;
     
     private $serverNode;
@@ -55,10 +60,10 @@ class Server extends ServersOrm
     
     public function getChannels() : array
     {
-        if (!$this->serverNode) {
+        if (! $this->serverNode) {
             $this->setServerNode($this->get('IdServer'));
         }
-        return $this->serverNode->GetChannels($this->get('IdServer'));
+        return $this->serverNode->getChannels($this->get('IdServer'));
     }
     
     public function resetForPumping() : bool
@@ -138,33 +143,31 @@ class Server extends ServersOrm
         if (! $this->IdServer) {
             throw new \Exception('No server selected');
         }
-        $sql = 'SELECT SUM(ServerFramesTotal) AS total, SUM(IF (`State` != \'' . Batch::STOPPED . '\', ServerFramesPending, 0)) AS pending';
+        $sql = 'SELECT SUM(ServerFramesTotal) AS total';
+        $sql .= ', SUM(IF (`State` != \'' . Batch::STOPPED . '\', ServerFramesPending, 0)) AS pending';
         $sql .= ', SUM(IF (`State` != \'' . Batch::STOPPED . '\', ServerFramesActive, 0)) AS active';
-        $sql .= ', SUM(IF (`State` = \'' . Batch::STOPPED 
-            . '\', ServerFramesActive + ServerFramesPending + ServerFramesTemporalError, 0)) AS stopped';
+        $sql .= ', SUM(IF (`State` = \'' . Batch::STOPPED . '\', ServerFramesActive + ServerFramesPending, 0)) AS stopped';
         $sql .= ', SUM(ServerFramesSuccess) AS success, SUM(ServerFramesFatalError) AS fatal, SUM(ServerFramesTemporalError) AS soft';
         $sql .= ' FROM Batchs WHERE ServerId = ' . $this->IdServer;
         if ($portalId) {
             $sql .= ' AND IdPortalFrame = ' . $portalId;
         }
-        $sql .= ' GROUP BY ServerId';
         $db = new Db();
-        if ($db->Query($sql) === false) {
+        if ($db->query($sql) === false) {
             throw new \Exception('SQL error');
         }
         $stats = [];
         if (! $db->numRows) {
             throw new \Exception('There is not stats information for the server');
         }
-        $stats['total'] = (int) $db->GetValue('total');
-        $stats['pending'] = $this->get('ActiveForPumping') ? (int) $db->GetValue('pending') : 0;
-        $stats['active'] = $this->get('ActiveForPumping') ? (int) $db->GetValue('active') : 0;
-        $stats['success'] = (int) $db->GetValue('success');
-        $stats['fatal'] = (int) $db->GetValue('fatal');
-        $stats['soft'] = (int) $db->GetValue('soft');
-        $stats['stopped'] = (int) $db->GetValue('stopped');
-        $stats['delayed'] = !$this->get('ActiveForPumping') ? $db->GetValue('pending') + $db->GetValue('active') : 0;
-        $stats['cancelled'] = (int) $db->GetValue('cancelled');
+        $stats['total'] = (int) $db->getValue('total');
+        $stats['pending'] = $this->get('ActiveForPumping') ? (int) $db->getValue('pending') : 0;
+        $stats['active'] = $this->get('ActiveForPumping') ? (int) $db->getValue('active') : 0;
+        $stats['success'] = (int) $db->getValue('success');
+        $stats['fatal'] = (int) $db->getValue('fatal');
+        $stats['soft'] = (int) $db->getValue('soft');
+        $stats['stopped'] = (int) $db->getValue('stopped');
+        $stats['delayed'] = (! $this->get('ActiveForPumping')) ? $db->getValue('pending') + $db->getValue('active') : 0;
         return $stats;
     }
     
@@ -178,14 +181,87 @@ class Server extends ServersOrm
     {
         $sql = 'SELECT IdServer, Description FROM Servers WHERE ActiveForPumping = 0';
         $db = new Db();
-        if ($db->Query($sql) === false) {
+        if ($db->query($sql) === false) {
             throw new \Exception('SQL error in delayed servers retrieve');
         }
         $servers = [];
         while (! $db->EOF) {
-            $servers[$db->GetValue('IdServer')] = $db->GetValue('Description');
-            $db->Next();
+            $servers[$db->getValue('IdServer')] = $db->getValue('Description');
+            $db->next();
         }
         return $servers;
+    }
+    
+    public static function generateSitemaps() : void
+    {
+        Logger::info('Checking sitemap servers...');
+        $server = new static();
+        $interval = (int) App::getValue('SitemapInterval', 3600);
+        $servers = $server->find('IdServer, Url, IdNode, Description'
+                , "Enabled = 1 AND Indexable IS TRUE AND (LastSitemapGenerationTime + {$interval} < UNIX_TIMESTAMP()"
+            . " OR LastSitemapGenerationTime IS NULL)");
+        if (! $servers) {
+            return;
+        }
+        $db = new Db();
+        $node = new Node();
+        $sync = new SynchroFacade();
+        foreach ($servers as $server) {
+            Logger::info("Checking sitemap links for server {$server['Description']}");
+            $query = 'SELECT sf.DateUp, sf.RemotePath, sf.FileName FROM ServerFrames sf';
+            $query .= ' JOIN Nodes n ON n.IdNode = sf.NodeId';
+            $query .= ' JOIN NodeTypes nt ON nt.IdNodeType = n.IdNodeType AND nt.IsPublishable = 1 AND nt.HasMetadata = 1';
+            $query .= ' WHERE sf.State = \'' . ServerFrame::IN . "' AND sf.IdServer = {$server['IdServer']}";
+            $query .= ' AND sf.FileName NOT LIKE \'\_%\' AND sf.ChannelId IS NOT NULL';
+            if ($db->query($query) === false) {
+                throw new \Exception($db->getDesErr());
+            }
+            Logger::info("Found {$db->numRows} links for sitemap");
+            if (! $db->numRows) {
+                continue;
+            }
+            $fileName = "sitemap-{$server['IdServer']}.xml";
+            $res = $node->find('IdNode', "Name LIKE '{$fileName}' AND IdParent = {$server['IdNode']}", null, MONO);
+            if ($res) {
+                $id = $res[0];
+            } else {
+                $id = $node->createNode($fileName, $server['IdNode'], NodeTypeConstants::SITEMAP);
+                if (! $id) {
+                    continue;
+                }
+            }
+            $node = new Node($id);
+            if (! $node->getID()) {
+                continue;
+            }
+            $links = [];
+            while (! $db->EOF) {
+                $links[] = [
+                    'loc' => trim($server['Url'], '/') . '/' . (($db->getValue('RemotePath')) ? trim($db->getValue('RemotePath'), '/') . '/' : '')
+                        . $db->getValue('FileName'),
+                    'lastmod' => Date::formatTime($db->getValue('DateUp'), 'Y-m-d')
+                ];
+                $db->next();
+            }
+            $sitemap = Sitemap::generate($links);
+            if ($node->setContent($sitemap) === false) {
+                continue;
+            }
+            Logger::info('Sitemap generated');
+            
+            // Publish in this server with the generated sitemap
+            $sync->publicate($id, $server['IdServer'], 'sitemap.xml');
+            Logger::info('Sitemap publicated');
+            
+            
+            // Update the physical servers (sitemap generation time) for this server node
+            $server = new static($server['IdServer']);
+            if (! $server->get('IdServer')) {
+                continue;
+            }
+            $server->set('LastSitemapGenerationTime', time());
+            $server->update();
+            Logger::info("Server {$server->get('Description')} updated (sitemap update time)");
+        }
     }
 }

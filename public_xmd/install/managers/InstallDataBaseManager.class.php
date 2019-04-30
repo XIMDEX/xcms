@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,23 +27,34 @@
 
 use Ximdex\Logger;
 
-require_once(APP_ROOT_PATH.'/install/managers/InstallManager.class.php');
+require_once APP_ROOT_PATH . '/install/managers/InstallManager.class.php';
 
 class InstallDataBaseManager extends InstallManager
 {
-    const DB_ARRAY_KEY = "db_installer_connection";
+    const DB_ARRAY_KEY = 'db_installer_connection';
+    
     const DEFAULT_PORT = 3306;
+    
     const DATA_PATH = '/install/ximdex_data/';
+    
     const SCHEMA_SCRIPT_FILE = 'ximdex_schema.sql';
+    
     const DATA_SCRIPT_FILE = 'ximdex_data.sql';
+    
     const CHANGES_PATH = 'changes/';
     
-    private $dbConnection = null;
+    private $dbConnection;
+    
     private $host;
+    
     private $port;
+    
     private $user;
+    
     private $pass;
+    
     private $name;
+    
     private $error = '';
     
     public function getError() : string
@@ -64,7 +75,7 @@ class InstallDataBaseManager extends InstallManager
      */
     public function connect(string $host, int $port, string $user, string $pass = null, string $name = null, bool $newConn = false)
     {
-        $myPid = "install";
+        $myPid = 'install';
         $result = false;
         if (! isset($GLOBALS[self::DB_ARRAY_KEY][$myPid])) {
             $GLOBALS[self::DB_ARRAY_KEY][$myPid] = null;
@@ -141,14 +152,14 @@ class InstallDataBaseManager extends InstallManager
         if ($this->dbConnection) {
             $this->dbConnection = null;
         }
-        $GLOBALS[self::DB_ARRAY_KEY]["install"] = null;
+        $GLOBALS[self::DB_ARRAY_KEY]['install'] = null;
     }
     
     public function createUser(string $user, string $pass)
     {
-        $sql = "GRANT ALL PRIVILEGES  ON $$this->name.* TO '$user'@'%' IDENTIFIED BY '$pass'";
+        $sql = "GRANT ALL PRIVILEGES ON {$$this->name}.* TO '{$user}'@'%' IDENTIFIED BY '{$pass}'";
         $result = $this->dbConnection->exec($this->dbConnection, $sql);
-        $sql = "FLUSH privileges";
+        $sql = 'FLUSH privileges';
         $result = $result && $this->dbConnection->exec($this->dbConnection, $sql);
         if ($result === 0) {
             $result = false;
@@ -163,7 +174,7 @@ class InstallDataBaseManager extends InstallManager
         }
         $result = false;
         if ($this->dbConnection) {
-            $query = "CREATE DATABASE $name DEFAULT CHARACTER SET utf8";
+            $query = "CREATE DATABASE {$name} DEFAULT CHARACTER SET utf8";
             $result = $this->dbConnection->exec($query);
             if ($result === false) {
                 Logger::error('Cannot create database: ' . $name);
@@ -181,7 +192,7 @@ class InstallDataBaseManager extends InstallManager
         }
         $result = false;
         if ($this->dbConnection) {
-            $query = sprintf("drop database %s", $name);
+            $query = sprintf('drop database %s', $name);
             $result = $this->dbConnection->exec($query);
             if ($result === false) {
             	Logger::error('Fail deleting database ' . $name);
@@ -192,7 +203,7 @@ class InstallDataBaseManager extends InstallManager
         return $result;
     }
 
-    public function loadData(string $host, int $port, string $user, string $pass, string $name)
+    public function loadData()
     {
         $sqlFiles = array(self::SCHEMA_SCRIPT_FILE, self::DATA_SCRIPT_FILE);
         $files = scandir(APP_ROOT_PATH . self::DATA_PATH . self::CHANGES_PATH, SCANDIR_SORT_ASCENDING);
@@ -246,11 +257,11 @@ class InstallDataBaseManager extends InstallManager
         return $result && $result->rowCount();
     }
 
-    public function checkDataBase(string $host, string $port, string $user, string $pass, string $name)
+    public function checkDataBase(string $name)
     {
         $result = $this->selectDataBase($name);
         if ($result) {
-            $query = "show tables like 'NodeProperties'";
+            $query = "SHOW TABLES LIKE 'NodeProperties'";
             $result = $this->dbConnection->query($query);
         }
         return $result && $result->rowCount();
@@ -262,14 +273,14 @@ class InstallDataBaseManager extends InstallManager
         $result = false;
         if ($this->dbConnection) {
             $host = explode(';', $this->host);
-            if (!$host) {
+            if (! $host) {
                 return false;
             }
             $host = $host[0];
-            if ($host == 'localhost' and !isset($_SERVER['DOCKER_CONF_HOME'])) {
-                $query = "SELECT user FROM mysql.user where user = '$userName' and host = 'localhost'";
+            if ($host == 'localhost' and ! isset($_SERVER['DOCKER_CONF_HOME'])) {
+                $query = "SELECT user FROM mysql.user where user = '{$userName}' and host = 'localhost'";
             } else {
-                $query = "SELECT user FROM mysql.user where user = '$userName' and host = '%'";
+                $query = "SELECT user FROM mysql.user where user = '{$userName}' and host = '%'";
             }
             $result = $this->dbConnection->query($query);
         }
@@ -282,45 +293,45 @@ class InstallDataBaseManager extends InstallManager
             
             // If the database server is installed in localhost, only the local user can access it, otherwise any remote connection be able
             $host = explode(';', $this->host);
-            if (!$host) {
+            if (! $host) {
                 return false;
             }
             $host = $host[0];
             try {
-                if ($host == 'localhost' and !isset($_SERVER['DOCKER_CONF_HOME'])) {
+                if ($host == 'localhost' and ! isset($_SERVER['DOCKER_CONF_HOME'])) {
                     if (! $userExists) {
-                        Logger::info("Creating user '$userName'@'localhost'");
-                        $sql = "CREATE USER '$userName'@'localhost' IDENTIFIED BY '$pass'";
+                        Logger::info("Creating user '{$userName}'@'localhost'");
+                        $sql = "CREATE USER '{$userName}'@'localhost' IDENTIFIED BY '{$pass}'";
                         $result = $this->dbConnection->exec($sql);
                     } else {
                         $result = true;
                     }
                     if ($result !== false) {
-                        $query = "GRANT ALL PRIVILEGES ON `$name`.* TO '$userName'@'localhost' WITH GRANT OPTION";
+                        $query = "GRANT ALL PRIVILEGES ON `{$name}`.* TO '{$userName}'@'localhost' WITH GRANT OPTION";
                         $result = $this->dbConnection->exec($query);
                     }
                     if ($result !== false) {
-                        Logger::info("User '$userName'@'localhost' created / associated to database");
+                        Logger::info("User '{$userName}'@'localhost' created / associated to database");
                     }
                 } else {
                     if (! $userExists) {
-                        Logger::info("Creating user '$userName'@'%'");
-                        $sql = "CREATE USER '$userName'@'%' IDENTIFIED BY '$pass'";
+                        Logger::info("Creating user '{$userName}'@'%'");
+                        $sql = "CREATE USER '{$userName}'@'%' IDENTIFIED BY '{$pass}'";
                         $result = $this->dbConnection->exec($sql);
                     }
                     else {
                         $result = true;
                     }
                     if ($result !== false) {
-                        $query = "GRANT ALL PRIVILEGES ON `$name`.* TO '$userName'@'%' WITH GRANT OPTION";
+                        $query = "GRANT ALL PRIVILEGES ON `{$name}`.* TO '{$userName}'@'%' WITH GRANT OPTION";
                         $result = $this->dbConnection->exec($query);
                     }
                     if ($result !== false) {
-                        Logger::info("User '$userName'@'%' created / associated to database");
+                        Logger::info("User '{$userName}'@'%' created / associated to database");
                     }
                 }
                 if ($result !== false) {
-                    $this->dbConnection->exec("FLUSH privileges");
+                    $this->dbConnection->exec('FLUSH privileges');
                 }
             } catch (PDOException $e) {
                 Logger::error('Cannot create database user: ' . $e->getMessage());
@@ -338,9 +349,9 @@ class InstallDataBaseManager extends InstallManager
     {
         $result = false;
         if ($this->dbConnection) {
-            $query = "GRANT ALL PRIVILEGES  ON $name.* TO '$userName'@'%'";
+            $query = "GRANT ALL PRIVILEGES ON {$name}.* TO '{$userName}'@'%'";
             $result = $this->dbConnection->exec($query);
-            $result = $result && $this->dbConnection->exec("FLUSH privileges");
+            $result = $result && $this->dbConnection->exec('FLUSH privileges');
             if ($result === 0) {
             	$result = false;
             }
@@ -370,7 +381,7 @@ class InstallDataBaseManager extends InstallManager
                 return false;
             }
             $version = $res->fetch(PDO::FETCH_ASSOC);
-            if (!$version) {
+            if (! $version) {
                 return false;
             }
             $version = $version['dbversion'];

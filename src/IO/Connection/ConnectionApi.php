@@ -36,7 +36,9 @@ class ConnectionApi extends Connector implements IConnector
     const API_TRANSACTION_DELAY = 0;
     
     private $client;
+    
     private $connected = false;
+    
     private $host = false;
     
 	/**
@@ -212,7 +214,7 @@ class ConnectionApi extends Connector implements IConnector
 	        return false;
 	    }
 	    $dom = new \DOMDocument();
-	    if ($dom->loadXML($content) === false) {
+	    if (@$dom->loadXML($content) === false) {
 	        $this->error = 'The content given in PUT request is not a valid XML document';
             return false;
 	    }

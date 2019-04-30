@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,68 +25,69 @@
  * @version $Revision$
  */
 
-
 namespace Ximdex\Parsers;
 
 use DOMDocument;
 use DOMXPath;
 use Ximdex\Logger;
 use Ximdex\Models\Node;
+use Ximdex\NodeTypes\XsltNode;
 use Ximdex\Utils\FsUtils;
+use Ximdex\Utils\Messages;
 
 class ParsingXsl
 {
-
 	private $xpathObj;
-	private $idTemplate = NULL;
-	private $node = NULL;
+	private $idTemplate;
+	private $node;
 	private $includedElements = array();
-	private $path = NULL;
+	private $path;
 	private $idDoc;
 
-	function __construct($idTemplate = NULL, $path = NULL, $idDoc = null)
+	function __construct(int $idTemplate = null, string $path = null, int $idDoc = null)
 	{
-		if (!$this->setNode($idTemplate, $path))
-			return NULL;
+	    if (! $this->setNode($idTemplate, $path)) {
+			return null;
+	    }
 		$this->idDoc = $idDoc;
 		$this->setXpathObj();
 		$this->setIncludedElements();
 	}
 
-	public function getIncludedElements($name = NULL, $removeExtension = false, $baseName = false)
+	public function getIncludedElements(string $name = null, bool $removeExtension = false, bool $baseName = false)
 	{
-		if ($removeExtension || $baseName)
+	    if ($removeExtension || $baseName) {
 			$this->setIncludedElements($removeExtension, $baseName);
-
-		if (is_null($name))
+	    }
+	    if (is_null($name)) {
 			return $this->includedElements;
-
+	    }
 		$out = array();
 		foreach ($this->includedElements as $includedElement) {
-			if (strpos($includedElement, $name) !== false)
+		    if (strpos($includedElement, $name) !== false) {
 				$out[] = $includedElement;
+		    }
 		}
-
 		return $out;
 	}
 
-	private function setIncludedElements($removeExtension = false, $baseName = false)
+	private function setIncludedElements(bool $removeExtension = false, bool $baseName = false)
 	{
-
 		$this->includedElements = array();
-
-		if (!$this->setXpathObj())
+		if (! $this->setXpathObj()) {
 			return false;
-
+		}
 		$nodeList = $this->xpathObj->query('//*[local-name(.)="include"]');
 		if ($nodeList->length > 0) {
 			foreach ($nodeList as $domNode) {
 				if ($domNode->nodeName == 'xsl:include') {
 					$templateRef = $domNode->getAttribute('href');
-					if ($baseName)
+					if ($baseName) {
 						$templateRef = basename($templateRef);
-					if ($removeExtension)
+					}
+					if ($removeExtension) {
 						$templateRef = str_replace('.xsl', '', $templateRef);
+					}
 					$this->includedElements[] = $templateRef;
 				}
 			}
@@ -94,55 +96,49 @@ class ParsingXsl
 		return true;
 	}
 
-	private function setNode($idNode, $path)
+	private function setNode(int $idNode = null, string $path = null)
 	{
 		if (is_null($idNode) && is_null($path)) {
-			Logger::error('Cannot parse template: idNode and path are NULL');
+			Logger::error('Cannot parse template: idNode and path are null');
 			return false;
 		}
-
 		if (is_null($idNode)) {
 			$this->path = $path;
 			return true;
 		}
-
 		$this->node = new Node($idNode);
-		if (!($this->node->get('IdNode')) > 0) {
+		if (! $this->node->get('IdNode')) {
 			Logger::error('Can not parse template: Not existing node ' . $idNode);
 			return false;
 		}
-
 		if ($this->node->nodeType->get('Name') != 'XslTemplate') {
 			Logger::error('Cannot parse template: Node ' . $idNode . ' is not a Xsl Template');
 			return false;
 		}
-
 		$this->idTemplate = $idNode;
 		return true;
 	}
 
 	private function setXpathObj()
 	{
-		if ($this->node)
-		{
+		if ($this->node) {
 			$content = $this->node->GetContent();
-			if ($this->node->GetNodeName() == 'docxap.xsl' and $this->idDoc)
-			{
-			    // include the correspondant includes_template.xsl for the current document
-			    if (!\Ximdex\NodeTypes\XsltNode::replace_path_to_local_templatesInclude($content, $this->idDoc))
-			    {
+			if ($this->node->GetNodeName() == 'docxap.xsl' and $this->idDoc) {
+			    
+			    // Include the correspondant includes_template.xsl for the current document
+			    if (! XsltNode::replace_path_to_local_templatesInclude($content, $this->idDoc)) {
 			        Logger::error('setXpathObj error: cannot replace the templates_include in docxap for XML document: ' . $this->idDoc);
 			        return false;
 			    }
 			}
-		}
-		else
+		} else {
 			$content = FsUtils::file_get_contents($this->path);
-		if (!$content)
-		{
+		}
+		if (! $content) {
 		    $error = 'setXpathObj error: empty XML content or another problem to get it';
-		    if (\Ximdex\Utils\Messages::error_message())
-		        $error .= ' (' . \Ximdex\Utils\Messages::error_message() . ')';
+		    if (Messages::error_message()) {
+		        $error .= ' (' . Messages::error_message() . ')';
+		    }
 		    Logger::error($error);
 		    return false;
 		}
@@ -151,14 +147,11 @@ class ParsingXsl
 		$domDoc->validateOnParse = true;
 		$domDoc->formatOutput = true;
 		$res = @$domDoc->loadXML($content);
-		if ($res === false)
-		{
-		    Logger::error('setXpathObj error: can\'t load XML content (' . \Ximdex\Utils\Messages::error_message() . ')');
+		if ($res === false) {
+		    Logger::error('setXpathObj error: can\'t load XML content (' . Messages::error_message() . ')');
 		    return false;
 		}
-
 		$this->xpathObj = new DOMXPath($domDoc);
-
 		return true;
 	}
 }

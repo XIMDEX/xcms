@@ -1,5 +1,5 @@
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -23,22 +23,18 @@
  *  @version $Revision$
  */
 
-function manageproperties_showDialog(messages, fn, params, callback) {
-
+function manageproperties_showDialog(messages, fn, params, callback)
+{
 	var form = fn('form');
-
 	var $dialog = $("<div/>").addClass('confirm-dialog').appendTo(form);
-
 	var dialogCallback = function(send) {
 		$dialog.dialog('destroy');
 		if (Object.isFunction(callback)) callback(send);
 	};
-
 	var $messagesHTML = $('<ul>');
 	messages.each(function(item, message) {
 		$messagesHTML.append($('<li>').addClass('msg-warning').html(message));
 	});
-
 	$dialog
 		.html($messagesHTML)
 		.dialog({

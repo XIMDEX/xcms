@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,20 +31,28 @@ use Ximdex\Data\GenericData;
 
 class NodeAllowedContentsOrm extends GenericData
 {
-    var $_idField = 'IdNodeAllowedContent';
-    var $_table = 'NodeAllowedContents';
-    var $_metaData = array(
+    public $_idField = 'IdNodeAllowedContent';
+    
+    public $_table = 'NodeAllowedContents';
+    
+    public $_metaData = array(
         'IdNodeAllowedContent' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'IdNodeType' => array('type' => "int(12)", 'not_null' => 'true'),
         'NodeType' => array('type' => "int(12)", 'not_null' => 'true'),
         'Amount' => array('type' => "int(12)", 'not_null' => 'true')
     );
-    var $_uniqueConstraints = array(
+    
+    public $_uniqueConstraints = array(
         'UniqeAmmount' => array('IdNodeType', 'NodeType')
     );
-    var $_indexes = array('IdNodeAllowedContent');
-    var $IdNodeAllowedContent;
-    var $IdNodeType = 0;
-    var $NodeType = 0;
-    var $Amount = 0;
+    
+    public $_indexes = array('IdNodeAllowedContent');
+    
+    public $IdNodeAllowedContent;
+    
+    public $IdNodeType;
+    
+    public $NodeType;
+    
+    public $Amount = 0;
 }

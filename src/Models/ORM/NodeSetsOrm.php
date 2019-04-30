@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,14 +31,20 @@ use Ximdex\Data\GenericData;
 
 class NodeSetsOrm extends GenericData
 {
-    var $_idField = 'Id';
-    var $_table = 'NodeSets';
-    var $_metaData = array(
+    public $_idField = 'Id';
+    
+    public $_table = 'NodeSets';
+    
+    public $_metaData = array(
         'Id' => array('type' => "int(10)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'Name' => array('type' => "varchar(100)", 'not_null' => 'false')
     );
-    var $_uniqueConstraints = array();
-    var $_indexes = array('Id');
-    var $Id;
-    var $Name;
+    
+    public $_uniqueConstraints = array();
+    
+    public $_indexes = array('Id');
+    
+    public $Id;
+    
+    public $Name;
 }

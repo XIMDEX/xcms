@@ -1,5 +1,5 @@
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -23,27 +23,20 @@
  *  @version $Revision$
  */
 
-X.actionLoaded(function(event, fn, params) {
-	
-	var properties = ['channels', 'languages'];
-	
-	// TODO: gettext method "_()" must translate these string!
-	var _properties = {channels: 'canales', languages: 'idiomas', schemas: 'plantillas'};
-	
+X.actionLoaded(function(event, fn, params)
+{
+	var properties = ['channels', 'languages', 'metadata'];
+	var _properties = {channels: 'canales', languages: 'idiomas', schemas: 'plantillas', metadata: 'Esquemas de metadatos'};
 	
 	fn('.reset-button').click(function(event) {
 		fn('input[name^=inherited][value=inherited]').change();
 	});
 	
-	
 	var btn = fn('.submit-button').get(0);
-	
-	btn.beforeSubmit.add(function(event, button) {
-		
-		var messages = [];
-		
+	btn.beforeSubmit.add(function(event, button)
+	{
+		var messages = [];	
 		properties.each(function(index, property) {
-			
 			var overwritten = fn('input.%s_overwritten'.printf(property)).attr('checked');
 			if (overwritten) {
 				var fields = fn('input.%s'.printf(property));
@@ -52,16 +45,15 @@ X.actionLoaded(function(event, fn, params) {
 					var checked = fn(field).attr('checked');
 					notempty = notempty || checked;
 				});
-				if (!notempty) {
+				if (! notempty) {
 					var message = _('A value should be selected for <b>%s</b> property.<br />').printf(_properties[property]);
 					message += _('Otherwise inherited values will be used.')
 					messages.push(message);
 				}
 			}
 		});
-		
 		var sendform = messages.length == 0;
-		if (!sendform) {
+		if (! sendform) {
 			manageproperties_showDialog(messages, fn, params, function(send) {
 				if (send) {
 					var fm = btn.getFormMgr();
@@ -73,24 +65,19 @@ X.actionLoaded(function(event, fn, params) {
 				}
 			});
 		}
-		
-		return !sendform;
+		return ! sendform;
 	});
 	
 	properties.each(function(index, property) {
 		
 		// Inherited or overwritten values
 		fn('input[name=inherited_%s]'.printf(property)).change(function(event) {
-			
 			var name = $(this).attr('name').replace(/inherited_/, '');
 			var value = $(this).val();
-			
 			if (value == 'inherited') {
-				
 				fn('input.%s'.printf(name)).attr('disabled', true);
 				fn('span.' + name + 'mp').addClass('disabled');
 			} else {
-
 				fn('input.%s'.printf(name)).removeAttr('disabled');
 				fn('span.' + name + 'mp').removeClass('disabled');
 			}
@@ -113,14 +100,14 @@ X.actionLoaded(function(event, fn, params) {
 						var message = null;
 						switch (data.property) {
 							case 'Channel':
-								message = _('Channel %s has been associated with %s documents.').printf(data.result.values.length, data.result.nodes);
+								message = _('Channel %s has been associated with %s documents.').printf(data.result.values.length
+										, data.result.nodes);
 								break;
 							case 'Language':
 								message = _('%s language versions have been created.').printf(data.result.nodes);
 								break;
 						}
-						manageproperties_showDialog([message], fn, params, function(send) {
-						});
+						manageproperties_showDialog([message], fn, params, function(send) {});
 					}
 				}
 			);
@@ -128,7 +115,6 @@ X.actionLoaded(function(event, fn, params) {
 		
 		// Shows/hides recursive checkboxes/buttons
 		if (fn('input.%s_inherited'.printf(property)).attr('checked')) {
-			
 			fn('input.%s'.printf(property)).change(function(event) {
 				var value = fn(this).attr('checked');
 				if (value) {
@@ -138,9 +124,7 @@ X.actionLoaded(function(event, fn, params) {
 					fn('div.%s_recursive_%s input.%s_recursive'.printf(property, fn(this).val(), property)).removeAttr('checked');
 				}
 			});
-			
 		} else {
-			
 			fn('input.%s'.printf(property)).change(function(event) {
 				if (!fn(this).attr('checked')) {
 					fn('button.%s_apply_%s'.printf(property, fn(this).val())).attr('disabled', true);
@@ -150,5 +134,4 @@ X.actionLoaded(function(event, fn, params) {
 			});
 		}
 	});
-	
 });

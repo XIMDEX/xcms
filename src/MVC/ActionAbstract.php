@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -33,51 +33,26 @@ use Ximdex\Utils\Serializer;
 use Ximdex\Models\User;
 use Ximdex\Models\Action;
 use Ximdex\Models\Node;
+use Ximdex\Modules\Manager;
 use Ximdex\Runtime\App;
-use Ximdex\Runtime\Request;
 use Ximdex\Utils\Factory;
 use Ximdex\Utils\Mail;
 use Ximdex\Utils\QueryManager;
 use Ximdex\Runtime\Session;
+use Ximdex\Models\ORM\MessagesOrm;
 
 /**
- *  @brief Base abstract class for Actions
+ * @brief Base abstract class for Actions
  *
- *  Base abstract class for Actions who provides basic funcionality like rendering
- *  css/js inclusion and redirection
+ * Base abstract class for Actions who provides basic funcionality like rendering css/js inclusion and redirection
  */
 abstract class ActionAbstract extends IController
 {
-    /**
-     * Keeps the js to use
-     */
     public $displayEncoding;
+    
     public $actionMethod;
+    
     public $actionModule;
-    
-    /**
-     * @var array
-     */
-    private $_js = array();
-
-    /**
-     * keeps the css to use
-     * 
-     * @var array
-     */
-    private $_css = array();
-
-    /**
-     * Action name
-     */
-    private $actionName = '';
-
-    /**
-     * Action description
-     */
-    private $actionDescription = '';
-    
-    private $actionId = null;
 
     /**
      * Action renderer
@@ -92,36 +67,58 @@ abstract class ActionAbstract extends IController
      * @var String
      */
     public $actionCommand;
+    
     /**
      * @var bool
      */
     protected $endActionLogged = false;
+    
+    /**
+     * @var array
+     */
+    private $_js = [];
+    
+    /**
+     * keeps the css to use
+     *
+     * @var array
+     */
+    private $_css = [];
+    
+    /**
+     * Action name
+     *
+     * @var string
+     */
+    private $actionName = '';
+    
+    /**
+     * Action description
+     *
+     * @var string
+     */
+    private $actionDescription = '';
+    
+    private $actionId;
 
     /**
      * ActionAbstract constructor
      * 
-     * @param $_render
+     * @param string $_render
      */
-    public function __construct($_render = null)
+    public function __construct(string $_render = null)
     {
         parent::__construct();
         $this->displayEncoding = App::getValue('displayEncoding');
 
-        /** Obtaining the render to use */
+        // Obtaining the render to use
         $rendererClass = $this->_get_render($_render);
         $factory = new Factory(RENDERER_ROOT_PATH, '');
         $this->renderer = $factory->instantiate($rendererClass . 'Renderer');
         $this->renderer->set('_BASE_TEMPLATE_PATH', sprintf('%s/xmd/template/%s/', XIMDEX_ROOT_PATH, $rendererClass));
     }
 
-    /**
-     * @param $actionName
-     * @param $module
-     * @param $actionId
-     * @param $nodeId
-     * @return array
-     */
-    private function getActionInfo($actionName, $module, $actionId, $nodeId)
+    private function getActionInfo(string $actionName, string $module = null, int $actionId = null, int $nodeId = null)
     {
         unset($actionId);
         $nodeTypeId = '';
@@ -134,7 +131,11 @@ abstract class ActionAbstract extends IController
         $data = $action->find(
             'Command, Name, Description, Module, IdAction',
         	'IdNodeType = %s and Command = %s and Module ' . (($module === null) ? 'is null' : '= %s'),
-            array($nodeTypeId, $actionName, $module)
+            [
+                $nodeTypeId, 
+                $actionName, 
+                $module
+            ]
         );
         if (! empty($data)) {
             $data = $data[0];
@@ -145,9 +146,9 @@ abstract class ActionAbstract extends IController
     /**
      * Execute the action
      * 
-     * @param $request Request
+     * @param \Ximdex\Runtime\Request $request
      */
-    public function execute(Request $request)
+    public function execute(\Ximdex\Runtime\Request $request)
     {
         // Setting path or subset which current action belongs to
         $method = ($var = $request->getParam('method')) ? $var : 'index';
@@ -174,55 +175,6 @@ abstract class ActionAbstract extends IController
         } else {
             Logger::debug('MVC::ActionAbstract Method ' . $method . ' not found');
         }
-    }
-
-    private function getDefaultLogMessage()
-    {
-        $user = Session::get('userID') ? 'by ' . Session::get('user_name') . ' (' . Session::get('userID') . ')' : '';
-        $moduleString = '';
-        if (isset($this->actionModule)) {
-            $moduleString = $this->actionModule ? 'in module ' . $this->actionModule : '';
-        }
-        $actionId = '';
-        if ($this->actionId) {
-            $actionId = ' (' . $this->actionId . ')';
-        }
-        return $moduleString . get_class($this) . "->{$this->actionMethod}$actionId {$user}";
-    }
-
-    private function logInitAction()
-    {
-        $this->endActionLogged = false;
-        $defaultLog = Logger::get_active_instance();
-        Logger::setActiveLog('actions');
-        Logger::info('INIT ' . $this->getDefaultLogMessage());
-        Logger::debug('Request: ' . print_r($this->request, true));
-        Logger::setActiveLog($defaultLog);
-    }
-
-    protected function logEndAction($success = true, $message = null)
-    {
-        $message = $message ? ". $message" : '';
-        $defaultLog = Logger::get_active_instance();
-        Logger::setActiveLog('actions');
-        if ($success) {
-            Logger::info('FINISH OK ' . $this->getDefaultLogMessage() . " $message");
-        }
-        else {
-            Logger::warning('FINISH FAIL ' . $this->getDefaultLogMessage() . " $message");
-        }
-        Logger::setActiveLog($defaultLog);
-        $this->endActionLogged = true;
-    }
-
-    protected function logSuccessAction($message = null)
-    {
-        $this->logEndAction(true, $message);
-    }
-
-    protected function logUnsuccessAction($message = null)
-    {
-        $this->logEndAction(false, $message);
     }
 
     /**
@@ -376,13 +328,17 @@ abstract class ActionAbstract extends IController
      * Recargamos el arbol sobre el nodo especificado
      * This method doesn't work when returning a JSON response
      * 
-     * @param int $idnode
+     * @param int $nodeId
      */
-    public function reloadNode($idnode)
+    public function reloadNode(int $nodeId)
     {
+        if (! $nodeId) {
+            return;
+        }
         $queryManager = new QueryManager(false);
-        $file = $queryManager->buildWith(array(
-                'xparams[reload_node_id]' => $idnode,
+        $file = $queryManager->buildWith(array
+            (
+                'xparams[reload_node_id]' => $nodeId,
                 'js_file' => 'reloadNode',
                 'method' => 'includeDinamicJs',
                 'void' => 'SpacesInIE7HerePlease'
@@ -391,12 +347,6 @@ abstract class ActionAbstract extends IController
         $this->addJs(urldecode($file));
     }
 
-    /**
-     * @param $_js
-     * @param string $_module
-     * @param $params
-     * @return array|string
-     */
     public function addJs($_js, $_module = 'APP', $params = null)
     {
         if ('APP' == $_module or 'XIMDEX' == $_module) {
@@ -471,7 +421,7 @@ abstract class ActionAbstract extends IController
     /**
      * @param $data
      */
-    public function sendJSON($data)
+    public function sendJSON(array $data)
     {
         if (! $this->endActionLogged) {
             $this->logSuccessAction();
@@ -566,33 +516,52 @@ abstract class ActionAbstract extends IController
     /**
      * Decides if a tour is be able to be launched automatically given an user
      * 
-     * @param $userId
-     * @param $action
+     * @param int $userId
+     * @param string $action
      * @return bool
      */
-    public function tourEnabled($userId, $action = null)
+    public function tourEnabled(int $userId, string $action = null)
     {
         unset($userId);
-        if (! \Ximdex\Modules\Manager::isEnabled('ximTOUR')) {
+        if (! Manager::isEnabled('ximTOUR')) {
             return false;
         }
         $numReps = App::getValue('ximTourRep');
-        $user = new User (Session::get('userID'));
-        $result = $user->GetNumAccess();
+        $user = new User(Session::get('userID'));
+        $result = $user->getNumAccess();
         return ($result === null || $result < $numReps) ? true : false;
     }
+    
+    protected function logEndAction(bool $success = true, string $message = null)
+    {
+        $message = $message ? ". $message" : '';
+        $defaultLog = Logger::get_active_instance();
+        Logger::setActiveLog('actions');
+        if ($success) {
+            Logger::info('FINISH OK ' . $this->getDefaultLogMessage() . " $message");
+        }
+        else {
+            Logger::warning('FINISH FAIL ' . $this->getDefaultLogMessage() . " $message");
+        }
+        Logger::setActiveLog($defaultLog);
+        $this->endActionLogged = true;
+    }
+    
+    protected function logSuccessAction(string $message = null)
+    {
+        $this->logEndAction(true, $message);
+    }
+    
+    protected function logUnsuccessAction(string $message = null)
+    {
+        $this->logEndAction(false, $message);
+    }
 
-    /**
-     * @param $subject
-     * @param $content
-     * @param $to
-     * @return array
-     */
-    protected function sendNotifications($subject, $content, $to)
+    protected function sendNotifications(string $subject, string $content, string $to)
     {
         $from = Session::get('userID');
-        $result = $this->_sendNotification($subject, $content, $from, $to);
-        $this->_sendNotificationXimdex($subject, $content, $from, $to);
+        $result = $this->sendNotification($subject, $content, $from, $to);
+        $this->sendNotificationXimdex($subject, $content, $from, $to);
         foreach ($result as $idUser => $resultByUser) {
             $user = new User($idUser);
             $userEmail = $user->get('Email');
@@ -605,7 +574,7 @@ abstract class ActionAbstract extends IController
         return $result;
     }
 
-    protected function _sendNotification($subject, $content, $from, $to)
+    private function sendNotification(string $subject, string $content, ?int $from, string $to)
     {
         $result = array();
         foreach ($to as $toUser) {
@@ -625,11 +594,11 @@ abstract class ActionAbstract extends IController
         return $result;
     }
 
-    protected function _sendNotificationXimdex($subject, $content, $from, $to)
+    private function sendNotificationXimdex(string $subject, string $content, ?int $from, string $to)
     {
         $result = array();
         foreach ($to as $toUser) {
-            $messages = new \Ximdex\Models\ORM\MessagesOrm();
+            $messages = new MessagesOrm();
             $messages->set('IdFrom', $from);
             $messages->set('IdOwner', $toUser);
             $messages->set('Subject', $subject);
@@ -641,5 +610,29 @@ abstract class ActionAbstract extends IController
             }
         }
         return $result;
+    }
+    
+    private function getDefaultLogMessage()
+    {
+        $user = Session::get('userID') ? 'by ' . Session::get('user_name') . ' (' . Session::get('userID') . ')' : '';
+        $moduleString = '';
+        if (isset($this->actionModule)) {
+            $moduleString = $this->actionModule ? 'in module ' . $this->actionModule : '';
+        }
+        $actionId = '';
+        if ($this->actionId) {
+            $actionId = ' (' . $this->actionId . ')';
+        }
+        return $moduleString . get_class($this) . "->{$this->actionMethod}$actionId {$user}";
+    }
+    
+    private function logInitAction()
+    {
+        $this->endActionLogged = false;
+        $defaultLog = Logger::get_active_instance();
+        Logger::setActiveLog('actions');
+        Logger::info('INIT ' . $this->getDefaultLogMessage());
+        Logger::debug('Request: ' . print_r($this->request, true));
+        Logger::setActiveLog($defaultLog);
     }
 }

@@ -1,5 +1,5 @@
 {**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -34,7 +34,6 @@
 			</div>
 			<div class="small-12 columns">
 				<div class="input">
-				    <!-- <div class="info-node"> -->
 				    <div>
 			  	    	<label class="label_title label_general">{t}Used schema{/t}</label>
 						<div class="text-border">
@@ -50,11 +49,11 @@
 						{foreach from=$languages item=language}
 							<div class="languages-section">
 								{if ($language.idChildren > 0)}
-                   					<input type="checkbox" name="languages[]" id="lang_{$language.idLanguage}_{$idNode}" value="{$language.idLanguage}" 
-                   							checked="checked" class="hidden-focus" />
+                   					<input type="checkbox" name="languages[]" id="lang_{$language.idLanguage}_{$idNode}" 
+                   					        value="{$language.idLanguage}" checked="checked" class="hidden-focus" />
 								{else}
-									<input type="checkbox" name="languages[]" id="lang_{$language.idLanguage}_{$idNode}" value="{$language.idLanguage}" 
-											class= "hidden-focus"/>
+									<input type="checkbox" name="languages[]" id="lang_{$language.idLanguage}_{$idNode}" 
+									       value="{$language.idLanguage}" class="hidden-focus"/>
 								{/if}
 								<label for="lang_{$language.idLanguage}_{$idNode}" class="icon checkbox-label">{$language.name}</label>
 								<input type="text" name="aliases[{$language.idLanguage}]" class="alternative-name" value="{$language.alias}" 
@@ -68,7 +67,7 @@
 			{/if}
 			<div class="small-12 columns">
                 <fieldset class="buttons-form">
-                    {button label="Modify" class='validate btn main_action' }{*message="Would you like to save changes?"*}
+                    {button label="Modify" class='validate btn main_action'}{* message="Would you like to save changes?" *}
                 </fieldset>
             </div>
 		</div>

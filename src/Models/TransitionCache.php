@@ -45,18 +45,26 @@ class TransitionCache extends GenericData
         'id' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'versionId' => array('type' => 'int(12)', 'not_null' => 'true'),
         'transitionId' => array('type' => 'int(12)', 'not_null' => 'true'),
-        'file' => array('type' => 'varchar(255)', 'not_null' => 'true')
+        'file' => array('type' => 'varchar(255)', 'not_null' => 'true'),
+        'channelId' => array('type' => 'int(12)', 'not_null' => 'false')
     );
-    public $_uniqueConstraints = [];
-    public $_indexes = ['id'];
+    public $_uniqueConstraints = [['versionId', 'transitionId', 'channelId']];
+    public $_indexes = ['id', 'versionId', 'transitionId', 'channelId'];
     public $id;
     public $versionId;
     public $transitionId;
     public $file;
+    public $channelId;
     
-    public function load(int $versionId, int $transitionId) : ?int
+    public function load(int $versionId, int $transitionId, int $channelId = null) : ?int
     {
-        $id = $this->find('id', 'versionId = ' . $versionId . ' AND transitionId = ' . $transitionId, null, MONO);
+        $criteria = 'versionId = ' . $versionId . ' AND transitionId = ' . $transitionId;
+        if ($channelId) {
+            $criteria .= ' AND channelId = ' . $channelId;
+        } else {
+            $criteria .= ' AND channelId IS NULL';
+        }
+        $id = $this->find('id', $criteria, null, MONO);
         if ($id === false) {
             throw new \Exception('Cannot get a cache for transition: ' . $transitionId . ' and version: ' . $versionId);
         }
@@ -67,7 +75,7 @@ class TransitionCache extends GenericData
             if ($version->get('SubVersion') == 0 and $version->get('Version') > 0) {
                 $data = new DataFactory($version->get('IdNode'));
                 if ($id = $data->getPreviousVersion($versionId)) {
-                    return $this->load($id, $transitionId);
+                    return $this->load($id, $transitionId, $channelId);
                 }
             }
             return null;
@@ -83,7 +91,7 @@ class TransitionCache extends GenericData
         return $id;
     }
     
-    public function store(int $versionId, int $transitionId, string $content)
+    public function store(int $versionId, int $transitionId, string $content, int $channelId = null)
     {
         $transition = new Transition($transitionId);
         if (! $transition->get('id')) {
@@ -98,10 +106,11 @@ class TransitionCache extends GenericData
         }
         $this->versionId = $versionId;
         $this->transitionId = $transitionId;
+        $this->channelId = $channelId;
         $this->file = $file;
         
         // If there is a cache previously stored overwrite it
-        $id = $this->load($versionId, $transitionId);
+        $id = $this->load($versionId, $transitionId, $channelId);
         if ($id) {
             $this->id = $id;
             if (! $this->update()) {

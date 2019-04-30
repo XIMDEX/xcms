@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -84,7 +84,8 @@ class Batch extends BatchsOrm
      *  @param int $userId
      *  @return int|null
      */
-    public function create($timeOn, $type, $idNodeGenerator, $priority, $serverId, $idBatchDown = null, $idPortalFrame = null, $userId = null)
+    public function create(int $timeOn, string $type, int $idNodeGenerator, float $priority, int $serverId, int $idBatchDown = null
+        , $idPortalFrame = null, $userId = null)
     {
         setlocale(LC_NUMERIC, 'C');
         $this->set('TimeOn', $timeOn);

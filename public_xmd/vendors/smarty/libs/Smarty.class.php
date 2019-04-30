@@ -295,11 +295,13 @@ class Smarty extends Smarty_Internal_TemplateBase {
      * @var boolean
      */
     public $merge_compiled_includes = false;
+    
     /**
      * cache lifetime in seconds
      * @var integer
      */
     public $cache_lifetime = 3600;
+    
     /**
      * force cache file creation
      * @var boolean

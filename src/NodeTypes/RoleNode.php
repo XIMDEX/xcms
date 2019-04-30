@@ -58,6 +58,10 @@ class RoleNode extends Root
 	public function deleteNode() : bool
 	{
 		$role = new Role($this->parent->get('IdNode'));
-		return $role->delete();
+		if ($role->delete() === false) {
+		    $this->messages->mergeMessages($role->messages);
+		    return false;
+		}
+		return true;
 	}
 }

@@ -30,6 +30,8 @@ namespace Ximdex\NodeTypes;
 use Ximdex\Properties\ChannelProperty;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Models\Channel;
+use Ximdex\Models\Metadata;
+use Ximdex\Models\Node;
 
 /**
  * Class for NodeType common
@@ -77,5 +79,39 @@ class CommonNode extends FileNode
             }
         }
         return $channels;
+    }
+    
+    /**
+     * Return the content of metadata
+     * 
+     * @param int $id
+     * @return array
+     */
+    public static function getMetadata(int $id) : array
+    {
+        $node = new Node($id);
+        $metadata = (new Metadata)->getMetadataSchemeAndGroupByNodeType($node->getNodeType(), $id);
+        return $metadata;
+    }
+    
+    public static function prepareMetadata(array $metadata) : array
+    {
+        $result = [];
+        foreach ($metadata as $meta) {
+            if (key_exists('groups', $meta) || key_exists('metadata', $meta)) {
+                $result = array_merge($result, static::prepareMetadata($meta['groups'] ?? $meta['metadata'] ?? []));
+                continue;
+            }
+            if (! $meta['value']) {
+                continue;
+            }
+            if ($meta['type'] == Metadata::TYPE_DATE) {
+                $meta['value'] = "{$meta['value']}T00:00:00Z";
+            } elseif ($meta['type'] == Metadata::TYPE_IMAGE){
+                $meta['value'] = "@@@RMximdex.pathto({$meta['value']})@@@";
+            }
+            $result[$meta['name']] = $meta['value'];
+        }
+        return $result;
     }
 }

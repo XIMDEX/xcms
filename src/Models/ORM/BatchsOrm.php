@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,7 +32,9 @@ use Ximdex\Data\GenericData;
 class BatchsOrm extends GenericData
 {
     public $_idField = 'IdBatch';
+    
     public $_table = 'Batchs';
+    
     public $_metaData = array(
         'IdBatch' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'TimeOn' => array('type' => "int(12)", 'not_null' => 'true'),
@@ -52,23 +54,42 @@ class BatchsOrm extends GenericData
         'UserId' => array('type' => "int(12)", 'not_null' => 'false'),
         'ServerId' => array('type' => "int(12)", 'not_null' => 'true')
     );
+    
     public $_uniqueConstraints = array();
+    
     public $_indexes = array('IdBatch');
+    
     public $IdBatch;
+    
     public $TimeOn;
+    
     public $State;
+    
     public $ServerFramesTotal = 0;
+    
     public $ServerFramesPending = 0;
+    
     public $ServerFramesActive = 0;
+    
     public $ServerFramesSuccess = 0;
+    
     public $ServerFramesFatalError = 0;
+    
     public $ServerFramesTemporalError = 0;
+    
     public $Type;
+    
     public $IdBatchDown;
+    
     public $IdNodeGenerator;
+    
     public $Priority = 1.0;
+    
     public $Cycles = 0;
+    
     public $IdPortalFrame;
+    
     public $UserId;
+    
     public $ServerId;
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -40,30 +40,38 @@ class ChannelProperty extends InheritableProperty
 	
 	/**
 	 * Obtain the system properties for languages
+	 * 
 	 * {@inheritDoc}
 	 * @see InheritableProperty::get_system_properties()
 	 */
     protected function get_system_properties()
     {
-        if (!$this->channel)
+        if (! $this->channel) {
             $this->channel = new Channel;
+        }
         return $this->channel->find('IdChannel as Id, Name');
     }
     
     /**
      * Get the inherited channels
+     * 
      * {@inheritDoc}
      * @see InheritableProperty::get_inherit_properties()
      */
     protected function get_inherit_properties(array $availableProperties)
     {
-        if (!$this->channel)
+        if (! $this->channel) {
             $this->channel = new Channel;
+        }
         return $this->channel->find('IdChannel as Id, Name, Description', 'IdChannel in (%s)', array(implode(', ', $availableProperties))
             , MULTI, false);
     }
     
-    protected function updateAffectedNodes($values)
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\Properties\InheritableProperty::updateAffectedNodes()
+     */
+    protected function updateAffectedNodes(array $values)
     {
         return true;
     }

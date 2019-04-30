@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -63,7 +63,7 @@ class InstallController extends IController
         $this->response = new Response();
         $this->steps = $this->installManager->getSteps();
         $currentState = $this->installManager->getCurrentState();
-        if (!$currentState) {
+        if (! $currentState) {
             $this->installManager->createStatusFile();
         }
         $this->currentState = $currentState;
@@ -96,7 +96,7 @@ class InstallController extends IController
         $installStep->setResponse($this->response);
         if ($installStep) {
             $check = $installStep->check();
-            if (!$check) {
+            if (! $check) {
                 $this->installManager->prevStep();
                 $this->dispatch();
                 return;

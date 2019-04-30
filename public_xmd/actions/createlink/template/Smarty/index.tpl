@@ -1,5 +1,5 @@
 {**
-*  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+*  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
 *
 *  Ximdex a Semantic Content Management System (CMS)
 *
@@ -35,15 +35,14 @@
                 <div class="input">
                     <label for="name" class="label_title label_general">{t}Name{/t} *</label>
                     <p class="icon icon-positioned link">
-                        <input type="text" name="name" id="name" 
-                                class=" input_general_icon cajaxg validable not_empty js_val_unique_name js_val_alphanumeric" 
-                                data-idnode="{$id_node}" placeholder= "{t}Link name{/t}" />
+                        <input type="text" name="name" id="name" class=" input_general_icon cajaxg validable not_empty js_val_alphanumeric" 
+                                data-idnode="{$id_node}" placeholder="{t}Link name{/t}" />
                     </p>
                 </div>
             </div>
             <div class="small-4 columns">
                 <div class="input-select icon">
-                    <label for="link_type" class="label_title label_general">{t}Type{/t}</label>
+                    <label for="link_type" class="label_title label_general">{t}Type{/t} *</label>
                     <select name="link_type" id="link_type" class="cajaxg document-type">
                         <option value="url" selected>URL (http:// or https://)</option>
                         <option value="email">E-mail (mailto:)</option>
@@ -53,25 +52,19 @@
             <div class="small-12 columns">
                 <div class="input">
                     <label for="url" class="label_title label_general">{t}URL{/t} *</label>
-                    <input type="text" name="url" id="url" class="input_general cajaxg validable not_empty js_val_unique_url" 
-                            data-idnode="{$id_node}" value="http://" />
+                    <input type="text" name="url" id="url" class="input_general cajaxg validable not_empty" data-idnode="{$id_node}" 
+                            value="http://" />
                 </div>
             </div>
             <div class="small-12 columns">
                 <div class="input">
                     <label for="description" class="label_title label_general"><span>{t}Description{/t}</span></label>
-                    <input type="text" name="description" id="description" class="input_general cajaxg" />
+                    <input type="text" name="description" id="description" class="input_general cajaxg" placeholder="{t}Link description{/t}" />
                 </div>
                 <fieldset class="buttons-form ">
-                    {button label="Create" class='validate btn main_action'} {*message="Would you like to create a new link?"*}
+                    {button label="Create" class='validate btn main_action'}
                 </fieldset>
             </div>
         </div>
-        <!-- <div class="input-select icon icon-positioned link">
-            <select name="link_type" id="link_type" class="cajaxg document-type">
-                <option value="url" selected>URL (http:// or https://)</option>
-                <option value="email">E-mail (mailto:)</option>
-            </select>
-        </div> -->
     </div>
 </form>

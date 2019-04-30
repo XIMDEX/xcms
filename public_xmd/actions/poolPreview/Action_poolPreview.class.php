@@ -73,8 +73,8 @@ class Action_poolPreview extends ActionAbstract
     		foreach ($versionList as $value) {
     		    
     			// Get all subversion for each version
-    			$subVersionList = $datafactory->GetSubVersionList($value);
-    			$verAndSubVerList[$value] = $subVersionList;
+    			$subversionList = $datafactory->getSubversionList($value);
+    			$verAndSubVerList[$value] = $subversionList;
     		}
     	}
     	$this->render(array('verAndSubVerList' => $verAndSubVerList));
@@ -156,7 +156,7 @@ class Action_poolPreview extends ActionAbstract
 				    
 					// If it has not version or subversion, i get it the last version for this idnode
 					$dataFactory = new DataFactory($idNode);
-					$versionid = $dataFactory->GetLastVersionId();
+					$versionid = $dataFactory->getLastVersionId();
 				} else {
 					$versionid = $dataFactory->getVersionId($idVersion, $idSubVersion);
 				}

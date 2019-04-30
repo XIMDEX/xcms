@@ -57,8 +57,11 @@ include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
 class BatchManager
 {
     public $idBatchUp;
+    
     public $idBatchDown;
+    
     public $syncStatObj;
+    
     private $channels;
 
     /**
@@ -104,11 +107,11 @@ class BatchManager
         $timer = new Timer();
         $timer->start();
         $node = new Node($idNode);
-        if (! $node->GetID()) {
+        if (! $node->getID()) {
             Logger::error('Cannot load the node with ID: ' . $idNode . ' in order to create the publication batch');
             return false;
         }
-        $idServer = $node->GetServer();
+        $idServer = $node->getServer();
         Logger::info('Publication starts for ' . $node->GetPath() . ' (' . $idNode . ')');
         $unchangedDocs = array();
         $docsToUpVersion = array();
@@ -244,7 +247,7 @@ class BatchManager
         }
         $nodeFrame = new NodeFrame();
         if ($nodeFrame->existsNodeFrame($nodeId, $up, $down)) {
-            Logger::debug(sprintf('Node %s already exists in a NodeFrame', $nodeId));
+            Logger::info("Node $nodeId ({$node->GetNodeName()}) already exists in a NodeFrame");
             return false;
         }
         return true;
@@ -742,20 +745,20 @@ class BatchManager
         }
 
         // Batchs to start
-        if (!$testTime) {
+        if (! $testTime) {
             $now = time();
         } else {
             $now = $testTime;
         }
         $query = 'SELECT b.IdBatch FROM Batchs b INNER JOIN PortalFrames pf ON pf.id = b.IdPortalFrame AND pf.Playing IS TRUE' 
             . ' WHERE b.State = \'' . Batch::WAITING . '\' AND b.TimeOn < ' . $now . ' AND b.ServerId IN (' . implode(',', $servers) . ')';
-        if ($dbObj->Query($query) === false) {
+        if ($dbObj->query($query) === false) {
         	return false;
         }
-        while (!$dbObj->EOF) {
-            $batch = new Batch($dbObj->GetValue('IdBatch'));
+        while (! $dbObj->EOF) {
+            $batch = new Batch($dbObj->getValue('IdBatch'));
             if ($batch->get('IdBatch')) {
-                Logger::info('Starting batch ' . $dbObj->GetValue('IdBatch'));
+                Logger::info('Starting batch ' . $dbObj->getValue('IdBatch'));
                 $batch->set('State', Batch::INTIME);
                 $batch->update();
                 try {
@@ -764,7 +767,7 @@ class BatchManager
                     Logger::error($e->getMessage());
                 }
             }
-            $dbObj->Next();
+            $dbObj->next();
         }
         return $dbObj->numRows;
     }
@@ -778,7 +781,7 @@ class BatchManager
         if ($serversEnabled === false) {
             return false;
         }
-        if (!$serversEnabled) {
+        if (! $serversEnabled) {
             return [];
         }
         $dbObj = new Db();
@@ -799,23 +802,23 @@ class BatchManager
             $sql .= ' b.Priority DESC, b.Cycles';
         }
         $sql .= ', b.Type = \'' . Batch::TYPE_DOWN . '\' DESC, b.IdBatch LIMIT 1';
-        if ($dbObj->Query($sql) === false) {
+        if ($dbObj->query($sql) === false) {
         	return false;
         }
-        if (!$dbObj->numRows) {
+        if (! $dbObj->numRows) {
             return array();
         }
         $list = array();
-        $list['id'] = $dbObj->GetValue('IdBatch');
-        $list['type'] = $dbObj->GetValue('Type');
-        $list['nodegenerator'] = $dbObj->GetValue('IdNodeGenerator');
-        $list['cycles'] = $dbObj->GetValue('Cycles');
-        $list['totalserverframes'] = $dbObj->GetValue('ServerFramesTotal');
+        $list['id'] = $dbObj->getValue('IdBatch');
+        $list['type'] = $dbObj->getValue('Type');
+        $list['nodegenerator'] = $dbObj->getValue('IdNodeGenerator');
+        $list['cycles'] = $dbObj->getValue('Cycles');
+        $list['totalserverframes'] = $dbObj->getValue('ServerFramesTotal');
 
         // Update portal frames cycles
         $sql = 'UPDATE PortalFrames SET CyclesTotal = CyclesTotal + 1, BoostCycles = BoostCycles + (1 / Boost) WHERE id = ' 
-            . $dbObj->GetValue('IdPortalFrame');
-        $dbObj->Execute($sql);
+            . $dbObj->getValue('IdPortalFrame');
+        $dbObj->execute($sql);
         return $list;
     }
 

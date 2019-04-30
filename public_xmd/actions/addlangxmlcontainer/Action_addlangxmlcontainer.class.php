@@ -64,7 +64,7 @@ class Action_addlangxmlcontainer extends ActionAbstract
 			}
 		}
 		$reloadTree = false;
-		if (isset($_REQUEST['reload_tree']) && $_REQUEST['reload_tree']) {
+		if ($this->request->getParam('reload_tree')) {
 			$reloadTree = true;
 		}
 		$values = array(
@@ -77,7 +77,7 @@ class Action_addlangxmlcontainer extends ActionAbstract
 			'numlanguages' => $numLanguages,
 		    'nodeTypeID' => $node->nodeType->getID(),
 		    'node_Type' => $node->nodeType->GetName(),
-			'reload_tree' => $reloadTree,
+			'reload_tree' => $reloadTree
 		);
 		$this->render($values, null, 'default-3.0.tpl');
 	}

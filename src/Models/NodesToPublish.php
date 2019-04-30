@@ -34,23 +34,39 @@ use Ximdex\Models\ORM\NodesToPublishOrm;
 class NodesToPublish extends NodesToPublishOrm
 {
 	/**
-	 * Static method that creates a new NodeSet and returns the related object
+	 * Method that creates a new NodeSet and returns the related object
+	 * 
+	 * @param int $idNode
+	 * @param int $idNodeGenerator
+	 * @param int $dateUp
+	 * @param int $dateDown
+	 * @param int $userId
+	 * @param bool $force
+	 * @param bool $lastPublishedVersion
+	 * @param int $deepLevel
+	 * @param bool $useCache
+	 * @return bool|NULL
 	 */
 	public function create(int $idNode, int $idNodeGenerator, int $dateUp, int $dateDown = null, int $userId = null, bool $force = false
 	    , bool $lastPublishedVersion = false, int $deepLevel = 0, bool $useCache = true) : ?bool
 	{    
 		$dataFactory = new DataFactory($idNode);
-		$idVersion = $dataFactory->GetLastVersion();
-		if ($idNode != $idNodeGenerator && $lastPublishedVersion) {
+		$idVersion = $dataFactory->getLastVersion();
+		if ($idNode != $idNodeGenerator && ! $lastPublishedVersion) {
 			$idSubversion = 0;
 		} else {
-			$idSubversion = $dataFactory->GetLastSubVersion($idVersion);
+			$idSubversion = $dataFactory->getLastSubVersion($idVersion);
+			if ($idSubversion > 0 and $lastPublishedVersion) {
+			    
+			    // If the document is a draft version and the flag for publicate drafts is active, force its publication
+			    $force = true;
+			}
 		}
 		$versionZero = ! $idVersion && ! $idSubversion;
 		if ($versionZero && $idNode != $idNodeGenerator) {
 		    $myNode = new Node($idNode);
 		    if ($myNode->nodeType->get('IsStructuredDocument')) {
-		        Logger::warning(sprintf('Skipping 0.0 version for linked structured document: %s (%s)', $myNode->GetNodeName(), $idNode));
+		        Logger::warning(sprintf('Skipping draft or 0.0 version for linked structured document: %s (%s)', $myNode->GetNodeName(), $idNode));
 		        return null;
 		    }
 		}
@@ -167,7 +183,7 @@ class NodesToPublish extends NodesToPublishOrm
 	/**
 	 * @param int $idNode
 	 * @param int $idNodeGenerator
-	 * @return array
+	 * @return array|boolean
 	 */
 	public function getIntervals(int $idNode = null, int $idNodeGenerator = null)
 	{

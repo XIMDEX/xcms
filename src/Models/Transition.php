@@ -86,9 +86,16 @@ class Transition extends GenericData
         }
         $this->__construct($id[0]);
         
+        // Channel
+        if (isset($args['CHANNEL']) and $args['CHANNEL']) {
+            $channel = (int) $args['CHANNEL'];
+        } else {
+            $channel = null;
+        }
+        
         // Return the cache file if there is one for this transition
         if ($this->cacheable and (! isset($args['DISABLE_CACHE']) or $args['DISABLE_CACHE'] == 0)) {
-            $id = $this->cache->load($versionId, $this->get('id'));
+            $id = $this->cache->load($versionId, $this->get('id'), $channel);
             if ($id) {
                 
                 // Cache content for this transition has been found, return the associated file content
@@ -134,8 +141,8 @@ class Transition extends GenericData
         $content = $this->callback($content, $args, $versionId);
         
         // Cache generation
-        if ($this->cacheable and (! isset($args['DISABLE_CACHE']) or $args['DISABLE_CACHE'] == 0)) {
-            $this->cache->store($versionId, $this->get('id'), $content);
+        if (! App::getValue('DisableCache') and $this->cacheable and $versionId) {
+            $this->cache->store($versionId, $this->get('id'), $content, $channel);
         }
         return $content;
     }

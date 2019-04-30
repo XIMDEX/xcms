@@ -56,6 +56,6 @@ class NodeTypeNode extends Root
     public function deleteNode() : bool
     {
         $ntype = new NodeType($this->nodeID);
-        return (bool) $ntype->deleteNodeType();
+        return $ntype->deleteNodeType();
     }
 }

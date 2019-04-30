@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -47,17 +47,17 @@ class Action_publicatesection extends ActionAbstract
         $idNode = (int) $this->request->getParam('nodeid');
         $node = new Node($idNode);
         $nodeType = New NodeType();
-        $publishabledNodeTypes = $nodeType->find('IdNodeType, Description', 'IsPublishable is true and IsFolder is false'
-            , null, true, true, null, 'Description');
-        $values = array(
+        $publishabledNodeTypes = $nodeType->find('IdNodeType, Description', 'IsPublishable is true and IsFolder is false', null, true, true
+            , null, 'Description');
+        $values = [
             'go_method' => 'publicate_section',
             'publishabledtypes' => $publishabledNodeTypes,
             'folderType' => $node->nodeType->getID() == NodeTypeConstants::SERVER ? 'server' : 'section',
-            'name' => $node->GetNodeName(),
+            'name' => $node->getNodeName(),
             'timestamp_from' => time(),
             'has_unlimited_life_time' => SynchroFacade::HasUnlimitedLifeTime($idNode),
             'gap_info' => $this->getPublicationIntervals($idNode)
-        );
+        ];
         $serverID = $node->getServer();
         $nodeServer = new Node($serverID);
         $nameServer = $nodeServer->get('Name');
@@ -72,16 +72,16 @@ class Action_publicatesection extends ActionAbstract
         // Loading Notifications default values
         $conf = Ximdex\Modules\Manager::file('/conf/notifications.php', 'XIMDEX');
         $defaultMessage = $this->buildMessage($conf['defaultSectionMessage'], $node->get('Name'));
-        $values = $values + array(
+        $values = $values + [
             'group_state_info' => Group::getSelectableGroupsInfo($idNode),
             'required' => $conf['required'] === true ? 1 : 0,
             'defaultMessage' => $defaultMessage,
             'idNode' => $idNode,
-            'name' => $node->GetNodeName(),
+            'name' => $node->getNodeName(),
             'nodeTypeID' => $node->nodeType->getID(),
-            'node_Type' => $node->nodeType->GetName(),
+            'node_Type' => $node->nodeType->getName(),
             'disabledCache' => App::getValue('DisableCache')
-        );
+        ];
         $this->addJs('/actions/publicatesection/resources/js/index.js');
         $this->addCss('/actions/publicatesection/resources/css/style.css');
         $this->addCss('/assets/style/jquery/ximdex_theme/widgets/calendar/calendar.css');
@@ -91,35 +91,34 @@ class Action_publicatesection extends ActionAbstract
     public function publicate_section()
     {
         $idNode = (int) $this->request->getParam('nodeid');
-        $levels = (int) $this->request->getParam('levels');
+        $levels = $this->request->getParam('levels');
         if ($levels == 'all') {
             
             // All subsections
             $level = null;
-            $recurrence = true;
+            $recursive = true;
         }
         elseif ($levels == 'deep') {
             
             // N levels of depth
-            $level = abs($this->request->getParam('deeplevel'));
-            $recurrence = false;
+            $level = abs((int) $this->request->getParam('deeplevel'));
+            $recursive = false;
         }
         else {
             
             // Zero levels, only the given section or node node
             $level = 1;
-            $recurrence = false;
+            $recursive = false;
         }
         $forcePublication = $this->request->getParam('force') ? true : false;
         
         // Filter by specified node type
         if ($this->request->getParam('publishType')) {
             $type = (int) $this->request->getParam('types');
-        }
-        else {
+        } else {
             $type = null;
         }
-        $noUseDrafts = $this->request->getParam('latest') ? false : true;
+        $useDrafts = $this->request->getParam('latest') ? true : false;
         $useCache = $this->request->getParam('use_cache') ? true : false;
         $node = new Node($idNode);
         $nodename = $node->get('Name');
@@ -132,7 +131,9 @@ class Action_publicatesection extends ActionAbstract
         $down = (! is_null($dateDown) && $dateDown != '') ? $dateDown / 1000 : null;
         if ($down and $down <= ($up + 58)) {
             $this->messages->add('Expiration date has to be later than beginning one', MSG_TYPE_ERROR);
-            $values = array('messages' => $this->messages->messages);
+            $values = [
+                'messages' => $this->messages->messages
+            ];
             $this->sendJSON($values);
         }
         $markEnd = $this->request->getParam('markend') ? true : false;
@@ -145,35 +146,37 @@ class Action_publicatesection extends ActionAbstract
             $texttosend = $this->request->getParam('texttosend');
             $sent = $this->sendNotification($idNode, $notificableUsers, $texttosend);
             if (! $sent) {
-                $values = array(
+                $values = [
                     'goback' => true,
                     'messages' => $this->messages->messages
-                );
+                ];
                 $this->render($values, 'show_results', 'default-3.0.tpl');
                 return false;
             }
         }
         
         // Publication flags
-        $flagsPublication = array(
+        $flagsPublication = [
             'markEnd' => $markEnd,
             'linked' => true,
-            'recurrence' => $recurrence,
+            'recursive' => $recursive,
             'childtype' => $type,
             'workflow' => false,
             'force' => $forcePublication,
-            'lastPublished' => $noUseDrafts,
+            'lastPublished' => $useDrafts,
             'publicateSection' => true,
             'level' => $level,
             'structure' => $structure,
             'nodeType' => $type,
             'useCache' => $useCache,
             'expireAll' => true
-        );
+        ];
         $syncFac = new SynchroFacade();
-        $syncFac->pushDocInPublishingPool($idNode, $up, $down, $flagsPublication, $recurrence);
+        $syncFac->pushDocInPublishingPool($idNode, $up, $down, $flagsPublication);
         $this->messages->add(sprintf(_('%s %s has been successfully sent to publish'), ucfirst($folderType), $nodename), MSG_TYPE_NOTICE);
-        $values = array('messages' => $this->messages->messages);
+        $values = [
+            'messages' => $this->messages->messages
+        ];
         $this->sendJSON($values);
     }
     
@@ -188,32 +191,36 @@ class Action_publicatesection extends ActionAbstract
         $idGroup = (int) $this->request->getParam('groupid');
         $idNode = (int) $this->request->getParam('nodeid');
         $group = new Group($idGroup);
-        $values = array('messages' => array(_('You do not belong to any group with publication privileges')));
+        $values = [
+            'messages' => [
+                _('You do not belong to any group with publication privileges')
+            ]
+        ];
         $validateInGroup = $this->validateInSelectedGroup($group, $idGroup);
         if ($validateInGroup === false) {
             return false;
         }
         if ($group->get('IdGroup') > 0 && $validateInGroup) {
             $user = new User();
-            $users = $user->GetAllUsers();
-            $notificableUsers = array();
+            $users = $user->getAllUsers();
+            $notificableUsers = [];
             if (! empty($users) && is_array($users)) {
                 foreach ($users as $idUser) {
                     $user = new User($idUser);
-                    $idRole = $user->GetRoleOnNode($idNode, $idGroup);
-                    if (($idRole > 0)) {
-                        $notificableUsers[] = array(
+                    $idRole = $user->getRoleOnNode($idNode, $idGroup);
+                    if ($idRole > 0) {
+                        $notificableUsers[] = [
                             'idUser' => $idUser,
                             'userName' => $user->get('Name')
-                        );
+                        ];
                     }
                 }
             }
-            $values = array(
+            $values = [
                 'group' => $idGroup,
                 'groupName' => $group->get('Name'),
                 'notificableUsers' => $notificableUsers
-            );
+            ];
         }
         header('Content-type: application/json');
         $values = Serializer::encode(SZR_JSON, $values);
@@ -244,6 +251,9 @@ class Action_publicatesection extends ActionAbstract
     {
         $nodesToPublish = new NodesToPublish();
         $intervals = $nodesToPublish->getIntervals(null, $idNode);
+        if (! is_array($intervals)) {
+            $intervals = [];
+        }
         return $this->formatInterval($intervals);
     }
     
@@ -255,14 +265,14 @@ class Action_publicatesection extends ActionAbstract
      */
     private function formatInterval(array $gaps)
     {
-        $gapInfo = array();
+        $gapInfo = [];
         if (count($gaps) > 0) {
             foreach ($gaps as $gap) {
-                $gapInfo[] = array(
+                $gapInfo[] = [
                     'BEGIN_DATE' => strftime('%d/%m/%Y %H:%M:%S', $gap['start']),
                     'END_DATE' => isset($gap['end']) ? strftime('%d/%m/%Y %H:%M:%S', $gap['end']) : null,
                     'NODES' => isset($gap['nodes']) ? $gap['nodes'] : null
-                );
+                ];
             }
         }
         return $gapInfo;
@@ -279,7 +289,9 @@ class Action_publicatesection extends ActionAbstract
             $this->messages->add(sprintf(_('No information about the selected group (%s) could be obtained'), $idGroup), MSG_TYPE_ERROR);
         }
         if ($this->messages->count(MSG_TYPE_ERROR) > 0) {
-            $this->render(array('messages' => $this->messages->messages), null, 'messages_in_progress_action.tpl');
+            $this->render([
+                'messages' => $this->messages->messages
+            ], null, 'messages_in_progress_action.tpl');
             return false;
         }
         return true;

@@ -37,9 +37,9 @@ class Action_modifychannel extends ActionAbstract
 	 */
     public function index()
     {
-        $idNode = $this->request->getParam('nodeid');
+        $idNode = (int) $this->request->getParam('nodeid');
         $node = new Node($idNode);	
-		if (! $node->GetID()) {
+		if (! $node->getID()) {
     			$this->messages->add(_('Node could not be found'), MSG_TYPE_ERROR);
     			$this->render(array($this->messages), null, 'messages.tpl');
     			die();
@@ -85,7 +85,7 @@ class Action_modifychannel extends ActionAbstract
 
     public function modifychannel()
     {
-    	$idNode = $this->request->getParam('nodeid');
+    	$idNode = (int) $this->request->getParam('nodeid');
     	if ($idNode == Channel::JSON_CHANNEL) {
         	$this->messages->add('This channel cannot be modified', MSG_TYPE_WARNING);
         	$values = array('messages' => $this->messages->messages, 'idNode' => $idNode);
@@ -125,8 +125,8 @@ class Action_modifychannel extends ActionAbstract
         $channel->set('OutputType', $outputType);
         $channel->setRenderType($renderType);
         $channel->setIdLanguage($codeLanguage);
-        $default = (int) $this->request->getParam('Default_Channel');
-        $channel->set('Default_Channel', $default);
+        $default = (bool) $this->request->getParam('Default_Channel');
+        $channel->set('Default_Channel', (int) $default);
         $result = $channel->update();
 		if ($result === null) {
 		    $channel->messages->add(_('Not any change has been performed'), MSG_TYPE_WARNING);

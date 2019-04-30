@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -34,32 +34,38 @@ use Ximdex\Models\ORM\DependenciesOrm;
 class Dependencies extends DependenciesOrm
 {
     const ASSET = "asset";
+    
     const CHANNEL = "channel";
+    
     const LANGUAGE = "language";
+    
     const SCHEMA = "schema";
+    
     const SYMLINK = "symlink";
+    
     const TEMPLATE = "template";
+    
     const XIMLET = "ximlet";
+    
     const XML = "xml";
+    
     const XIMLINK = "ximlink";
 
     /**
-     * @var $deptypes array
      * It will be something like
      * "css" => 1
      * "assets" => 2
      * "ximlets" => 3
      * It means, the key is the dependence name,
      * and the value is the ID.
+     * 
+     * @var $deptypes array
      */
     private static $depTypes = null;
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
-        if (!self::$depTypes) {
+        if (! self::$depTypes) {
             self::buildDepTypes();
         }
         parent::__construct();
@@ -83,13 +89,13 @@ class Dependencies extends DependenciesOrm
     /**
      * Get IdDepType from a dependence type name
      * 
-     * @param $depType String Searched name
+     * @param string $depType Searched name
      * @return string Id for the deptype if it exists. Otherwise return false
      */
-    public function getDepTypeId($depType)
+    public function getDepTypeId(string $depType)
     {
         // If the array it doesn't exist, load it
-        if (!self::$depTypes || !is_array(self::$depTypes)) {
+        if (! self::$depTypes || ! is_array(self::$depTypes)) {
             self::buildDepTypes();
         }
         if (is_numeric($depType)) {
@@ -99,7 +105,7 @@ class Dependencies extends DependenciesOrm
         
         // If don't found this deptype, reload the array
         // This deptype could be added after
-        if (!array_key_exists($depType, self::$depTypes)) {
+        if (! array_key_exists($depType, self::$depTypes)) {
             self::buildDepTypes();
         }
 
@@ -107,28 +113,24 @@ class Dependencies extends DependenciesOrm
         return array_key_exists($depType, self::$depTypes) ? self::$depTypes[$depType] : false;
     }
 
-    /**
-     * @param $idDepType
-     * @return bool|mixed
-     */
-    public function getDepTypeName($idDepType)
+    public function getDepTypeName(int $idDepType)
     {
         // If the array it doesn't exist, load it
-        if (!self::$depTypes || !is_array(self::$depTypes)) {
+        if (! self::$depTypes || ! is_array(self::$depTypes)) {
             self::buildDepTypes();
         }
 
         // IdDepType have to be a number
-        if (!is_numeric($idDepType)) {
+        if (! is_numeric($idDepType)) {
             return false;
         }
-        if (!is_array(self::$depTypes)) {
+        if (! is_array(self::$depTypes)) {
             return false;
         }
 
         // If don't found this deptype id, reload the array
         // This deptype could be added after
-        if (!in_array($idDepType, self::$depTypes)) {
+        if (! in_array($idDepType, self::$depTypes)) {
             self::buildDepTypes();
         }
 
@@ -136,17 +138,10 @@ class Dependencies extends DependenciesOrm
         return in_array($idDepType, self::$depTypes) ? array_search($idDepType, self::$depTypes) : false;
     }
 
-    /**
-     * @param $master
-     * @param $dependent
-     * @param $type
-     * @param $version
-     * @return bool|null|string
-     */
-    public function insertDependence($master, $dependent, $type, $version = null)
+    public function insertDependence(int $master, int $dependent, string $type, int $version = null)
     {
         $type = $this->getDepTypeId($type);
-        if (!$type) {
+        if (! $type) {
             return false;
         }
         $this->set('IdNodeMaster', $master);
@@ -156,31 +151,32 @@ class Dependencies extends DependenciesOrm
             $this->set('version', $version);
         } else {
             $dataFactory = new DataFactory($master);
-            $idVersion = $dataFactory->GetLastVersion();
+            $idVersion = $dataFactory->getLastVersion();
             $this->set('version', $idVersion);
         }
-        if (!$this->existsDependence($master, $dependent, $type, $version)) {
+        if (! $this->existsDependence($master, $dependent, $type, $version)) {
             return $this->add();
         }
         return false;
     }
 
     /**
-     * @param $nodeID
+     * Deletes all the dependencies (ancestor) of this node ("free")
+     * 
+     * @param int $nodeID
      */
-    public function deleteDependentNode($nodeID)
+    public function deleteDependentNode(int $nodeID)
     {
-        // Deletes all the dependencies (ancestor) of this node ("free")
         $this->deleteAll("IdNodeDependent = %s", array($nodeID));
     }
 
     /**
      * Delete all dependencies for a master node and an given type
      * 
-     * @param $nodeID
-     * @param $type
+     * @param int $nodeID
+     * @param string $type
      */
-    public function deleteMasterNodeandType($nodeID, $type)
+    public function deleteMasterNodeAndType(int $nodeID, string $type)
     {
         $type = $this->getDepTypeId($type);
 
@@ -189,49 +185,60 @@ class Dependencies extends DependenciesOrm
     }
 
     /**
-     * @param $nodeID
-     * @param $version
+     * Deletes all the dependencies (ancestor) of this node ("free")
+     * 
+     * @param int $nodeID
+     * @param int $version
      */
-    public function deleteDependenciesByDependentAndVersion($nodeID, $version)
+    public function deleteDependenciesByDependentAndVersion(int $nodeID, int $version)
     {
-        // Deletes all the dependencies (ancestor) of this node ("free")
         // Last versions should be deleted
-        $this->deleteAll("IdNodeDependent = %s and version= %s", array($nodeID, $version));
+        $this->deleteAll("IdNodeDependent = %s and version = %s", array($nodeID, $version));
     }
     
-    public function deleteByMasterAndVersion($nodeID, $version)
+    public function deleteByMasterAndVersion(int $nodeID, int $version)
     {
         // Deletes all the dependencies (ancestor) of this node ("free")
         // Last versions should be deleted
         $this->deleteAll("IdNodeMaster = %s and version= %s", array($nodeID, $version));
     }
 
-    public function deleteDependenciesByDependentAndType($nodeID, $type)
+    public function deleteDependenciesByDependentAndType(int $nodeID, string $type)
     {
         $type = $this->getDepTypeId($type);
         $this->deleteAll("IdNodeDependent = %s and DepType= %s", array($nodeID, $type));
     }
 
-    public function getDependenciesDependentNode($nodeID)
+    /**
+     * Get all the nodes which are dependant of the current one
+     * 
+     * @param int $nodeID
+     * @return array|boolean
+     */
+    public function getDependenciesDependentNode(int $nodeID)
     {
-        // Get all the nodes which are dependant of the current one
         return $this->find("IdNodeMaster", "IdNodeDependent = %s", array($nodeID), MONO);
     }
 
-    public function getDependenciesMasterNode($nodeID)
+    /**
+     * Gets all the nodes which are pointing the the current one with dependencies of  kind $type
+     * 
+     * @param int $nodeID
+     * @return array|boolean
+     */
+    public function getDependenciesMasterNode(int $nodeID)
     {
-        // Gets all the nodes which are pointing the the current one with dependencies of  kind $type
         return $this->find("IdNodeMaster", "IdNodeMaster = %s", array($nodeID), MONO);
     }
 
-    public function getDependenciesMasterByType($nodeID, $type, $version = null)
+    public function getDependenciesMasterByType(int $nodeID, string $type, $version = null)
     {
         $type = $this->getDepTypeId($type);
         
-        // Gets all the nodes which are pointing the the current one with dependencies of  kind $type
+        // Gets all the nodes which are pointing the the current one with dependencies of kind $type
         $condition = "IdNodeMaster = %s AND DepType = %s";
         $values = array($nodeID, $type);
-        if (!is_null($version)) {
+        if (! is_null($version)) {
             $condition .= " AND version = %s";
             $values[] = $version;
         }
@@ -239,12 +246,12 @@ class Dependencies extends DependenciesOrm
         return is_array($result) ? array_unique($result) : false;
     }
 
-    public function getMastersByType($nodeID, $type, $version = null)
+    public function getMastersByType(int $nodeID, string $type, int $version = null)
     {
         $type = $this->getDepTypeId($type);
         $condition = "IdNodeDependent = %s AND DepType = %s";
         $values = array($nodeID, $type);
-        if (!is_null($version)) {
+        if (! is_null($version)) {
             $condition .= " AND version = %s";
             $values[] = $version;
         }
@@ -252,17 +259,17 @@ class Dependencies extends DependenciesOrm
         return is_array($result) ? array_unique($result) : false;
     }
 
-    public function existsDependence($master, $dependent, $type, $version)
+    public function existsDependence(int $master, int $dependent, string $type, int $version = null)
     {
         $type = $this->getDepTypeId($type);
         
         // Gets all the dependencies (ancestor) of this node
         $condition = "IdNodeMaster = %s AND IdNodeDependent = %s and DepType = %s and version = %s";
-        $values = array($master, $dependent, $type, $version);
+        $values = array($master, $dependent, $type, (int) $version);
         return $this->count($condition, $values);
     }
 
-    public function deleteByMasterAndDependent($nodeMaster, $nodeDependent, $type)
+    public function deleteByMasterAndDependent(int $nodeMaster, int $nodeDependent, string $type)
     {
         $type = $this->getDepTypeId($type);
         if (is_null($nodeMaster) || is_null($nodeDependent) || is_null($type)) {

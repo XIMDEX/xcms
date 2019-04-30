@@ -70,7 +70,7 @@ class PumperManager
                     
                     // Checking if pumper is alive
                     $now = time();
-                    if (!Pumper::isAlive($pumper) or ($now - $pumperCheckTime > MAX_CHECK_TIME_FOR_PUMPER)) {
+                    if (! Pumper::isAlive($pumper) or ($now - $pumperCheckTime > MAX_CHECK_TIME_FOR_PUMPER)) {
                         Logger::debug('No checking time for pumper ' . $pumperId);
                         
                         // Restart pumper

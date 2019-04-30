@@ -82,4 +82,7 @@ class Constants
     const RUN_HEURISTIC_MODE = true;
     const RUN_IMPORT_MODE = false;
     const PUBLISH_STATUS = 'Publish';
+    
+    // Metatags
+    const HTML_GENERATOR_TAG = 'Ximdex CMS, Semantic Headless CMS and DMS, http://www.ximdex.com';
 }

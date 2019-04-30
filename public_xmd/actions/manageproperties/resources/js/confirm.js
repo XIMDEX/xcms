@@ -1,5 +1,5 @@
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -23,14 +23,12 @@
  *  @version $Revision$
  */
 
-X.actionLoaded(function(event, fn, params) {
-	
+X.actionLoaded(function(event, fn, params)
+{
 	var btn = fn('.submit-button').get(0);
 	btn.beforeSubmit.add(function(event, button) {
-		
 		var confirmed = fn('input[name=confirmed]').attr('checked');
-		
-		if (!confirmed) {
+		if (! confirmed) {
 			var messages = [_('Would you like to continue with the changes?')];
 			manageproperties_showDialog(messages, fn, params, function(send) {
 				if (send) {
@@ -44,8 +42,6 @@ X.actionLoaded(function(event, fn, params) {
 				}
 			});
 		}
-		
 		return !confirmed;
-	});
-	
+	});	
 });

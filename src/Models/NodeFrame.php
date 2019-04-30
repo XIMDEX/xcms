@@ -71,15 +71,18 @@ class NodeFrame extends NodeFramesOrm
     }
 
 	/**
-	 * Gets all ServerFrames associated to a NodeFrame
+	 * Gets all ServerFrames associated to a NodeFrame only in enabled servers
 	 * 
 	 * @param int $idNdFr
 	 * @param string $operation
 	 * @param array $enabledServers
 	 * @return array
 	 */
-    public function getFrames(int $idNdFr = null, string $operation = null, array $enabledServers = []) : array
+    public function getFrames(int $idNdFr = null, string $operation = null, array $enabledServers = null) : array
     {
+        if ($enabledServers !== null and ! $enabledServers) {
+            return [];
+        }
         if (! $idNdFr) {
             $idNdFr = $this->IdNodeFrame;
         }
@@ -92,11 +95,11 @@ class NodeFrame extends NodeFramesOrm
             $sql .= ' AND IdServer IN (' . implode(', ', $enabledServers) . ')';
         }
 		$dbObj = new \Ximdex\Runtime\Db();
-		$dbObj->Query($sql);
+		$dbObj->query($sql);
 		$frames = array();
 		while (! $dbObj->EOF) {
-			$frames[] = $dbObj->GetValue('IdSync');
-			$dbObj->Next();
+			$frames[] = $dbObj->getValue('IdSync');
+			$dbObj->next();
 		}
 		return $frames;
     }
@@ -112,7 +115,7 @@ class NodeFrame extends NodeFramesOrm
     public function existsNodeFrame(int $nodeId, int $up, int $down = null)
     {
 		$dataFactory = new DataFactory($nodeId);
-		$idVersion = $dataFactory->GetPublishedIdVersion();
+		$idVersion = $dataFactory->getPublishedIdVersion();
 		$condition = 'NodeId = %s AND VersionId = %s AND TimeUp <= %s AND IsProcessDown = 0';
 		if (is_null($down)) {
 			$condition .= ' AND TimeDown IS NULL';
@@ -143,17 +146,15 @@ class NodeFrame extends NodeFramesOrm
 			
 			// Check if the channels from document properties are in the server frame channels list
 			$properties = InheritedPropertiesManager::getValues($nodeId, true);
-			if (isset($properties['Channel']))
-			{
+			if (isset($properties['Channel'])) {
 			    $strDoc = new StructuredDocument($nodeId);
 			    foreach ($channelList as $channelID) {
-			        if (! $strDoc->HasChannel($channelID)) {
+			        if (! $strDoc->hasChannel($channelID)) {
 			            return false;
 			        }
 			    }
-			}
-			else
-			{
+			} else {
+			    
 			    // There is no channels assigned to this document
 			    return false;
 			}
@@ -232,7 +233,6 @@ class NodeFrame extends NodeFramesOrm
 	 * 
 	 * @param int $nodeId
 	 * @param int $time
-	 * @param array $enabledServers
 	 * @return array
 	 */
 	public function getFutureNodeFramesForDate(int $nodeId, int $time) : array

@@ -74,7 +74,7 @@ class QueryHandler_SOLR extends QueryHandler_Abstract
 				$record['versiondate'] = null;
 				$record['versiondateformated'] = null;
 				$datafactory = new DataFactory($nodeId);
-				$versionId = $datafactory->GetLastVersionId();
+				$versionId = $datafactory->getLastVersionId();
 				if ($versionId > 0) {
 					$version = new Version($versionId);
 					$record['versionid'] = $versionId;

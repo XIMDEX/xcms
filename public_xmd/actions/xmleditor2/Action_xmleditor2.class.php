@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -33,6 +33,8 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\Request;
 use Ximdex\Utils\Serializer;
+use Ximdex\Utils\Strings;
+use Ximdex\Utils\Messages;
 use Ximdex\Logger;
 
 Ximdex\Modules\Manager::file('/actions/xmleditor2/XimlinkResolver.class.php');
@@ -40,24 +42,26 @@ Ximdex\Modules\Manager::file('/actions/createlink/Action_createlink.class.php');
 
 class Action_xmleditor2 extends ActionAbstract
 {
-    private $_editor = null;
+    private $editor = null;
     
     public function index()
     {
         $idnode = $this->request->getParam('nodeid');
         $strDoc = new StructuredDocument($idnode);
-        if ($strDoc->GetSymLink()) {
-            $masterNode = new Node($strDoc->GetSymLink());
-            $values = array(
-                'path_master' => $masterNode->GetPath()
+        if ($strDoc->getSymLink()) {
+            $masterNode = new Node($strDoc->getSymLink());
+            $values = array
+            (
+                'path_master' => $masterNode->getPath()
             );
             $this->render($values, 'linked_document', 'default-3.0.tpl');
             return false;
         }
         $queryManager = App::get('\Ximdex\Utils\QueryManager');
         $locale = new XimLocale();
-        $user_locale = $locale->GetLocaleByCode(\Ximdex\Runtime\Session::get('locale'));
-        $action = $queryManager->getPage() . $queryManager->buildWith(array(
+        $user_locale = $locale->getLocaleByCode(\Ximdex\Runtime\Session::get('locale'));
+        $action = $queryManager->getPage() . $queryManager->buildWith(array
+        (
             'method' => 'load',
             'on_resize_functions' => '',
             'time_id' => microtime(true),  // Timestamp for javascripts
@@ -77,10 +81,10 @@ class Action_xmleditor2 extends ActionAbstract
         $view = $this->request->getParam('view');
         $this->getEditor($idnode);
         $xslIncludesOnServer = App::getValue("XslIncludesOnServer");
-        $values = $this->_editor->openEditor($idnode, $view);
+        $values = $this->editor->openEditor($idnode, $view);
         $values['on_resize_functions'] = '';
         $values['xinversion'] = App::getValue("VersionName");
-        $template = 'loadEditor_' . $this->_editor->getEditorName();
+        $template = 'loadEditor_' . $this->editor->getEditorName();
         
         // Adding Config params for xsl:includes
         $values["xslIncludesOnServer"] = $xslIncludesOnServer;
@@ -89,21 +93,20 @@ class Action_xmleditor2 extends ActionAbstract
         $this->render($values, $template, 'xmleditor2.tpl');
     }
 
-    private function & getEditor($idnode)
+    private function getEditor(int $idnode)
     {
-        // $params = $this->request->getParam("params");
         $editorName = strtoupper('KUPU');
-        $msg = new Ximdex\Utils\Messages();
+        $msg = new Messages();
         $class = 'XmlEditor_' . $editorName;
         $file = '/actions/xmleditor2/model/XmlEditor_' . $editorName . '.class.php';
         $editor = null;
-        if (!is_readable(APP_ROOT_PATH . $file)) {
+        if (! is_readable(APP_ROOT_PATH . $file)) {
             $msg->add(_('A non-existing editor has been refered.'), MSG_TYPE_ERROR);
             $this->render(array('nodeid' => $idnode, 'messages' => $msg->messages));
             exit();
         }
         Ximdex\Modules\Manager::file($file);
-        if (!class_exists($class)) {
+        if (! class_exists($class)) {
             $msg->add(_('A non-existing editor has been refered.'), MSG_TYPE_ERROR);
             $this->render(array('nodeid' => $idnode, 'messages' => $msg->messages));
             exit();
@@ -113,23 +116,18 @@ class Action_xmleditor2 extends ActionAbstract
         $editor = new $class();
         $editor->setBaseURL($base_url);
         $editor->setEditorName($editorName);
-        $this->_editor = &$editor;
-        return $editor;
+        $this->editor = $editor;
+        return $this->editor;
     }
 
-    private function printContent($content, $serialize = true)
+    private function printContent($content, bool $serialize = true)
     {
-        // TODO: Use MVC renderers?, JSON renderer?, ...
         $ajax = $this->request->getParam('ajax');
         if ($ajax != 'json') {
-            
-            // TODO: Detect content type, at the moment is XML...
             header('Content-type: text/xml');
         } else {
             if ($serialize) {
-                
-                // TODO: Return the response through the MVC... (I don't like JSON implementation on the MVC !!!)
-                if (!is_array($content) && !is_object($content)) {
+                if (! is_array($content) && ! is_object($content)) {
                     $content = array('data' => $content);
                 }
                 $content = Serializer::encode(SZR_JSON, $content);
@@ -144,7 +142,7 @@ class Action_xmleditor2 extends ActionAbstract
     {
         $idnode = $this->request->getParam('nodeid');
         $this->getEditor($idnode);
-        $content = $this->_editor->getConfig($idnode);
+        $content = $this->editor->getConfig($idnode);
         $this->printContent($content);
     }
 
@@ -153,7 +151,7 @@ class Action_xmleditor2 extends ActionAbstract
         $idnode = $this->request->getParam('nodeid');
         $node = new Node($idnode);
         $info = $node->loadData();
-        if (!empty($info)) {
+        if (! empty($info)) {
             $info = json_encode($info);
             header('Content-type: application/json');
         }
@@ -167,7 +165,7 @@ class Action_xmleditor2 extends ActionAbstract
         $view = $this->request->getParam('view');
         $content = $this->request->getParam('content');
         $this->getEditor($idnode);
-        $content = $this->_editor->getXmlFile($idnode, $view, $content);
+        $content = $this->editor->getXmlFile($idnode, $view, $content);
         $this->printContent($content);
     }
 
@@ -175,7 +173,7 @@ class Action_xmleditor2 extends ActionAbstract
     {
         $idnode = $this->request->getParam('nodeid');
         $this->getEditor($idnode);
-        $content = $this->_editor->verifyTmpFile($idnode);
+        $content = $this->editor->verifyTmpFile($idnode);
         $this->printContent($content);
     }
 
@@ -183,7 +181,7 @@ class Action_xmleditor2 extends ActionAbstract
     {
         $idnode = $this->request->getParam('nodeid');
         $this->getEditor($idnode);
-        $content = $this->_editor->removeTmpFile($idnode);
+        $content = $this->editor->removeTmpFile($idnode);
         $this->printContent($content);
     }
 
@@ -191,7 +189,7 @@ class Action_xmleditor2 extends ActionAbstract
     {
         $idnode = $this->request->getParam('nodeid');
         $this->getEditor($idnode);
-        $content = $this->_editor->recoverTmpFile($idnode);
+        $content = $this->editor->recoverTmpFile($idnode);
         $this->printContent($content);
     }
 
@@ -201,7 +199,7 @@ class Action_xmleditor2 extends ActionAbstract
         $view = $this->request->getParam('view');
         $includesOnServer = $this->request->getParam("includesInServer");
         $this->getEditor($idnode);
-        $content = $this->_editor->getXslFile($idnode, $view, $includesOnServer);
+        $content = $this->editor->getXslFile($idnode, $view, $includesOnServer);
         $this->printContent($content);
     }
 
@@ -209,7 +207,7 @@ class Action_xmleditor2 extends ActionAbstract
     {
         $idnode = $this->request->getParam('nodeid');
         $this->getEditor($idnode);
-        $content = $this->_editor->getSchemaFile($idnode);
+        $content = $this->editor->getSchemaFile($idnode);
         $this->printContent($content);
     }
 
@@ -217,7 +215,7 @@ class Action_xmleditor2 extends ActionAbstract
     {
         $ximcludeId = $this->request->getParam('nodeid');
         $userId = \Ximdex\Runtime\Session::get('userID');
-        $user = new \Ximdex\Models\User($userId);
+        $user = new User($userId);
         $ret = $user->canWrite(array('node_id' => $ximcludeId));
         $this->printContent(array('editable' => $ret));
     }
@@ -226,9 +224,9 @@ class Action_xmleditor2 extends ActionAbstract
     {
         $idnode = $this->request->getParam('nodeid');
         $xmldoc = Request::post('content');
-        $xmldoc = \Ximdex\Utils\Strings::stripslashes($xmldoc);
+        $xmldoc = Strings::stripslashes($xmldoc);
         $this->getEditor($idnode);
-        $ret = $this->_editor->validateSchema($idnode, $xmldoc);
+        $ret = $this->editor->validateSchema($idnode, $xmldoc);
         $this->printContent($ret);
     }
 
@@ -238,7 +236,7 @@ class Action_xmleditor2 extends ActionAbstract
         $content = Request::post('content');
         $autoSave = ($this->request->getParam('autosave') == 'true') ? true : false;
         $this->getEditor($idnode);
-        $response = $this->_editor->saveXmlFile($idnode, $content, $autoSave);
+        $response = $this->editor->saveXmlFile($idnode, $content, $autoSave);
 
         // TODO: Evaluate $response['saved']...
         foreach ($response['headers'] as $header) {
@@ -252,7 +250,7 @@ class Action_xmleditor2 extends ActionAbstract
         $idnode = $this->request->getParam('nodeid');
         $content = Request::post('content');
         $this->getEditor($idnode);
-        $response = $this->_editor->publicateFile($idnode, $content);
+        $response = $this->editor->publicateFile($idnode, $content);
         foreach ($response['headers'] as $header) {
             header($header);
         }
@@ -264,7 +262,7 @@ class Action_xmleditor2 extends ActionAbstract
         $idnode = $this->request->getParam('nodeid');
         $content = Request::post('content');
         $this->getEditor($idnode);
-        $content = $this->_editor->getSpellCheckingFile($idnode, $content);
+        $content = $this->editor->getSpellCheckingFile($idnode, $content);
         $this->printContent($content);
     }
 
@@ -273,7 +271,7 @@ class Action_xmleditor2 extends ActionAbstract
         $idnode = $this->request->getParam('nodeid');
         $content = Request::post('content');
         $this->getEditor($idnode);
-        $content = $this->_editor->getAnnotationFile($idnode, $content);
+        $content = $this->editor->getAnnotationFile($idnode, $content);
         $this->printContent($content);
     }
 
@@ -286,7 +284,7 @@ class Action_xmleditor2 extends ActionAbstract
         $uid = $this->request->getParam('uid');
         $content = $this->request->getParam('content');
         $this->getEditor($idnode);
-        $allowedChildrens = $this->_editor->getAllowedChildrens($idnode, $uid, $content);
+        $allowedChildrens = $this->editor->getAllowedChildrens($idnode, $uid, $content);
         $this->printContent($allowedChildrens);
     }
 
@@ -296,7 +294,7 @@ class Action_xmleditor2 extends ActionAbstract
         $content = Request::post('content');
         $idChannel = Request::post('channelid');
         $this->getEditor($idnode);
-        $content = $this->_editor->getPreviewInServerFile($idnode, $content, $idChannel);
+        $content = $this->editor->getPreviewInServerFile($idnode, $content, $idChannel);
         $this->printContent($content);
     }
 
@@ -304,7 +302,7 @@ class Action_xmleditor2 extends ActionAbstract
     {
         $idnode = $this->request->getParam('nodeid');
         $this->getEditor($idnode);
-        $content = $this->_editor->getNoRenderizableElements($idnode);
+        $content = $this->editor->getNoRenderizableElements($idnode);
         $this->printContent($content);
     }
 
@@ -334,16 +332,15 @@ class Action_xmleditor2 extends ActionAbstract
         $this->getEditor($idnode);
         
         // Get XML File
-        $contentXML = $this->_editor->getXmlFile($idnode, $view, $content);
+        $contentXML = $this->editor->getXmlFile($idnode, $view, $content);
         $res = array();
         $res['xmlFile'] = $contentXML;
         
         // Get Schema File
-        $contentRNG = $this->_editor->getSchemaFile($idnode);
+        $contentRNG = $this->editor->getSchemaFile($idnode);
         if (is_array($contentRNG) and $contentRNG['error']) {
             
-            //TODO in this place we need to show the validation errors in the editor
-            // $this->sendJSON($contentRNG);
+            // TODO in this place we need to show the validation errors in the editor
         }
         $res['schemaFile'] = $contentRNG;
         
@@ -351,22 +348,25 @@ class Action_xmleditor2 extends ActionAbstract
         $view = $this->request->getParam('view');
         $includesOnServer = $this->request->getParam("includesInServer");
         $this->getEditor($idnode);
-        $contentXSL = $this->_editor->getXslFile($idnode, $view, $includesOnServer);
+        $contentXSL = $this->editor->getXslFile($idnode, $view, $includesOnServer);
         $res['xslFile'] = $contentXSL;
         
         // No Renderizable Elements
-        $contentNoRender = $this->_editor->getNoRenderizableElements($idnode);
+        $contentNoRender = $this->editor->getNoRenderizableElements($idnode);
         $res['noRenderizableElements'] = $contentNoRender;
         
         // Get Config
-        $contentConfig = $this->_editor->getConfig($idnode);
+        $contentConfig = $this->editor->getConfig($idnode);
         $res['config'] = $contentConfig;
         
         // Print JSON
+        /*
         $content = Serializer::encode(SZR_JSON, $res);
         header('Content-type: application/json');
         echo $content;
         exit();
+        */
+        $this->sendJSON($res);
     }
 
     /**

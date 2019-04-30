@@ -66,7 +66,7 @@ class Scheduler
         }
         Logger::info('Starting Scheduler ' . $synchro_pid);
         $mutex = new Mutex(XIMDEX_ROOT_PATH . App::getValue('TempRoot') . '/scheduler.lck');
-        if (!$mutex->acquire()) {
+        if (! $mutex->acquire()) {
             Logger::info('Lock file existing');
             die();
         }
@@ -87,7 +87,7 @@ class Scheduler
                 die();
             }
             $activeAndEnabledServers = ServerNode::getServersForPumping();
-            if (! $activeAndEnabledServers || count($activeAndEnabledServers) == 0) {
+            if (! $activeAndEnabledServers) {
                 
                 // There aren't Active & Enable servers...
                 Logger::warning('No active server');
@@ -115,6 +115,9 @@ class Scheduler
                     if (! $tasks) {
                         $batchManager->checkFramesIntegrity();
                     }
+                    
+                    // Generate sitemaps
+                    Server::generateSitemaps();
     
                     // Sleeping...
                     Logger::info('Sleeping...');
@@ -156,7 +159,7 @@ class Scheduler
                     }
 
                     // Pumping
-                    if (!$pumperManager->callingPumpers()) {
+                    if (! $pumperManager->callingPumpers()) {
                         sleep(SCHEDULER_SLEEPING_TIME_IN_FULL_PUMPERS);
                     }
                     
@@ -269,7 +272,7 @@ class Scheduler
             foreach ($channels as $channelId) {
                 if ($channelId) {
                     $channel = new Channel($channelId);
-                    $channelName = 'Channel ' . $channel->GetName();
+                    $channelName = 'Channel ' . $channel->getName();
                     unset($channel);
                 } else {
                     $channelName = 'No channel';
@@ -356,26 +359,26 @@ class Scheduler
     
     private static function log_portal_frame(PortalFrames $portal) : void
     {
-        if (!$portal->get('IdNodeGenerator')) {
+        if (! $portal->get('IdNodeGenerator')) {
             Logger::warning('Portal frame with ID: ' . $portal->get('id') . ' has not a node generator');
             return;
         }
         $node = new Node($portal->get('IdNodeGenerator'));
-        if (!$node->GetID()) {
+        if (! $node->getID()) {
             Logger::error('Cannot load in portal frames stats the node generator ' . $portal->get('IdNodeGenerator'));
             return;
         }
-        if (!$portal->get('CreatedBy')) {
+        if (! $portal->get('CreatedBy')) {
             Logger::warning('Portal frame with ID: ' . $portal->get('id') . ' has not an user');
             return;
         }
         $user = new User($portal->get('CreatedBy'));
-        if (!$user->get('IdUser')) {
+        if (! $user->get('IdUser')) {
             Logger::error('Cannot load in portal frames stats the user ' . $portal->get('CreatedBy'));
             return;
         }
         Logger::info('Portal frame ' . $portal->get('id') . ': Generator node ' . $portal->get('IdNodeGenerator')
-            . ' (' . $node->GetNodeName() . '), version ' . $portal->get('Version') . ', type ' . $portal->get('PublishingType')
+            . ' (' . $node->getNodeName() . '), version ' . $portal->get('Version') . ', type ' . $portal->get('PublishingType')
             . ', user ' . $portal->get('CreatedBy') . ' (' . $user->getLogin() . ')');
         Logger::info('  - Start time: ' . Date::formatTime($portal->get('StartTime')));
         if ($portal->get('EndTime')) {

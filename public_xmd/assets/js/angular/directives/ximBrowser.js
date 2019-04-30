@@ -443,8 +443,13 @@
               ctrl = null;
             };
             
-            $scope.reloadNode = function(nodeId, callback) {
+            $scope.reloadNode = function(nodeId, callback)
+            {
               var action, n;
+              if ($('[name=xim-node-reload]').val()) {
+            	  nodeId = $('[name=xim-node-reload]').val();
+            	  $('[name=xim-node-reload]').val('');
+              }
               if (nodeId != null) {
                 n = findNodeById(nodeId, $scope.projects);
                 if (n === null) {
@@ -458,6 +463,7 @@
               } else {
                 return;
               }
+              /*
               if (n.isdir === "0") {
                 action = {
                   command: 'infonode',
@@ -467,6 +473,7 @@
                 loadAction(action, [n]);
                 return;
               }
+              */
               n.showNodes = true;
               n.collection = [];
               return $scope.loadNodeChildren(n, callback);
@@ -574,6 +581,9 @@
                 path = getFolderPath($scope.initialNodeList.collection[0].path);
               } else {
                 path = $scope.initialNodeList.path;
+              }
+              if (! path) {
+            	  return;
               }
               if (path.slice(-1) === "/") {
                 path = path.substring(0, path.length - 1);

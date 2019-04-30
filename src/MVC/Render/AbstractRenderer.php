@@ -156,7 +156,7 @@ class AbstractRenderer
         $this->set('id_node_parent', $node->get('IdParent'));
         $this->set('node_name', $node->get('Name'));
         $this->set('id_node', $nodeID);
-        $path = pathinfo($node->GetPath());
+        $path = pathinfo($node->getPath());
         $ruta = "";
         if (! empty($path) && array_key_exists("dinarme", $path)) {
             $path_split = explode("/", $path['dirname']);

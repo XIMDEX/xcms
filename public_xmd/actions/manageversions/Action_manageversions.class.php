@@ -37,7 +37,7 @@ class Action_manageversions extends ActionAbstract
      */
     public function index()
     {
-        $idNode = $this->request->getParam('nodeid');
+        $idNode = (int) $this->request->getParam('nodeid');
         $node = new Node($idNode);
         if (! $node->get('IdNode')) {
             $this->messages->add(_('Node could not be found'), MSG_TYPE_ERROR);
@@ -45,11 +45,13 @@ class Action_manageversions extends ActionAbstract
             $this->render($values, NULL, 'messages.tpl');
             return;
         }
+        $this->addJs('/actions/manageversions/resources/js/index.js');
+        $this->addCss('/actions/manageversions/resources/css/index.css');
         $values = $this->values($idNode);
         $this->render($values, null, 'default-3.0.tpl');
     }
 
-    public function values($idNode, int $max = null)
+    public function values(int $idNode, int $max = null)
     {
         $node = new Node($idNode);
         $isStructuredDocument = (bool) $node->nodeType->get('IsStructuredDocument');
@@ -84,7 +86,7 @@ class Action_manageversions extends ActionAbstract
                 'User' => $dbObj->getValue('Login'),
                 'Comment' => $dbObj->getValue('Comment'),
                 'isLastVersion' => 'false');
-            $dbObj->Next();
+            $dbObj->next();
         }
         $keys = array_keys($versionList);
         if (count($keys) != '0'){
@@ -93,31 +95,30 @@ class Action_manageversions extends ActionAbstract
             $lastSubversion = $keys[0];
             $versionList[$lastVersion][$lastSubversion]['isLastVersion'] = 'true';
         }
-        $this->addJs('/actions/manageversions/resources/js/index.js');
-        $this->addCss('/actions/manageversions/resources/css/index.css');
-        $values = array('versionList' => $versionList,
+        $values = array(
+            'versionList' => $versionList,
             'isStructuredDocument' => $isStructuredDocument,
             'id_node' => $idNode,
             'node_type_name' => $node->nodeType->get('Name'),
             'channels' => $channels,
             'actionid' => $this->request->getParam('actionid'),
             'nodeTypeID' => $node->nodeType->getID(),
-            'node_Type' => $node->nodeType->GetName(),
-            'name' => $node->GetNodeName()
+            'node_Type' => $node->nodeType->getName(),
+            'name' => $node->getNodeName()
         );
         return $values;
     }
 
     public function recover()
     {
-        $idNode = $this->request->getParam('nodeid');
+        $idNode = (int) $this->request->getParam('nodeid');
         $version = $this->request->getParam('version');
-        $subVersion = $this->request->getParam('subversion');
-        if (! is_null($version) && ! is_null($subVersion)) {
+        $subversion = $this->request->getParam('subversion');
+        if (! is_null($version) && ! is_null($subversion)) {
             
             // If it is a recovery of a version, first we recover it and then we show the form
             $data = new DataFactory($idNode);
-            $ret = $data->RecoverVersion($version, $subVersion);
+            $ret = $data->recoverVersion($version, $subversion);
             if ($ret === false) {
                 $this->render(array(
                     'messages' => array(array(
@@ -134,12 +135,12 @@ class Action_manageversions extends ActionAbstract
 
     public function delete()
     {
-        $idNode = $this->request->getParam('nodeid');
+        $idNode = (int) $this->request->getParam('nodeid');
         $version = $this->request->getParam('version');
-        $subVersion = $this->request->getParam('subversion');
-        if (! is_null($version) && ! is_null($subVersion)) {
+        $subversion = $this->request->getParam('subversion');
+        if (! is_null($version) && ! is_null($subversion)) {
             $data = new DataFactory($idNode);
-            $ret = $data->deleteSubversion($version, $subVersion);
+            $ret = $data->deleteSubversion($version, $subversion);
             if ($ret === false) {
                 $this->render(array(
                     'messages' => array(array(

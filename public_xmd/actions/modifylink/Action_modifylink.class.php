@@ -28,7 +28,10 @@
 use Ximdex\Logger;
 use Ximdex\Models\Link;
 use Ximdex\Models\Node;
+use Ximdex\Modules\Manager;
 use Ximdex\MVC\ActionAbstract;
+
+Manager::file('/actions/browser3/inc/FormValidation.class.php');
 
 class Action_modifylink extends ActionAbstract
 {
@@ -37,68 +40,71 @@ class Action_modifylink extends ActionAbstract
      */
     public function index()
     {
-    	$idNode = $this->request->getParam('nodeid');	
+    	$idNode = (int) $this->request->getParam('nodeid');	
 		$link = new Link($idNode);
 		$node = new Node($idNode);
-		if (! (($link->get('IdLink') > 0) && ($node->get('IdNode') > 0))) {
+		if (! $link->get('IdLink') || ! $node->get('IdNode')) {
 			$this->messages->add(_('Link could not be successfully loaded, contact with your administrator'), MSG_TYPE_ERROR);
 			Logger::error('Error while loading link: ' . $idNode);
-			$this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
+			$this->render(['messages' => $this->messages->messages], null, 'messages.tpl');
 			return;
 		}
 		$this->addJs('/actions/createlink/resources/js/index.js');
-		$values = array(
+		$values = [
     		'name' => $node->get('Name'),
     		'url' => $link->get('Url'),
     		'description' => $node->get('Description'),
             'nodeTypeID' => $node->nodeType->getID(),
-            'node_Type' => $node->nodeType->GetName(),
-    		'go_method' => 'modifylink');
+            'node_Type' => $node->nodeType->getName(),
+    		'go_method' => 'modifylink'
+		];
 		$this->render($values, null, 'default-3.0.tpl');
     }
 
 	public function modifylink()
     {
-    	$idNode = $this->request->getParam('nodeid');
-    	$validated = $this->request->getParam('validated');	
-    	if (!$validated) {
-	    	$link = new Link();
-	    	$links = $link->search(
-	    		array('conditions' => 
-	    			array('Url' => $this->request->getParam('Url'))
-	    		)
-	    	);
-	    	if (is_array($links)) {
-		    	$links = array_diff($links, array($idNode));
-	    		if (count($links) > 0) {
-		    		$this->_show($links);
-		    		return;
-	    		}
-	    	}
+    	$idNode = (int) $this->request->getParam('nodeid');
+    	$url = $this->request->getParam('Url');
+    	$params = [
+    	    'nodeid' => $idNode,
+    	    'inputName' => 'url',
+    	    'url' => $url
+    	];
+    	if (! FormValidation::isUniqueUrl($params)) {
+    	    $this->messages->add(_('The URL link is already in use'), MSG_TYPE_ERROR);
+    	    $values = [
+    	        'messages' => $this->messages->messages
+    	    ];
+    	    $this->sendJSON($values);
     	}
     	$link = new Link($idNode);
+    	$link->set('Url', $url);
+    	if ($link->update() === false) {
+    	    $this->messages->add(_('An error occurred while upadting link'), MSG_TYPE_ERROR);
+    	    $this->messages->mergeMessages($link->messages);
+    	    $values = [
+    	        'messages' => $this->messages->messages
+    	    ];
+    	    $this->sendJSON($values);
+    	}
+    	$description = $this->request->getParam('Description');
     	$node = new Node($idNode);
-    	$link->set('Url', $this->request->getParam('Url'));
-    	$linkResult = $link->update();
-    	$node->set('Description', $this->request->getParam('Description'));
+    	$node->set('Description', $description);
     	$node->set('Name', $this->request->getParam('Name'));
-    	$nodeResult = $node->update();
-    	if (($nodeResult > 0) || ($linkResult > 0)) {
-    		$this->messages->add(_('Link has been successfully updated'), MSG_TYPE_NOTICE);
-    	} else {
-    		$this->messages->add(_('An error occurred while upadting link'), MSG_TYPE_ERROR);
+    	if ($node->update() === false) {
+    	    $this->messages->add(_('An error occurred while upadting link'), MSG_TYPE_ERROR);
+    	    $this->messages->mergeMessages($node->messages);
+    	    $this->sendJSON($values);
     	}
-    	foreach ($link->messages->messages as $messageInfo) {
-    		$this->messages->messages[] = $messageInfo;
-    	}    	
-    	foreach ($node->messages->messages as $messageInfo) {
-    		$this->messages->messages[] = $messageInfo;
-    	}
-		$values = array('messages' => $this->messages->messages, 'parentID' => $node->get('IdParent') );
+        $this->messages->add(_('Link has been successfully updated'), MSG_TYPE_NOTICE);
+		$values = [
+		    'messages' => $this->messages->messages, 
+		    'parentID' => $node->get('IdParent')
+        ];
 		$this->sendJSON($values);
     }
     
-    private function _show($links)
+    private function show(array $links)
     {	
     	$name = $this->request->getParam('Name');
     	$idNode = $this->request->getParam('nodeid');
@@ -108,13 +114,13 @@ class Action_modifylink extends ActionAbstract
     	$links = $link->query(sprintf('Select Node.name, Node.description, Link.Url'
     		. ' FROM Nodes Node'
     		. ' INNER JOIN Links Link on Node.IdNode = Link.IdLink AND Link.Url like \'%s\' AND Node.IdNode <> %s', $url, $idNode));
-    	$this->render(array(
-    			'id_node' => $idNode,
-    			'name' => $name,
-	   			'description' => $description,
-	   			'url' => $url,
-    			'links' => $links,
-    			'go_method' => 'modifylink'
-    	), 'show', 'default-3.0.tpl');
+    	$this->render([
+			'id_node' => $idNode,
+			'name' => $name,
+   			'description' => $description,
+   			'url' => $url,
+			'links' => $links,
+			'go_method' => 'modifylink'
+    	], 'show', 'default-3.0.tpl');
     }
 }

@@ -7706,8 +7706,8 @@ msgstr "Publiez uniquement le fichier actuel."
 msgid "Ignore structure: css, images, scripts, pdf, ..."
 msgstr "Ignorer les structures: css, images, scripts, pdf, ..."
 
-msgid "Use drafts for linked documents instead of already published versions."
-msgstr "Utilisez des brouillons pour les documents liés au lieu des versions déjà publiées."
+msgid "Use drafts for linked documents instead of already published versions"
+msgstr "Utilisez des brouillons pour les documents liés au lieu des versions déjà publiées"
 
 msgid "Common folder name"
 msgstr "Nom du dossier commun"
@@ -9708,8 +9708,7 @@ msgstr ""
 
 #: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:109
 msgid ""
-"Use drafts for linked documents instead of already published \n"
-"\t\t\t\t\t\t\t\t\t\t\t\tversions."
+"Use drafts for linked documents instead of already published versions"
 msgstr ""
 
 #: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:130

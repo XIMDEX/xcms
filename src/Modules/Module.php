@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,22 +32,31 @@ use Ximdex\Cli\Shell,
     Ximdex\Logger,
     Ximdex\Tasks\Worker;
 
-class Module 
+class Module implements iModule
 {
-    public $name;
-    public $path;
-    public $actions;
-    public $sql_constructor;
-    public $sql_constructor_file;
-    public $sql_destructor;
-    public $sql_destructor_file;
-    public $messages;
-
     const ERROR = 'ERROR';
+    
     const WARNING = 'WARNING';
+    
     const SUCCESS = 'SUCCESS';
     
-    public function __construct($name, $path)
+    public $name;
+    
+    public $path;
+    
+    public $actions;
+    
+    public $sql_constructor;
+    
+    public $sql_constructor_file;
+    
+    public $sql_destructor;
+    
+    public $sql_destructor_file;
+    
+    public $messages;
+    
+    public function __construct(string $name, string $path)
     {
         if (empty($name) || empty($path)) {
             die("* ERROR: name and path in Module constructor must be provided.\n");
@@ -62,6 +71,8 @@ class Module
     /**
      * Installed modules has a state file in XIMDEX_ROOT_PATH/data
      * Uninstalled modules hasn't
+     * 
+     * @return string
      */
     protected function getStateFile()
     {
@@ -75,7 +86,7 @@ class Module
 
     protected function addStateFile()
     {
-        if (!$this->checkStateFile()) {
+        if (! $this->checkStateFile()) {
             file_put_contents($this->getStateFile(), "", FILE_APPEND);
         }
     }
@@ -111,10 +122,10 @@ class Module
     }
 
     /**
-     * @param $sql_file : Filename (without path information) which contain SQL.
-     * @return NULL or SQL Data Array.
+     * @param string $sql_file : Filename (without path information) which contain SQL
+     * @return NULL or SQL Data Array
      */
-    private function loadSQL($sql_file)
+    private function loadSQL(string $sql_file)
     {
         $sql_path = $this->getModulePath() . "/sql/";
         $sql_file = $sql_path . $sql_file;
@@ -135,11 +146,11 @@ class Module
         return $sql_data;
     }
     
-    protected function loadConstructorSQL($sql_file)
+    protected function loadConstructorSQL(string $sql_file)
     {
         $this->sql_constructor_file = $sql_file;
         $data = $this->loadSQL($sql_file);
-        if (!empty($data)) {
+        if (! empty($data)) {
             $this->sql_constructor = $data;
             return true;
         }
@@ -147,18 +158,18 @@ class Module
         return false;
     }
 
-    protected function loadDestructorSQL($sql_file)
+    protected function loadDestructorSQL(string $sql_file)
     {
         $this->sql_destructor_file = $sql_file;
         $data = $this->loadSQL($sql_file);
-        if (!is_null($data)) {
+        if (! is_null($data)) {
             $this->sql_destructor = $data;
             return true;
         }
         return false;
     }
 
-    function sqlFileExists($sql_file)
+    function sqlFileExists(string $sql_file)
     {
         $sql_path = $this->getModulePath() . '/sql/';
         $sql_file = $sql_path . $sql_file;
@@ -167,8 +178,11 @@ class Module
 
     /**
      * Inject via mysql command...
+     * 
+     * @param string $sql_file
+     * @return boolean
      */
-    private function injectSQLFile($sql_file)
+    private function injectSQLFile(string $sql_file)
     {
         $sql_path = $this->getModulePath() . '/sql/';
         $sql_file = $sql_path . $sql_file;
@@ -191,18 +205,19 @@ class Module
 
     /**
      * Install new module into ximDEX
+     * 
      * @return boolean
      */
-    function install()
+    public function install()
     {
         $ret = true;
-        if (!$this->preInstall()) {
+        if (! $this->preInstall()) {
             echo "Se ha abortado la instalación por no cumplirse los prerequisitos\n";
             $ret = false;
         } else {
             
             // SQL Insertion
-            if (!empty($this->sql_constructor)) {
+            if (! empty($this->sql_constructor)) {
                 $this->injectSQLFile($this->sql_constructor_file);
                 Logger::info("-- SQL constructor loaded");
             } else {
@@ -212,7 +227,7 @@ class Module
             
             // Actions Registration
             // Actions Activation
-            if (!$this->postInstall()) {
+            if (! $this->postInstall()) {
                 echo "Ha fallado el proceso de post instalación, puede que el módulo no funcione correctamente\n";
                 $ret = false;
             } else {
@@ -225,17 +240,19 @@ class Module
     }
 
     /**
-     *  Instructions previous to the installation
+     * Instructions previous to the installation
+     * 
+     * @return boolean
      */
-    function preInstall()
+    public function preInstall()
     {
         return true;
     }
 
-    function checkDependences($arrDependences)
+    public function checkDependences(array $arrDependences = null)
     {
-        if (!is_array($arrDependences)) {
-            return NULL;
+        if (! is_array($arrDependences)) {
+            return null;
         }
         foreach ($arrDependences as $dependence) {
             $ret = Shell::exec("which " . $dependence, true);
@@ -262,7 +279,7 @@ class Module
     public function uninstall()
     {
         // SQL Remove
-        if (!empty($this->sql_destructor) && !$this->isCoreModule()) {
+        if (! empty($this->sql_destructor) && ! $this->isCoreModule()) {
             $this->injectSQLFile($this->sql_destructor_file);
             $this->removeStateFile();
             $this->messages->add(_("-- SQL destructor loaded"), MSG_TYPE_NOTICE);
@@ -272,7 +289,7 @@ class Module
         
         // Actions deRegistration
         // Actions deActivation
-        //show messages
+        // Show messages
         $this->messages->displayRaw();
     }
 
@@ -297,7 +314,7 @@ class Module
         }
     }
 
-    function log($priority, $string)
+    function log(string $priority, string $string)
     {
         $module_name = $this->name;
         switch ($priority) {
@@ -311,14 +328,17 @@ class Module
         }
     }
     
-    protected function checkState() {
+    protected function checkState()
+    {
         return $this->state();
     }
 
     /**
-     * return array with install params
+     * Return array with install params
+     * 
+     * @return array
      */
-    function getInstallParams()
+    public function getInstallParams()
     {
         return array();
     }
@@ -333,5 +353,20 @@ class Module
      * @param Application $application
      */
     public function addCommands(Application & $application)
+    {}
+    
+    public function getName()
+    {}
+
+    public function stop()
+    {}
+
+    public function start()
+    {}
+
+    public function setup(array $object)
+    {}
+
+    public function info()
     {}
 }

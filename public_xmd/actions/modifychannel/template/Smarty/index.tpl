@@ -1,5 +1,5 @@
 {**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -54,12 +54,14 @@
                 <div class="row">
                     <div class="small-2 columns">
                         <label class="input-form label_general" for="web_{$id_node}">
-                            <input type='radio' id="web_{$id_node}" name="output_type_{$id_node}" {$output_check.web} value='web'> {t}Web{/t}
+                            <input type='radio' id="web_{$id_node}" name="output_type_{$id_node}" 
+                                    {$output_check.web} value='web'> {t}Web{/t}
                         </label>
 		            </div>
 		            <div class="small-2 columns">
 		                <label class="input-form label_general" for="xml_{$id_node}">
-		                    <input type='radio' id="xml_{$id_node}" name="output_type_{$id_node}" {$output_check.xml} value='xml'> {t}Xml{/t}
+		                    <input type='radio' id="xml_{$id_node}" name="output_type_{$id_node}" 
+                                    {$output_check.xml} value='xml'> {t}Xml{/t}
 		                </label>
 		            </div>
 		            <div class="small-6 columns end">

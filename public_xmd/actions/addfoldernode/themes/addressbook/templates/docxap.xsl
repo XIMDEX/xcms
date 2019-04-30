@@ -12,7 +12,7 @@
 		<html xmlns="http://www.w3.org/1999/xhtml">
 			<head>
 				<meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
-				<link rel="stylesheet" type="text/css" href="@@@RMximdex.dotdot(css/addressbook.css)@@@" />
+				<link rel="stylesheet" type="text/css" href="@@@RMximdex.pathto(css/addressbook.css)@@@" />
 				<link href="//fonts.googleapis.com/css?family=Norican|Amatic+SC|Handlee|Devonshire|Cookie|Rochester|Patrick+Hand|Just+Another+Hand" 
 						rel="stylesheet" type="text/css" />
 				<title>AddressBook</title>

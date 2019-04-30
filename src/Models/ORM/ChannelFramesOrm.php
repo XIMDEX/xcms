@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,14 +31,19 @@ use Ximdex\Data\GenericData;
 
 class ChannelFramesOrm extends GenericData
 {
-    var $_idField = 'IdChannelFrame';
-    var $_table = 'ChannelFrames';
-    var $_metaData = array(
+    public $_idField = 'IdChannelFrame';
+    
+    public $_table = 'ChannelFrames';
+    
+    public $_metaData = array(
         'IdChannelFrame' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true'),
         'ChannelId' => array('type' => 'int(12)', 'not_null' => 'false'),
         'NodeId' => array('type' => 'int(12)', 'not_null' => 'false')
     );
-    var $IdChannelFrame;
-    var $ChannelId = 0;
-    var $NodeId = 0;
+    
+    public $IdChannelFrame;
+    
+    public $ChannelId = 0;
+    
+    public $NodeId = 0;
 }

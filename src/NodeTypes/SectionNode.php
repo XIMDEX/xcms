@@ -70,7 +70,7 @@ class SectionNode extends FolderNode
             $childNodeTypeID = $childNode->get('IdNodeType');
             $childNodeType = new NodeType($childNodeTypeID);
             $childNodeTypeName = $childNodeType->get('Name');
-            if (isset($params['recurrence']) || ($childNodeTypeName != "Section" && !isset($params['recurrence']))) {
+            if (isset($params['recursive']) || ($childNodeTypeName != "Section" && !isset($params['recursive']))) {
                 $docsToPublish = array_merge($docsToPublish, $childNode->TraverseTree(6));
             }
         }
@@ -85,14 +85,15 @@ class SectionNode extends FolderNode
      */
     public function deleteNode() : bool
     {
+        // Deletes dependencies in rel tables
+        $depsMngr = new DepsManager();
+        if ($depsMngr->deleteBySource(DepsManager::SECTION_XIMLET, $this->parent->get('IdNode')) === false) {
+            return false;
+        }
         $section = new Section($this->parent->get('IdNode'));
         if ($section->delete() === false) {
             return false;
         }
-        
-        // Deletes dependencies in rel tables
-        $depsMngr = new DepsManager();
-        $depsMngr->deleteBySource(DepsManager::SECTION_XIMLET, $this->parent->get('IdNode'));
         Logger::info('Section dependencies deleted');
         return true;
     }

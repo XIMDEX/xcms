@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -29,52 +29,47 @@ use Ximdex\Modules\Module;
 
 class Module_XRAM extends Module
 {
-
     public function __construct()
     {
-        // Call Module constructor.
+        // Call Module constructor
         parent::__construct('XRAM', dirname(__FILE__));
-        // Initialization stuff.
+        
+        // Initialization stuff
     }
 
-    function install()
+    public function install()
     {
-        // Install logic.
-        // get module from ftp, webdav, subversion, etc...?
-        // need to be extracted?
-        // extract and copy files to modules location.
-        // get constructor SQL   
+        // Install logic
+        // Get module from ftp, webdav, subversion, etc...?
+        // Need to be extracted?
+        // Extract and copy files to modules location.
+        // Get constructor SQL   
         $this->loadConstructorSQL("XRAM.constructor.sql");
-        $install_ret = parent::install();
-        if ($install_ret) {
-//            echo "XRAM module has been successfully installed on Ximdex CMS!.\n";
-        }
-        return $install_ret;
+        return parent::install();
     }
 
-    function uninstall()
+    public function uninstall()
     {
-
-        // Uninstall logic.
-        // get destructor SQL          
+        // Uninstall logic
+        // Get destructor SQL          
         $this->loadDestructorSQL("XRAM.destructor.sql");
 
         // Uninstall !      
         parent::uninstall();
     }
 
-    function preInstall()
+    /**
+     * Check curl extension and Solr PECL extension
+     * 
+     * {@inheritDoc}
+     * @see \Ximdex\Modules\Module::preInstall()
+     */
+    public function preInstall()
     {
-        /* Check curl extension and Solr PECL extension */
         // PHP-CURL
         if (!extension_loaded('curl')) {
-//            echo "Se necesita tener instalada la extension php-curl\n";
             return false;
-        } else {
-//            echo "La extension php-curl se ha detectado correctamente.\n";
         }
-
         return true;
     }
-
 }

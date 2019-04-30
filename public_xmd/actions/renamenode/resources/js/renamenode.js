@@ -1,5 +1,5 @@
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -23,11 +23,10 @@
  *  @version $Revision$
  */
 
-
-X.actionLoaded(function (event, fn, params) {
-	
-	fn('.open_report').click(function() {
-
+X.actionLoaded(function (event, fn, params)
+{	
+	fn('.open_report').click(function()
+	{
         angular.element(document).injector().get('xTabs').openAction( {
 			bulk: 0,
 			callback: 'callAction',
@@ -35,8 +34,7 @@ X.actionLoaded(function (event, fn, params) {
 			method: 'checkNodeDependencies',
 			icon: null,
 			module: '',
-			name: 'Comprobar dependencias',
-			params: 'id_pipeline=' + fn('#id_pipeline option:selected').val()
+			name: 'Comprobar dependencias'
 		}, params.nodes);
 	});
 });

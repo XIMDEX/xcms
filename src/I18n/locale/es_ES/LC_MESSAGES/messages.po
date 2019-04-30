@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ximdex 4.0\n"
 "POT-Creation-Date: 2019-01-18 10:43+0100\n"
-"PO-Revision-Date: 2019-01-24 13:25+0100\n"
+"PO-Revision-Date: 2019-04-05 11:05+0200\n"
 "Last-Translator: \n"
 "Language-Team: ajlucena@ximdex.com\n"
 "MIME-Version: 1.0\n"
@@ -3643,7 +3643,7 @@ msgid "Publish all levels"
 msgstr "Publicar todos los niveles"
 
 msgid "Publish until a certain depth level"
-msgstr "Publicar hasta un determinado nivel de profundidad"
+msgstr "Publicar hasta un nivel de profundidad dado"
 
 msgid "Publish just the document (without its structure: css, images, scripts)"
 msgstr "Publicar únicamente el documento (sin su estructura: css, imágenes, scripts)"
@@ -8479,7 +8479,7 @@ msgstr "Opciones de publicación"
 
 #: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:66
 msgid "Publish only the current file."
-msgstr "Publicar únicamente éste archivo."
+msgstr "Publicar únicamente este archivo."
 
 #: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:75
 msgid "Publish all linked files."
@@ -8493,12 +8493,8 @@ msgid "Ignore structure: css, images, scripts, pdf, ..."
 msgstr "Ignorar estructura: css, imagénes, scripts, pdf, ..."
 
 #: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:109
-msgid ""
-"Use drafts for linked documents instead of already published \n"
-"\t\t\t\t\t\t\t\t\t\t\t\tversions."
-msgstr ""
-"Utilizar borradores para documentos enlazados en lugar del la versión ya \n"
-"\t\t\t\t\t\t\t\t\t\t\t\\publicada."
+msgid "Use drafts for linked documents instead of already published versions"
+msgstr "Utilizar borradores para documentos enlazados en lugar de la versión ya publicada"
 
 #: /public_xmd/actions/workflow_forward/template/Smarty/index.tpl:120
 msgid "Force republish"

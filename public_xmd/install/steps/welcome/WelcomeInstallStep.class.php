@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -47,7 +47,8 @@ class WelcomeInstallStep extends GenericInstallStep
 	    Logger::setActiveLog();
 	    Logger::info('Welcome to Ximdex CMS');
 	    $this->initialize_values(false);
-		$this->addJs("WelcomeController.js");
+	    Ximdex\Runtime\Session::destroy();
+		$this->addJs('WelcomeController.js');
 		$this->render();
 	}
 
@@ -61,16 +62,16 @@ class WelcomeInstallStep extends GenericInstallStep
 		$checks = $this->installManager->initialChecking();
 		$errors = array();
 		foreach ($checks as $check) {
-			if ($check["state"] == "error") {
-				$error = "1";
+			if ($check['state'] == 'error') {
+				$error = '1';
 			}
-			if 	($check["state"] != "success") {
-                if (is_array($check["messages"]) && count($check["messages"]) > 0) {
+			if 	($check['state'] != 'success') {
+                if (is_array($check['messages']) && count($check['messages']) > 0) {
                     $aux = array();
-				    foreach ($check["messages"] as $i => $message) {
-					    $aux["message"] = $message;
-					    $aux["help"] = $check["help"][$i];
-					    $aux["state"] = $check["state"] ;
+				    foreach ($check['messages'] as $i => $message) {
+					    $aux['message'] = $message;
+					    $aux['help'] = $check['help'][$i];
+					    $aux['state'] = $check['state'] ;
 					    $errors[] = $aux;
 				    }
                 }
@@ -78,11 +79,13 @@ class WelcomeInstallStep extends GenericInstallStep
 		}
 		$values = [];
 		if (isset($error) && $error) {
-            $values["failure"] = true;
-            $values["errors"] = $errors;
+            $values['failure'] = true;
+            $values['errors'] = $errors;
         } else {
-            $values["success"] = true;
-            $values["errors"] = $errors;    // possible warning messages
+            $values['success'] = true;
+            
+            // Possible warning messages
+            $values['errors'] = $errors;
         }
 		$this->sendJSON($values);
 	}

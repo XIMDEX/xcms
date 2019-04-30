@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -33,6 +33,8 @@ class RelNodeSetsNode extends RelNodeSetsNodeOrm
 {
     /**
      * Returns the rel id
+     * 
+     * @return int
      */
     public function getId()
     {
@@ -41,6 +43,8 @@ class RelNodeSetsNode extends RelNodeSetsNodeOrm
 
     /**
      * Returns the set id
+     * 
+     * @return int
      */
     public function getIdSet()
     {
@@ -49,6 +53,8 @@ class RelNodeSetsNode extends RelNodeSetsNodeOrm
 
     /**
      * Returns the node id
+     * 
+     * @return int
      */
     public function getIdNode()
     {
@@ -57,30 +63,32 @@ class RelNodeSetsNode extends RelNodeSetsNodeOrm
 
     /**
      * Returns the node object
+     * 
+     * @return \Ximdex\Models\Node
      */
-    public function & getNode()
+    public function getNode()
     {
-        $node = new Node($this->IdNode);
-        return $node;
+        return new Node($this->IdNode);
     }
 
     /**
      * Return the set that is associated to
+     * 
+     * @return \Ximdex\Models\NodeSets
      */
-    public function & getSet()
+    public function getSet()
     {
-        $set = new NodeSets($this->getIdSet());
-        return $set;
+        return new NodeSets($this->getIdSet());
     }
 
     /**
      * Static method that creates a new NodeSet relation and returns the related object
      * 
-     * @param $idSet
-     * @param $idNode
-     * @return RelNodeSetsNode
+     * @param int $idSet
+     * @param int $idNode
+     * @return \Ximdex\Models\RelNodeSetsNode
      */
-    static public function & create($idSet, $idNode)
+    static public function create(int $idSet, int $idNode)
     {
         $rel = new RelNodeSetsNode();
         $node = new Node($idNode);
@@ -96,7 +104,6 @@ class RelNodeSetsNode extends RelNodeSetsNodeOrm
 
     public function delete()
     {
-        $ret = parent::delete();
-        return $ret;
+        return parent::delete();
     }
 }

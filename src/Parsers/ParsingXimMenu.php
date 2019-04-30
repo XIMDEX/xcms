@@ -62,7 +62,7 @@ class ParsingXimMenu
         $this->_xpath = new DOMXPath($this->_menu);
     }
 
-    public function processMenu($asString = false)
+    public function processMenu(bool $asString = false)
     {
         foreach ($this->_filters as $filter) {
             $method = "filter_$filter";
@@ -84,7 +84,7 @@ class ParsingXimMenu
         return $ret;
     }
 
-    protected function filter_hasPermission(&$node)
+    protected function filter_hasPermission($node)
     {
         $userid = \Ximdex\Runtime\Session::get('userID');
         $user = new User($userid);
@@ -102,7 +102,7 @@ class ParsingXimMenu
     /**
      * The role can be specified by RoleId or RoleName
      */
-    protected function filter_allowedRoles(&$node)
+    protected function filter_allowedRoles($node)
     {
         $userid = \Ximdex\Runtime\Session::get('userID');
         $user = new User($userid);
@@ -131,7 +131,7 @@ class ParsingXimMenu
     /**
      * The user can be specified by UserId or UserName
      */
-    protected function filter_allowedUsers(&$node)
+    protected function filter_allowedUsers($node)
     {
         $userid = \Ximdex\Runtime\Session::get('userID');
         $user = new User($userid);
@@ -159,7 +159,7 @@ class ParsingXimMenu
         return $allowed;
     }
 
-    protected function filter_ifModule(&$node)
+    protected function filter_ifModule($node)
     {
         $module = $node->getAttribute('ifModule');
         return defined(strtoupper("MODULE_{$module}_ENABLED"));

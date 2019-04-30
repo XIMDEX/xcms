@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -38,12 +38,12 @@ class Config
         $this->defMngr->setPostfix(Manager::get_post_define_module());
     }
 
-    public function enableModule($name)
+    public function enableModule(string $name)
     {
         $this->defMngr->enableItem(strtoupper($name));
     }
 
-    public function disableModule($name)
+    public function disableModule(string $name)
     {
         $this->defMngr->disableItem(strtoupper($name));
     }

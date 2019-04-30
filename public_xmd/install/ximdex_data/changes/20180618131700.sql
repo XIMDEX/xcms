@@ -1,2 +1,0 @@
-INSERT INTO `Metadata` (`idMetadata`, `name`, `defaultValue`, `type`) VALUES (4, 'section', 'general', 'text');
-INSERT INTO `RelMetadataGroupMetadata` (`idRelMetadataGroupMetadata`, `idMetadataGroup`, `idMetadata`, `required`) VALUES (4, 1, 4, 1);

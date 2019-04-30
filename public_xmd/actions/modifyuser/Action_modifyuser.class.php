@@ -26,7 +26,6 @@
  */
 
 use Ximdex\Models\Group;
-use Ximdex\Models\ORM\RelUsersGroupsOrm;
 use Ximdex\Models\Role;
 use Ximdex\Models\User;
 use Ximdex\Models\XimLocale;
@@ -41,25 +40,28 @@ class Action_modifyuser extends ActionAbstract
      */
     public function index()
     {
-	    $idNode = $this->request->getParam('nodeid');
+	    $idNode = (int) $this->request->getParam('nodeid');
 		$user = new User($idNode);
+		if (! $user->getID()) {
+		    $this->messages->add(_('User') . " {$idNode} " . _('does not exists'), MSG_TYPE_WARNING);
+		    $this->render(array('messages' => $this->messages->messages), null, 'messages.tpl');
+		    return;
+		}
 		$folder = new Node($idNode);
         $idRegisteredUser = \Ximdex\Runtime\Session::get('userID');
         $registeredUser = new User($idRegisteredUser);
         $canModifyUserGroup = $registeredUser->isAllowedAction(Group::ID_GENERAL, Action::MODIFY_GROUP_USERS);
 		$locale = new XimLocale();
-		$locales = $locale->GetEnabledLocales();
-        $allRole = new Role();
-        $roles = $allRole->find('IdRole,Name');
-        $role = new RelUsersGroupsOrm();
-        $roleGeneral = $role->find('IdRole','IdUser = %s', array($idNode), MONO);
-		$values = array
-		(
+		$locales = $locale->getEnabledLocales();
+        $role = new Role();
+        $roles = $role->find('IdRole, Name');
+        $roleGeneral = $user->getRoleOnGroup(Group::getGeneralGroup());
+		$values = array(
 			'go_method' => 'modifyuser',
 			'login' => $user->get('Login'),
 			'name' => $user->get('Name'),
 			'email' => $user->get('Email'),
-			'general_role' => $roleGeneral[0],
+			'general_role' => $roleGeneral,
 			'roles' => $roles,
 			'user_locale' => $user->get('Locale'),
 			'locales' => $locales,
@@ -92,7 +94,7 @@ class Action_modifyuser extends ActionAbstract
         $registeredUser = new User($idRegisteredUser);
         $canModifyUserGroup = $registeredUser->isAllowedAction(Group::ID_GENERAL, Action::MODIFY_GROUP_USERS);
         $group = new Group();
-        $group->setID($group->getGeneralGroup());
+        $group->setID(Group::getGeneralGroup());
         $group->getUserList();
         $roleOnNode = $group->getRoleOnNode($idNode);
         if ($canModifyUserGroup) {

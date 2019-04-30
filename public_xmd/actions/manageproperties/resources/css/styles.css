@@ -38,10 +38,17 @@ div.manageproperties div.recursive, div.manageproperties div.apply {
 
 div.manageproperties .channelsmp {
 	margin-bottom: 5pt;
+	width: 130pt !important;
+}
+
+div.manageproperties .metadatamp {
+    margin-bottom: 5pt;
+    width: 220pt !important;
 }
 
 div.manageproperties .languagesmp {
 	margin-bottom: 5pt;
+	width: 130pt !important;
 }
 
 ul.inheritlist {
@@ -66,7 +73,7 @@ ul.inheritlist li {
 }
 
 li.inherit_list_element {
-    width: 20%;
+    width: 14%;
 }
 
 .prop_default_server_language {

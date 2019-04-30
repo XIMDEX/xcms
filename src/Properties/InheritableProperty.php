@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -39,6 +39,11 @@ use Ximdex\Models\NodeProperty;
  */
 abstract class InheritableProperty
 {
+    // Contanst for properties names
+    const CHANNEL = 'Channel';
+    const LANGUAGE = 'Language';
+    const METADATA_SCHEME = 'Metadata';
+    
     /**
      * nodeid for current node
      * 
@@ -67,19 +72,13 @@ abstract class InheritableProperty
      */
     protected $nodeType = null;
 
-    /*
-     * Contanst for properties names
-     */
-    const CHANNEL = 'Channel';
-    const LANGUAGE = 'Language';
-
     /**
-     * Construct method.
+     * Construct method
      * Load the properties of the class
      *
      * @param int $nodeid : Node identificator
      */
-    public function __construct($nodeId)
+    public function __construct(int $nodeId)
     {
         $this->nodeId = $nodeId;
         $this->node = new Node($nodeId);
@@ -144,19 +143,17 @@ abstract class InheritableProperty
             // If is availableChannel and nodeChannels is empty, we use the availableChannels
             if ($nodeProperties) {
                 $property['Checked'] = in_array($property['Id'], $nodeProperties) ? true : false;
-                if ($onlyInherited and !$property['Checked']) {
+                if ($onlyInherited and ! $property['Checked']) {
                     continue;
                 }
-            }
-            else {
+            } else {
                 $property['Checked'] = false;
             }
             
             // Update the inherit value in the result
             if (isset($inheritProperties)) {
                 $property['Inherited'] = in_array($property['Id'], $inheritProperties) ? true : false;
-            }
-            else {
+            } else {
                 $property['Inherited'] = true;
             }
             if ($onlyInherited and !$property['Inherited'] and !$property['Checked']) {
@@ -175,10 +172,11 @@ abstract class InheritableProperty
 
     /**
      * Sets the property values
-     *
-     * @param mixed $values
+     * 
+     * @param array $values
+     * @return array
      */
-    public function setValues($values)
+    public function setValues(array $values)
     {
         if (! is_array($values)) {
             $values = array();
@@ -196,20 +194,22 @@ abstract class InheritableProperty
 
     /**
      * Returns the affected nodes when deleting a property value
-     *
-     * @param mixed $values : Values to be deleted
+     * 
+     * @param array $values
+     * @return boolean
      */
-    protected function getAffectedNodes($values)
+    protected function getAffectedNodes(array $values)
     {
-        return false;
+        return [];
     }
 
     /**
      * Returns the affected properties
      * 
-     * @param mixed $values
+     * @param array $values
+     * @return array
      */
-    protected function getAffectedProperties($values)
+    protected function getAffectedProperties(array $values)
     {
         if (! is_array($values) || count($values) == 0) {
             return array();
@@ -228,10 +228,11 @@ abstract class InheritableProperty
 
     /**
      * Returns the property values
-     *
-     * @param boolean $inherited
+     * 
+     * @param bool $inherited
+     * @return boolean|NULL|array
      */
-    protected function getProperty($inherited = true)
+    protected function getProperty(bool $inherited = true)
     {
         $prop = $this->getPropertyName();
         return $this->node->getProperty($prop, $inherited);
@@ -240,9 +241,9 @@ abstract class InheritableProperty
     /**
      * Sets the property values
      * 
-     * @param mixed $values
+     * @param array $values
      */
-    protected function setProperty($values)
+    protected function setProperty(array $values)
     {
         $prop = $this->getPropertyName();
         return $this->node->setProperty($prop, $values);
@@ -250,10 +251,11 @@ abstract class InheritableProperty
 
     /**
      * Deletes the property values
-     *
-     * @param mixed $values
+     * 
+     * @param array $values
+     * @return boolean
      */
-    protected function deleteProperty($values)
+    protected function deleteProperty(array $values)
     {
         $this->deleteChildrenProperties($values);
         $prop = $this->getPropertyName();
@@ -263,10 +265,10 @@ abstract class InheritableProperty
 
     /**
      * Delete the properties of children nodes
-     *
-     * @param mixed $values
+     * 
+     * @param array $values
      */
-    protected function deleteChildrenProperties($values)
+    protected function deleteChildrenProperties(array $values)
     {
         $propertiesToDelete = $this->getAffectedProperties($values);
         if (count($propertiesToDelete) == 0) {
@@ -297,7 +299,7 @@ abstract class InheritableProperty
      * 
      * @param array $values
      */
-    abstract protected function updateAffectedNodes($values);
+    abstract protected function updateAffectedNodes(array $values);
 
     /**
      * Obtain the system properties
@@ -312,21 +314,14 @@ abstract class InheritableProperty
     /**
      * Applies the property values recursively deleting all specified properties in its children
      * 
-     * @param mixed $values
+     * @param array $values
      */
-    public function applyPropertyRecursively($values)
+    public function applyPropertyRecursively(array $values = [])
     {
         if (empty($values)) {
             return false;
         }
-        if (! is_array($values)) {
-            $values = array(
-                $values
-            );
-        }
-        if (count($values) == 0) {
-            return false;
-        }
+        
         // Obtain the target nodes under the specified one
         $children = FastTraverse::getChildren($this->nodeId, [
             'node' => [
@@ -343,10 +338,12 @@ abstract class InheritableProperty
                 )
             )
         ));
-        if ($children === false)
+        if ($children === false) {
             return false;
-        if (isset($children[0]))
+        }
+        if (isset($children[0])) {
             unset($children[0]);
+        }
         
         // For each node, delete the local property if that one exists
         $nodes = 0;

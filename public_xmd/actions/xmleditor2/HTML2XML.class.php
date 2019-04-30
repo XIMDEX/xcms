@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -29,20 +29,28 @@ use Ximdex\Logger;
 
 class HTML2XML
 {
-	private $_domXml = null;
-	private $_xpath = null;
-	private $_domHtml = null;
-	private $_ximNode = null;
+	private $_domXml;
+	
+	private $_xpath;
+	
+	private $_domHtml;
+	
+	private $_ximNode;
+	
 	private $_uidMap = array();
+	
 	private $_uidMapHtml = array();
+	
 	private $_tagCounter = 0;
+	
 	private $_maxTagCounter = 0;
+	
 	private $_xmlContent = '';
 
 	/**
 	 * Function which returns the DOMDocument object corresponding to the XML
 	 * 
-	 * @return object
+	 * @return Object
 	 */
 	public function getXML()
 	{
@@ -71,8 +79,6 @@ class HTML2XML
 
 	/**
 	 * Function which loads the DOMDocument object corresponding to the XML
-	 * 
-	 * @return object
 	 */
 	public function loadXML($domXml)
 	{
@@ -81,8 +87,6 @@ class HTML2XML
 
 	/**
 	 * Function which loads the DOMDocument object corresponding to the XML
-	 * 
-	 * @return object
 	 */
 	public function loadHTML($domHtml) {
 
@@ -91,10 +95,8 @@ class HTML2XML
 
 	/**
 	 * Function which stablishes the referenced node (ximdex)
-	 * 
-	 * @return object
 	 */
-	public function setXimNode($idNode)
+	public function setXimNode(int $idNode)
 	{
 		$this->_ximNode = $idNode;
 	}
@@ -128,6 +130,12 @@ class HTML2XML
 			}
 		}
 		return true;
+	}
+	
+	public function getNodeWithUID(string $uid)
+	{
+	    $node = isset($this->_uidMap[$uid]) ? $this->_uidMap[$uid] : null;
+	    return $node;
 	}
     
 	private function assignUidToXml()
@@ -169,7 +177,7 @@ class HTML2XML
 		return false;
 	}
 
-	private function setTextContent($node = null, $content = '')
+	private function setTextContent($node = null, string $content = '')
 	{
 		if ($cn = $node->firstChild) {
 			while ($cn) {
@@ -287,7 +295,7 @@ class HTML2XML
 
 	}
 
-	private function incrementUidFrom($from)
+	private function incrementUidFrom(string $from)
 	{
 		// Incrementing uid from $from to last element with defined uid
 		$auxMap = $this->_uidMap;
@@ -302,7 +310,7 @@ class HTML2XML
 		}
 	}
 
-	private function getUidValueFromAttribute($attributeContent)
+	private function getUidValueFromAttribute(string $attributeContent)
 	{
 		$value = intval(str_replace($this->_ximNode . ".", "", $attributeContent));
 		return (is_int($value)) ? $value : null;
@@ -328,11 +336,5 @@ class HTML2XML
 			}
 		}
 		return null;
-	}
-
-	public function getNodeWithUID($uid)
-	{
-		$node = isset($this->_uidMap[$uid]) ? $this->_uidMap[$uid] : null;
-		return $node;
 	}
 }

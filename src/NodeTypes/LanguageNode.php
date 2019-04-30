@@ -51,8 +51,8 @@ class LanguageNode extends Root
 			$this->parent->delete();
 			return null;
 		}
-		$ret = $language->CreateLanguage($name, $isoname, $description, $enabled, $this->parent->get('IdNode'));
-		$this->UpdatePath();
+		$ret = $language->createLanguage($name, $isoname, $description, (bool) $enabled, $this->parent->get('IdNode'));
+		$this->updatePath();
 		return $ret;
 	}
 
@@ -65,9 +65,13 @@ class LanguageNode extends Root
 	public function deleteNode() : bool
 	{
 		$language = new Language($this->parent->get('IdNode'));
-		$language->DeleteLanguage();
+		if (! $language->deleteLanguage()) {
+		    return false;
+		}
 		$nodeProperty = new NodeProperty();
-		$nodeProperty->cleanUpPropertyValue('language', $this->parent->get('IdNode'));
+		if ($nodeProperty->cleanUpPropertyValue('language', $this->parent->get('IdNode')) === false) {
+		    return false;
+		}
 		return true;
 	}
 
@@ -78,7 +82,7 @@ class LanguageNode extends Root
 	public function renameNode(string $name) : bool
 	{
 		$lang = new Language($this->parent->get('IdNode'));
-		$lang->SetName($name);
+		$lang->setName($name);
 		$this->updatePath();
 		return true;
 	}
@@ -92,11 +96,11 @@ class LanguageNode extends Root
 	public function getDependencies() : array
 	{
 		$sql = "SELECT DISTINCT IdDoc FROM StructuredDocuments WHERE IdLanguage='" . $this->parent->get('IdNode') . "'";
-		$this->dbObj->Query($sql);
+		$this->dbObj->query($sql);
 		$deps = array();
 		while (! $this->dbObj->EOF) {
-			$deps[] = $this->dbObj->row["IdDoc"];
-			$this->dbObj->Next();
+			$deps[] = $this->dbObj->getValue('IdDoc');
+			$this->dbObj->next();
 		}
 		return $deps;
 	}

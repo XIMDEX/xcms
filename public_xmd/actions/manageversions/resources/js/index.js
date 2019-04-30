@@ -1,5 +1,5 @@
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -23,14 +23,13 @@
  *  @version $Revision$
  */
 
-
 X.actionLoaded(function(event, fn, params) {
 
 	var $nodeid = fn('input[name=nodeid]');
 	var $nodetypename = fn('input[name=nodetypename]');
 	var $version = fn('input[name=version]');
 	var $subversion = fn('input[name=subversion]');
-
+	var form = fn('form');
 
 	function getRowVersion(rowItem) {
 		return {
@@ -40,41 +39,40 @@ X.actionLoaded(function(event, fn, params) {
 	}
 
 	function getChannelList(rowItem) {
-		return fn(rowItem).closest('div.version-info').find('select')
-	}	
-
+		return fn(rowItem).closest('div.version-info').find('select');
+	}
 
 	fn('button.prevdoc-btn').click(function(e) {
-
 		var v = getRowVersion(this);
-
 		var nodetypename = $nodetypename.val();
-
 		if (nodetypename != 'TextFile' && nodetypename != 'ImageFile' && nodetypename != 'BinaryFile') {
 
 		    // If it is NOT a text file, a image or a binary, we take the channel
 			var channellist = getChannelList(this);
-			var channel = $("option:selected",channellist).val();
+			var channel = $("option:selected", channellist).val();
 		} else {
-			channel = 1;
+			var channel = 0;
 		}
-
-		var command = (nodetypename=='ImageFile' || nodetypename=='BinaryFile')	? 'filepreview'	: 'rendernode';
-		
+		var command = null;
+		if (nodetypename == 'ImageFile' || nodetypename == 'VideoFile') {
+			command = 'filepreview';
+		}
+		if (nodetypename == 'HtmlDocument' || nodetypename == 'XmlDocument') {
+			command = 'preview';
+		}
+		if (! command) {
+			command = 'filedownload';
+		}
 		var action = {
 			command: command,
 			name: 'Preview v' + v.version + '.' + v.subversion,
-			params: 'version=' + v.version + '&sub_version=' + v.subversion + '&channel=' + channel + '&pepe=1'
+			params: 'version=' + v.version + '&subversion=' + v.subversion + ((channel) ? '&channel=' + channel : '')
 		};
 
 		// Opens an action in a new tab
-        angular.element(document).injector().get('xTabs').openAction( action, params.nodes);
-
+        angular.element(document).injector().get('xTabs').openAction(action, params.nodes);
 		return false;
 	});
-
-
-	var form = fn('form');
 
 	// Recover button management
 	var cbRecover = function(event, button) {
@@ -99,5 +97,4 @@ X.actionLoaded(function(event, fn, params) {
 	fn('.delete-btn').each(function(index, button) {
 		button.beforeSubmit.add(cbDelete);
 	});
-
 });

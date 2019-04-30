@@ -1,5 +1,5 @@
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -23,27 +23,28 @@
  *  @version $Revision$
  */
 
-
-X.actionLoaded(function(event, fn, params) {
-
+X.actionLoaded(function(event, fn, params)
+{
 	var form = fn('form');
 	var fm = form.get(0).getFormMgr();
-
-	fn('.cancel_button').bind("click",function(event){
+	fn('.cancel_button').bind("click",function(event) {
 		onCancel(event,params.tab);
 	});
-
-	fn('.delete_button').bind("click", function(event){
+	fn('.delete_button').bind("click", function(event) {
 		onDelete(event,fn,form,fm);
 	});
-
+	fn('#asegurado').bind("change", function(event) {
+		fn("#delete_node_buttons").attr("disabled", ! this.checked);
+	});
 });
 
-function onCancel(event, tab) {
+function onCancel(event, tab)
+{
     angular.element(document).injector().get('xTabs').removeTabById(tab.id);
 }
 
-function onDelete(event, fn, form, fm) {
+function onDelete(event, fn, form, fm)
+{
 	fm.sendForm({
 		button: event.currentTarget,
 		confirm: true,

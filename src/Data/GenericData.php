@@ -226,7 +226,7 @@ class GenericData
         $insertedId = null;
         if ($this->_checkDataIntegrity()) {
             $dbObj = new \Ximdex\Runtime\Db();
-            $dbObj->Execute($query);
+            $dbObj->execute($query);
             if ($dbObj->numErr > 0) {
                 $this->messages->add($dbObj->desErr, MSG_TYPE_ERROR);
                 return false;
@@ -415,8 +415,8 @@ class GenericData
      * @param string $groupBy
      * @return array|bool
      */
-    public function find(string $fields = ALL, string $condition = null, array $params = null, bool $returnType = MULTI, bool $escape = true
-        , string $index = null, string $order = null, string $groupBy = null)
+    public function find(string $fields = ALL, string $condition = null, array $params = null, bool $returnType = MULTI
+        , bool $escape = true, string $index = null, string $order = null, string $groupBy = null, bool $onlyAssoc = false)
     {
         $condition = $this->_getCondition($condition, $params, $escape);
         $query = sprintf(
@@ -432,7 +432,7 @@ class GenericData
             $query .= ' ORDER BY ' . $order;
         }
         $this->query = $query;
-        return $this->query($query, $returnType, $index);
+        return $this->query($query, $returnType, $index, $onlyAssoc);
     }
 
     private function _getCondition(string $condition = null, array $params = null, bool $escape = false)
@@ -451,8 +451,11 @@ class GenericData
             }
         }
         if (! empty($condition) && ! is_null($params)) {
+            /*
             $value = sprintf('$condition = sprintf("%s", "%s");', $condition, implode('", "', $params));
             eval($value);
+            */
+            $condition = vsprintf($condition, $params);
         }
         return $condition;
     }
@@ -486,21 +489,20 @@ class GenericData
                     }
                     $subResult[$key] = $this->_getValueForFind($key, $value);
                 }
-                $result[] = $subResult;
             } elseif (MONO == $returnType) {
                 $subResult = null;
                 foreach ($dbObj->row as $key => $value) {
                     $subResult = $this->_getValueForFind($key, $value);
                 }
-                if ($indexField) {
-                    if (! isset($dbObj->row[$indexField])) {
-                        Logger::error('Field ' . $indexField . ' does not exist in query: ' . $query);
-                        return false;
-                    }
-                    $result[$dbObj->row[$indexField]] = $subResult;
-                } else {
-                    $result[] = $subResult;
+            }
+            if ($indexField) {
+                if (! isset($dbObj->row[$indexField])) {
+                    Logger::error('Field ' . $indexField . ' does not exist in query: ' . $query);
+                    return false;
                 }
+                $result[$dbObj->row[$indexField]] = $subResult;
+            } else {
+                $result[] = $subResult;
             }
             $dbObj->next();
         }
@@ -609,7 +611,7 @@ class GenericData
         $updatedRows = null;
         if ($this->_checkDataIntegrity()) {
             $dbObj = new \Ximdex\Runtime\Db();
-            $res = $dbObj->Execute($query);
+            $res = $dbObj->execute($query);
             if ($res === false) {
                 return false;
             }
@@ -639,7 +641,7 @@ class GenericData
             return $query;
         }
         $dbObj = new \Ximdex\Runtime\Db();
-        if ($dbObj->Execute($query) === false) {
+        if ($dbObj->execute($query) === false) {
             return false;
         }
         $this->_applyFilter('afterDelete');
@@ -654,10 +656,10 @@ class GenericData
      * @param bool $escape
      * @return bool
      */
-    public function deleteAll(string $condition = '', array $params = null, bool $escape = true)
+    public function deleteAll(string $condition = '', array $params = null, bool $escape = true) : bool
     {
         $condition = $this->_getCondition($condition, $params, $escape);
-        $query = sprintf("DELETE FROM %s WHERE %s", $this->_table, $condition);
+        $query = sprintf('DELETE FROM %s WHERE %s', $this->_table, $condition);
         return $this->execute($query);
     }
 
@@ -725,6 +727,11 @@ class GenericData
         return intval($result[0]) ?? false;
     }
 
+    /**
+     * @deprecated
+     * @param array $varsToLoad
+     * @return boolean
+     */
     public function loadFromArray(array $varsToLoad)
     {
         if (! is_array($varsToLoad)) {

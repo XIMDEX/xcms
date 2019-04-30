@@ -40,17 +40,17 @@ class Version extends VersionsOrm
                 v inner join Nodes n on n.Idnode = v.Idnode where IdUser = ' . $idUser  . ' and n.name not like \'%templates_include%\' 
                 group by n.IdNode Order by IdVersion desc, path desc, Subversion desc, max(Date)  LIMIT 10';
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Query($query);
+        $dbObj->query($query);
         $i = 0;
         $res = [];
-        while (!$dbObj->EOF) {
-            $res[$i]['IdNode'] = $dbObj->GetValue('IdNode');
-            $res[$i]['IdNodeType'] = $dbObj->GetValue('IdNodeType');
-            $res[$i]['name'] = $dbObj->GetValue('name');
-            $res[$i]['Version'] = $dbObj->GetValue('Version');
-            $res[$i]['Subversion'] = $dbObj->GetValue('Subversion');
-            $res[$i]['path'] = str_replace('/Ximdex/Projects', '', $dbObj->GetValue('path'));
-            $dbObj->Next();
+        while (! $dbObj->EOF) {
+            $res[$i]['IdNode'] = $dbObj->getValue('IdNode');
+            $res[$i]['IdNodeType'] = $dbObj->getValue('IdNodeType');
+            $res[$i]['name'] = $dbObj->getValue('name');
+            $res[$i]['Version'] = $dbObj->getValue('Version');
+            $res[$i]['Subversion'] = $dbObj->getValue('Subversion');
+            $res[$i]['path'] = str_replace('/Ximdex/Projects', '', $dbObj->getValue('path'));
+            $dbObj->next();
             $i++;
         }
         return $res;
@@ -61,12 +61,12 @@ class Version extends VersionsOrm
      * 
      * @param int $idNode
      * @param int $version
-     * @param int $subVersion
+     * @param int $subversion
      * @return int|NULL
      */
-    public function getIdVersion(int $idNode, int $version, int $subVersion) : ?int
+    public function getIdVersion(int $idNode, int $version, int $subversion) : ?int
     {
-        $res = $this->find('IdVersion', 'IdNode = %s and Version = %s and SubVersion = %s', [$idNode, $version, $subVersion]);
+        $res = $this->find('IdVersion', 'IdNode = %s and Version = %s and SubVersion = %s', [$idNode, $version, $subversion]);
         if ($res and count($res) == 1){
             return $res[0]['IdVersion'];
         }
@@ -75,6 +75,7 @@ class Version extends VersionsOrm
     
     /**
      * Remove all cache generated for the current version
+     * 
      * @throws \Exception
      */
     public function deleteCache()

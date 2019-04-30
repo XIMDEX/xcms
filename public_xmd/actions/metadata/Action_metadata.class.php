@@ -35,15 +35,15 @@ class Action_metadata extends ActionAbstract
     {
         $idNode = $this->request->getParam('nodeid');
         $node = new Node($idNode);
-        if ($node->GetID() != null) {
+        if ($node->getID() != null) {
             $metadata = new Metadata();
-            $info = $metadata->getMetadataSectionAndGroupByNodeType($node->GetNodeType(), $idNode);
+            $info = $metadata->getMetadataSchemeAndGroupByNodeType($node->getNodeType(), $idNode);
             $values = array(
                 'info' => $info,
                 'nodeTypeID' => $node->nodeType->getID(),
                 'node_Type' => $node->nodeType->GetName(),
                 'go_method' => 'saveMetadata',
-                'nodeid' => $idNode,
+                'nodeid' => $idNode
             );
         } else {
             $this->messages->add(_('The operation has failed'), MSG_TYPE_ERROR);
@@ -53,6 +53,7 @@ class Action_metadata extends ActionAbstract
             );
             $this->sendJSON($values);
         }
+        $this->addJs('/actions/metadata/resources/js/index.js');
         $this->addJs('/actions/modifyrole/js/modifyrole.js');
         $this->addCss('/actions/modifyrole/css/modifyrole.css');
         $this->render($values, 'index.tpl', 'default-3.0.tpl');

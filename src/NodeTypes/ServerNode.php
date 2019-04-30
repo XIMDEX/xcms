@@ -64,22 +64,22 @@ class ServerNode extends FolderNode
         // Find and enable servers disabled for pumping with delay time
         $sql = 'SELECT IdServer FROM Servers WHERE ActiveForPumping = 0' 
             . ' AND NOT(DelayTimeToEnableForPumping IS NULL) AND DelayTimeToEnableForPumping <= ' . time();
-        if ($dbObj->Query($sql) === false) {
+        if ($dbObj->query($sql) === false) {
             return false;
         }
         while (! $dbObj->EOF) {
-            $server = new Server($dbObj->GetValue('IdServer'));
+            $server = new Server($dbObj->getValue('IdServer'));
             $server->enableForPumping();
-            $dbObj->Next();
+            $dbObj->next();
         }
         
         // Get servers enabled and active for pumping operations
         $sql = 'SELECT IdServer FROM Servers WHERE Enabled = 1 AND ActiveForPumping = 1';
-        $dbObj->Query($sql);
+        $dbObj->query($sql);
         $enabledServers = array();
         while (! $dbObj->EOF) {
-            $enabledServers[] = $dbObj->GetValue('IdServer');
-            $dbObj->Next();
+            $enabledServers[] = $dbObj->getValue('IdServer');
+            $dbObj->next();
         }
         return $enabledServers;
     }
@@ -103,15 +103,17 @@ class ServerNode extends FolderNode
         $servers = $this->getPhysicalServerList();
         if ($servers) {
             foreach ($servers as $serverID) {
-                $this->deletePhysicalServer($serverID);
+                if ($this->deletePhysicalServer($serverID) === false) {
+                    return false;
+                }
             }
         }
         return true;
     }
     
-    public function addPhysicalServer(string $protocolID = null, string $login = null, string $password, string $host = null, int $port = null
-        , string $url = null, string $initialDirectory = null, bool $overrideLocalPaths = null, bool $enabled = null, bool $previsual = null
-        , string $description = null, string $token = null)
+    public function addPhysicalServer(string $protocolID = null, string $login = null, string $password = null, string $host = null
+        , int $port = null, string $url = null, string $initialDirectory = null, bool $overrideLocalPaths = null, bool $enabled = null
+        , bool $previsual = null, string $description = null, string $token = null)
     {
         $sql = 'INSERT INTO Servers ';
         $sql .= '(IdServer, IdNode, IdProtocol, Login, Password, Host,';
@@ -126,10 +128,10 @@ class ServerNode extends FolderNode
         return $this->dbObj->newID;
     }
 
-    public function deletePhysicalServer(int $physicalID)
+    public function deletePhysicalServer(int $physicalID) : bool
     {
         $sql = 'DELETE FROM Servers WHERE IdServer = \'' . $physicalID . '\' AND IdNode = \'' . $this->nodeID . '\'';
-        $this->dbObj->Execute($sql);
+        return $this->dbObj->execute($sql);
     }
 
     public function setProtocol(int $physicalID, string $protocolID = null)
@@ -317,7 +319,7 @@ class ServerNode extends FolderNode
 
     public function hasChannel(int $physicalID, int $channelID)
     {
-        $list = $this->GetChannels($physicalID);
+        $list = $this->getChannels($physicalID);
         if (in_array($channelID, $list)) {
             return true;
         } else {
@@ -331,13 +333,13 @@ class ServerNode extends FolderNode
         $this->dbObj->Execute($sql);
     }
 
-    function DeleteChannel($physicalID, $channelID)
+    public function deleteChannel(int $physicalID, int $channelID)
     {
         $sql = 'DELETE FROM RelServersChannels WHERE IdServer = \'' . $physicalID . '\' AND IdChannel = \'' . $channelID . '\'';
         $this->dbObj->Execute($sql);
     }
 
-    function AddChannel($physicalID, $channelID)
+    public function addChannel(int $physicalID, int $channelID)
     {
         $sql = 'INSERT INTO RelServersChannels (IdRel, IdServer, IdChannel) VALUES (NULL, ' . DB::sqlEscapeString($physicalID) 
             . ', ' . DB::sqlEscapeString($channelID) . ')';
@@ -429,13 +431,13 @@ class ServerNode extends FolderNode
             }
             
             /*
-             * recurrence IsSection Resultado
+             * recursive IsSection Resultado
              * 0 0 1
              * 0 1 0
              * 1 0 1
              * 1 1 1 => 1x = 1
              */
-            if (! (! isset($params['recurrence']) && $childNodeType->get('IsSection'))) {
+            if (! (! isset($params['recursive']) && $childNodeType->get('IsSection'))) {
                 $condition = (empty($params['childtype'])) ? null : " AND n.IdNodeType = '{$params['childtype']}'";
                 $docsToPublish = array_merge($docsToPublish, $childNode->TraverseTree(6, true, $condition));
                 continue;

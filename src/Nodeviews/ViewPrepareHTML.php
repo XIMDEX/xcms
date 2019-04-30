@@ -35,7 +35,7 @@ use Ximdex\Models\ProgrammingCode;
 
 class ViewPrepareHTML extends AbstractView
 {
-    const MACRO_CODE = '/@@@GMximdex.exec\(([a-zA-Z0-9_]+),?(.*)\)@@@/m';
+    const MACRO_CODE = '/@@@GMximdex\.exec\(([a-zA-Z0-9_]+),?(.*|\X*)\)GMximdex@@@/m';
 
     /**
      * {@inheritdoc}
@@ -43,6 +43,10 @@ class ViewPrepareHTML extends AbstractView
      */
     public function transform(int $idVersion = null, string $content = null, array $args = null)
     {
+        if (! isset($args['NODEID']) || empty($args['NODEID'])) {
+            Logger::error('Argument nodeId not found in transform process');
+            return false;
+        }
         if (parent::transform($idVersion, $content, $args) === false) {
             return false;
         }
@@ -57,7 +61,7 @@ class ViewPrepareHTML extends AbstractView
         } else {
             $mode = HTMLDocumentNode::MODE_STATIC;
         }
-        $document = HTMLDocumentNode::renderHTMLDocument($this->node->GetID(), $content, $this->channel->GetID(), $mode);
+        $document = HTMLDocumentNode::renderHTMLDocument($this->node->getID(), $content, $this->channel->getID(), $mode);
 
         // Process macros
         if ($document !== false) {

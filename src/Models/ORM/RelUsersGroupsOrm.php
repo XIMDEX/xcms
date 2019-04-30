@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,17 +32,25 @@ use Ximdex\Data\GenericData;
 class RelUsersGroupsOrm extends GenericData
 {
     public $_idField = 'IdRel';
+    
     public $_table = 'RelUsersGroups';
+    
     public $_metaData = array(
         'IdRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'IdUser' => array('type' => "int(12)", 'not_null' => 'true'),
         'IdGroup' => array('type' => "int(12)", 'not_null' => 'true'),
         'IdRole' => array('type' => "int(12)", 'not_null' => 'true')
     );
+    
     public $_uniqueConstraints = array();
+    
     public $_indexes = array('IdRel');
+    
     public $IdRel;
+    
     public $IdUser;
+    
     public $IdGroup;
+    
     public $IdRole;
 }

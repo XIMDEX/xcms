@@ -1,6 +1,6 @@
 <?php
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -26,52 +26,54 @@
 
 use Ximdex\Runtime\App;
 
-require_once(APP_ROOT_PATH.'/install/steps/generic/GenericInstallStep.class.php');
-require_once(APP_ROOT_PATH.'/install/managers/InstallModulesManager.class.php');
+require_once APP_ROOT_PATH . '/install/steps/generic/GenericInstallStep.class.php';
+require_once APP_ROOT_PATH . '/install/managers/InstallModulesManager.class.php';
 
-class GetStartedInstallStep extends GenericInstallStep {
-
+class GetStartedInstallStep extends GenericInstallStep
+{
 	/**
 	 * Main function. Show the step	 
 	 */
-	public function index(){
-		
-		$modules = $this->installManager->getModulesByDefault();	
-		$imManager = new InstallModulesManager(InstallModulesManager::WEB_MODE);		
+	public function index()
+	{		
+		$modules = $this->installManager->getModulesByDefault();
+		$imManager = new InstallModulesManager(InstallModulesManager::WEB_MODE);
 		foreach ($modules as $module) {
-			$imManager->installModule($module["name"]);
-			$imManager->enableModule($module["name"]);
+			$imManager->installModule($module['name']);
+			$imManager->enableModule($module['name']);
 		}	
-		$values=array();
-		$values["go_method"]="startXimdex";
+		$values = array();
+		$values['go_method'] = 'startXimdex';
 		$this->render($values);
 	}
 
 	/**
 	 * Change Permissions, Load next Action  and redirect to index.php
 	 */
-	public function startXimdex(){
-
+	public function startXimdex()
+	{
 		$this->changePermissions();
         $this->deleteTempFiles();
 		$this->loadNextAction();		
-		header("Location: ". App::getXimdexUrl('/'));
+		header('Location: ' . App::getXimdexUrl('/'));
 		die();
 	}
 
 	/**
-	 * Change permissions to only reader mod.
+	 * Change permissions to only reader mod
 	 */
-	private function changePermissions(){
-		chmod(XIMDEX_ROOT_PATH."/conf/install-params.conf.php",0644);
+	private function changePermissions()
+	{
+	    chmod(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php', 0644);
 	}
 
     /**
-     * Delete tmp files before start.
+     * Delete tmp files before start
      */
-    private function deleteTempFiles(){
-        exec("rm -f ".XIMDEX_ROOT_PATH."/data/tmp/templates_c/*");
-        exec("rm -f ".XIMDEX_ROOT_PATH."/data/tmp/js/es_ES/*");
-        exec("rm -f ".XIMDEX_ROOT_PATH."/data/tmp/js/en_US/*");
+    private function deleteTempFiles()
+    {
+        exec('rm -f ' . XIMDEX_ROOT_PATH . '/data/tmp/templates_c/*');
+        exec('rm -f ' . XIMDEX_ROOT_PATH . '/data/tmp/js/es_ES/*');
+        exec('rm -f ' . XIMDEX_ROOT_PATH . '/data/tmp/js/en_US/*');
     }
 }

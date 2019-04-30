@@ -1,5 +1,5 @@
 {**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -33,31 +33,33 @@
 		{foreach from=$versionList key=version item=versionInfo}
 			{foreach from=$versionInfo item=subVersionList}
 				<div class="version-info row-item">
-					<span class="version">
-						<strong>{$version}.{$subVersionList.SubVersion}</strong>
-						<strong class="publish-status">
-                            {if ($version == 0 and $subVersionList.SubVersion == 0)}{t}New{/t} {elseif ($subVersionList.SubVersion == 0)}
-                                {t}Published{/t}
-                            {else}
-                                {t}Draft{/t}
-                            {/if}
-                        </strong>
-						<input type="hidden" name="row-version" value="{$version}" />
-						<input type="hidden" name="row-subversion" value="{$subVersionList.SubVersion}" />
-					</span>
-					<span class="version-name row-item-col" title="{$subVersionList.Name}">{$subVersionList.User}</span>
-					<span class="version-date row-item-col">{$subVersionList.Date}</span>
-					<span class="version-comment row-item-col">{$subVersionList.Comment}</span>
-					<div class="row-item-actions">
+				    <div>
+						<span class="version">
+							<strong>{$version}.{$subVersionList.SubVersion}</strong>
+							<strong class="publish-status">
+	                            {if ($version == 0 and $subVersionList.SubVersion == 0)}{t}New{/t} {elseif ($subVersionList.SubVersion == 0)}
+	                                {t}Published{/t}
+	                            {else}
+	                                {t}Draft{/t}
+	                            {/if}
+	                        </strong>
+							<input type="hidden" name="row-version" value="{$version}" />
+							<input type="hidden" name="row-subversion" value="{$subVersionList.SubVersion}" />
+						</span>
+						<span class="version-name row-item-col" title="{$subVersionList.Name}">{$subVersionList.User}</span>
+						<span class="version-date row-item-col">{$subVersionList.Date}</span>
+						<span class="version-comment row-item-col">{$subVersionList.Comment}</span>
+					</div>
+					<div class="row-item-actions version-actions">
 						{if ! empty($channels)}
-							<select class="channellist" name="channellist" style="width: 50%;">
+							<select class="channellist" name="channellist">
 								{foreach from=$channels key=id_channel item=channel}
 								    <option value="{$id_channel}">{$channel}</option>
 								{/foreach}
 							</select>
 							&nbsp;
-							{button label="Preview" class="prevdoc-btn icon btn-unlabel-rounded"}
 						{/if}
+						{button label="Preview" class="prevdoc-btn icon btn-unlabel-rounded"}
 						{if $subVersionList.isLastVersion == 'false'}
 							{button label="Recover" class="validate recover-btn disabled-version icon btn-unlabel-rounded" 
                                     message="Are you sure you want to recover this version?"} 

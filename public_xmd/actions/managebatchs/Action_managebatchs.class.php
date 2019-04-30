@@ -44,30 +44,33 @@ class Action_managebatchs extends ActionAbstract
      */
     public function index()
     {
-        $idNode = $this->request->getParam('nodeid');
+        $idNode = (int) $this->request->getParam('nodeid');
         $node = new Node($idNode);
         
         // Initializing variables
         $userID = Session::get('userID');
         $user = new User();
-        $user->SetID($userID);
-        if (! $user->HasPermission('view_publication_resume')) {
+        $user->setID($userID);
+        if (! $user->hasPermission('view_publication_resume')) {
             $this->messages->add(_('You have not access to this report. Consult an administrator'), MSG_TYPE_WARNING);
-            $this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
+            $this->render(array('messages' => $this->messages->messages), null, 'messages.tpl');
             return;
         }
-        $jsFiles = array(
+        $jsFiles = array
+        (
             App::getUrl('/actions/managebatchs/resources/js/index.js'),
             App::getUrl('/assets/js/ximtimer.js')
         );
         $this->addJs('/actions/managebatchs/resources/js/managebatchs.js');
-        $cssFiles = array(
+        $cssFiles = array
+        (
             App::getUrl('/actions/managebatchs/resources/css/index.css')
         );
-        $arrValores = array(
+        $arrValores = array
+        (
             'js_files' => $jsFiles,
             'nodeTypeID' => $node->nodeType->getID(),
-            'node_Type' => $node->nodeType->GetName(),
+            'node_Type' => $node->nodeType->getName(),
             'css_files' => $cssFiles
         );
         $this->render($arrValores, null, 'default-3.0.tpl');
@@ -156,7 +159,7 @@ class Action_managebatchs extends ActionAbstract
             $this->sendJSON(['success' => false, 'error' => 'No server ID given']);
         }
         $server = new Server($id);
-        if (!$server->get('IdServer')) {
+        if (! $server->get('IdServer')) {
             $this->sendJSON(['success' => false, 'error' => 'Server with ID ' . $id . ' does not exist']);
         }
         if ($server->enableForPumping() === false) {
@@ -239,7 +242,7 @@ class Action_managebatchs extends ActionAbstract
         $node = new Node($portal->get('IdNodeGenerator'));
         
         // User name
-        if (!$portal->get('CreatedBy')) {
+        if (! $portal->get('CreatedBy')) {
             $userName = 'Unknown';
         } else {
             $user = new User($portal->get('CreatedBy'));
@@ -248,7 +251,7 @@ class Action_managebatchs extends ActionAbstract
         
         // Servers stats
         $servers = [];
-        $total = $pending = $active = $delayed = $success = $fatal = $soft = $stopped = $cancelled = 0;
+        // $total = $pending = $active = $delayed = $success = $fatal = $soft = $stopped = $cancelled = 0;
         foreach ($portal->getServers() as $id => $name) {
             $server = new Server($id);
             $stats = $server->stats($portal->get('id'));
@@ -263,11 +266,12 @@ class Action_managebatchs extends ActionAbstract
                 'fatal' => $stats['fatal'],
                 'soft' => $stats['soft'],
                 'stopped' => $stats['stopped'],
-                'cancelled' => $stats['cancelled'],
+                // 'cancelled' => $stats['cancelled'],
                 'activeForPumping' => (int) $server->get('ActiveForPumping'),
                 'delayedTime' => Date::formatTime($server->get('DelayTimeToEnableForPumping')),
                 'enabled' => (int) $server->get('Enabled')
             ];
+            /*
             $total += $stats['total'];
             $pending += $stats['pending'];
             $active += $stats['active'];
@@ -277,6 +281,7 @@ class Action_managebatchs extends ActionAbstract
             $soft += $stats['soft'];
             $stopped += $stats['stopped'];
             $cancelled += $stats['cancelled'];
+            */
         }
         
         // Portal frames information
@@ -293,6 +298,7 @@ class Action_managebatchs extends ActionAbstract
             'startTime' => Date::formatTime($portal->get('StartTime')),
             'elapsedTime' => $portal->get('StartTime') ? $portal->get('StatusTime') - $portal->get('StartTime') : 0,
             'endTime' => Date::formatTime($portal->get('EndTime')),
+            /*
             'total' => $total,
             'active' => $active,
             'delayed' => $delayed,
@@ -302,6 +308,15 @@ class Action_managebatchs extends ActionAbstract
             'soft' => $soft,
             'stopped' => $stopped,
             'cancelled' => $cancelled,
+            */
+            'total' => (int) $portal->get('SFtotal'),
+            'active' => (int) $portal->get('SFactive'),
+            'delayed' => (int) $portal->get('SFdelayed'),
+            'pending' => (int) $portal->get('SFpending'),
+            'success' => (int) $portal->get('SFsuccess'),
+            'fatal' => (int) $portal->get('SFfatalError'),
+            'soft' => (int) $portal->get('SFsoftError'),
+            'stopped' => (int) $portal->get('SFstopped'),
             'playing' => (int) $portal->get('Playing'),
             'successRate' => round($portal->get('SuccessRate'), 2),
             'cycles' => (int) $portal->get('CyclesTotal'),

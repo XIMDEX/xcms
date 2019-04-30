@@ -38,7 +38,9 @@ use Exception;
 class ConnectionSolr extends Connector implements IConnector
 {
     private $connected = false;
+    
     private $validExtensions = array('xml' => 1, 'pdf' => 1, 'epub' => 1);
+    
     private $config;
 
     /**
@@ -243,6 +245,15 @@ class ConnectionSolr extends Connector implements IConnector
         // return $this->putBinaryFile($localFile, $pathInfo);
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\IO\Connection\IConnector::dirIsEmpty()
+     */
+    public function dirIsEmpty(string $path): bool
+    {
+        return false;
+    }
+    
     private function putXmlFile(string $localFile, string $pathInfo) : bool
     {        
         // Load xml coming from transformation
@@ -421,14 +432,5 @@ class ConnectionSolr extends Connector implements IConnector
         array_shift($fullNameParts);
         $trueName = implode('', $fullNameParts);
         return $trueName;
-    }
-    
-    /**
-     * {@inheritDoc}
-     * @see \Ximdex\IO\Connection\IConnector::dirIsEmpty()
-     */
-    public function dirIsEmpty(string $path): bool
-    {
-        return false;
     }
 }

@@ -1,5 +1,5 @@
 {**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -23,8 +23,7 @@
  *  @version $Revision$
  *}
 
-<form method="post" id="modify_role_form" class="modify_role_form" action="{$action_url}&amp;id_pipeline={$selected_pipeline}" 
-        ng-init="status = []">
+<form method="post" id="modify_role_form" class="modify_role_form" action="{$action_url}" ng-init="status = []">
 	{include file="actions/components/title_Description.tpl"}
 	<div ng-cloak class="action_content">
         <fieldset class="buttons-form-special">
@@ -56,10 +55,10 @@
                 <accordion-group heading="{t}Generic permits{/t}" ng-init="$parent.status.push(false)" is-open="$parent.status[1]">
                     {foreach from=$permissions key=index item=permissionData}
                         <div class="checkbox">
-                            <label for="p_{$permissionData.IdPermission}">
+                            <label for="p_{$permissionData.IdPermission}_{$nodeid}">
                                 <input type="checkbox" name="permissions[{$permissionData.IdPermission}]" 
-                                        id="p_{$permissionData.IdPermission}"{if $permissionData.HasPermission} 
-                                        checked="checked"{/if}>&nbsp;{$permissionData.Description}
+                                        id="p_{$permissionData.IdPermission}_{$nodeid}" 
+                                        {if $permissionData.HasPermission} checked="checked" {/if}> {$permissionData.Description}
                             </label>
                         </div>
                     {/foreach}
@@ -83,34 +82,47 @@
                                     {/if}
                                 </tr>
                                 {foreach name="medium_actions" from=$nodetype.actions key=action_key item=action}
-                                    <tr>
-                                        {if $displayed_nodetype == 1}
-                                            {assign var=displayed_nodetype value=0}
-                                        {/if}
-                                        <td class="{if $index is not even}evenrow{else}oddrow{/if}">
-                                            {$action.Name}
-                                        </td>
+                                    {if $action.Sort lt 0}
+                                        <!-- {$action.Name} -->
                                         {if isset($workflow_states[$nodetype.workflowId])}
-	                                        {foreach from=$workflow_states[$nodetype.workflowId] item=workflow_state}
-	                                            <td class="{if $index is not even}evenrow{else}oddrow{/if}">
-	                                                {* if (array_key_exists('states', $action)) *}
-	                                                {if (isset($action.states[$workflow_state.id]))}
-	                                                    <input type="checkbox" 
-                                                                name="action_workflow[{$action.IdAction}][{$workflow_state.id}]" 
-	                                                            {if $action.states[$workflow_state.id]} checked="checked" {/if} 
-	                                                            title="{$workflow_state.name} state" />
-	                                                {/if}
-	                                            </td>
-	                                        {/foreach}
+                                            {foreach from=$workflow_states[$nodetype.workflowId] item=workflow_state}
+	                                            <input type="hidden" 
+	                                                    name="action_workflow[{$action.IdAction}][{$workflow_state.id}]" 
+	                                                    value="{if $action.states[$workflow_state.id]}1{else}0{/if}" />
+                                            {/foreach}
                                         {else}
-	                                        <td class="{if $index is not even}evenrow{else}oddrow{/if}" align="center">
-	                                            {if (array_key_exists('state', $action))}
-	                                                <input type="checkbox" name="action_workflow[{$action.IdAction}][NO_STATE]" 
-	                                                        {if $action.state} checked="checked"{/if} title="Without state">
-	                                            {/if}
-	                                        </td>
+	                                        <input type="hidden" name="action_workflow[{$action.IdAction}][NO_STATE]" 
+	                                               value="{if $action.state}1{else}0{/if}" />
                                         {/if}
-                                    </tr>
+                                    {else}
+	                                    <tr>
+	                                        {if $displayed_nodetype == 1}
+	                                            {assign var=displayed_nodetype value=0}
+	                                        {/if}
+	                                        <td class="{if $index is not even}evenrow{else}oddrow{/if}">
+	                                            {$action.Name}
+	                                        </td>
+	                                        {if isset($workflow_states[$nodetype.workflowId])}
+		                                        {foreach from=$workflow_states[$nodetype.workflowId] item=workflow_state}
+		                                            <td class="{if $index is not even}evenrow{else}oddrow{/if}">
+		                                                {if (isset($action.states[$workflow_state.id]))}
+		                                                    <input type="checkbox" 
+	                                                                name="action_workflow[{$action.IdAction}][{$workflow_state.id}]" 
+		                                                            {if $action.states[$workflow_state.id]} checked="checked" {/if} 
+		                                                            title="{$workflow_state.name} state" />
+		                                                {/if}
+		                                            </td>
+		                                        {/foreach}
+	                                        {else}
+		                                        <td class="{if $index is not even}evenrow{else}oddrow{/if}" align="center">
+		                                            {if (array_key_exists('state', $action))}
+		                                                <input type="checkbox" name="action_workflow[{$action.IdAction}][NO_STATE]" 
+		                                                        {if $action.state} checked="checked"{/if} title="Without state">
+		                                            {/if}
+		                                        </td>
+	                                        {/if}
+	                                    </tr>
+                                    {/if}
                                 {/foreach}
                             </table>
                         </accordion-group>

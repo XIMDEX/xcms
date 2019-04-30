@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,34 +27,28 @@
 
 namespace Ximdex\Models;
 
-use Ximdex\Runtime\Db;
-
 class NodeDependencies
 {
     /**
-     * @var Db
+     * @var \Ximdex\Runtime\Db
      */
-    var $dbObj;
+    private $dbObj;
 
-    /**
-     * NodeDependencies constructor
-     */
     public function __construct()
     {
         $this->dbObj = new \Ximdex\Runtime\Db();
     }
 
-    /**
-     * @param int $idSource
-     * @param int $idTarget
-     * @param int $idChannel
-     * @return bool
-     */
     public function set(int $idSource, int $idTarget, int $idChannel = null) : bool
     {
         // Check before if there is already a same dependence
-        $res = $this->dbObj->Query('SELECT * FROM NodeDependencies WHERE IdNode = ' . $idSource . ' and IdResource = ' . $idTarget 
-            . ' and IdChannel = ' . $idChannel);
+        $sql = 'SELECT * FROM NodeDependencies WHERE IdNode = ' . $idSource . ' and IdResource = ' . $idTarget;
+        $res = $this->dbObj->Query($sql);
+        if ($idChannel === null) {
+            $sql .= ' and IdChannel IS NULL';
+        } else {
+            $sql .= ' and IdChannel = ' . $idChannel;
+        }
         if ($res === false) {
             return false;
         }
@@ -63,40 +57,28 @@ class NodeDependencies
             // Dependency already exists
             return true;
         }
-        return $this->dbObj->Execute('INSERT INTO NodeDependencies (IdNode, IdResource, IdChannel) VALUES (' . $idSource . ', ' 
+        return $this->dbObj->execute('INSERT INTO NodeDependencies (IdNode, IdResource, IdChannel) VALUES (' . $idSource . ', ' 
             . $idTarget . ', ' . (empty($idChannel) ? 'NULL' : $idChannel) . ')');
     }
 
-    /**
-     * @param $idTarget
-     * @return array
-     */
-    public function getByTarget($idTarget) : array
+    public function getByTarget(int $idTarget) : array
     {
-        $this->dbObj->Query("SELECT DISTINCT IdNode FROM NodeDependencies WHERE IdResource = $idTarget");
+        $this->dbObj->query("SELECT DISTINCT IdNode FROM NodeDependencies WHERE IdResource = $idTarget");
         $deps = array();
         while (! $this->dbObj->EOF) {
-            $deps[] = $this->dbObj->GetValue("IdNode");
-            $this->dbObj->Next();
+            $deps[] = $this->dbObj->getValue("IdNode");
+            $this->dbObj->next();
         }
         return $deps;
     }
 
-    /**
-     * @param $idTarget
-     * @return bool
-     */
-    public function deleteByTarget($idTarget)
+    public function deleteByTarget(int $idTarget)
     {
-        return $this->dbObj->Execute("DELETE FROM NodeDependencies WHERE IdResource = $idTarget");
+        return $this->dbObj->execute("DELETE FROM NodeDependencies WHERE IdResource = $idTarget");
     }
 
-    /**
-     * @param $idSource
-     * @return bool
-     */
-    public function deleteBySource($idSource)
+    public function deleteBySource(int $idSource)
     {
-        return $this->dbObj->Execute("DELETE FROM NodeDependencies WHERE IdNode = $idSource");
+        return $this->dbObj->execute("DELETE FROM NodeDependencies WHERE IdNode = $idSource");
     }
 }

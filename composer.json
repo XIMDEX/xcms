@@ -20,13 +20,13 @@
         "phpseclib/phpseclib": "2.0.*",
         "phpmailer/phpmailer": "^6.0",
         "kevinlebrun/colors.php": "1.*",
-        "ximdex/plata": "1.*",
+        "ximdex/plata": "dev-master",
         "guzzlehttp/guzzle": ">=4.1.4 <7.0",
         "ximdex/xedit": "dev-feature_metadata"
     },
     "require-dev": {
-        "mockery/mockery": "0.9.*",
-        "codeception/codeception": "2.3.*"
+        "mockery/mockery": "1.2.*",
+        "codeception/codeception": "2.5.*"
     },
     "autoload": {
         "psr-4": {

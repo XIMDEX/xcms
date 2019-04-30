@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -37,6 +37,8 @@ class NodeSets extends NodeSetsOrm
 {
     /**
      * Returns the set id
+     * 
+     * @return int
      */
     public function getId()
     {
@@ -45,6 +47,8 @@ class NodeSets extends NodeSetsOrm
 
     /**
      * Returns the set name
+     * 
+     * @return string
      */
     public function getName()
     {
@@ -53,6 +57,8 @@ class NodeSets extends NodeSetsOrm
 
     /**
      * Returns the sets count
+     * 
+     * @return boolean|string|NULL
      */
     public function getItems()
     {
@@ -63,8 +69,11 @@ class NodeSets extends NodeSetsOrm
 
     /**
      * Static method that creates a new NodeSet and returns the related object
+     * 
+     * @param string $name
+     * @return \Ximdex\Models\NodeSets
      */
-    static public function & create($name)
+    static public function create(string $name)
     {
         $ns = new NodeSets();
         $ns->set('Name', $name);
@@ -74,6 +83,9 @@ class NodeSets extends NodeSetsOrm
 
     /**
      * Deletes the current set
+     * 
+     * {@inheritDoc}
+     * @see \Ximdex\Data\GenericData::delete()
      */
     public function delete()
     {
@@ -95,53 +107,57 @@ class NodeSets extends NodeSetsOrm
     /**
      * Returns an iterator of all node sets by user
      * 
-     * @param $idUser
-     * @return IteratorNodeSets|IteratorNodeSetsUsers
+     * @param int $idUser
+     * @return \Ximdex\Models\Iterators\IteratorNodeSets
      */
-    static public function & getSets($idUser)
+    static public function getSets(int $idUser)
     {
         $it = new IteratorNodeSetsUsers('IdUser = %s', array($idUser));
         $sets = array();
         while ($set = $it->next()) {
             $sets[] = $set->getIdSet();
         }
-        $it = new IteratorNodeSets('Id in (%s)', array(implode(',', $sets)), NO_ESCAPE);
-        return $it;
+        return new IteratorNodeSets('Id in (%s)', array(implode(',', $sets)), NO_ESCAPE);
     }
 
     /**
      * Returns an iterator of all node sets
+     * 
+     * @return \Ximdex\Models\Iterators\IteratorNodeSets
      */
-    static public function & getAllSets()
+    static public function getAllSets()
     {
-        $it = new IteratorNodeSets('', array());
-        return $it;
+        return new IteratorNodeSets('', array());
     }
 
     /**
      * Returns an iterator of all related nodes in this set
      * 
-     * @return IteratorNodeSetsNodes
+     * @return \Ximdex\Models\Iterators\IteratorNodeSetsNodes
      */
-    public function & getNodes()
+    public function getNodes()
     {
-        $it = new IteratorNodeSetsNodes('IdSet = %s', array($this->getId()));
-        return $it;
+        return new IteratorNodeSetsNodes('IdSet = %s', array($this->getId()));
     }
 
     /**
      * Adds a new node to the current set and returns the related object
+     * 
+     * @param int $idNode
+     * @return \Ximdex\Models\RelNodeSetsNode
      */
-    public function & addNode($idNode)
+    public function addNode(int $idNode)
     {
-        $rel = RelNodeSetsNode::create($this->getId(), $idNode);
-        return $rel;
+        return RelNodeSetsNode::create($this->getId(), $idNode);
     }
 
     /**
      * Deletes a node from the current set
+     * 
+     * @param int $idNode
+     * @return \Ximdex\Models\RelNodeSetsNode
      */
-    public function deleteNode($idNode)
+    public function deleteNode(int $idNode)
     {
         $rel = new RelNodeSetsNode();
         $rel = $rel->find(ALL, 'IdSet = %s and IdNode = %s', array($this->getId(), $idNode));
@@ -154,26 +170,33 @@ class NodeSets extends NodeSetsOrm
 
     /**
      * Returns an iterator of all related users can see this set
+     * 
+     * @return \Ximdex\Models\Iterators\IteratorNodeSetsUsers
      */
-    public function & getUsers()
+    public function getUsers()
     {
-        $it = new IteratorNodeSetsUSers('IdSet = %s', array($this->getId()));
-        return $it;
+        return new IteratorNodeSetsUSers('IdSet = %s', array($this->getId()));
     }
 
     /**
      * Adds a new user to the current set and returns the related object
+     * 
+     * @param int $idUser
+     * @param int $owner
+     * @return RelNodeSetsUsers
      */
-    public function & addUser($idUser, $owner = RelNodeSetsUsers::OWNER_NO)
+    public function addUser(int $idUser, int $owner = RelNodeSetsUsers::OWNER_NO)
     {
-        $rel = RelNodeSetsUsers::create($this->getId(), $idUser, $owner);
-        return $rel;
+        return RelNodeSetsUsers::create($this->getId(), $idUser, $owner);
     }
 
     /**
      * Deletes an user from the current set
+     * 
+     * @param int $idUser
+     * @return \RelNodeSetsUsers
      */
-    public function deleteUser($idUser)
+    public function deleteUser(int $idUser)
     {
         $rel = new RelNodeSetsUsers();
         $rel = $rel->find(ALL, 'IdSet = %s and IdUser = %s', array($this->getId(), $idUser));

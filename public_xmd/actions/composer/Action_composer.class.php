@@ -526,7 +526,7 @@ class Action_composer extends ActionAbstract
             
             // Removing general group
             if (is_array($groupList)) {
-                $groupList = array_diff($groupList, array($group->GetGeneralGroup()));
+                $groupList = array_diff($groupList, array(Group::getGeneralGroup()));
             }
             $nodeList = array();
             

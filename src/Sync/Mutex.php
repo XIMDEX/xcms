@@ -30,7 +30,9 @@ namespace Ximdex\Sync;
 class Mutex
 {
 	private $file_name;
+	
 	private $file_ptr;
+	
 	private $is_acquired;
 
 	public function __construct(string $file_name = null)

@@ -1,6 +1,6 @@
 <?php
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -26,14 +26,25 @@
 
 namespace Ximdex\Properties;
 
-class TransformerProperty extends InheritableProperty {
+use Ximdex\NodeTypes\NodeTypeConstants;
 
-	public function getPropertyName() {
+class TransformerProperty extends InheritableProperty
+{
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\Properties\InheritableProperty::getPropertyName()
+     */
+	public function getPropertyName()
+	{
 		return 'Transformer';
 	}
 
-	public function getValues() {
-
+	/**
+	 * {@inheritDoc}
+	 * @see \Ximdex\Properties\InheritableProperty::getValues()
+	 */
+	public function getValues()
+	{
 		// All system transformers
 		$_availableTransformers = array(
 			array(
@@ -48,70 +59,81 @@ class TransformerProperty extends InheritableProperty {
 
 		// Selected transformers on the node
 		$nodeTransformers = $this->getProperty(false);
-		if (empty($nodeTransformers)) $nodeTransformers = array();
-
+		if (empty($nodeTransformers)) {
+		    $nodeTransformers = array();
+		}
 		$availableTransformers = array();
-
-		if ($this->nodeTypeId == \Ximdex\NodeTypes\NodeTypeConstants::PROJECT) {
-
+		if ($this->nodeTypeId == NodeTypeConstants::PROJECT) {
 			// The Project node shows all the system transformers
 			$availableTransformers = $_availableTransformers;
 			unset($availableTransformers[0]);
 			$nodeTransformers = $this->getProperty(true);
-
 		} else {
 
 			// Nodes below the Project shows only inherited transformers
 			$inheritedTransformers = $this->getProperty(true);
-			if (empty($inheritedTransformers)) $inheritedTransformers = array();
-
+			if (empty($inheritedTransformers)) {
+			    $inheritedTransformers = array();
+			}
 			foreach ($_availableTransformers as $trans) {
-
 				if (in_array($trans['IdTransformer'], $inheritedTransformers)) {
 					$availableTransformers[] = $trans;
 				}
 			}
 		}
-
-		foreach ($availableTransformers as &$trans) {
-
+		foreach ($availableTransformers as & $trans) {
 			$trans['Checked'] = in_array($trans['IdTransformer'], $nodeTransformers) ? true : false;
 		}
-
 		return $availableTransformers;
 	}
 
-	public function setValues($values) {
-
+	/**
+	 * {@inheritDoc}
+	 * @see \Ximdex\Properties\InheritableProperty::setValues()
+	 */
+	public function setValues(array $values)
+	{
 		$affected = $this->updateAffectedNodes($values);
 		$this->deleteProperty($values);
-
 		if (intval($values) != -1) {
-
 			$this->setProperty($values);
 		}
-
 		return array('affectedNodes' => $affected, 'values' => $values);
 	}
 
-	public function getAffectedNodes($values) {
-
-		return false;
+	/**
+	 * {@inheritDoc}
+	 * @see \Ximdex\Properties\InheritableProperty::updateAffectedNodes()
+	 */
+	protected function updateAffectedNodes(array $values)
+	{
+		return [];
 	}
 
-	protected function updateAffectedNodes($values) {
-
-		return false;
-	}
-
-	public function applyPropertyRecursively($values) {
-
-		return false;
+	/**
+	 * {@inheritDoc}
+	 * @see \Ximdex\Properties\InheritableProperty::applyPropertyRecursively()
+	 */
+	public function applyPropertyRecursively(array $values)
+	{
+		return true;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 * @see \Ximdex\Properties\InheritableProperty::get_system_properties()
+	 */
     protected function get_system_properties()
-    {}
+    {
+        return [];
+    }
 
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\Properties\InheritableProperty::get_inherit_properties()
+     */
     protected function get_inherit_properties(array $availableProperties)
-    {}
+    {
+        return [];
+    }
 }

@@ -38,6 +38,7 @@ fieldset.editor{
 	padding: 0;
 	position: relative;
     width: 100%;
+    height: calc(100% - 75pt);
 }
 
 .CodeMirror {

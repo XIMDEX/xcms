@@ -21,12 +21,13 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- * @author Ximdex DevTeam <dev@ximdex.com>
- * @version $Revision$
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
  */
 
 namespace Ximdex\Models;
 
+use Ximdex\Logger;
 use Ximdex\Models\ORM\ActionsOrm;
 
 class Action extends ActionsOrm
@@ -50,7 +51,7 @@ class Action extends ActionsOrm
     /**
      * Shows if there was an error
      */
-    public $flagErr;
+    public $flagErr = false;
     
     /**
      * Error code
@@ -75,7 +76,7 @@ class Action extends ActionsOrm
     
     public $_fieldsToTraduce = array('Name', 'Description');
     
-    public $autoCleanErr = false;
+    public $autoCleanErr = true;
 
     public function __construct(int $actionID = null)
     {
@@ -91,27 +92,27 @@ class Action extends ActionsOrm
      */
     public static function getAlwaysAllowedActions()
     {
-        return array("browser3", "composer", "welcome", "infonode", "changelang", 'rendernode');
+        return array('browser3', 'composer', 'welcome', 'infonode', 'changelang', 'rendernode');
     }
 
     /**
      * Returns an arry with the ids of all the system actions
      * 
-     * @return array of ActionID
+     * @return array|null of ActionID
      */
     public function getAllActions()
     {
-        $salida = array();
-        $sql = "SELECT IdAction FROM Actions";
+        $sql = 'SELECT IdAction FROM Actions';
         $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->query($sql);
         if ($dbObj->numErr != 0) {
             $this->setError(1);
             return null;
         }
+        $salida = array();
         while (! $dbObj->EOF) {
-            $salida[] = $dbObj->getValue("IdAction");
-            $dbObj->Next();
+            $salida[] = $dbObj->getValue('IdAction');
+            $dbObj->next();
         }
         return $salida;
     }
@@ -139,10 +140,10 @@ class Action extends ActionsOrm
     public function getActionListOnNodeType(int $nodeType = null, bool $includeActionsWithNegativeSort = false)
     {
         $dbObj = new \Ximdex\Runtime\Db();
-        if (!$includeActionsWithNegativeSort) {
-            $sql = sprintf("SELECT IdAction FROM Actions WHERE idNodeType = %d AND Sort > 0 ORDER BY Sort ASC", $nodeType);
+        if (! $includeActionsWithNegativeSort) {
+            $sql = sprintf('SELECT IdAction FROM Actions WHERE idNodeType = %d AND Sort > 0 ORDER BY Sort ASC', $nodeType);
         } else {
-            $sql = sprintf("SELECT IdAction FROM Actions WHERE idNodeType = %d ORDER BY Sort ASC", $nodeType);
+            $sql = sprintf('SELECT IdAction FROM Actions WHERE idNodeType = %d ORDER BY Sort ASC', $nodeType);
         }
         $dbObj->query($sql);
         if ($dbObj->numErr != 0) {
@@ -151,7 +152,7 @@ class Action extends ActionsOrm
         }
         $salida = null;
         while (! $dbObj->EOF) {
-            $salida[] = $dbObj->getValue("IdAction");
+            $salida[] = $dbObj->getValue('IdAction');
             $dbObj->next();
         }
         return $salida ? $salida : NULL;
@@ -164,7 +165,7 @@ class Action extends ActionsOrm
      */
     public function getNodeType()
     {
-        return $this->get('IdNodeType');
+        return $this->IdNodeType;
     }
 
     /**
@@ -174,7 +175,7 @@ class Action extends ActionsOrm
      */
     public function getID()
     {
-        return $this->get('IdAction');
+        return $this->IdAction;
     }
 
     /**
@@ -186,11 +187,11 @@ class Action extends ActionsOrm
     public function setID(int $actionID)
     {
         parent::__construct($actionID);
-        if (! $this->get('IdAction')) {
+        if (! $this->IdAction) {
             $this->setError(2);
             return null;
         }
-        return $this->get('IdAction');
+        return $this->IdAction;
     }
 
     /**
@@ -200,18 +201,18 @@ class Action extends ActionsOrm
      */
     public function getName()
     {
-        return $this->get('Name');
+        return $this->Name;
     }
 
     /**
      * Returns the current action description
      * 
-     * @param $name
+     * @param string $name
      * @return bool|int|null|string
      */
     public function setName(string $name)
     {
-        if (! $this->get('IdAction')) {
+        if (! $this->IdAction) {
             $this->setError(2);
             return false;
         }
@@ -230,12 +231,12 @@ class Action extends ActionsOrm
      */
     public function getDescription()
     {
-        return $this->get('Description');
+        return $this->Description;
     }
 
-    public function setDescription(string $description)
+    public function setDescription(string $description = null)
     {
-        if (! $this->get('IdAction')) {
+        if (! $this->IdAction) {
             $this->setError(2, _('Action does not exist'));
             return false;
         }
@@ -253,18 +254,18 @@ class Action extends ActionsOrm
      */
     public function getCommand()
     {
-        return $this->get('Command');
+        return $this->Command;
     }
 
     /**
      * Changes the current action command
      * 
-     * @param $command
+     * @param string $command
      * @return  bool|int (status)
      */
     public function setCommand(string $command)
     {
-        if (! $this->get('IdAction')) {
+        if (! $this->IdAction) {
             $this->setError(2, _('Action does not exist'));
             return false;
         }
@@ -282,18 +283,18 @@ class Action extends ActionsOrm
      */
     public function getSort()
     {
-        return $this->get('Sort');
+        return $this->Sort;
     }
 
     /**
      * Changes the current action order
      * 
-     * @param $sort
+     * @param int $sort
      * @return int (status)
      */
-    public function SetSort(int $sort)
+    public function setSort(int $sort)
     {
-        if (! $this->get('IdAction')) {
+        if (! $this->IdAction) {
             $this->setError(2, _('Action does not exist'));
             return false;
         }
@@ -311,7 +312,7 @@ class Action extends ActionsOrm
      */
     public function getIcon()
     {
-        return $this->get('Icon');
+        return $this->Icon;
     }
 
     /**
@@ -321,9 +322,9 @@ class Action extends ActionsOrm
      * @param string $icon
      * @return bool|int (status)
      */
-    public function SetIcon(string $icon)
+    public function setIcon(string $icon)
     {
-        if (! $this->get('IdAction')) {
+        if (! $this->IdAction) {
             $this->setError(2, _('Action does not exist'));
             return false;
         }
@@ -332,11 +333,6 @@ class Action extends ActionsOrm
             return $this->update();
         }
         return false;
-    }
-    
-    public function getModule()
-    {
-        return $this->get('Module');
     }
 
     /**
@@ -350,7 +346,7 @@ class Action extends ActionsOrm
      * @param string $description
      * @return NULL|string|boolean
      */
-    public function createNewAction(int $actionID, int $nodeType, string $name, string $command, string $icon, string $description)
+    public function createNewAction(int $actionID, int $nodeType, string $name, string $command, string $icon = null, string $description = null)
     {
         $this->set('IdAction', $actionID);
         $this->set('IdNodeType', $nodeType);
@@ -365,30 +361,44 @@ class Action extends ActionsOrm
     /**
      * Delete current action
      */
-    public function deleteAction()
+    public function deleteAction() : bool
     {
         $dbObj = new \Ximdex\Runtime\Db();
-        $query = sprintf("DELETE FROM RelRolesActions WHERE IdAction= %d", $this->ID);
-        $dbObj->sxecute($query);
+        $query = sprintf('DELETE FROM RelRolesActions WHERE IdAction = %d', $this->ID);
+        $dbObj->execute($query);
         if ($dbObj->numErr != 0) {
             $this->setError(1);
+            return false;
         }
-        $this->delete();
+        if ($this->delete() === false) {
+            return false;
+        }
         $this->ID = null;
+        return true;
     }
-    
-    /**
-     * Loads an errorin the class.*
-     * 
-     * @return boolean
-     */
+
+    public function getModule()
+    {
+        return $this->Module;
+    }
+
+    public function setAutoCleanOn()
+    {
+        $this->autoCleanErr = true;
+    }
+
+    public function setAutoCleanOff()
+    {
+        $this->autoCleanErr = false;
+    }
+
     public function hasError()
     {
-        $aux = $this->flagErr;
+        $error = $this->flagErr;
         if ($this->autoCleanErr) {
             $this->clearError();
         }
-        return $aux;
+        return $error;
     }
 
     /**
@@ -402,8 +412,12 @@ class Action extends ActionsOrm
     public function setByCommandAndModule(string $name, int $idNode, string $module = null)
     {
         $node = new Node($idNode);
+        if (! $node->getID()) {
+            Logger::error("Cannot load a node with ID: {$idNode} for command: {$name} and module: {$module}");
+            return false;
+        }
         $idNodeType = $node->getNodeType();
-        if ($module == null) {
+        if (! $module) {
             return $this->setByCommand($name, $idNodeType);
         }
         $result = $this->find('IdAction', 'Command = %s AND IdNodeType = %s AND Module = %s', array($name, $idNodeType, $module), MONO);
@@ -411,17 +425,16 @@ class Action extends ActionsOrm
             return 0;
         }
         $this->__construct($result[0]);
-        return $this->get('IdAction');
+        return $this->IdAction;
     }
 
     public function setByCommand(string $name, int $idNodeType)
     {
-        $result = $this->find('IdAction', 'Command = %s AND IdNodeType = %s',
-            array($name, $idNodeType), MONO);
+        $result = $this->find('IdAction', 'Command = %s AND IdNodeType = %s', array($name, $idNodeType), MONO);
         if (count($result) != 1) {
             return false;
         }
         $this->__construct($result[0]);
-        return $this->get('IdAction');
+        return $this->IdAction;
     }
 }

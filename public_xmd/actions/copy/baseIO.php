@@ -33,7 +33,7 @@ Ximdex\Modules\Manager::file('/inc/ExportXml.class.php', 'ximIO');
 Ximdex\Modules\Manager::file('/inc/ImportXml.class.php', 'ximIO');
 Ximdex\Modules\Manager::file('/inc/FileUpdater.class.php', 'ximIO');
 	
-function copyNode($source, $dest, $recurrence)
+function copyNode($source, $dest, $recursive)
 {
 	$messages = new Ximdex\Utils\Messages();
 	
@@ -64,7 +64,7 @@ function copyNode($source, $dest, $recurrence)
 		return $xmlExporter->messages;
 	}
 	$files = null;
-	$xml = $xmlExporter->getXml($recurrence, $files);
+	$xml = $xmlExporter->getXml($recursive, $files);
 	unset($xmlExporter);
 
 	// Checking if processFirstNode should be called as true or false
@@ -88,7 +88,7 @@ function copyNode($source, $dest, $recurrence)
 	}
 
 	// 2.- Importing the corresponding database part 
-	$importer = new ImportXml($dest, NULL, $nodeAssociations,  Constants::RUN_IMPORT_MODE, $recurrence, NULL, $processFirstNode);
+	$importer = new ImportXml($dest, NULL, $nodeAssociations,  Constants::RUN_IMPORT_MODE, $recursive, NULL, $processFirstNode);
 	$importer->mode = COPY_MODE;
 	$importer->copy($xml);
 	foreach ($importer->messages as $message) {
@@ -104,21 +104,21 @@ function copyNode($source, $dest, $recurrence)
 	// 4.- Cleaning transform table to repeat the copy
 	$dbConn = new \Ximdex\Runtime\Db();
 	$query = sprintf('SELECT idXimIOExportation FROM XimIOExportations WHERE timeStamp = \'%s\'', Constants::REVISION_COPY);
-	$dbConn->Query($query);
+	$dbConn->query($query);
 	if ($dbConn->numRows == 1) {
-		$idXimIOExportation = $dbConn->GetValue('idXimIOExportation');
+		$idXimIOExportation = $dbConn->getValue('idXimIOExportation');
 		$statusQuery = sprintf('SELECT `status`, count(*) as total'
 						. ' FROM XimIONodeTranslations'
 						. ' WHERE IdExportationNode != IdImportationNode AND idXimIOExportation = %d'
 						. ' GROUP BY `status`'
 						. ' ORDER BY `status` DESC'
 						,$idXimIOExportation);
-		$dbConn->Query($statusQuery);
+		$dbConn->query($statusQuery);
 		if ($dbConn->EOF) {
 			$messages->add(_('An error occurred during copy process, information about process could be obtained'), MSG_TYPE_ERROR);
 		} else {
 			while(!$dbConn->EOF) {
-				switch ($dbConn->GetValue('status')) {
+				switch ($dbConn->getValue('status')) {
 					case '1':
 						$messages->add(sprintf(_('%d nodes have been successfully copied'), $dbConn->GetValue('total')), MSG_TYPE_NOTICE);
 						break;
@@ -139,26 +139,26 @@ function copyNode($source, $dest, $recurrence)
 						  , $dbConn->GetValue('total')), MSG_TYPE_WARNING);
 						break;
 				}
-				$dbConn->Next();
+				$dbConn->next();
 			}
 		}
 		$query = sprintf('DELETE FROM XimIONodeTranslations WHERE idXimIOExportation = %d', $idXimIOExportation);
-		$dbConn->Execute($query);
+		$dbConn->execute($query);
 		$query = sprintf('DELETE FROM XimIOExportations WHERE idXimIOExportation = %d', $idXimIOExportation);
-		$dbConn->Execute($query);
+		$dbConn->execute($query);
 	}
 	$targetNode = new Node($importer->idfinal);
-	$newName = $targetNode->GetNodeName();
+	$newName = $targetNode->getNodeName();
 	$nodeType = new NodeType($targetNode->nodeType->get('IdNodeType'));
 	if ($lastName != $newName && null != $newName && ('XmlContainer' == $nodeType->GetName() || 'XimletContainer' == $nodeType->getGetName())) {
-        $childrens =  $targetNode->GetChildren();
+        $childrens =  $targetNode->getChildren();
         $total = count($childrens);
         for($i = 0; $i < $total; $i++) {
             $children = $childrens[$i];
 			$node_child = new Node($children);
-			$name_child = $node_child->GetNodeName();
+			$name_child = $node_child->getNodeName();
 			$name_child = str_replace($lastName, $newName, $name_child);
-			$node_child->SetNodeName($name_child);
+			$node_child->setNodeName($name_child);
         }
     }
     return $messages;

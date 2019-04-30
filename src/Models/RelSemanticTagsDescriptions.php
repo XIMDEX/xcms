@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -39,7 +39,7 @@ class RelSemanticTagsDescriptions extends RelSemanticTagsDescriptionsOrm
 		    return null;
 		}
 		$rel = parent::find(ALL, 'Tag = \'' . $tag["IdTag"] . '\'');
-        if (!empty($rel)) {
+        if (! empty($rel)) {
             return $rel[0];
         }
         return null;
@@ -50,7 +50,7 @@ class RelSemanticTagsDescriptions extends RelSemanticTagsDescriptionsOrm
 	    $tag = new SemanticTags();
 		$_tag = $tag->save($_name, $_type);
 		$rel = $this->getId($_name, $_type, $_link);
-		if (!empty($rel)) {
+		if (! empty($rel)) {
 			return $rel['IdTagDescription'];
 		}
 		$rel = new RelSemanticTagsDescriptions();

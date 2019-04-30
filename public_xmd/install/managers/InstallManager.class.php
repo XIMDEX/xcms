@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -25,45 +25,64 @@
  * @version $Revision$
  */
 
+use Ximdex\Models\User;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
+use Ximdex\Rest\RESTProvider;
 
-require_once(APP_ROOT_PATH.'/install/managers/messages/ConsoleMessagesStrategy.class.php');
-require_once(APP_ROOT_PATH.'/install/managers/messages/WebMessagesStrategy.class.php');
+require_once APP_ROOT_PATH . '/install/managers/messages/ConsoleMessagesStrategy.class.php';
+require_once APP_ROOT_PATH . '/install/managers/messages/WebMessagesStrategy.class.php';
 
 /**
  * Manager for install process
  */
 class InstallManager
 {
-    // CONSTANTS FOR INSTALL MODE
-    const WEB_MODE = "web";
-    const CONSOLE_MODE = "console";
-    const STATUSFILE = "/conf/_STATUSFILE";
-    const INSTALL_CONF_FILE = "install.xml";
-    const INSTALL_PARAMS_TEMPLATE = "/install/templates/install-params.conf.php";
-    const INSTALL_PARAMS_FILE = "/conf/install-params.conf.php";
-    const LAST_STATE = "INSTALLED";
-    const FIRST_STATE = "INIT";
+    // Constants for install mode
+    const WEB_MODE = 'web';
+    
+    const CONSOLE_MODE = 'console';
+    
+    const STATUSFILE = '/conf/_STATUSFILE';
+    
+    const INSTALL_CONF_FILE = 'install.xml';
+    
+    const INSTALL_PARAMS_TEMPLATE = '/install/templates/install-params.conf.php';
+    
+    const INSTALL_PARAMS_FILE = '/conf/install-params.conf.php';
+    
+    const LAST_STATE = 'INSTALLED';
+    
+    const FIRST_STATE = 'INIT';
+    
     const MIN_PHP_VERSION = '7.1';
-
-    protected $mode = ""; //install mode.
-    protected $installMessages = null;
-    protected $installConfig = null;
+    
     public $currentState;
+    
     public $currentStep;
+    
+    /**
+     * Install mode
+     *
+     * @var string
+     */
+    protected $mode = '';
+    
+    protected $installMessages;
+    
+    protected $installConfig;
 
     /**
      * Construct method
 	 *
      * @param string $mode Install mode: Web or console
      */
-    public function __construct($mode = self::CONSOLE_MODE)
+    public function __construct(string $mode = self::CONSOLE_MODE)
     {
         $this->mode = $mode;
-        $messageClassName = $this->mode . "MessagesStrategy";
+        $messageClassName = $this->mode . 'MessagesStrategy';
         $this->installMessages = new $messageClassName();
-        $installConfFile = APP_ROOT_PATH . "/install/conf/" . self::INSTALL_CONF_FILE;
+        $installConfFile = APP_ROOT_PATH . '/install/conf/' . self::INSTALL_CONF_FILE;
         $this->installConfig = new DomDocument();
         $this->installConfig->load($installConfFile);
         $this->currentState = $this->getCurrentState();
@@ -77,7 +96,7 @@ class InstallManager
     public function getSteps()
     {
         $xpath = new DomXPath($this->installConfig);
-        $query = "/install/steps/step";
+        $query = '/install/steps/step';
         $steps = $xpath->query($query);
         $result = array();
         foreach ($steps as $i => $step) {
@@ -85,8 +104,8 @@ class InstallManager
             foreach ($step->attributes as $attribute) {
                 $auxStepArray[$attribute->name] = $attribute->value;
             }
-            $auxStepArray["description"] = $step->nodeValue;
-            if ($auxStepArray["state"] == strtolower($this->currentState)) {
+            $auxStepArray['description'] = $step->nodeValue;
+            if ($auxStepArray['state'] == strtolower($this->currentState)) {
                 $this->currentStep = $i;
             }
             $result[] = $auxStepArray;
@@ -102,7 +121,7 @@ class InstallManager
     public function getCurrentState()
     {
         $statusFile = XIMDEX_ROOT_PATH . self::STATUSFILE;
-        if (!file_exists($statusFile)) {
+        if (! file_exists($statusFile)) {
             return false;
         }
         return trim(strtolower(FsUtils::file_get_contents($statusFile)));
@@ -116,7 +135,7 @@ class InstallManager
     public function isInstalled()
     {
         $currentState = $this->getCurrentState();
-        if (!$currentState) {
+        if (! $currentState) {
             return false;
         }
         return $currentState == strtolower(self::LAST_STATE);
@@ -132,11 +151,11 @@ class InstallManager
      */
     public function nextStep()
     {
-        $newState = "";
+        $newState = '';
         $steps = $this->getSteps();
         $nextStep = $this->currentStep + 1;
         if (count($steps) > $nextStep) {
-            $newState = $steps[$nextStep]["state"];
+            $newState = $steps[$nextStep]['state'];
         } else {
             $newState = self::LAST_STATE;
         }
@@ -148,24 +167,24 @@ class InstallManager
      */
     public function prevStep()
     {
-        $newState = "";
+        $newState = '';
         $steps = $this->getSteps();
         $prevStep = $this->currentStep - 1;
         if ($prevStep < 0) {
             $prevStep = 0;
         }
-        $newState = $steps[$prevStep]["state"];
+        $newState = $steps[$prevStep]['state'];
         FsUtils::file_put_contents(XIMDEX_ROOT_PATH . self::STATUSFILE, strtoupper($newState));
     }
 
-    public function getModulesByDefault($default = true)
+    public function getModulesByDefault(bool $default = true)
     {
-        $query = "/install/modules/module";
+        $query = '/install/modules/module';
         $query .= $default ? "[@default='1']" : "[not(@default) or @default='0']";
         return $this->getModulesByQuery($query);
     }
 
-    public function getModulesByQuery($query)
+    public function getModulesByQuery(string $query)
     {
         $result = array();
         $xpath = new DomXPath($this->installConfig);
@@ -175,7 +194,7 @@ class InstallManager
             foreach ($module->attributes as $attribute) {
                 $auxModuleArray[$attribute->name] = $attribute->value;
             }
-            $auxModuleArray["description"] = $module->nodeValue;
+            $auxModuleArray['description'] = $module->nodeValue;
             $result[] = $auxModuleArray;
         }
         return $result;
@@ -183,13 +202,13 @@ class InstallManager
 
     public function getAllModules()
     {
-        $query = "/install/modules/module";
+        $query = '/install/modules/module';
         return $this->getModulesByQuery($query);
     }
 
-    public function getModuleByName($name, $exclude_alias = true)
+    public function getModuleByName(string $name, bool $exclude_alias = true)
     {
-        $extra_query = $exclude_alias ? "" : " or @alias='{$name}'";
+        $extra_query = $exclude_alias ? '' : " or @alias='{$name}'";
         $query = "/install/modules/module[@name='{$name}' $extra_query]";
         return $this->getModulesByQuery($query);
     }
@@ -211,15 +230,15 @@ class InstallManager
     private function checkRequiredPackages()
     {
         $result = array();
-        $result["name"] = "OpenSSL";
+        $result['name'] = 'OpenSSL';
         $res = null;
         exec('openssl version', $res);
         if (count($res) > 0) {
-            $result["state"] = "success";
+            $result['state'] = 'success';
         } else {
-            $result["state"] = "error";
-            $result["messages"][] = "OpenSSL package is needed";
-            $result["help"][] = "Please install the openssl package on your system.";
+            $result['state'] = 'error';
+            $result['messages'][] = 'OpenSSL package is needed';
+            $result['help'][] = 'Please install the openssl package on your system.';
         }
         return $result;
     }
@@ -228,31 +247,30 @@ class InstallManager
     {
         $version = phpversion();
         $minPHPVersion = self::MIN_PHP_VERSION;
-        $version = explode(".", $version);
+        $version = explode('.', $version);
         $version = "{$version[0]}.{$version[1]}";
         $result = array();
-        $result["name"] = "PHP version";
+        $result['name'] = 'PHP version';
         if ($version >= $minPHPVersion) {
             $result['state'] = 'success';
         } else {
             $result['state'] = 'warning';
-            $result['messages'][] = "Recommended PHP $minPHPVersion or higher";
-            $result['help'][] = 'Remember that you can experiment serious problems to run this application propertly if you don have at least that version of PHP';
+            $result['messages'][] = "Recommended PHP {$minPHPVersion} or higher";
+            $result['help'][] = 'Remember that you can experiment serious problems to run this application propertly if you don have at'
+                . ' least that version of PHP';
         }
         return $result;
     }
 
     private function checkRequiredPHPExtensions()
     {
-    	$result = array();
-    	$result["name"] = 'PHP required extensions';
+    	$result = [];
+    	$result['name'] = 'PHP required extensions';
     	$result['state'] = 'success';
     	$current = array_merge(get_loaded_extensions());
-    	$required = ['PDO','pdo_mysql'];
-    	foreach ($required as $item)
-    	{	
-    		if (!in_array($item, $current))
-    		{
+    	$required = ['PDO', 'pdo_mysql'];
+    	foreach ($required as $item) {
+    		if (! in_array($item, $current)) {
     			$result['state'] = 'error';
     			$result['messages'][] = strtoupper($item) . ' extension for PHP is required';
     			$result['help'][] = 'Please, install it following the instructions in the INSTALLATION.md file';
@@ -266,17 +284,18 @@ class InstallManager
         // Apache modules cannot be loaded in Nginx and is not necessary in the recommended PHP extension
         $modules = get_loaded_extensions();
         $recommendedModules = ['xsl', 'curl', 'gd'];
-        if (!isset($_SERVER['DOCKER_CONF_HOME'])) {
+        if (! isset($_SERVER['DOCKER_CONF_HOME'])) {
             $recommendedModules[] = 'enchant';
         }
         $result = [];
-        $result["state"] = 'success';
-        $result["name"] = 'PHP recommended extensions';
+        $result['state'] = 'success';
+        $result['name'] = 'PHP recommended extensions';
         foreach ($recommendedModules as $recommendedModule) {
-            if (!in_array($recommendedModule, $modules)) {
+            if (! in_array($recommendedModule, $modules)) {
                 $result['state'] = 'warning';
                 $result['messages'][] = 'PHP ' . strtoupper($recommendedModule) . ' extension is recommended';
-                $result['help'][] = 'Please, remember to install it as soon its possible following the instructions in the INSTALLATION.md file. Maybe the web server must be restarted';
+                $result['help'][] = 'Please, remember to install it as soon its possible following the instructions in the INSTALLATION.md file.' 
+                    . ' Maybe the web server must be restarted';
             }
         }
         return $result;
@@ -286,18 +305,8 @@ class InstallManager
     {
         // Checking pcntl_fork function is not disabled
         $result = [];
-        $result["state"] = 'success';
-        $result["name"] = 'Disabled functions';
-        
-        // This configuration is only needed for cli execution
-        /*
-        $ximdexServerConfig = new ServerConfig();
-        if ($ximdexServerConfig->hasDisabledFunctions()) {
-            $result['state'] = 'warning';
-            $result['messages'][] = 'Disabled pcntl_fork and pcntl_waitpid functions are recommended';
-            $result['help'][] = 'Please, check php.ini file';
-        }
-        */
+        $result['state'] = 'success';
+        $result['name'] = 'Disabled functions';
         return $result;
     }
 
@@ -306,40 +315,40 @@ class InstallManager
      */
     public function checkFilePermissions()
     {
-		$result = array();
-        $result["state"] = "success";
-        $result["name"] = "File permission";
-        $filesToCheck = array("/data", "/logs", "/conf");
-        $result['messages'] = array();
-        $result['help'] = array();
+		$result = [];
+        $result['state'] = 'success';
+        $result['name'] = 'File permission';
+        $filesToCheck = ['/data', '/logs', '/conf'];
+        $result['messages'] = [];
+        $result['help'] = [];
         foreach ($filesToCheck as $file) {
-            if (!file_exists(XIMDEX_ROOT_PATH . $file)) {
-                $result['state'] = "error";
-                $result['messages'][] = "$file not found.";
-            } else if (!$this->isWritable(XIMDEX_ROOT_PATH . $file)) {
-            	$result['state'] = "error";
-            	$result['messages'][] = "Write permissions on $file directory required. Please, execute this command:";
-            	$result['help'][] = "sudo chmod -R g+ws " . XIMDEX_ROOT_PATH . $file;
+            if (! file_exists(XIMDEX_ROOT_PATH . $file)) {
+                $result['state'] = 'error';
+                $result['messages'][] = "{$file} not found.";
+            } else if (! $this->isWritable(XIMDEX_ROOT_PATH . $file)) {
+            	$result['state'] = 'error';
+            	$result['messages'][] = "Write permissions on {$file} directory required. Please, execute this command:";
+            	$result['help'][] = 'sudo chmod -R g+ws ' . XIMDEX_ROOT_PATH . $file;
             }
         }
         return $result;
     }
 
-    private function isWritable($file)
+    private function isWritable(string $file)
     {
-        $textToCheck = "TEST";
-        if (!is_writable($file)) {
+        $textToCheck = 'TEST';
+        if (! is_writable($file)) {
             return false;
         }
         if (is_dir($file)) {
             
             //Try to create and read in a file
-            $dummyFile = $file . "/.dummy";
+            $dummyFile = $file . '/.dummy';
             $result = file_put_contents($dummyFile, $textToCheck);
             if ($result === FALSE) {
                 return $result;
             }
-            $result =( file_get_contents($dummyFile) === $textToCheck );
+            $result = file_get_contents($dummyFile) === $textToCheck;
             $result = $result && file_exists($dummyFile) && unlink($dummyFile);
             return $result == $textToCheck;
         }
@@ -351,11 +360,11 @@ class InstallManager
         return $this->checkGroup(XIMDEX_ROOT_PATH);
     }
 
-    public function checkGroup($file)
+    public function checkGroup(string $file)
     {
         $result = [];
-        $result["state"] = "success";
-        $result["name"] = "File permission";
+        $result['state'] = 'success';
+        $result['name'] = 'File permission';
         
         // If the project is running under a Docker instance, it avoid this step
         if (isset($_SERVER['DOCKER_CONF_HOME'])) {
@@ -365,32 +374,32 @@ class InstallManager
         $groupName = posix_getgrgid($groupId[0]);
         $ximdexGroupId = filegroup($file);
         $ximdexGroupName = posix_getgrgid($ximdexGroupId);
-        if (!in_array($ximdexGroupId, $groupId)) {
-            $result["state"] = "error";
-            $result["messages"][] = "You must set the {$groupName["name"]} group for your project directory files instead of {$ximdexGroupName["name"]}. Please, execute this command:";
-            $result["help"][] = "sudo chgrp -R {$groupName["name"]} " . $file;
-
+        if (! in_array($ximdexGroupId, $groupId)) {
+            $result['state'] = 'error';
+            $result['messages'][] = "You must set the {$groupName['name']} group for your project directory files instead" 
+                . " of {$ximdexGroupName['name']}. Please, execute this command:";
+            $result['help'][] = "sudo chgrp -R {$groupName['name']} " . $file;
         }
         return $result;
     }
 
-    public function setInstallParams($host, $port, $bdName, $user, $pass)
+    public function setInstallParams(string $host, int $port, string $bdName, string $user, string $pass = null)
     {
         if (file_exists(XIMDEX_ROOT_PATH . self::INSTALL_PARAMS_FILE)) {
-            rename(XIMDEX_ROOT_PATH . self::INSTALL_PARAMS_FILE, XIMDEX_ROOT_PATH . self::INSTALL_PARAMS_FILE . "bck_" . date('Ymd_his'));
+            rename(XIMDEX_ROOT_PATH . self::INSTALL_PARAMS_FILE, XIMDEX_ROOT_PATH . self::INSTALL_PARAMS_FILE . 'bck_' . date('Ymd_his'));
         }
         $content = FsUtils::file_get_contents(APP_ROOT_PATH . self::INSTALL_PARAMS_TEMPLATE);
         FsUtils::file_put_contents(XIMDEX_ROOT_PATH . self::INSTALL_PARAMS_FILE, $content);
-        $result = $this->setSingleParam("##DB_HOST##", $host);
-        $result = $result && $this->setSingleParam("##DB_PORT##", $port);
-        $result = $result && $this->setSingleParam("##DB_USER##", $user);
-        $result = $result && $this->setSingleParam("##DB_PASSWD##", $pass);
-        $result = $result && $this->setSingleParam("##DB_NAME##", $bdName);
-        $result = $result && $this->setSingleParam("##XIMDEX_TIMEZONE##", $this->getTimeZone());
+        $result = $this->setSingleParam('##DB_HOST##', $host);
+        $result = $result && $this->setSingleParam('##DB_PORT##', $port);
+        $result = $result && $this->setSingleParam('##DB_USER##', $user);
+        $result = $result && $this->setSingleParam('##DB_PASSWD##', $pass);
+        $result = $result && $this->setSingleParam('##DB_NAME##', $bdName);
+        $result = $result && $this->setSingleParam('##XIMDEX_TIMEZONE##', $this->getTimeZone());
         return $result;
     }
 
-    public function setSingleParam($oldValue, $newValue)
+    public function setSingleParam(string $oldValue, string $newValue)
     {
         $content = FsUtils::file_get_contents(XIMDEX_ROOT_PATH . self::INSTALL_PARAMS_FILE);
         $content = str_replace($oldValue, $newValue, $content);
@@ -399,42 +408,42 @@ class InstallManager
 
     private function getTimeZone()
     {
-        $result = "Europe/Madrid";
-        if (file_exists("/etc/timezone") && is_readable("/etc/timezone")) {
-            $result = file_get_contents("/etc/timezone");
+        $result = 'Europe/Madrid';
+        if (file_exists('/etc/timezone') && is_readable('/etc/timezone')) {
+            $result = file_get_contents('/etc/timezone');
         } else if (date_default_timezone_get()) {
             $result = date_default_timezone_get();
         }
         return trim($result);
     }
 
-    public function setLocale($lang)
+    public function setLocale(string $lang)
     {
         $db = new \Ximdex\Runtime\Db();
-        $db->execute("UPDATE Locales SET Enabled='1' where Code = '$lang'");
+        $db->execute("UPDATE Locales SET Enabled='1' where Code = '{$lang}'");
     }
 
-    public function insertXimdexUser($pass)
+    public function insertXimdexUser(string $pass)
     {
         $db = new \Ximdex\Runtime\Db();
-        $db->execute("UPDATE Users SET Pass=MD5('$pass') where IdUser = '301'");
+        $db->execute("UPDATE Users SET Pass = MD5('{$pass}') WHERE IdUser = '" . User::XIMDEX_ID . "'");
     }
 
     public function setXid()
     {
-        $restProvider = new \Ximdex\Rest\RESTProvider();
-        $hostName = $_SERVER["HTTP_HOST"];
-        $url = "http://xid.ximdex.net/stats/getximid.php?host=$hostName";
+        $restProvider = new RESTProvider();
+        $hostName = $_SERVER['HTTP_HOST'];
+        $url = "http://xid.ximdex.net/stats/getximid.php?host={$hostName}";
         $response = $restProvider->getHttp_provider()->get($url);
-        $result = isset($response["data"]) ? $response["data"] : $hostName . uniqid($hostName);
-        App::setValue("ximid", trim($result), true );
+        $result = isset($response['data']) ? $response['data'] : $hostName . uniqid($hostName);
+        App::setValue('ximid', trim($result), true );
     }
 
     public function setLocalXid()
     {
-        $hostName = $_SERVER["HTTP_HOST"];
-        $uniqid = $hostName . "_" . uniqid();
-        App::setValue("ximid", trim($uniqid) , true );
+        $hostName = $_SERVER['HTTP_HOST'];
+        $uniqid = $hostName . '_' . uniqid();
+        App::setValue('ximid', trim($uniqid), true);
     }
 
     public function setApiKey()
@@ -442,10 +451,10 @@ class InstallManager
         $random = md5(rand());
         $res = null;
         exec('openssl enc -aes-128-cbc -k "' . $random . '" -P -md sha1', $res);
-        $key = explode("=", $res[1])[1];
+        $key = explode('=', $res[1])[1];
         $iv = bin2hex(openssl_random_pseudo_bytes(openssl_cipher_iv_length('AES-128-CBC')));
         $db = new \Ximdex\Runtime\Db();
-        $db->execute("UPDATE Config SET ConfigValue='" . $key . "' where ConfigKey='ApiKey'");
-        $db->execute("UPDATE Config SET ConfigValue='" . $iv . "' where ConfigKey='ApiIV'");
+        $db->execute("UPDATE Config SET ConfigValue = '{$key}' WHERE ConfigKey = 'ApiKey'");
+        $db->execute("UPDATE Config SET ConfigValue = '{$iv}' WHERE ConfigKey = 'ApiIV'");
     }
 }

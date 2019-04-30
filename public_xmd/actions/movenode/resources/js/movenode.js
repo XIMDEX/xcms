@@ -1,5 +1,5 @@
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -23,7 +23,6 @@
  *  @version $Revision$
  */
 
-
 X.actionLoaded(function (event, fn, params){
 	
     Object.getWidgetConf({
@@ -44,48 +43,44 @@ X.actionLoaded(function (event, fn, params){
 				}
 				id = result[1];
 				var type = $('#contenttype', params.context).val();
-				$.getJSON(X.baseUrl,
-						{method: 'getPath', id_node: id, ajax: 'json', nodetype: type},
-						function(data, textStatus) {
-							if (data.node == '') {
-								$('#targetfield', params.context).val('');
-							} else {
-								$('#targetfield', params.context).val(id);
-							}
-							$('#pathfield', params.context).val(data.node);
-						});
+				$.getJSON(X.baseUrl, {method: 'getPath', id_node: id, ajax: 'json', nodetype: type}, function(data, textStatus) {
+					if (data.node == '') {
+						$('#targetfield', params.context).val('');
+					} else {
+						$('#targetfield', params.context).val(id);
+					}
+					$('#pathfield', params.context).val(data.node);
+				});
 			});
 			
 			var tds = tree.treeview('getDatastore');
-			
 			tds.clear();
 			tds.append( {
-			        name : {
-			                value : 'Proyectos',
-			                visible : true 
-			        },
-			        nodeid: {value: 10000, visible: false},
-			        icon : {
-			                value : 'projects.png',
-			                visible : true,
-			                type : 'image'
-			        },
-			        children : {
-			                value : 1,
-			                visible : false
-			        }, // Not zero!
-			        isdir : {
-			                value : 1,
-			                visible : false
-			        },
-			        path : {
-			                value : '/',
-			                visible : false
-			        }
+		        name : {
+	                value : 'Proyectos',
+	                visible : true 
+		        },
+		        nodeid: {value: 10000, visible: false},
+		        icon : {
+	                value : 'projects.png',
+	                visible : true,
+	                type : 'image'
+		        },
+		        children : {
+	                value : 1,
+	                visible : false
+		        }, // Not zero!
+		        isdir : {
+	                value : 1,
+	                visible : false
+		        },
+		        path : {
+	                value : '/',
+	                visible : false
+		        }
 			});
 			tree.treeview('setRootModel', tds.get_model(), false, true);
-			tree.treeview('navigate_to_idnode', 
-					$('.id_node', params.context).val());
+			tree.treeview('navigate_to_idnode', $('.id_node', params.context).val());
     	}.bind(this)
     });
 });

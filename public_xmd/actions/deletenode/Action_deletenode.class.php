@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -29,7 +29,9 @@ use Ximdex\Models\Node;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\NodeTypes\NodeTypeConstants;
+use Ximdex\Runtime\Session;
 use Ximdex\Sync\SynchroFacade;
+use Ximdex\NodeTypes\XsltNode;
 
 Ximdex\Modules\Manager::file('/actions/browser3/inc/GenericDatasource.class.php');
 
@@ -41,14 +43,16 @@ class Action_deletenode extends ActionAbstract
 		$nodes = $this->request->getParam('nodes');
 		$nodes = GenericDatasource::normalizeEntities($nodes);
 		$params = $this->request->getParam('params');
-		$userID = \Ximdex\Runtime\Session::get('userID');
+		$userID = Session::get('userID');
 		$texto = '';
 		if (count($nodes) == 1) {
-			$idNode = $this->request->getParam('nodeid');
+			$idNode = (int) $this->request->getParam('nodeid');
+		} else {
+		    return;
 		}
 		$node = new Node($idNode);
-		$children = $node->GetChildren();
-		if ($node->GetNodeType() == NodeTypeConstants::XML_DOCUMENT or $node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
+		$children = $node->getChildren();
+		if ($node->getNodeType() == NodeTypeConstants::XML_DOCUMENT or $node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
             $dbObj = new \Ximdex\Runtime\Db();
             $query = 'select IdDoc from StructuredDocuments where TargetLink = ' . $idNode;
             $dbObj->Query($query);
@@ -175,14 +179,14 @@ class Action_deletenode extends ActionAbstract
 
 	public function delete_node()
 	{
-		$idNode	= $this->request->getParam('nodeid');
+		$idNode	= (int) $this->request->getParam('nodeid');
 		$node = new Node($idNode);
 		
 		// Get the project node
 		$project = new Node($node->getProject());
 		
 		// docxap.xls node from project templates folder cannot be removed
-		if ($node->GetNodeName() == 'docxap.xsl' and $node->GetNodeType() == \Ximdex\NodeTypes\NodeTypeConstants::XSL_TEMPLATE)
+		if ($node->getNodeName() == 'docxap.xsl' and $node->getNodeType() == NodeTypeConstants::XSL_TEMPLATE)
 		{
 	        $this->messages->add('Cannot delete the project docxap.xsl node', MSG_TYPE_ERROR);
 	        $values = array('action_with_no_return' => true, 'messages' => $this->messages->messages);
@@ -191,27 +195,20 @@ class Action_deletenode extends ActionAbstract
 		}
 		$depList = array();
 		$deleteDep = $this->request->getParam('unpublishnode');
-		$userID = \Ximdex\Runtime\Session::get('userID');
-		/*
-		$unpublishDoc = ($this->request->getParam('unpublishdoc') == 1) ? true : false;
-		
-		// Deleting publication tasks
-		$sync = new SynchroFacade();
-		$sync->deleteAllTasksByNode($idNode, $unpublishDoc);
-		*/
+		$userID = Session::get('userID');
 		$parentID = $node->get('IdParent');
 		$user = new User($userID);
 		$canDeleteOnCascade = $user->hasPermission('delete on cascade');
-        $children = $node->GetChildren();
+        $children = $node->getChildren();
 		if ($canDeleteOnCascade && $deleteDep) {
 			if ($node->nodeType->get('Name') != 'Channel') {
-				$depList = $node->GetDependencies();
+				$depList = $node->getDependencies();
 			}
-			$undeletableChildren = $node->TraverseTree(5);
+			$undeletableChildren = $node->traverseTree(5);
 			if ($node->nodeType->get('Name') == 'XmlContainer') {
 				foreach($children as $child) {
 					$childNode = new Node($child);
-					$depList = array_merge($depList, $childNode->GetDependencies());
+					$depList = array_merge($depList, $childNode->getDependencies());
 				}
 			} else {
  				if (is_array($depList)) {
@@ -221,42 +218,56 @@ class Action_deletenode extends ActionAbstract
 					}
 				}
 			}
-
-			// Deleting recursively
-			$node = new Node($idNode);
-			$node->delete();
-			$err = NULL;
-			if ($node->numErr) {
-				$err = _('An error occurred while deleting:');
-				$err .= '<br>' . $node->get('IdNode') . ' ' . $node->GetPath() . '<br>' . _('Error message: ') . $node->msgErr . '<br><br>';
-			}
+			
+			// Deleting dependencies
+			$error = false;
+			$err = null;
 			if (is_array($depList)) {
 				foreach($depList as $depID) {
 					$depNode = new Node($depID);
-					$depNode->delete();
-					if ($depNode->numErr) {
-						if(! strlen($err))
-						$err = _('An error occurred while deleting dependencies: ');
-						$err .= '<br>' . $depNode->get('IdNode'). ' ' . $depNode->GetPath() . '<br>' . _('Error message: ') .
-							$depNode->msgErr . '<br><br>';
+					if ($depNode->delete() === false) {
+					    $this->messages->mergeMessages($depNode->messages);
+					    $error = true;
 					}
-				}
-				if (strlen($err)) {
-					$this->messages->add($err, MSG_TYPE_ERROR);
-				} else {
-					$this->messages->add(_('All nodes were successfully deleted'), MSG_TYPE_NOTICE);
+					if ($depNode->numErr) {
+					    $err = _('An error occurred while deleting dependencies: ');
+                        $err .= '<br>' . $depNode->get('IdNode'). ' ' . $depNode->getPath() . '<br>' . _('Error message: ') 
+                            . $depNode->msgErr . '<br><br>';
+                        $error = true;
+					}
 				}
 			}
 			
+			// Deleting recursively
+			if (! $error) {
+    			$node = new Node($idNode);
+    			if ($node->delete() === false) {
+    			    $this->messages->mergeMessages($node->messages);
+    			    $error = true;
+    			}
+    			if ($node->numErr) {
+    			    $err = _('An error occurred while deleting:');
+    			    $err .= '<br>' . $node->get('IdNode') . ' ' . $node->GetPath() . '<br>' . _('Error message: ') . $node->msgErr . '<br><br>';
+    			    $error = true;
+    			}
+    			if (strlen($err)) {
+    			    $this->messages->add($err, MSG_TYPE_ERROR);
+    			} elseif (! $error) {
+    			    $this->messages->add(_('All nodes were successfully deleted'), MSG_TYPE_NOTICE);
+    			}
+			}
+			
             // Reload the templates include files in the current project
-			if ($node->GetNodeType() == NodeTypeConstants::XSL_TEMPLATE or $node->GetNodeType() == NodeTypeConstants::TEMPLATES_ROOT_FOLDER 
-			    or $node->GetNodeType() == NodeTypeConstants::SERVER or $node->GetNodeType() == NodeTypeConstants::SECTION)
-			{
-			    // Do this when the deleted node make a deletion of templates (node types like projects, servers sections, templates)
-			    $xsltNode = new \Ximdex\NodeTypes\XsltNode($node);
-			    if ($xsltNode->reload_templates_include($project) === false) {
-			        $this->messages->mergeMessages($xsltNode->messages);
-			    }
+			if (! $error) {
+    			if ($node->getNodeType() == NodeTypeConstants::XSL_TEMPLATE or $node->getNodeType() == NodeTypeConstants::TEMPLATES_ROOT_FOLDER 
+    			    or $node->getNodeType() == NodeTypeConstants::SERVER or $node->getNodeType() == NodeTypeConstants::SECTION)
+    			{
+    			    // Do this when the deleted node make a deletion of templates (node types like projects, servers sections, templates)
+    			    $xsltNode = new XsltNode($node);
+    			    if ($xsltNode->reload_templates_include($project) === false) {
+    			        $this->messages->mergeMessages($xsltNode->messages);
+    			    }
+    			}
 			}
 		} else {
 		    
@@ -278,8 +289,11 @@ class Action_deletenode extends ActionAbstract
 			    
 			    // If it has not permit to cascade deletion and node has not children and has not dependencies
 			    // Here it is allowed atomic deletion
-				$node->delete();
-				$this->messages->add(_('Action successfully performed.'), MSG_TYPE_NOTICE);
+			    if ($node->delete() === false) {
+			        $this->messages->mergeMessages($node->messages);
+			    } else {
+				    $this->messages->add(_('Action successfully performed.'), MSG_TYPE_NOTICE);
+			    }
 			}
 		}
 		$values = array(

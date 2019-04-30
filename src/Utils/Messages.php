@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -25,81 +25,67 @@
  *  @version $Revision$
  */
 
-namespace Ximdex\Utils ;
+namespace Ximdex\Utils;
 
 use Ximdex\Runtime\App;
 use Ximdex\XML\Base;
 
-define ('MSG_TYPE_ERROR', 0);
-define ('MSG_TYPE_WARNING', 1);
-define ('MSG_TYPE_NOTICE', 2);
+define('MSG_TYPE_ERROR', 0);
+define('MSG_TYPE_WARNING', 1);
+define('MSG_TYPE_NOTICE', 2);
 
 class Messages
 {
     /**
-     * @var array|null
+     * @var array
      */
-    var $messages = null;
+    var $messages = [];
     
     /**
-     * @var array|null
+     * @var array
      */
-    var $_validTypes = null;
+    var $_validTypes = [MSG_TYPE_ERROR, MSG_TYPE_WARNING, MSG_TYPE_NOTICE];
     
     /**
-     * @var null
+     * @var string
      */
-    var $displayEncoding = null;
+    var $displayEncoding;
 
-    /**
-     * Messages constructor
-     */
     public function __construct()
     {
-        $this->_validTypes = array(MSG_TYPE_ERROR, MSG_TYPE_WARNING, MSG_TYPE_NOTICE);
-        $this->messages = array();
-        $this->displayEncoding = App::getValue( 'displayEncoding');
+        $this->messages = [];
+        $this->displayEncoding = App::getValue('displayEncoding');
     }
 
-    /**
-     * @param $message
-     * @param $type
-     */
-    function add($message, $type)
+    public function add(string $message, int $type) : void
     {
-        if (in_array($type, $this->_validTypes) && !$this->_searchMessageText($message, $type)) {
+        if (in_array($type, $this->_validTypes) && ! $this->searchMessageText($message, $type)) {
             $message =  Base::recodeSrc($message, $this->displayEncoding);
-            $this->messages[] = array('message' => $message, 'type' => $type);
+            $this->messages[] = ['message' => $message, 'type' => $type];
         }
     }
 
-    /**
-     * @param null $type
-     * @return int
-     */
-    function count($type = null)
+    public function count(int $type = null) : int
     {
-        if (is_null($type)
-            || (!is_null($type) && !in_array($type, $this->_validTypes))) {
+        if (is_null($type) || (! is_null($type) && ! in_array($type, $this->_validTypes))) {
             return count($this->messages);
         }
         $totalMessagesByType = 0;
         foreach ($this->messages as $message) {
-            if ($message['type'] == $type) $totalMessagesByType++;
+            if ($message['type'] == $type) {
+                $totalMessagesByType++;
+            }
         }
         return $totalMessagesByType;
     }
 
-    /**
-     * @param null $type
-     * @param bool $postClean
-     */
-    function displayRaw($type = NULL, $postClean = false) {
-        if (!defined("CLI_MODE") || !CLI_MODE) {
+    public function displayRaw(string $type = null, bool $postClean = false) : void
+    {
+        if (! defined("CLI_MODE") || ! CLI_MODE) {
             return;
         }
         foreach ($this->messages as $message) {
-            if ($type !== NULL) {
+            if ($type !== null) {
                 if ($message['type'] == $type) {
                     echo $message['message'] . "\n";
                 }
@@ -108,15 +94,11 @@ class Messages
             }
         }
         if ($postClean) {
-            $this->messages = array();
+            $this->messages = [];
         }
     }
 
-    /**
-     * @param $status
-     * @return string
-     */
-    function getXml($status)
+    public function getXml(string $status) : string
     {
         $messagesText = '';
         foreach ($this->messages as $message) {
@@ -129,15 +111,11 @@ class Messages
         return $returnValue;
     }
 
-    /**
-     * @param null $messageType
-     * @return string
-     */
-    function getRaw ($messageType = NULL)
+    public function getRaw(int $messageType = null) : string
     {
         $messageString = '';
         foreach ($this->messages as $message) {
-            if (!is_null($messageType)) {
+            if (! is_null($messageType)) {
                 if ($messageType == $message['type']) {
                     $messageString =  $message['message'] . "\n";
                 }
@@ -148,14 +126,10 @@ class Messages
         return $messageString;
     }
 
-    /**
-     * @param string $header
-     * @param string $type
-     */
-    function getHtml($header = 'Messages', $type = 'ALL')
+    public function getHtml(string $header = 'Messages', string $type = 'ALL') : void
     {
-        if (!(count($this->messages) > 0)) {
-            return ;
+        if (! count($this->messages)) {
+            return;
         }
 ?>
         <tr>
@@ -163,7 +137,7 @@ class Messages
         </tr>
 <?php
         foreach ($this->messages as $message) {
-            if (($type != 'ALL') && ($message['type'] != $type)) {
+            if ($type != 'ALL' && $message['type'] != $type) {
                 continue;
             }
 ?>
@@ -175,7 +149,7 @@ class Messages
         }
     }
 
-    function logMessagesToErrorLog()
+    public function logMessagesToErrorLog() : void
     {
         ob_start();
         $log = ob_get_clean();
@@ -183,28 +157,13 @@ class Messages
     }
 
     /**
-     * @param $messageText
-     * @param $type
-     * @return bool
-     */
-    function _searchMessageText($messageText, $type)
-    {
-        foreach ($this->messages as $message) {
-            if (($message['message'] == $messageText) && ($message['type'] == $type)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Añade a este objeto de mensajes los mensajes provenientes de otro objeto
      * 
-     * @param $messages
+     * @param array $messages
      */
-    function mergeMessages($messages)
+    public function mergeMessages(Messages $messages = null) : void
     {
-        if (isset($messages->messages) && is_array($messages->messages)) {
+        if ($messages !== null and is_array($messages->messages)) {
             $this->messages = array_merge($this->messages, $messages->messages);
         }
     }
@@ -214,7 +173,7 @@ class Messages
      * 
      * @return string|null
      */
-    public static function error_message($replace = null)
+    public static function error_message(string $replace = null) : ?string
     {
         $error = error_get_last();
         if ($error) {
@@ -225,5 +184,15 @@ class Messages
             return $error;
         }
         return null;
+    }
+    
+    private function searchMessageText(string $messageText, int $type) : bool
+    {
+        foreach ($this->messages as $message) {
+            if ($message['message'] == $messageText && $message['type'] == $type) {
+                return true;
+            }
+        }
+        return false;
     }
 }

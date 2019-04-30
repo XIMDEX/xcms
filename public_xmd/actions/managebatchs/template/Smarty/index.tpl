@@ -25,6 +25,11 @@
 
 {include file="actions/components/title_Description.tpl"}
 <div class="action_content ximPUBLISHtools" ng-controller="ximPUBLISHtools">
+    <div ng-show="json.length == 0">
+        {t}There is not recent or current publications{/t}.
+        <br />
+        {t}For further information consult the status report in this server{/t}.
+    </div>
     <ul class="media-list">
         <li class="media" ng-repeat="frames in json | orderBy: 'order' as filtered_json track by frames.idPortal">
             <div class="media-body">
@@ -52,14 +57,14 @@
                     <small ng-if="frames.statusTime && frames.startTime && !frames.endTime"><span 
                             class="icon clock"></span> Visited: #/ frames.statusTime /#</small>
                     <small ng-if="frames.endTime"><span class="icon clock"></span> Ended: #/ frames.endTime /#</small>
+                    <span class="cancel-portal-button" ng-click="cancelPortal(frames.idPortal)" ng-if="!frames.endTime && frames.type == 'Up'" 
+                            title="Cancel this portal frames"><i class="fas fa-trash"></i> Cancel</span>
                     <small ng-if="frames.delayed > 0" 
                             title="This portal frames has some servers delayed. Click on show server details for more information about it" 
                             class="portal-disabled">&nbsp; Servers delayed !</small>
                     <small ng-if="frames.stopped > 0" 
                             title="This portal frames has some stopped batchs. Click on show server details for more information about it" 
                             class="portal-disabled">&nbsp; Batchs stopped !</small>
-                    <span class="cancel-portal-button" ng-click="cancelPortal(frames.idPortal)" ng-if="!frames.endTime && frames.type == 'Up'" 
-                            title="Cancel this portal frames"><i class="fas fa-trash"></i> Cancel</span>
                 </h4>
 	            <div class="portal-detail">
 	                <div class="progress">

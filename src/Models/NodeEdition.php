@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,44 +32,45 @@ use Ximdex\Data\GenericData;
 
 class NodeEdition extends GenericData
 {
-    var $_idField = 'Id';
-    var $_table = 'NodeEdition';
-    var $_metaData = array(
-        'Id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'IdNode' => array('type' => "int(11)", 'not_null' => 'true'),
-        'IdUser' => array('type' => "int(11)", 'not_null' => 'true'),
-        'StartTime' => array('type' => "int(11)", 'not_null' => 'true')
+    public $_idField = 'Id';
+    
+    public $_table = 'NodeEdition';
+    
+    public $_metaData = array(
+        'Id' => array('type' => 'int(11)', 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdNode' => array('type' => 'int(11)', 'not_null' => 'true'),
+        'IdUser' => array('type' => 'int(11)', 'not_null' => 'true'),
+        'StartTime' => array('type' => 'int(11)', 'not_null' => 'true')
     );
-    var $_uniqueConstraints = array();
-    var $_indexes = array('Id');
-    var $Id;
-    var $IdNode;
-    var $IdUser;
-    var $StartTime;
+    
+    public $_uniqueConstraints = array();
+    
+    public $_indexes = array('Id');
+    
+    public $Id;
+    
+    public $IdNode;
+    
+    public $IdUser;
+    
+    public $StartTime;
 
     /**
      * Creates a new row in the NodeEdition database
      * 
      * @param int $idNode The Node Id
-     * @param int  $idUser The User Id
+     * @param int $idUser The User Id
      * @param int $startTime The start time of the edition
      * @return boolean indicatingwhether the creation has been successful or not
      */
-	public function create($idNode, $idUser, $startTime = null)
+	public function create(int $idNode, int $idUser, $startTime = null)
 	{
-		if (is_null($idNode) || is_null($idUser))
-		{
-			Logger::error('Params node and user are mandatory');
-			return false;
-		}
 		$this->set('IdNode', $idNode);
 		$this->set('IdUser', $idUser);
 		$this->set('StartTime', is_null($startTime) ? time() : $startTime);
 		parent::add();
-		$nodeEditionId = $this->get('Id');
-		if (!($nodeEditionId > 0))
-		{
-			Logger::error("Error Adding NodeEdition");
+		if (! $this->get('Id')) {
+			Logger::error('Error Adding NodeEdition');
 			return false;
 		}
 		return true;
@@ -83,19 +84,15 @@ class NodeEdition extends GenericData
      */
     public function getByNode($node)
     {
-        if (is_object($node))
-        {
-            $nodeId = $node->GetID();
-        }
-        else
-        {
+        if (is_object($node)) {
+            $nodeId = $node->getID();
+        } else {
             $nodeId = $node;
         }
-        $nodeId = empty($nodeId) ? $this->get("IdNode") : $nodeId;
-        $this->ClearError();
-        if (!empty($nodeId))
-        {
-            $result = $this->find("IdUser,StartTime", "IdNode = %s", array($nodeId));
+        $nodeId = empty($nodeId) ? $this->get('IdNode') : $nodeId;
+        $this->clearError();
+        if (! empty($nodeId)) {
+            $result = $this->find('IdUser,StartTime', 'IdNode = %s', array($nodeId));
             return $result;
         }
         return array();
@@ -109,15 +106,10 @@ class NodeEdition extends GenericData
      * @param int $idUser The user id
 	 * @return boolean indicating if the deletion of the edition has been successful or not
 	 */
-	function deleteByNodeAndUser($idNode = null, $idUser = null)
+	public function deleteByNodeAndUser(int $idNode, int $idUser)
 	{
-		if (is_null($idNode) || is_null($idUser))
-		{
-			Logger::error('Params node and user are mandatory');
-			return false;
-		}
  		$dbObj = new \Ximdex\Runtime\Db();
-        $sql = sprintf("DELETE FROM NodeEdition WHERE IdNode = %d AND IdUser = %s", $idNode, $idUser);
+        $sql = sprintf('DELETE FROM NodeEdition WHERE IdNode = %d AND IdUser = %s', $idNode, $idUser);
 		$dbObj->Execute($sql);
 		return true;
 	}
@@ -129,16 +121,11 @@ class NodeEdition extends GenericData
      * @param int $idUser The user id
 	 * @return boolean indicating if the deletion of the edition has been successful or not
 	 */
-	function deleteByUser($idUser = null)
+	public function deleteByUser(int $idUser)
 	{
-		if (is_null($idUser))
-		{
-			Logger::error('Param user is mandatory');
-			return false;
-		}
  		$dbObj = new \Ximdex\Runtime\Db();
-        $sql = sprintf("DELETE FROM NodeEdition WHERE IdUser = %s", $idUser);
-		$dbObj->Execute($sql);
+        $sql = sprintf('DELETE FROM NodeEdition WHERE IdUser = %s', $idUser);
+		$dbObj->execute($sql);
 		return true;
 	}
 }

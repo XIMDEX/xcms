@@ -274,15 +274,18 @@ padding:0!important;
 .ui-widget-content {
     color: #464646;
 }
-h2, h3, h4, h5, h6 {
+
+h1, h2, h3, h4, h5, h6 {
     color: #606060;
     text-transform: uppercase;
     font-size: 1em;
     font-weight: normal;
 }
+
 h2, h3 {
     font-family: "Coustard";
 }
+
 h2 {
     font-size: 18px;
     font-size: 1.5rem;
@@ -347,13 +350,18 @@ input[type="text"]:-ms-input-placeholder {
 input[readonly]{
     pointer-events: none;
     cursor: not-allowed;
-    border-left: 4px solid #43a1a2!important;
-    background-color: lightgrey!important;
+    border-left: 4px solid #43a1a2 !important;
+    background-color: lightgrey !important;
 }
 
 input[readonly]:hover,
 input[readonly]:focus{
     box-shadow: none !important;
+}
+
+input[disabled]{
+    border-left: 4px solid #43a1a2 !important;
+    background-color: #DDD !important;
 }
 
 .disabled {
@@ -403,11 +411,11 @@ fieldset {
     float: left;
 }
 .content_container.prevdoc {
-    height: 88%;	
+    height: calc(100% - 45pt);	
 }
 .action_content {
     min-width: 350px;
-    height: 92%;
+    height: calc(100% - 40pt);  /* height: 92%; */
     overflow-y: auto;
     overflow-x: hidden;
     padding: 1em 4% 1em;
@@ -719,7 +727,7 @@ input[type="checkbox"] + label, input[type="radio"]+ label {
 
 .input-slide:not(:checked) + .label-slide, .input-slide:checked + .label-slide{
     color: gray;
-    padding-left: 60px !important;
+    padding-left: 58px !important;
 }
 
 .input-slide:not(:checked) + .label-slide::after {

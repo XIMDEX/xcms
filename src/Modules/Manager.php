@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -33,75 +33,79 @@ use Ximdex\Runtime\App;
 
 class Manager
 {
+    public static $msg = null;
+    
     public $modules;
     public $caller;
+    
     private static $core_modules = array("ximIO");
     private static $deprecated_modules = array("ximTEST");
-    public static $msg = null;
 
     public static function get_modules_dir()
     {
-        // replaces XIMDEX_MODULES_DIR
+        // Replaces XIMDEX_MODULES_DIR
         return XIMDEX_ROOT_PATH. "/modules/";
     }
 
     public static function get_modules_pro_dir()
     {
-        // replaces XIMDEX_MODULES_PRO_DIR
+        // Replaces XIMDEX_MODULES_PRO_DIR
         return XIMDEX_ROOT_PATH. '/modules/modules_PRO/';
     }
 
     public static function get_module_prefix()
     {
-        // replaces MODULE_PREFIX
+        // Replaces MODULE_PREFIX
         return 'Module_';
     }
 
     public static function get_module_state_installed()
     {
-        // replaces MODULE_STATE_INSTALLED
+        // Replaces MODULE_STATE_INSTALLED
         return 1;
     }
 
     public static function get_module_state_uninstalled()
     {
-        // replaces MODULE_STATE_UNINSTALLED
+        // Replaces MODULE_STATE_UNINSTALLED
         return 0;
     }
 
     public static function get_module_state_error()
     {
-        // replaces MODULE_STATE_ERROR
+        // Replaces MODULE_STATE_ERROR
         return -1;
     }
 
     public static function get_modules_install_params()
     {
-        // replaces MODULE_INSTALL_PARAMS
+        // Replaces MODULE_INSTALL_PARAMS
         return '/conf/install-modules.php';
     }
 
     public static function get_pre_define_module()
     {
-        // replaces PRE_DEFINE_MODULE
+        // Replaces PRE_DEFINE_MODULE
         return "define('MODULE_";
     }
 
     public static function get_post_define_module()
     {
-        // replaces POST_DEFINE_MODULE
+        // Replaces POST_DEFINE_MODULE
         return "_ENABLED', 1);";
     }
 
     public static function get_post_path_define_module()
     {
-        // replaces POST_PATH_DEFINE_MODULE
+        // Replaces POST_PATH_DEFINE_MODULE
         return "_PATH','";
     }
 
     /**
      * Core modules are specials:
      * They are installed always and they never can be uninstalled or disabled
+     * 
+     * @return array
      */
     public static function getCoreModules()
     {
@@ -109,8 +113,10 @@ class Manager
     }
 
     /**
-     * Deprecated modules.
-     * They don't have to be shown on Ximdex CMS interface.
+     * Deprecated modules
+     * They don't have to be shown on Ximdex CMS interface
+     * 
+     * @return array
      */
     public static function getDeprecatedModules()
     {
@@ -119,11 +125,11 @@ class Manager
 
     /**
      * Get install params for GUI
-     *
-     * @param $name String
+     * 
+     * @param string $name
      * @return array
      */
-    public function getInstallParams($name)
+    public function getInstallParams(string $name)
     {
         $module = $this->instanceModule($name);
         if (is_null($module)) {
@@ -144,23 +150,19 @@ class Manager
         FsUtils::file_put_contents(XIMDEX_ROOT_PATH. Manager::get_modules_install_params(), $str);
     }
 
-    public function __construct($caller = NULL)
+    public function __construct(string $caller = null)
     {
-        // Init stuff.
+        // Init stuff
         $this->caller = $caller;
     }
 
-    /**
-     * @param $constModule
-     * @param $modules
-     */
-    public static function parseModules($constModule, & $modules)
+    public static function parseModules(string $constModule, array & $modules)
     {
         $paths = FsUtils::readFolder($constModule, false);
         if ($paths) {
             foreach ($paths as $moduleName) {
                 $modulePath = $constModule . $moduleName;
-                if (!in_array($moduleName, self::getDeprecatedModules())) {
+                if (! in_array($moduleName, self::getDeprecatedModules())) {
                     if (is_dir($modulePath)  ) {
                         $i = count($modules);
                         $modules[$i]["name"] = $moduleName;
@@ -172,7 +174,7 @@ class Manager
         }
     }
 
-    private function parseMetaParent($constModule, & $metaParent)
+    private function parseMetaParent(string $constModule, array & $metaParent = null)
     {
         $paths = FsUtils::readFolder($constModule, false);
         if ($paths) {
@@ -203,25 +205,25 @@ class Manager
         return $metaParent;
     }
 
-    private function hasMetaParent($name)
+    private function hasMetaParent(string $name)
     {
         $metaParent = self::getMetaParent();
-        if (!empty($metaParent) && in_array($name, array_keys($metaParent)) && $this->caller != $metaParent[$name]) {
+        if (! empty($metaParent) && in_array($name, array_keys($metaParent)) && $this->caller != $metaParent[$name]) {
             return $metaParent;
         }
         return false;
     }
 
-    public function moduleExists($name)
+    public function moduleExists(string $name)
     {
         $path = Manager::path($name);
-        if (!empty($path)) {
+        if (! empty($path)) {
             return true;
         }
         return false;
     }
 
-    public static function path($name)
+    public static function path(string $name)
     {
         $str = "MODULE_" . strtoupper($name) . "_PATH";
         if (defined($str)) {
@@ -231,7 +233,7 @@ class Manager
         }
     }
 
-    public function installModule($name)
+    public function installModule(string $name)
     {
         if ($metaParent = self::hasMetaParent($name)) {
             self::$msg = sprintf("Can't install module %s directly. Try installing Meta-module %s instead", $name, $metaParent[$name]);
@@ -251,7 +253,7 @@ class Manager
         return $module->install();
     }
 
-    public function uninstallModule($name)
+    public function uninstallModule(string $name)
     {
         if ($metaParent = self::hasMetaParent($name)) {
             self::$msg = sprintf("Can't uninstall module %s directly. Try uninstalling Meta-module %s instead", $name, $metaParent[$name]);
@@ -266,7 +268,7 @@ class Manager
         $module->uninstall();
     }
 
-    public function checkModule($name)
+    public function checkModule(string $name)
     {
         $module = $this->instanceModule($name);
         if (is_null($module)) {
@@ -277,10 +279,12 @@ class Manager
     }
 
     /**
-     * Enable a Module.
-     * @param $name String
+     * Enable a Module
+     * 
+     * @param string $name
+     * @return boolean
      */
-    public function enableModule($name)
+    public function enableModule(string $name)
     {
         if ($metaParent = self::hasMetaParent($name)) {
             self::$msg = sprintf("Can't enable module %s directly. Try enabling Meta-module %s instead", $name, $metaParent[$name]);
@@ -294,12 +298,16 @@ class Manager
         $modConfig = new Config();
         $modConfig->enableModule($module->getModuleName());
         $module->enable();
+        return true;
     }
 
     /**
-     * Disable a Module.
+     * Disable a Module
+     * 
+     * @param string $name
+     * @return boolean
      */
-    public function disableModule($name)
+    public function disableModule(string $name)
     {
         if ($metaParent = self::hasMetaParent($name)) {
             self::$msg = sprintf("Can't disable module %s directly. Try disabling Meta-module %s instead", $name, $metaParent[$name]);
@@ -316,12 +324,12 @@ class Manager
     }
 
     /**
-     * Instantiate a module by name.
+     * Instantiate a module by name
      * 
-     * @param $name String  Name of the module.
+     * @param string $name
      * @return \Ximdex\Modules\Module
      */
-    public function instanceModule($name)
+    public function instanceModule(string $name)
     {
         // If no name provided exit.
         if (is_null($name)) {
@@ -351,7 +359,7 @@ class Manager
         return $module;
     }
 
-    public static function isEnabled($name)
+    public static function isEnabled(string $name)
     {
         $str = "MODULE_" . strtoupper($name) . "_ENABLED";
         if (App::getValue($str)) {
@@ -364,14 +372,14 @@ class Manager
     {
         $modules = self::getModules();
         foreach ($modules as $key => $module) {
-            if (!self::isEnabled($module['name'])) {
+            if (! self::isEnabled($module['name'])) {
                 unset($modules[$key]);
             }
         }
         return $modules;
     }
 
-    public static function component($_file, $_component = 'XIMDEX')
+    public static function component(string $_file, string $_component = 'XIMDEX')
     {
         if ("XIMDEX" == $_component) {
             $dir = '';
@@ -381,7 +389,7 @@ class Manager
         self::file($dir . $_file);
     }
 
-    public static function file($_file, $_module = 'APP')
+    public static function file(string $_file, string $_module = 'APP')
     {
         if ("XIMDEX" == $_module) {
             $path = XIMDEX_ROOT_PATH;
@@ -394,12 +402,10 @@ class Manager
         if (file_exists("{$path}{$_file}")){
             if (('XIMDEX' == $_module || 'APP' == $_module || self::isEnabled($_module))) {
                 return require_once("{$path}{$_file}");
-            }
-            else {
+            } else {
                 Logger::warning('Module ' . $_module . ' is not enabled');
             }
-        }
-        else {
+        } else {
             Logger::error('Could not load the file: ' . $path . $_file);
         }
     }

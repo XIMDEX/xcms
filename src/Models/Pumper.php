@@ -41,13 +41,17 @@ include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
  */
 class Pumper extends PumpersOrm
 {
-    private $maxvoidcycles = 10;
-    private $sleeptime = 2;
-    
     const NEW = 'New';
+    
     const STARTING = 'Starting';
+    
     const STARTED = 'Started';
+    
     const ENDED = 'Ended';
+    
+    private $maxvoidcycles = 10;
+    
+    private $sleeptime = 2;
 
     /**
      * Sets the value of any variable
@@ -135,7 +139,7 @@ class Pumper extends PumpersOrm
         $this->update();
         $startCommand = 'php ' . XIMDEX_ROOT_PATH . '/bootstrap.php ' . PUMPERPHP_PATH . '/dexpumper.' . $modo 
             . " --pumperid=$pumperId --sleeptime=" . $this->sleeptime . ' --maxvoidcycles=' . $this->maxvoidcycles 
-            . ' --localbasepath=' . SERVERFRAMES_SYNC_PATH . ' > ' . sys_get_temp_dir() . '/pumpers.err &'; // . ' > /dev/null 2>&1 &';
+            . ' --localbasepath=' . SERVERFRAMES_SYNC_PATH . ' > ' . sys_get_temp_dir() . '/pumpers.err &';
         Logger::debug("Pumper call: $startCommand");
         $var = 0;
         system($startCommand, $var);

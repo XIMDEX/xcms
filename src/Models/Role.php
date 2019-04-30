@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,6 +31,8 @@ use Ximdex\Models\ORM\RolesOrm;
 
 class Role extends RolesOrm
 {
+    const ADMINISTRATOR = 201;
+    
     /**
      * Current role id
      * 
@@ -66,7 +68,7 @@ class Role extends RolesOrm
      */
     public $errorList = array();
     
-    public $autoCleanErr = false;
+    public $autoCleanErr = true;
 
     /**
      * Role constructor
@@ -266,6 +268,17 @@ class Role extends RolesOrm
      */
     public function delete()
     {
+        $generalGroup = new Group(Group::getGeneralGroup());
+        if (! $generalGroup->getID()) {
+            return false;
+        }
+        $roles = $generalGroup->getRoles();
+        if (in_array($this->IdRole, $roles)) {
+            
+            // If this role is in use in the general group, deletion is denied
+            $this->messages->add(_('Cannot delete a role already in use by an user in the general group'), MSG_TYPE_ERROR);
+            return false;
+        }
         if (parent::delete() === false) {
             return false;
         }
@@ -312,7 +325,7 @@ class Role extends RolesOrm
             , $this->get('IdRole'), $actionID, ($stateID) ? $stateID : 'NULL');
         $dbObj->execute($sql);
         if ($dbObj->numErr != 0) {
-            $this->SetError(1);
+            $this->setError(1);
             return false;
         }
         return true;
@@ -356,7 +369,7 @@ class Role extends RolesOrm
     public function getActionsOnNode(int $nodeID, bool $includeActionsWithNegativeSort = false)
     {
         $node = new Node($nodeID);
-        if ($node->get('IdNode') > 0) {
+        if ($node->get('IdNode')) {
             $nodeType = $node->get('IdNodeType');
             $stateID = $node->get('IdState');
             if ($nodeType) {
@@ -481,9 +494,9 @@ class Role extends RolesOrm
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $sql = sprintf('INSERT INTO RelRolesStates (IdRole,IdState) VALUES (%d, %d)', $this->get('IdRole'), $state);
-        $dbObj->Execute($sql);
+        $dbObj->execute($sql);
         if ($dbObj->numErr != 0) {
-            $this->SetError(1);
+            $this->setError(1);
         }
     }
 
@@ -496,9 +509,9 @@ class Role extends RolesOrm
     {
         $sql = sprintf('DELETE FROM RelRolesStates WHERE IdRole = %d AND IdState = %d', $this->get('IdRole'), $state);
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Execute($sql);
+        $dbObj->execute($sql);
         if ($dbObj->numErr != 0) {
-            $this->SetError(1);
+            $this->setError(1);
         }
     }
 
@@ -509,9 +522,9 @@ class Role extends RolesOrm
     {
         $sql = sprintf('DELETE FROM RelRolesStates WHERE IdRole = %d', $this->get('IdRole'));
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Execute($sql);
+        $dbObj->execute($sql);
         if ($dbObj->numErr != 0) {
-            $this->SetError(1);
+            $this->setError(1);
         }
     }
 
@@ -525,15 +538,15 @@ class Role extends RolesOrm
     {
         $sql = sprintf('SELECT IdState FROM RelRolesStates WHERE IdRole = %d', $this->get('IdRole'));
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Query($sql);
+        $dbObj->query($sql);
         if ($dbObj->numErr != 0) {
-            $this->SetError(1);
+            $this->setError(1);
             return null;
         }
         $salida = [];
         while (! $dbObj->EOF) {
             $salida[] = $dbObj->row['IdState'];
-            $dbObj->Next();
+            $dbObj->next();
         }
         return $salida;
     }
@@ -546,11 +559,11 @@ class Role extends RolesOrm
     {
         $db = new \Ximdex\Runtime\Db();
         $query = sprintf('SELECT IdRole FROM RelRolesStates WHERE IdState = %d', $idStatus);
-        $db->Query($query);
+        $db->query($query);
         $foundRoles = array();
         while (! $db->EOF) {
             $foundRoles[] = $db->getValue('IdRole');
-            $db->Next();
+            $db->next();
         }
         return $foundRoles;
     }
@@ -598,11 +611,11 @@ class Role extends RolesOrm
         }
         $dbObj = new \Ximdex\Runtime\Db();
         $query = sprintf('SELECT IdState FROM RelRolesStates WHERE IdRole = %s AND IdState > 0', $dbObj->sqlEscapeString($this->get('IdRole')));
-        $dbObj->Query($query);
+        $dbObj->query($query);
         $result = [];
         while (! $dbObj->EOF) {
-            $result[] = $dbObj->GetValue('IdState');
-            $dbObj->Next();
+            $result[] = $dbObj->getValue('IdState');
+            $dbObj->next();
         }
         return $result;
     }
@@ -617,9 +630,9 @@ class Role extends RolesOrm
     {
         $sql = 'SELECT IdRole FROM Roles where Name like "' . $roleName . '"';
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Query($sql);
+        $dbObj->query($sql);
         if ($dbObj->numErr != 0) {
-            $this->SetError(1);
+            $this->setError(1);
             return null;
         }
         return $dbObj->row['IdRole'];

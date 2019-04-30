@@ -36,7 +36,7 @@ class Db
      *
      * @var integer
      */
-    const TIME_TO_RECONNECT = 10;
+    const TIME_TO_RECONNECT = 30;
     
     public $EOF = true;
     public $row = array();
@@ -120,7 +120,7 @@ class Db
         $this->rows = array();
         $this->numRows = 0;
         try {
-            $this->stm = $this->db->query($this->sql, \PDO::FETCH_ASSOC);
+            $this->stm = @$this->db->query($this->sql, \PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
             if (isset($GLOBALS['InBatchProcess']) and $GLOBALS['InBatchProcess']) {
                 echo $e->getMessage() . PHP_EOL;
@@ -308,7 +308,7 @@ class Db
      * @param string $col
      * @return boolean|string|NULL
      */
-    function GetValue(string $col)
+    public function getValue(string $col)
     {
         if (isset($col, $this->row[$col])) {
             if (! $this->_getEncodings()) {
@@ -360,7 +360,7 @@ class Db
     			sleep(self::TIME_TO_RECONNECT);
     		}
     		while (! $res);
-    		Logger::info('Reconnecting to database has been executed successfully');
+    		Logger::info('Reconnecting to database has been executed successfully', true);
     		return true;
     	}
     	return false;

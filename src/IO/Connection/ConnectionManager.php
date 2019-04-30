@@ -32,7 +32,11 @@ use Ximdex\Utils\Factory;
 
 class ConnectionManager
 {
-    // Static class emulation
+    /**
+     * Static class emulation
+     * 
+     * @var string
+     */
 	private static $baseName = 'Connection';
 
 	public static function getConnection(string $type, Server $server = null) : Connector

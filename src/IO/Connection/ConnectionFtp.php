@@ -32,13 +32,19 @@ use Exception;
 
 class ConnectionFtp extends Connector implements IConnector
 {
-    private $host;
-    private $port;
-    private $username;
-    private $password;
-    private $handler;
-    private $defaultPort = 21;
     const TIMEOUT = 90;
+    
+    private $host;
+    
+    private $port;
+    
+    private $username;
+    
+    private $password;
+    
+    private $handler;
+    
+    private $defaultPort = 21;
 
     /**
      * {@inheritDoc}

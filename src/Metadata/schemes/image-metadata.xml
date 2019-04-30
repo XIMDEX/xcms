@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" xmlns:xim="http://ximdex.com/schema/1.0"
+	xmlns:xhtml="http://www.w3.org/1999/xhtml" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+
+	<start>
+		<element name="docxap">
+			<ref name="def_custom_info" />
+			<xim:description>Image Metadata</xim:description>
+		</element>
+	</start>
+
+	<define name="def_custom_info">
+		<element name="custom_info">
+			<optional>
+				<attribute name="uid" />
+			</optional>
+            <ref name="def_author" />
+            <ref name="def_description" />
+			<xim:description>Custom Information</xim:description>
+		</element>
+	</define>
+
+	<!-- Custom Info -->
+          
+   	<define name="def_author">
+		<element name="author">
+			<optional>
+				<attribute name="uid" />
+			</optional>
+			<attribute name="input">
+				<choice>
+					<value type="string">text</value>
+				</choice>
+			</attribute>
+			<attribute name="ontology-name">
+				<choice>
+					<value type="string">Schema</value>
+				</choice>
+			</attribute>
+			<attribute name="ontology-format">
+				<choice>
+					<value type="string">json</value>
+				</choice>
+			</attribute>
+			<xim:default_content>[Author]</xim:default_content>
+			<text />
+			<xim:description>Author</xim:description>
+		</element>
+	</define>
+          
+    <define name="def_description">
+		<element name="description">
+			<optional>
+				<attribute name="uid" />
+			</optional>
+			<attribute name="input">
+				<choice>
+					<value type="string">textarea</value>
+				</choice>
+			</attribute>						
+			<xim:default_content>[Description]</xim:default_content>
+			<text />
+			<xim:description>Description</xim:description>
+		</element>
+	</define>
+
+</grammar>

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -39,14 +39,14 @@ class Module_Xowl extends Module
         parent::__construct('Xowl', dirname(__FILE__));
     }
 
-    function install()
+    public function install()
     {
         // Get constructor SQL
         $this->loadConstructorSQL('Xowl.constructor.sql');
         return parent::install();
     }
 
-    function configure($key, $urlService)
+    public function configure(string $key, string $urlService)
     {
         App::setValue('EnricherKey', '2jpkhvda52fgffz2kv8x8cuy', true);
         App::setValue('Xowl_location', $urlService, true);
@@ -63,9 +63,17 @@ class Module_Xowl extends Module
         }
         return true;
     }
+    
+    public function uninstall()
+    {
+        // Get destructor SQL
+        $this->loadDestructorSQL('Xowl.destructor.sql');
+        parent::uninstall();
+    }
 
     /**
      * Ask and check LMF url
+     * 
      * @return bool True if the url is ok.
      */
     private function defineLMF()
@@ -84,14 +92,13 @@ class Module_Xowl extends Module
         return $result;
     }
 
-
     /**
      * Check LMF Path doing a request to the url
      * 
-     * @param  string $lmfUrl Where LMF is installed
+     * @param string $lmfUrl Where LMF is installed
      * @return bool True if the url is ok
      */
-    private function checkLMFPath($lmfUrl)
+    private function checkLMFPath(string $lmfUrl)
     {
         $result = true;
         $headers = array(
@@ -113,12 +120,5 @@ class Module_Xowl extends Module
             $result = false;
         }
         return $result;
-    }
-
-    function uninstall()
-    {
-        // Get destructor SQL
-        $this->loadDestructorSQL('Xowl.destructor.sql');
-        parent::uninstall();
     }
 }

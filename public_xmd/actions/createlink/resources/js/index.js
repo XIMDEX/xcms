@@ -1,5 +1,5 @@
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -28,32 +28,31 @@ X.actionLoaded(function(event, fn, params) {
     var submit = fn('.validate').get(0);
 	var $inputUrl = fn("input#url");
     var prefix = $inputUrl.val().split(":");
-
+    
     fn('select#link_type option').each(function(){
-                                        if(prefix[0]=="http" && $(this).val()=="url"){
-                                            fn("label[for='url']").html("Web URL");
-                                            $(this).attr("selected",true);
-                                            $inputUrl.addClass("is_url");
-                                            $inputUrl.removeClass("is_email");
-                                        }
-                                        else if (prefix[0]=="mailto" && $(this).val()=="email"){
-                                            fn("label[for='url']").html("E-mail address");
-                                            $(this).attr("selected",true);
-                                            fn("input#url").addClass("is_email");
-                                            fn("input#url").removeClass("is_url");
-                                        }
+	    if(prefix[0]=="http" && $(this).val()=="url"){
+	        fn("label[for='url']").html("Web URL *");
+	        $(this).attr("selected",true);
+	        $inputUrl.addClass("is_url");
+	        $inputUrl.removeClass("is_email");
+	    }
+	    else if (prefix[0]=="mailto" && $(this).val()=="email"){
+	        fn("label[for='url']").html("E-mail address *");
+	        $(this).attr("selected",true);
+	        fn("input#url").addClass("is_email");
+	        fn("input#url").removeClass("is_url");
+	    }
     });
-
 
     fn('select#link_type').change(function() {
         var linkType= fn('#link_type option:selected').val();
-		
         if(linkType=="url"){
-            fn("label[for='url']").html("Web URL");
+            fn("label[for='url']").html("Web URL *");
             $inputUrl.addClass("is_url");
             $inputUrl.removeClass("is_email");
 			$inputUrl.val($inputUrl.val().replace(/^mailto:/,''));
-            // remove email rule and add url rule to validation
+			
+            // Remove email rule and add url rule to validation
             var validator = $.data($inputUrl[0].form, 'validator');
             if (validator && validator.settings) {
                 $inputUrl.rules('remove', 'email');
@@ -61,12 +60,12 @@ X.actionLoaded(function(event, fn, params) {
             }
 			if (!/^https?:\/\//.test($inputUrl.val()))
 				$inputUrl.val("http://"+$inputUrl.val());
-        }   
-        else{
-            fn("label[for='url']").html("E-mail address");
+        } else {
+            fn("label[for='url']").html("E-mail address *");
             fn("input#url").addClass("is_email");
             fn("input#url").removeClass("is_url");
-            // remove url rule and add email rule to validation
+            
+            // Remove url rule and add email rule to validation
             var validator = $.data($inputUrl[0].form, 'validator');
             if (validator && validator.settings) {
                 $inputUrl.rules('remove', 'url');
@@ -76,8 +75,8 @@ X.actionLoaded(function(event, fn, params) {
 			if (!/^mailto:/.test($inputUrl.val()))
 				$inputUrl.val("mailto:"+$inputUrl.val());
         }
-        // trigger an keyup in inputurl field to load again validation
+        
+        // Trigger an keyup in inputurl field to load again validation
         $inputUrl.trigger("keyup");
     });
 });
-

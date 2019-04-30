@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -28,36 +28,41 @@
 use Ximdex\Logger;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
+use Ximdex\Modules\Manager;
 
-require_once(APP_ROOT_PATH.'/install/managers/InstallManager.class.php');
+require_once APP_ROOT_PATH . '/install/managers/InstallManager.class.php';
 
 class InstallModulesManager extends InstallManager
 {
-    const ALREADY_INSTALL = "Already installed";
-    const ERROR_INSTALL = "Error";
-    const UNINSTALLED = "Uninstalled";
-    const SUCCESS_INSTALL = "Installed";
-    const DISABLED = "Disabled";
+    const ALREADY_INSTALL = 'Already installed';
+    
+    const ERROR_INSTALL = 'Error';
+    
+    const UNINSTALLED = 'Uninstalled';
+    
+    const SUCCESS_INSTALL = 'Installed';
+    
+    const DISABLED = 'Disabled';
 
-    public function installModule($name)
+    public function installModule(string $name)
     {
         $installState = self::UNINSTALLED;
-        $modMngr = new \Ximdex\Modules\Manager();
+        $modMngr = new Manager();
         $state = $modMngr->checkModule($name);
         $myenabled = $modMngr->isEnabled($name);
         switch ($state) {
-            case \Ximdex\Modules\Manager::get_module_state_installed():
+            case Manager::get_module_state_installed():
                 $installState = self::ALREADY_INSTALL;
                 
                 # Code...
                 break;
-            case \Ximdex\Modules\Manager::get_module_state_uninstalled():
-                if (!$myenabled) {
+            case Manager::get_module_state_uninstalled():
+                if (! $myenabled) {
                     $result = $modMngr->installModule($name);
                     $installState = $result ? self::SUCCESS_INSTALL : self::ERROR_INSTALL;
                 }
                 break;
-            case \Ximdex\Modules\Manager::get_module_state_error():
+            case Manager::get_module_state_error():
                 $installState = self::ERROR_INSTALL;
                 break;
             default:
@@ -66,27 +71,27 @@ class InstallModulesManager extends InstallManager
         return $installState;
     }
 
-    public function enableModule($name)
+    public function enableModule(string $name)
     {
-        $modMngr = new \Ximdex\Modules\Manager();
+        $modMngr = new Manager();
         $modMngr->enableModule($name);
     }
 
-    public function uninstallModule($name)
+    public function uninstallModule(string $name)
     {
-        $modMngr = new \Ximdex\Modules\Manager();
+        $modMngr = new Manager();
         $modMngr->uninstallModule($name);
     }
 	
     public function buildModulesFile()
     {
-        $fileName = XIMDEX_ROOT_PATH . \Ximdex\Modules\Manager::get_modules_install_params();
+        $fileName = XIMDEX_ROOT_PATH . Manager::get_modules_install_params();
         @unlink($fileName);
-        $modMan = new \Ximdex\Modules\Manager();
+        $modMan = new Manager();
         $modules = $modMan->getModules();
         foreach ($modules as $mod) {
-            if (isset($mod["enabled"])) {
-                $modMan->uninstallModule($mod["name"]);
+            if (isset($mod['enabled'])) {
+                $modMan->uninstallModule($mod['name']);
             }
         }
         $str = "<?php\n\n";
@@ -96,9 +101,9 @@ class InstallModulesManager extends InstallManager
  * define('MODULE_XBLOG_PATH','/modules/xBlog');
  */\n\n";
         foreach ($modules as $mod) {
-            @unlink(XIMDEX_ROOT_PATH . "/data/." . $mod["name"]);
-            $str .= \Ximdex\Modules\Manager::get_pre_define_module() . strtoupper($mod["name"]) 
-                . \Ximdex\Modules\Manager::get_post_path_define_module() . str_replace(XIMDEX_ROOT_PATH, '', $mod["path"]) . "');" . "\n";
+            @unlink(XIMDEX_ROOT_PATH . '/data/.' . $mod['name']);
+            $str .= Manager::get_pre_define_module() . strtoupper($mod['name']) . Manager::get_post_path_define_module() 
+                . str_replace(XIMDEX_ROOT_PATH, '', $mod['path']) . "');\n";
         }
         $str .= "\n?>";
         $result = FsUtils::file_put_contents($fileName, $str);
@@ -110,7 +115,7 @@ class InstallModulesManager extends InstallManager
     {
         $defaultModules = $this->getModulesByDefault();
         foreach ($defaultModules as $module) {
-            $this->installModule($module["name"]);
+            $this->installModule($module['name']);
         }
     }
     
@@ -122,7 +127,7 @@ class InstallModulesManager extends InstallManager
     public function installXedit()
     {
         $xeditPath = App::getValue('XmodulesRoot') . '/xedit/dist';
-        if (!is_dir(XIMDEX_ROOT_PATH . $xeditPath)) {
+        if (! is_dir(XIMDEX_ROOT_PATH . $xeditPath)) {
             Logger::error('Cannot configure Xedit. Directory ' . XIMDEX_ROOT_PATH . $xeditPath . ' does not exists');
             return true;
         }

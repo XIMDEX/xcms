@@ -1,5 +1,5 @@
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,21 +24,24 @@
  */
 
 X.actionLoaded(function(event, fn, params) {
-		fn("select[name='channellist']").change(function(){
-			var str_channel = "&channel="+fn(this).val();
-			var container = fn(this).closest('fieldset');
-			var nodeid = fn('input[name=node_id]', container).val();
-			var link=fn('a', container).attr('href');
-			document.getElementById('preview'+nodeid).src = link+str_channel;
-		});
+	
+	fn("select[name='channellist']").change(function(){
+		var str_channel = "&channelId=" + fn(this).val();
+		var container = fn(this).closest('fieldset');
+		var nodeid = fn('input[name=node_id]', container).val();
+		var link = fn('a', container).attr('href');
+		link.replace('channelId=', 'oldChannelId=');
+		document.getElementById('preview' + nodeid).src = link + str_channel;
+	});
 
-		fn('#prevdoc-button').click(function(event) {
-			event.preventDefault();
-			var link = fn(this).attr('href');
-			var container = fn(this).closest('fieldset');
-			var nodeid = fn('input[name=node_id]', container).val();
-			var selected_channel = fn('#channellist'+nodeid).val();
-			var str_channel = "&channel="+selected_channel;
-			window.open(link+str_channel);
-		});
+	fn('#prevdoc-button').click(function(event) {
+		event.preventDefault();
+		var link = fn(this).attr('href');
+		var container = fn(this).closest('fieldset');
+		var nodeid = fn('input[name=node_id]', container).val();
+		var selected_channel = fn('#channellist' + nodeid).val();
+		link.replace('channelId=', 'oldChannelId=');
+		var str_channel = "&channelId=" + selected_channel;
+		window.open(link + str_channel);
+	});
 });

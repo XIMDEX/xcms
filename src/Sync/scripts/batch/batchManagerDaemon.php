@@ -77,7 +77,7 @@ function createBatchsForBlock(array $nodesToPublish)
     }
 
     // Get list of physicalServers related to generator node.
-    $idServer = $node->GetServer();
+    $idServer = $node->getServer();
     $nodeServer = new Node($idServer);
     if (App::getValue('PublishOnDisabledServers') == 1) {
         Logger::info('PublishOnDisabledServers is true');

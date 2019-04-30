@@ -42,22 +42,38 @@ include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
 class SyncManager
 {
     public $workflow;
+    
     public $deleteOld;
+    
     public $markEnd;
+    
     public $linked;
+    
     public $type;
+    
     public $mail;
     
     private $lastPublished;
+    
     private $publicateSection;
+    
     private $level;
+    
     private $nodeType;
+    
     private $docsToPublishByLevel = [];
+    
     private $computedDocsToPublish = [];
+    
     private $pendingDocsToPublish = [];
+    
     private $generatorNodes = [];
+    
     private $useCache;
+    
     private $expireAll;
+    
+    private $recursive;
 
     public function __construct()
     {
@@ -66,13 +82,14 @@ class SyncManager
         $this->setFlag('deleteOld', false);
         $this->setFlag('markEnd', false);
         $this->setFlag('linked', false);
-        $this->setFlag('recurrence', false);
+        $this->setFlag('recursive', false);
         $this->setFlag('type', 'core');
         $this->setFlag('mail', false);
         $this->setFlag('deeplevel', DEEP_LEVEL < 0 ? 1 : DEEP_LEVEL);
         $this->setFlag('globalForcePublication', FORCE_PUBLICATION);
         $this->setFlag('useCache', true);
         $this->setFlag('expireAll', false);
+        $this->setFlag('lastPublished', false);
     }
 
     /**
@@ -155,7 +172,7 @@ class SyncManager
         if ($level !== null) {
             
             // Publication of the section until a given level
-            if ($node->GetNodeType() == NodeTypeConstants::SERVER or $node->GetNodeType() == NodeTypeConstants::SECTION) {
+            if ($node->getNodeType() == NodeTypeConstants::SERVER or $node->getNodeType() == NodeTypeConstants::SECTION) {
                 
                 // Server and sections nodes must increment one level more
                 $level++;
@@ -185,7 +202,7 @@ class SyncManager
         if ($level) {
             $level++;
         }
-        $documentsChildren = FastTraverse::getChildren($node->GetID(), null, $level, $filters, $nodeTypeFlagsAux);
+        $documentsChildren = FastTraverse::getChildren($node->getID(), null, $level, $filters, $nodeTypeFlagsAux);
         if ($documentsChildren === false) {
             return false;
         }
@@ -219,8 +236,8 @@ class SyncManager
             if (sizeof($docsToPublish) > 0) {
                 $docsToPublish = array_unique(array_merge(array($node->GetID()), $docsToPublish));
             } else {
-                $docsToPublish = array($node->GetID());
-                $this->docsToPublishByLevel = array($node->GetID());
+                $docsToPublish = array($node->getID());
+                $this->docsToPublishByLevel = [$node->GetID()];
             }
         } elseif ($node->GetNodeType() != NodeTypeConstants::XML_ROOT_FOLDER and $node->GetNodeType() != NodeTypeConstants::XML_CONTAINER 
             and $node->GetNodeType() != NodeTypeConstants::HTML_CONTAINER) {
@@ -244,12 +261,15 @@ class SyncManager
             return null;
         }
         $node = new Node($idNode);
-        if (! $node->GetID()) {
+        if (! $node->getID()) {
             Logger::error(sprintf('Node %s does not exist', $idNode));
             return null;
         }
         $docsToPublish = $this->getPublishableDocs($node, $up, $down);
         $userID = \Ximdex\Runtime\Session::get('userID');
+        if (! $userID) {
+            $userID = User::XIMDEX_ID;
+        }
         $force = $this->getFlag('globalForcePublication') ? true : $this->getFlag('force');
         $nodesToPublish = new NodesToPublish();
         foreach ($docsToPublish as $idDoc) {
@@ -280,7 +300,9 @@ class SyncManager
 
         // Exec batchManagerDaemon in background
         $cmd = 'php ' . XIMDEX_ROOT_PATH . '/bootstrap.php  src/Sync/scripts/batch/batchManagerDaemon.php';
-        shell_exec(sprintf('%s > ' . sys_get_temp_dir() . '/batch_manager_daemon.err &', $cmd));
+        $cmd = sprintf('%s > ' . sys_get_temp_dir() . '/batch_manager_daemon.err &', $cmd);
+        $var = 0;
+        system($cmd, $var);
         return $docsToPublish;
     }
 

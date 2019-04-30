@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,8 +32,11 @@ use Ximdex\Data\GenericData;
 class ChannelsOrm extends GenericData
 {
     public $_idField = 'IdChannel';
+    
     public $_table = 'Channels';
-    public $_metaData = array(
+    
+    public $_metaData = array
+    (
         'IdChannel' => array('type' => "int(12)", 'not_null' => 'true', 'primary_key' => true),
         'Name' => array('type' => "varchar(255)", 'not_null' => 'true'),
         'Description' => array('type' => "varchar(255)", 'not_null' => 'false'),
@@ -42,21 +45,34 @@ class ChannelsOrm extends GenericData
         'Filter' => array('type' => "varchar(255)", 'not_null' => 'false'),
         'RenderMode' => array('type' => "varchar(255)", 'not_null' => 'false'),
         'OutputType' => array('type' => "varchar(100)", 'not_null' => 'false'),
-        'Default_Channel' => array('type' => "tinyint(1)", 'not_null' => 'false'),
+        'Default_Channel' => array('type' => "tinyint(1)", 'not_null' => 'true'),
         'RenderType' => array('type' => 'varchar(50)', 'not_null' => 'false'),
         'idLanguage' => array('type' => 'varchar(20)', 'not_null' => 'false')
     );
+    
     public $_uniqueConstraints = array();
+    
     public $_indexes = array('IdChannel');
+    
     public $IdChannel;
+    
     public $Name;
+    
     public $Description;
+    
     public $DefaultExtension;
+    
     public $Format;
+    
     public $Filter;
+    
     public $RenderMode;
+    
     public $OutputType;
+    
     public $Default_Channel;
+    
     public $RenderType;
+    
     public $idLanguage;
 }

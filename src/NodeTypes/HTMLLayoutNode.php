@@ -27,5 +27,24 @@
 
 namespace Ximdex\NodeTypes;
 
+use Ximdex\Logger;
+use Ximdex\Models\StructuredDocument;
+
 class HTMLLayoutNode extends FileNode
-{}
+{
+    /**
+     * {@inheritDoc}
+     * @see \Ximdex\NodeTypes\FileNode::getDependencies()
+     */
+    public function getDependencies() : array
+    {
+        $dependencies = parent::getDependencies();
+        $st = new StructuredDocument();
+        try {
+            $dependencies = array_merge($dependencies, $st->getByTemplate($this->nodeID));
+        } catch (\Exception $e) {
+            Logger::error($e->getMessage());
+        }
+        return $dependencies;
+    }
+}
