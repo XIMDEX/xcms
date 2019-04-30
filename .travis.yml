@@ -19,7 +19,7 @@ before_install:
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
   - cd tests
-  - docker-compose up db ximdex
+  - docker-compose up -d db ximdex
 
 script:
   - docker-compose run test
