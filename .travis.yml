@@ -19,11 +19,11 @@ before_install:
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
   - cd tests/
-  # - docker-compose up -d ximdex
-  - docker-compose up db ximdex test
+  - docker-compose up -d ximdex
+  # - docker-compose up db ximdex test
 
-# script:
-  # - docker-compose run test
+script:
+  - docker-compose run test
   
 notifications:
   email:
