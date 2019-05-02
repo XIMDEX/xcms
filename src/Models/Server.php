@@ -201,6 +201,7 @@ class Server extends ServersOrm
                 , "Enabled = 1 AND Indexable IS TRUE AND (LastSitemapGenerationTime + {$interval} < UNIX_TIMESTAMP()"
             . " OR LastSitemapGenerationTime IS NULL)");
         if (! $servers) {
+            Logger::info('Sitemap servers not found');
             return;
         }
         $db = new Db();

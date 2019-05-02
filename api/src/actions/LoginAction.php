@@ -40,6 +40,7 @@ class LoginAction extends Action
         'logout' => 'logout',
         'me' => 'getMe',
     ];
+    
     protected const PUBLIC = [
         'login'
     ];

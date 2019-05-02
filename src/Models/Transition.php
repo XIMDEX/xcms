@@ -134,7 +134,7 @@ class Transition extends GenericData
                 }
                 $content = FsUtils::file_get_contents(XIMDEX_ROOT_PATH . App::getValue('FileRoot') . '/' . $version->get('File'));
                 if ($content === false) {
-                    throw new \Exception('There is not content file for version ' . $versionId . ' and transition ' . $transition);
+                    throw new \Exception('There is not content file for version ' . $versionId . ' (In transition ' . $transition . ')');
                 }
             }
         }

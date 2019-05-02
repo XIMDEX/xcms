@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -42,16 +42,30 @@ class IController
 {
     /**
      * Objeto Request para almacenar parámetros de petición
+     * 
+     * @var \Ximdex\Runtime\Request
      */
-    var $request;
-    var $response;
-    var $hasError;
-    var $msgError;
+    public $request;
     
     /**
-     * @var Messages
+     * @var \Ximdex\Runtime\Response
      */
-    var $messages;
+    public $response;
+    
+    /**
+     * @var boolean
+     */
+    public $hasError = false;
+    
+    /**
+     * @var string
+     */
+    public $msgError;
+    
+    /**
+     * @var \Ximdex\Utils\Messages
+     */
+    public $messages;
 
     /**
      * IController constructor
@@ -64,38 +78,28 @@ class IController
         $this->response = new Response();
     }
 
-    /**
-     * @param $request
-     */
-    function setRequest($request)
+    public function setRequest(Request $request)
     {
         $this->request = $request;
     }
-
-    /**
-     * TODO Cambiar toda la gestión de errores en base a variable booleana + array simple por el objeto messages Getter
-     */
-    function hasError()
+    
+    public function hasError()
     {
         if (isset ($this->hasError)) {
             return $this->hasError;
         }
     }
 
-    function getMsgError()
+    public function getMsgError()
     {
-        if (isset ($this->msgError)) {
+        if (isset($this->msgError)) {
            return $this->msgError;
         }
     }
 
-    /**
-     * @param $msg
-     * @param $module
-     */
-    function _setError($msg, $module)
+    private function setError(string $msg, string $module = null)
     {
-        unset( $module ) ;
+        unset($module);
         $this->hasError = true;
         $this->msgError = $msg;
         

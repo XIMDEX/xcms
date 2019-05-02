@@ -99,7 +99,7 @@ class Datasource_Composer extends AbstractDatasource implements IDatasource
 	 */
 	public function quickRead($request, $recursive = true)
 	{
-		unset( $recursive ) ;
+		unset($recursive);
 		$idNode = $request->getParam('nodeid');
 		$items = $request->getParam('items');
 		$from = $request->getParam('from');
@@ -119,7 +119,7 @@ class Datasource_Composer extends AbstractDatasource implements IDatasource
 	 */
 	public function readFiltered($request, $recursive = true)
 	{
-		unset( $recursive ) ;
+		unset($recursive);
 		$idNode = $request->getParam('nodeid');
 		$from = $request->getParam('from');
 		$to = $request->getParam('to');

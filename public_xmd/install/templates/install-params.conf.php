@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,15 +25,11 @@
  *  @version $Revision$
  */
 
-
-
-	/********************************************************
-			INSTALL_PARAMS.CONF.PHP
-		 Warning: Do not touch this file manually
-	*********************************************************/
-
+/**
+ * INSTALL_PARAMS.CONF.PHP
+ * Warning: Do not touch this file manually
+ */
 return array(
-
     'db' => array(
         'type' => 'mysql',
         'host' => '##DB_HOST##',
@@ -40,10 +37,9 @@ return array(
         'user' => '##DB_USER##',
         'password' => '##DB_PASSWD##',
         'db' => '##DB_NAME##',
-        'log' => false,
-
+        'log' => false
     ),
     'default.db' => 'db' ,
     'timezone' => '##XIMDEX_TIMEZONE##',
     'locale' => '##XIMDEX_LOCALE##',
-) ;
+);

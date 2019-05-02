@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -30,16 +30,18 @@ namespace XimdexApi\core;
 class Response
 {
     private $status = 0;
-    private $response = null;
+    
+    private $response;
+    
     private $message = '';
 
     /**
      * Sets the status code
-     *
-     * @param $status
-     * @return $this
+     * 
+     * @param int $status
+     * @return \XimdexApi\core\Response
      */
-    public function setStatus($status)
+    public function setStatus(int $status)
     {
         $this->status = $status;
         return $this;
@@ -47,11 +49,11 @@ class Response
 
     /**
      * Sets the message
-     *
-     * @param $message
-     * @return $this
+     * 
+     * @param string $message
+     * @return \XimdexApi\core\Response
      */
-    public function setMessage($message)
+    public function setMessage(string $message)
     {
         $this->message = $message;
         return $this;
@@ -59,11 +61,11 @@ class Response
 
     /**
      * Sets the response
-     *
-     * @param $response
-     * @return $this
+     * 
+     * @param Response $response
+     * @return \XimdexApi\core\Response
      */
-    public function setResponse($response)
+    public function setResponse(Response $response)
     {
         $this->response = $response;
         return $this;
@@ -75,11 +77,11 @@ class Response
      * @param array $headers
      * @return string
      */
-    public function send($headers = null)
+    public function send(array $headers = null)
     {
         $oldErrorReporting = error_reporting();
         error_reporting($oldErrorReporting ^ E_WARNING);
-        if (!is_null($headers)) {
+        if (! is_null($headers)) {
             foreach ($headers as $key => $value) {
                 header($key . ":" . $value);
             }
@@ -91,7 +93,7 @@ class Response
                 'response' => $this->response,
             ];
 
-            // TODO: Check CORS and filters
+            // TODO Check CORS and filters
             header("Access-Control-Allow-Origin: *");
             header("Access-Control-Allow-Headers: Authorization");
             header("Access-Control-Allow-Credentials: true");
@@ -99,6 +101,6 @@ class Response
             echo json_encode($data, JSON_UNESCAPED_UNICODE);
         }
         error_reporting($oldErrorReporting);
-        exit;
+        exit();
     }
 }

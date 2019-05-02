@@ -188,7 +188,6 @@ class ServerFrameManager
      */
     public function getDelayed(int $frameId, int $server, int $nodeId, int $channel = null) : ?int
     {
-        $dbObj = new \Ximdex\Runtime\Db();
         $sql = 'SELECT ServerFrames.IdSync AS IdSync FROM NodeFrames, ServerFrames, ChannelFrames
 				WHERE ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame
 				AND ServerFrames.IdChannelFrame = ChannelFrames.idChannelFrame
@@ -200,9 +199,10 @@ class ServerFrameManager
             $sql .= ' AND ChannelFrames.ChannelId IS NULL';
         }
         $sql .= ' AND ServerFrames.IdSync != ' . $frameId . ' AND ServerFrames.State = \'' . ServerFrame::DELAYED . '\'';
-        $dbObj->Query($sql);
+        $dbObj = new \Ximdex\Runtime\Db();
+        $dbObj->query($sql);
         if ($dbObj->numRows) {
-            return (int) $dbObj->GetValue('IdSync');
+            return (int) $dbObj->getValue('IdSync');
         }
         return null;
     }
@@ -223,7 +223,6 @@ class ServerFrameManager
         } else {
             $channelCondition = ' = ' . $channel . ' ';
         }
-        $dbObj = new \Ximdex\Runtime\Db();
         $sql = 'SELECT ServerFrames.IdSync AS IdSync, ServerFrames.State AS State,
 			ServerFrames.RemotePath AS RemotePath, ServerFrames.FileName AS FileName
 			FROM NodeFrames, ServerFrames, ChannelFrames
@@ -238,14 +237,15 @@ class ServerFrameManager
             OR ServerFrames.State = \'' . ServerFrame::PUMPED . '\' OR ServerFrames.State = \'' . ServerFrame::DUE2INWITHERROR . '\')';
         $overlaped = array();
         $i = 0;
-        $dbObj->Query($sql);
+        $dbObj = new \Ximdex\Runtime\Db();
+        $dbObj->query($sql);
         if ($dbObj->numRows != 0) {
             while (! $dbObj->EOF) {
-                $overlaped[$i]['id'] = $dbObj->GetValue('IdSync');
-                $overlaped[$i]['state'] = $dbObj->GetValue('State');
-                $overlaped[$i]['file'] = $dbObj->GetValue('RemotePath') . '/' . $dbObj->GetValue('FileName');
+                $overlaped[$i]['id'] = $dbObj->getValue('IdSync');
+                $overlaped[$i]['state'] = $dbObj->getValue('State');
+                $overlaped[$i]['file'] = $dbObj->getValue('RemotePath') . '/' . $dbObj->getValue('FileName');
                 $i++;
-                $dbObj->Next();
+                $dbObj->next();
             }
             return $overlaped;
         }
@@ -262,11 +262,11 @@ class ServerFrameManager
      */
     public function setTasksForPumping(array $pumpers, int $chunk, array $activeAndEnabledServers) : int
     {
-        $dbObj = new \Ximdex\Runtime\Db();
         $serverFrame = new ServerFrame();
         $servers = implode(',', $activeAndEnabledServers);
         Logger::info('ACTIVE PUMPERS STATS', false, 'white');
         $totalTasks = 0;
+        $dbObj = new \Ximdex\Runtime\Db();
         foreach ($pumpers as $pumperId) {
             $numPendingTasks = $serverFrame->getUncompletedTasks($pumperId, $activeAndEnabledServers);
             $numTasksForPumping = $chunk - $numPendingTasks;
@@ -296,7 +296,7 @@ class ServerFrameManager
                     $sql .= ' b.Priority DESC, b.Cycles, b.Type = \'' . Batch::TYPE_DOWN . '\' DESC, b.IdBatch,';
                 }
                 $sql .= ' ServerFrames.ErrorLevel, ServerFrames.Retry LIMIT ' . $numTasksForPumping;
-                $dbObj->Query($sql);
+                $dbObj->query($sql);
                 if ($dbObj->numRows > 0) {
                     $timer = new \Ximdex\Utils\Timer();
                     Logger::debug('Set task for pumping starting');
@@ -304,17 +304,26 @@ class ServerFrameManager
                     $tasks = array();
                     $task = [];
                     while (! $dbObj->EOF) {
-                        $task['id'] = $dbObj->GetValue('IdSync');
-                        $task['up'] = $dbObj->GetValue('IdBatchUp');
-                        $task['down'] = $dbObj->GetValue('IdBatchDown');
+                        $task['id'] = $dbObj->getValue('IdSync');
+                        $task['up'] = $dbObj->getValue('IdBatchUp');
+                        $task['down'] = $dbObj->getValue('IdBatchDown');
                         $tasks[] = $task;
-                        $dbObj->Next();
+                        $dbObj->next();
                     }
                     Logger::info('Setting tasks ' . $numTasksForPumping . ' for pumper ' . $pumperId);
                     foreach ($tasks as $task) {
                         
                         // Processing the server frame task
-                        if (! $this->processTaskForServerFrame($task['id'])) {
+                        $res = $this->processTaskForServerFrame($task['id']);
+                        if (! $res) {
+                            if ($res === false) {
+                                $serverFrame = new ServerFrame($task['id']);
+                                $serverFrame->set('State', ServerFrame::DUE2INWITHERROR);
+                                $serverFrame->set('ErrorLevel', ServerFrame::ERROR_LEVEL_HARD);
+                                if ($serverFrame->update()) {
+                                    Logger::warning("Server frame {$task['id']} marked as errored");
+                                }
+                            }
                             continue;
                         }
                     }
@@ -336,33 +345,34 @@ class ServerFrameManager
      * @param int serverFrameId
      * @return int
      */
-    public function calcPumper(int $serverFrameId) : int
+    public function calcPumper(int $serverFrameId) : ?int
     {
         // At present, serverid is the criteria for pumperid
         $serverFrame = new ServerFrame($serverFrameId);
+        Logger::info('Obtaining pumperId for task ' . $serverFrame->get('IdSync'));
         if ($serverFrame->get('PumperId')) {
             return (int) $serverFrame->get('PumperId');
         }
         $idServer = $serverFrame->get('IdServer');
-        $dbObj = new \Ximdex\Runtime\Db();
         $sql = 'SELECT p.PumperId FROM Pumpers p WHERE p.IdServer = ' . $idServer . ' AND p.State != \'' . Pumper::ENDED . '\' ';
         if (MAX_TASKS_PER_PUMPER > 0) {
             $sql .= 'AND (SELECT COUNT(*) FROM ServerFrames sf WHERE sf.PumperId = p.PumperId) < ' . MAX_TASKS_PER_PUMPER . ' ';
         }
         $sql .= 'LIMIT 1';
-        $dbObj->Query($sql);
+        $dbObj = new \Ximdex\Runtime\Db();
+        $dbObj->query($sql);
         if ($dbObj->numRows == 0) {
             
             // Insert new pumper in database
             $pumper = new Pumper();
             $pumperId = $pumper->create($idServer);
         } else {
-            $pumperId = $dbObj->GetValue('PumperId');
+            $pumperId = (int) $dbObj->getValue('PumperId');
         }
         if ($pumperId > 0) {
-            return (int) $pumperId;
+            return $pumperId;
         }
-        Logger::info('Obtaining pumperId for task ' . $serverFrame->get('IdSync'));
+        return null;
     }
 
     /**

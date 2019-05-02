@@ -1,10 +1,7 @@
 <?php
-namespace XimdexApi\core;
-
-use Ximdex\Runtime\ResponseBuilder;
 
 /**
- *  \details &copy; 2013  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -27,34 +24,40 @@ use Ximdex\Runtime\ResponseBuilder;
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+
+namespace XimdexApi\core;
+
+use Ximdex\Runtime\ResponseBuilder;
+
 abstract class AbstractAPIAction
 {
+    const USER_PARAM = 'XimUser';
+    
     /**
      * @var bool
      */
-    public   $secure = false ;
-
-    /**
-     * Returns true/false
-     * @return bool
-     */
-    public function isSecure() {
-        return $this->secure ;
-    }
-
-
-
-    const USER_PARAM = 'XimUser';
+    public $secure = false;
+    
     /**
      * ResponseBuilder instance
      *
+     * @var \Ximdex\Runtime\ResponseBuilder
      */
     protected $responseBuilder;
+    
+    /**
+     * Returns true/false
+     * 
+     * @return bool
+     */
+    public function isSecure()
+    {
+        return $this->secure ;
+    }
 
     /**
-     * <p>Default constructor</p>
-     * <p>Initializes the ResponseBuilder
-     *
+     * Default constructor
+     * Initializes the ResponseBuilder
      */
     public function __construct()
     {
@@ -62,22 +65,30 @@ abstract class AbstractAPIAction
     }
 
     /**
-     * <p>Default method of the actions</p>
-     * <p>Need to be overridden</p>
+     * Default method of the actions
+     * Need to be overridden
+     * 
+     * @param Request $request
+     * @param Response $response
      */
-    public abstract function index($request, $response);
+    public abstract function index(Request $request, Response $response);
 
     /**
-     * <p>Sends an error response with the specified status code and message</p>
+     * Sends an error response with the specified status code and message
+     * 
+     * @param string $message
+     * @param int $status_code
      */
-    protected function createErrorResponse($message, $status_code = 400)
+    protected function createErrorResponse(string $message, int $status_code = 400)
     {
         $this->responseBuilder->error($message, $status_code);
         $this->responseBuilder->build();
     }
 
     /**
-     * <p>Gets the ResponseBuilder object</p>
+     * Gets the ResponseBuilder object
+     * 
+     * @return ResponseBuilder
      */
     public function getResponseBuilder()
     {
@@ -85,12 +96,12 @@ abstract class AbstractAPIAction
     }
 
     /**
-     * <p>Sets the ResponseBuilder instance to use</p>
+     * Sets the ResponseBuilder instance to use
+     * 
      * @param ResponseBuilder $responseBuilder
      */
     public function setResponseBuilder(ResponseBuilder $responseBuilder)
     {
         $this->responseBuilder = $responseBuilder;
     }
-
 }

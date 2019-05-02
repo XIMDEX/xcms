@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -33,9 +33,19 @@ class Token
 {
     /**
      * Default Token Time-To-Live in minutes
+     * 
+     * @var integer
      */
     const DEFAULT_TTL = 5;
+    
+    /**
+     * @var string
+     */
     const ALG_AES_128_CBC = "aes-128-cbc";
+    
+    /**
+     * @var boolean
+     */
     const EXPIRATION_ENABLE = false;
 
     /**
@@ -43,9 +53,9 @@ class Token
      *
      * @param string $user the username which generate a token for
      * @param int $ttl Optional parameter indicating the lifetime of the new token
-     * @return string
+     * @return string|boolean
      */
-    public static function getToken($user, $ttl = self::DEFAULT_TTL)
+    public static function getToken(string $user, int $ttl = self::DEFAULT_TTL)
     {
         $now = time();
         $tokenTTL = intval($ttl);
@@ -62,13 +72,15 @@ class Token
      * @param string $token the token to be validated
      * @return boolean indicating whether the token is valid or not
      */
-    public static function validateToken($token)
+    public static function validateToken(string $token)
     {
         $decryptedToken = json_decode(static::decryptAES(base64_decode($token), App::GetValue('ApiKey'), App::GetValue('ApiIV')), true);
-        if ($decryptedToken == null)
+        if ($decryptedToken == null) {
             return false;
-        if (static::EXPIRATION_ENABLE && !($decryptedToken['validTo'] > time()))
+        }
+        if (static::EXPIRATION_ENABLE && !($decryptedToken['validTo'] > time())) {
             return false;
+        }
         return true;
     }
 
@@ -89,11 +101,11 @@ class Token
      * @param array $token the decrypted token
      * @return boolean the token has expired or not
      */
-    public function hasExpired($token)
+    public function hasExpired(array $token)
     {
-        if (!isset($token['validTo']))
+        if (! isset($token['validTo']))
             return true;
-        if (!($token['validTo'] > time())) {
+        if (! $token['validTo'] > time()) {
             return true;
         }
         return false;
@@ -105,14 +117,14 @@ class Token
      * @param string $plaintext the text to encrypt
      * @param string $key the key to be used to encrypt
      * @param string $iv the initialization vector to be used to encrypt
-     * @return string the encrypted text
+     * @return boolean|string the encrypted text
      */
-    public static function encryptAES($plaintext, $key, $iv)
+    public static function encryptAES(string $plaintext, string $key, string $iv)
     {
-        /*
-		Key and IV generated with the command
-        openssl enc -aes-128-cbc -k "MY_SECRET_PHRASE" -P -md sha1
-        */
+        /**
+         * Key and IV generated with the command
+         * openssl enc -aes-128-cbc -k "MY_SECRET_PHRASE" -P -md sha1
+         */
         return @openssl_encrypt($plaintext, self::ALG_AES_128_CBC, $key, 0, $iv);
     }
 
@@ -122,7 +134,7 @@ class Token
      * @param string $encryptedtext the text to decrypt
      * @param string $key the key to be used to decrypt
      * @param string $iv the initialization vector to be used to decrypt
-     * @return string the decrypted text
+     * @return boolean|string the decrypted text
      */
     public static function decryptAES($encryptedtext, $key, $iv)
     {

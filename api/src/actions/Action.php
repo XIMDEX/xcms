@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,7 +32,9 @@ use XimdexApi\core\Router;
 abstract class Action
 {
     protected const PREFIX = '';
+    
     protected const ROUTES = [];
+    
     protected const PUBLIC = [];
 
     public static function addMethods(Router $router)
@@ -45,8 +47,8 @@ abstract class Action
         }
     }
 
-    protected static function getPath($action)
+    protected static function getPath(string $action)
     {
-        return (!empty(static::PREFIX) ? static::PREFIX . '/' : '') . $action;
+        return (! empty(static::PREFIX) ? static::PREFIX . '/' : '') . $action;
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -33,13 +33,9 @@ use XimdexApi\actions\LoginAction;
 use XimdexApi\actions\XeditAction;
 use XimdexApi\actions\NodeAction;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
+if (! defined('XIMDEX_ROOT_PATH')) {
     require_once '../bootstrap.php';
 }
-
-/**
- * @TODO: check global setup
- */
 session_set_cookie_params(0, '/');
 $router = new Router(new Request());
 $router->addAllowedRequest('ping');
@@ -50,15 +46,18 @@ $router->addRoute('ping', function (Request $r, Response $w) {
     $w->send();
 });
 
-
-/************ ACTIONS ************/
+/*
+ * Actions
+ */
 LoginAction::addMethods($router);
 XeditAction::addMethods($router);
 NodeAction::addMethods($router);
 
-/************ Modules actions ************/
+/*
+ * Modules actions
+ */
 
-// añadimos ahora las rutas de cada módulo (si lo hay)
+// Añadimos ahora las rutas de cada módulo (si lo hay)
 $mManager = new Manager();
 foreach (Manager::getEnabledModules() as $module) {
     $name = $module['name'];

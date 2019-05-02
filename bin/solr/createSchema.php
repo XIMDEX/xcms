@@ -1,11 +1,10 @@
 <?php
+
 require_once dirname(__DIR__, 2) . '/bootstrap.php';
 
-\Ximdex\Modules\Manager::file('/src/SolrExporter.php', 'XSearch');
+Ximdex\Modules\Manager::file('/src/SolrExporter.php', 'XSearch');
 
 $exporter = new SolrExporter();
-
-
 $command = [
     'add-field' => [
         ["name" => 'idversion', "type" => 'int'],
@@ -25,8 +24,5 @@ $command = [
         ["name" => '*_metadata_en', "type" => 'text_en']
     ]
 ];
-
 echo json_encode($command);
-
-print_R( $exporter->launchCommand("/schema", $command) ) ;
-
+print_r($exporter->launchCommand("/schema", $command));

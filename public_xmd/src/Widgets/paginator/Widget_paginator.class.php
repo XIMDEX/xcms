@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,17 +25,7 @@
  * @version $Revision$
  */
 
-
 use Xmd\Widgets\WidgetAbstract;
 
-
 class Widget_paginator extends WidgetAbstract
-{
-
-    public function __construct()
-    {
-        parent::__construct() ;
-
-    }
-
-}
+{}

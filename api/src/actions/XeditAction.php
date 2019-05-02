@@ -41,20 +41,30 @@ use Ximdex\NodeTypes\NodeTypeConstants;
 class XeditAction extends Action
 {
     const PATTERN_PATHTO = "/[[:word:]]+=[\"']@@@RMximdex\.pathto\(([,-_#%=\.\w\s]+)\)@@@[\"']/";
+    
     const PATTERN_XE_LINK = "/<([a-zA-Z]+)([^>]*?(?=xe_link))xe_link\=[\"']([^\"]*)[\"']([^>]*)>/";
+    
     const PATTERN_DATE = "/@@@EMXimdex\.date\(([^,\)]*),([^\)]*)\)@@@/";
+    
     const PREFIX = 'xedit';
+    
     const CONTENT_DOCUMENT = 'content';
+    
     const ROUTE_GET = '\d+/get';
+    
     const ROUTE_SET = 'set';
+    
     const ROUTE_FILE = 'file';
+    
     const ROUTE_GET_TREE_INFO = 'get_tree_info';
+    
     protected const ROUTES = [
         self::ROUTE_GET => 'get',
         self::ROUTE_SET => 'set',
         self::ROUTE_FILE => 'file',
         self::ROUTE_GET_TREE_INFO => 'getTreeInfo'
     ];
+    
     const LINK_TYPES = [
         'a' => 'href',
         'applet' => 'codebase',
@@ -82,6 +92,7 @@ class XeditAction extends Action
         'track' => 'src',
         'video' => 'src'
     ];
+    
     protected const PUBLIC = [];
 
     /********************************************* API METHODS *********************************************/
