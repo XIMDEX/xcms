@@ -78,7 +78,7 @@ class Action_modifyrole extends ActionAbstract
      */
     public function modifyrole()
     {
-        // ini_set('max_input_vars', 2000);
+        ini_set('max_input_vars', 2000);
         $idNode = (int) $this->request->getParam('nodeid');
         $role = new Role($idNode);
         if (! $role->getID()) {
@@ -170,6 +170,9 @@ class Action_modifyrole extends ActionAbstract
                     if (! isset($allStates[$nodeType['workflowId']])) {
                         $workflow = new Workflow($nodeType['workflowId']);
                         foreach ($workflow->getAllStates() as $id) {
+                            if (! $role->hasState($id)) {
+                                continue;
+                            }
                             $state = new WorkflowStatus($id);
                             $allStates[$nodeType['workflowId']][] = ['id' => $id, 'name' => $state->get('name')];
                         }

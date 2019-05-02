@@ -28,7 +28,7 @@
 <form method="post" ng-controller="InstallModulesController" name="installModulesForm" ng-submit="processForm()" ng-cloak>
     <input type="hidden" name="method" value="<?php echo $goMethod ?>" />
 	<h2>Installing Ximdex CMS's default modules</h2>
-	<p ng-hide="loaded">Preparing default modules ...<span>{{preLoading}}</span></p>        
+	<p ng-hide="loaded">Preparing default modules, please wait ...<span>{{preLoading}}</span></p>        
 	<p class="error" ng-show="error">{{message}}</p>
     <p ng-show="loaded">This step could take a while.</p>
 	<ul ng-hide="error">

@@ -84,40 +84,39 @@ class Role extends RolesOrm
         $this->errorList[2] = _('Role does not exist');
     }
 
-    public static function getByName(string $name = null) : int
+    public static function getByName(string $name = null) : ?int
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $name = $dbObj->sqlEscapeString($name);
         if (empty($name)) {
-            return 0;
+            return null;
         }
         $sql = sprintf('SELECT IdRole FROM Roles Where Name = %s LIMIT 1', $name);
-        $dbObj->Query($sql);
+        $dbObj->query($sql);
         if ($dbObj->numRows > 0) {
-            return (int) $dbObj->GetValue('IdRole');
-        } else {
-            return 0;
+            return (int) $dbObj->getValue('IdRole');
         }
+        return 0;
     }
 
     /**
      * Returns an array with the id of all the system roles
      * 
-     * @return NULL|array
+     * @return boolean|array
      */
     public function getAllRoles()
     {
         $sql = 'SELECT IdRole FROM Roles ORDER BY Name';
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Query($sql);
+        $dbObj->query($sql);
         if ($dbObj->numErr != 0) {
-            $this->SetError(1);
-            return null;
+            $this->setError(1);
+            return false;
         }
         $salida = array();
         while (! $dbObj->EOF) {
-            $salida[] = $dbObj->row['IdRole'];
-            $dbObj->Next();
+            $salida[] = (int) $dbObj->getValue('IdRole');
+            $dbObj->next();
         }
         return $salida ? $salida : null;
     }
@@ -163,7 +162,7 @@ class Role extends RolesOrm
     public function setName(string $name)
     {
         if (! $this->get('IdRole')) {
-            $this->SetError(2);
+            $this->setError(2);
             return false;
         }
         $result = $this->set('Name', $name);
@@ -192,7 +191,7 @@ class Role extends RolesOrm
     public function setDescription(string $description = null)
     {
         if (! $this->get('IdRole')) {
-            $this->SetError(2);
+            $this->setError(2);
             return false;
         }
         $result = $this->set('Description', $description);
@@ -221,7 +220,7 @@ class Role extends RolesOrm
     function setIcon(string $icon = null)
     {
         if (! $this->get('IdRole')) {
-            $this->SetError(2);
+            $this->setError(2);
             return false;
         }
         $result = $this->set('Icon', $icon);
@@ -296,16 +295,16 @@ class Role extends RolesOrm
      */
     public function hasAction(int $actionID, int $idState = null, int $workFlowId = null) : bool
     {
-        $dbObj = new \Ximdex\Runtime\Db();
         $query = sprintf('SELECT IdAction FROM RelRolesActions WHERE IdRol = %d AND IdAction = %d', $this->get('IdRole'), $actionID);
         if ($idState) {
             $query .= sprintf(' AND IdState = %d', $idState);
         } else {
             $query .= ' AND IdState IS NULL';
         }
-        $dbObj->Query($query);
+        $dbObj = new \Ximdex\Runtime\Db();
+        $dbObj->query($query);
         if ($dbObj->numErr) {
-            $this->SetError(1);
+            $this->setError(1);
         }
         return ($dbObj->numRows > 0);
     }
@@ -316,7 +315,7 @@ class Role extends RolesOrm
      * @param int $actionID
      * @param int $stateID
      * @param int $workflowID
-     * @return bool
+     * @return boolean
      */
     public function addAction(int $actionID, int $stateID = null, int $workFlowId = null) : bool
     {
@@ -335,7 +334,7 @@ class Role extends RolesOrm
      * Returns an array with the associations related to the current role
      * 
      * @param int $stateID
-     * @return NULL|array
+     * @return boolean|array
      */
     public function getActionsList(int $stateID = null)
     {
@@ -349,7 +348,7 @@ class Role extends RolesOrm
         $dbObj->query($sql);
         if ($dbObj->numErr != 0) {
             $this->setError(1);
-            return null;
+            return false;
         }
         $salida = array();
         while (! $dbObj->EOF) {
@@ -417,15 +416,18 @@ class Role extends RolesOrm
      * Deletes a permit of the current role
      * 
      * @param int $permissionID
+     * @return boolean
      */
     public function deletePermission(int $permissionID)
     {
         $sql = sprintf('DELETE FROM RelRolesPermissions WHERE IdRole = %d AND IdPermission = %d', $this->get('IdRole'), $permissionID);
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Execute($sql);
+        $dbObj->execute($sql);
         if ($dbObj->numErr != 0) {
-            $this->SetError(1);
+            $this->setError(1);
+            return false;
         }
+        return true;
     }
 
     /**
@@ -437,9 +439,9 @@ class Role extends RolesOrm
     {
         $sql = sprintf('DELETE FROM RelRolesPermissions WHERE IdRole = %d', $this->get('IdRole'));
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Execute($sql);
+        $dbObj->execute($sql);
         if ($dbObj->numErr != 0) {
-            $this->SetError(1);
+            $this->setError(1);
             return false;
         }
         return true;
@@ -449,9 +451,9 @@ class Role extends RolesOrm
     {
         $sql = sprintf('DELETE FROM RelRolesActions WHERE IdRol = %d', $this->get('IdRole'));
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Execute($sql);
+        $dbObj->execute($sql);
         if ($dbObj->numErr != 0) {
-            $this->SetError(1);
+            $this->setError(1);
             return false;
         }
         return true;
@@ -478,9 +480,10 @@ class Role extends RolesOrm
     {
         $dbObj = new \Ximdex\Runtime\Db();
         $query = sprintf('SELECT IdRel FROM RelRolesStates WHERE IdRole = %d AND IdState = %d', $this->get('IdRole'), $state);
-        $dbObj->Query($query);
+        $dbObj->query($query);
         if ($dbObj->numErr) {
-            $this->SetError(1);
+            $this->setError(1);
+            return false;
         }
         return $dbObj->numRows;
     }
@@ -489,6 +492,7 @@ class Role extends RolesOrm
      * Add a transition to the current role
      * 
      * @param int $state
+     * @return boolean
      */
     public function addState(int $state)
     {
@@ -497,13 +501,16 @@ class Role extends RolesOrm
         $dbObj->execute($sql);
         if ($dbObj->numErr != 0) {
             $this->setError(1);
+            return false;
         }
+        return true;
     }
 
     /**
      * Deletes a transition of the current role
      * 
      * @param int $state
+     * @return boolean
      */
     public function deleteState(int $state)
     {
@@ -512,11 +519,15 @@ class Role extends RolesOrm
         $dbObj->execute($sql);
         if ($dbObj->numErr != 0) {
             $this->setError(1);
+            return false;
         }
+        return true;
     }
 
     /**
      * Deletes all the permits of the current role
+     * 
+     * @return boolean
      */
     public function deleteAllStates()
     {
@@ -525,14 +536,16 @@ class Role extends RolesOrm
         $dbObj->execute($sql);
         if ($dbObj->numErr != 0) {
             $this->setError(1);
+            return false;
         }
+        return true;
     }
 
     /**
      * Returns an array with to current role transitions
      * return array of ID (actionID) or NULL (in error)
      * 
-     * @return NULL|array
+     * @return boolean|array
      */
     public function getAllStates()
     {
@@ -541,7 +554,7 @@ class Role extends RolesOrm
         $dbObj->query($sql);
         if ($dbObj->numErr != 0) {
             $this->setError(1);
-            return null;
+            return false;
         }
         $salida = [];
         while (! $dbObj->EOF) {
@@ -624,7 +637,7 @@ class Role extends RolesOrm
      * Function which returns the IdNode for demo user role (defined at the beggining of the file)
      * 
      * @param string $roleName
-     * @return null|string
+     * @return false|string
      */
     public function getDemoRoleFromName(string $roleName)
     {
@@ -633,7 +646,7 @@ class Role extends RolesOrm
         $dbObj->query($sql);
         if ($dbObj->numErr != 0) {
             $this->setError(1);
-            return null;
+            return false;
         }
         return $dbObj->row['IdRole'];
     }

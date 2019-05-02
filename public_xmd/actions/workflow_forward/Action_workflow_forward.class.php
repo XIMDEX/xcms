@@ -39,6 +39,7 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\Utils\Serializer;
 use Ximdex\Runtime\App;
 use Ximdex\Sync\SynchroFacade;
+use Ximdex\Models\WorkflowStatus;
 
 include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
 
@@ -82,11 +83,11 @@ class Action_workflow_forward extends ActionAbstract
         $user = new User($idUser);
         
         // Getting user roles on current node
-        $userRoles = $user->GetRolesOnNode($idNode);
+        $userRoles = $user->getRolesOnNode($idNode);
         
         // Getting current state
         $node = new Node($idNode);
-        $workflow = new Workflow($node->nodeType->getWorkflow(), $node->GetState());
+        $workflow = new Workflow($node->nodeType->getWorkflow(), $node->getState());
         
         // Getting next state
         $nextState = $workflow->getNextState();
@@ -95,7 +96,7 @@ class Action_workflow_forward extends ActionAbstract
             $values = array(
                 'messages' => $this->messages->messages,
                 'nodeTypeID' => $node->nodeType->getID(),
-                'node_Type' => $node->nodeType->GetName()
+                'node_Type' => $node->nodeType->getName()
             );
             $this->render($values, 'show_results', 'default-3.0.tpl');
             return;
@@ -128,7 +129,7 @@ class Action_workflow_forward extends ActionAbstract
             }
             
             // If found the current state, we activate the flag
-            if ($state == $node->GetState())
+            if ($state == $node->getState())
                 $find = true;
         }
         
@@ -140,7 +141,7 @@ class Action_workflow_forward extends ActionAbstract
             $values = array(
                 'messages' => $this->messages->messages,
                 'nodeTypeID' => $node->nodeType->getID(),
-                'node_Type' => $node->nodeType->GetName()
+                'node_Type' => $node->nodeType->getName()
             );
             $this->render($values, 'show_results', 'default-3.0.tpl');
             return;
@@ -161,14 +162,14 @@ class Action_workflow_forward extends ActionAbstract
             'defaultMessage' => $defaultMessage,
             'idNode' => $idNode,
             'nodeTypeID' => $node->nodeType->getID(),
-            'node_Type' => $node->nodeType->GetName(),
-            'name' => $node->GetNodeName()
+            'node_Type' => $node->nodeType->getName(),
+            'name' => $node->getNodeName()
         );
         if ($workflowNext->isFinalState()) {
             $user = new User(Ximdex\Runtime\Session::get('userID'));
             if (! $user->hasPermission('structural_publication') and $node->nodeType->getIsStructuredDocument()) {
                 $this->messages->add(_('You can not publish a structured document'), MSG_TYPE_WARNING);
-                $this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
+                $this->render(array('messages' => $this->messages->messages), null, 'messages.tpl');
                 return;
             }
             $values = array_merge(array(
@@ -176,7 +177,7 @@ class Action_workflow_forward extends ActionAbstract
                 'hasDisabledFunctions' => $this->hasDisabledFunctions(),
                 'globalForcedEnabled' => FORCE_PUBLICATION,
                 'nodeTypeID' => $node->nodeType->getID(),
-                'node_Type' => $node->nodeType->GetName(),
+                'node_Type' => $node->nodeType->getName(),
                 'disabledCache' => App::getValue('DisableCache')
             ), $values);
             $values = array_merge($values, $this->buildExtraValues($idNode));
@@ -232,12 +233,6 @@ class Action_workflow_forward extends ActionAbstract
         // Loading request params
         $idNode = (int) $this->request->getParam('nodeid');
         $node = new Node($idNode);
-        $user = new User(Ximdex\Runtime\Session::get('userID'));
-        if (! $user->hasPermission('structural_publication') and $node->nodeType->getIsStructuredDocument()) {
-            $this->messages->add(_('You can not publish a structured document'), MSG_TYPE_WARNING);
-            $this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
-            return;
-        }
         $nextState = $this->request->getParam('nextstate');
         $conf = Manager::file('/conf/notifications.php', 'XIMDEX');
         $workflow = new Workflow($node->nodeType->getWorkflow(), $nextState);
@@ -254,7 +249,7 @@ class Action_workflow_forward extends ActionAbstract
                     'goback' => true,
                     'messages' => $this->messages->messages,
                     'nodeTypeID' => $node->nodeType->getID(),
-                    'node_Type' => $node->nodeType->GetName()
+                    'node_Type' => $node->nodeType->getName()
                 );
                 $this->render($values, 'show_results', 'default-3.0.tpl');
                 return;
@@ -263,8 +258,23 @@ class Action_workflow_forward extends ActionAbstract
         
         // If the next state is final state, it must be publication, so we move to publicateForm
         if ($workflow->isFinalState()) {
+            if ($workflow->getStatusID() == WorkflowStatus::PUBLICATION_STATUS) {
+                $user = new User(Ximdex\Runtime\Session::get('userID'));
+                if (! $user->hasPermission('structural_publication') and $node->nodeType->getIsStructuredDocument()) {
+                    $this->messages->add(_('You can not publish a structured document'), MSG_TYPE_WARNING);
+                    $this->render(array('messages' => $this->messages->messages), null, 'messages.tpl');
+                    return;
+                }
+            }
+            $user = new User(Ximdex\Runtime\Session::get('userID'));
+            if (! $user->hasPermission('structural_publication') and $node->nodeType->getIsStructuredDocument()) {
+                $this->messages->add(_('You can not publish a structured document'), MSG_TYPE_WARNING);
+                $this->render(array('messages' => $this->messages->messages), null, 'messages.tpl');
+                return;
+            }
+            
             $this->addJs('/actions/workflow_forward/resources/js/workflow_forward.js');
-            $defaultMessage = $this->buildMessage($conf['defaultMessage'], $workflow->getStatusName(), $node->GetNodeName());
+            $defaultMessage = $this->buildMessage($conf['defaultMessage'], $workflow->getStatusName(), $node->getNodeName());
             $values = array(
                 'group_state_info' => Group::getSelectableGroupsInfo($idNode),
                 'go_method' => 'publicateNode',
@@ -274,9 +284,9 @@ class Action_workflow_forward extends ActionAbstract
                 'hasDisabledFunctions' => $this->hasDisabledFunctions(),
                 'stateid' => $idState,
                 'globalForcedEnabled' => FORCE_PUBLICATION,
-                'name' => $node->GetNodeName(),
+                'name' => $node->getNodeName(),
                 'nodeTypeID' => $node->nodeType->getID(),
-                'node_Type' => $node->nodeType->GetName(),
+                'node_Type' => $node->nodeType->getName(),
                 'disabledCache' => App::getValue('DisableCache')
             );
             $values = array_merge($values, $this->buildExtraValues($idNode));
@@ -289,16 +299,16 @@ class Action_workflow_forward extends ActionAbstract
                     'goback' => true,
                     'messages' => $node->messages->messages,
                     'nodeTypeID' => $node->nodeType->getID(),
-                    'node_Type' => $node->nodeType->GetName()
+                    'node_Type' => $node->nodeType->getName()
                 );
                 $this->render($values, 'show_results', 'default-3.0.tpl');
             } else {
                 $values = array(
                     'go_method' => 'publicateForm',
                     'nextState' => $nextState,
-                    'currentState' => $node->GetState(),
+                    'currentState' => $node->getState(),
                     'nodeTypeID' => $node->nodeType->getID(),
-                    'node_Type' => $node->nodeType->GetName(),
+                    'node_Type' => $node->nodeType->getName(),
                     'parentID' => $node->get('IdParent')
                 );
                 $this->addCss('/actions/workflow_forward/resources/css/style.css');
@@ -331,7 +341,7 @@ class Action_workflow_forward extends ActionAbstract
         $user = new User(Ximdex\Runtime\Session::get('userID'));
         if (! $user->hasPermission('structural_publication') and $node->nodeType->getIsStructuredDocument()) {
             $this->messages->add(_('You can not publish a structured document'), MSG_TYPE_WARNING);
-            $this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
+            $this->render(array('messages' => $this->messages->messages), null, 'messages.tpl');
             return;
         }
         $structure = $this->request->getParam('no_structure') ? false : true;
@@ -406,12 +416,12 @@ class Action_workflow_forward extends ActionAbstract
             $role = new Role();
             $roles = $role->getAllRolesForStatus($idState);
             $user = new User();
-            $users = $user->GetAllUsers();
+            $users = $user->getAllUsers();
             $notificableUsers = array();
             if (! empty($users) && is_array($users)) {
                 foreach ($users as $idUser) {
                     $user = new User($idUser);
-                    $idRole = $user->GetRoleOnNode($idNode, $idGroup);
+                    $idRole = $user->getRoleOnNode($idNode, $idGroup);
                     if (($idRole > 0) && (in_array($idRole, $roles))) {
                         $notificableUsers[] = array(
                             'idUser' => $idUser,
@@ -479,7 +489,7 @@ class Action_workflow_forward extends ActionAbstract
         $idUser = \Ximdex\Runtime\Session::get('userID');
         $user = new User($idUser);
         $node = new Node($idNode);
-        $nodeTypeName = $node->nodeType->GetName();
+        $nodeTypeName = $node->nodeType->getName();
         $gapInfo = $this->getPublicationIntervals($idNode);
         return array(
             'gap_info' => $gapInfo,
@@ -543,7 +553,7 @@ class Action_workflow_forward extends ActionAbstract
         $user = new User($idUser);
         $userName = $user->get('Name');
         $nodeName = $node->get('Name');
-        $nodePath = $node->GetPath();
+        $nodePath = $node->getPath();
         $nextStateName = $nextWorkflowStatus->getStatusName();
         $actualStateName = $actualWorkflowStatus->getStatusName();
         $subject = _('Ximdex CMS: new state for document:') . ' ' . $nodeName;
@@ -610,7 +620,7 @@ class Action_workflow_forward extends ActionAbstract
                             $channel = new Node($idChannel);
                             $valuesToShow[$idOpcion][] = array(
                                 'NODE' => $nodePublished->get('Name'),
-                                'PATH' => $nodePublished->GetPath(),
+                                'PATH' => $nodePublished->getPath(),
                                 'SERVER' => $server->get('Description'),
                                 'CHANNEL' => $channel->get('Name')
                             );
@@ -627,7 +637,7 @@ class Action_workflow_forward extends ActionAbstract
                 'goback' => true,
                 'messages' => $node->messages->messages,
                 'nodeTypeID' => $node->nodeType->getID(),
-                'node_Type' => $node->nodeType->GetName()
+                'node_Type' => $node->nodeType->getName()
             );
             $this->render($values, 'show_results', 'default-3.0.tpl');
             return false;
@@ -638,7 +648,7 @@ class Action_workflow_forward extends ActionAbstract
             'result' => $valuesToShow,
             'messages' => $this->messages->messages,
             'nodeTypeID' => $node->nodeType->getID(),
-            'node_Type' => $node->nodeType->GetName()
+            'node_Type' => $node->nodeType->getName()
         );
         Logger::debug('ADDSECTION sendToPublish pre render else value: ' . print_r($values, true));
         $this->render($values, 'show_results', 'default-3.0.tpl');
@@ -702,7 +712,7 @@ class Action_workflow_forward extends ActionAbstract
         if ($idWorkFlowSlave) {
             $masterNode = new Node($idWorkFlowSlave);
             $values = array(
-                'path_master' => $masterNode->GetPath()
+                'path_master' => $masterNode->getPath()
             );
             $this->render($values, 'linked_document', 'default-3.0.tpl');
             return false;
@@ -721,7 +731,7 @@ class Action_workflow_forward extends ActionAbstract
         if ($this->messages->count(MSG_TYPE_ERROR) > 0) {
             $this->render(array(
                 'messages' => $this->messages->messages
-            ), NULL, 'messages_in_progress_action.tpl');
+            ), null, 'messages_in_progress_action.tpl');
             return false;
         }
         return true;

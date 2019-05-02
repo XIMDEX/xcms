@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,23 +32,32 @@ use Ximdex\Data\GenericData;
 
 class Workflow extends GenericData
 {
+    const WORKFLOW_ACTIONS_DIR = 'src/Workflow/Actions';
+    
+    const WORKFLOW_ACTIONS_NAMESPACE = 'Ximdex\\Workflow\\Actions\\';
+    
     public $_idField = 'id';
+    
     public $_table = 'Workflow';
+    
     public $_metaData = array(
         'id' => array('type' => "int(4)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'name' => array('type' => "varchar(50)", 'not_null' => 'true'),
         'description' => array('type' => "varchar(250)", 'not_null' => 'false'),
         'master' => array('type' => "int(1)", 'not_null' => 'true')
     );
-    public $_uniqueConstraints = ['name'];
-    public $_indexes = ['id'];
-    public $id;
-    public $name;
-    public $description;
-    public $master;
     
-    const WORKFLOW_ACTIONS_DIR = 'src/Workflow/Actions';
-    const WORKFLOW_ACTIONS_NAMESPACE = 'Ximdex\\Workflow\\Actions\\';
+    public $_uniqueConstraints = ['name'];
+    
+    public $_indexes = ['id'];
+    
+    public $id;
+    
+    public $name;
+    
+    public $description;
+    
+    public $master;
     
     private $workflowStatus;
     
@@ -228,11 +237,6 @@ class Workflow extends GenericData
                     continue;
                 }
                 $className = $info['filename'];
-                /*
-                if ($className == 'WorkflowAction') {
-                    continue;
-                }
-                */
                 $class = self::WORKFLOW_ACTIONS_NAMESPACE . $className;
                 if (! class_exists($class)) {
                     continue;

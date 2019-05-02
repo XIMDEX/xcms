@@ -31,8 +31,12 @@ use Ximdex\Data\GenericData;
 
 class WorkflowStatus extends GenericData
 {
+    const PUBLICATION_STATUS = 8;
+    
     public $_idField = 'id';
+    
     public $_table = 'WorkflowStatus';
+    
     public $_metaData = array(
         'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'name' => array('type' => "varchar(50)", 'not_null' => 'true'),
@@ -41,13 +45,21 @@ class WorkflowStatus extends GenericData
         'sort' => array('type' => "int(4)", 'not_null' => 'true'),
         'workflowId' => array('type' => "int(4)", 'not_null' => 'false')
     );
+    
     public $_uniqueConstraints = ['name'];
+    
     public $_indexes = array('id');
+    
     public $id;
+    
     public $name;
+    
     public $description;
+    
     public $action;
+    
     public $sort = 0;
+    
     public $workflowId;
     
     /**

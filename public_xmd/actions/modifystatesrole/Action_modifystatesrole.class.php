@@ -37,13 +37,13 @@ class Action_modifystatesrole extends ActionAbstract
     {
         $idNode = $this->request->getParam('nodeid');
         $role = new Role($idNode);
-        $idRoleStates = $role->GetAllStates();
+        $idRoleStates = $role->getAllStates();
         $workflow = new Workflow();
         $workflows = $workflow->findAll();
         $workflows[] = ['id' => null, 'description' => 'Common states'];
         foreach ($workflows as & $wfData) {
             $workflow = new Workflow($wfData['id']);
-            $idAllStates = $workflow->GetAllStates(! $wfData['id']);
+            $idAllStates = $workflow->getAllStates(! $wfData['id']);
             $states = [];
             foreach ($idAllStates as $idStatus) {
                 $wStatus = new WorkflowStatus($idStatus);
@@ -60,7 +60,7 @@ class Action_modifystatesrole extends ActionAbstract
         $values = array(
             'workflows' => json_encode($workflows),
             'nodeTypeID' => $node->nodeType->getID(),
-            'node_Type' => $node->nodeType->GetName(),
+            'node_Type' => $node->nodeType->getName(),
             'idRole' => $idNode);
         $this->render($values, null, 'default-3.0.tpl');
     }
