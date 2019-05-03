@@ -48,8 +48,7 @@ class Action_modifyuser extends ActionAbstract
 		    return;
 		}
 		$folder = new Node($idNode);
-        $idRegisteredUser = \Ximdex\Runtime\Session::get('userID');
-        $registeredUser = new User($idRegisteredUser);
+		$registeredUser = new User(\Ximdex\Runtime\Session::get('userID'));
         $canModifyUserGroup = $registeredUser->isAllowedAction(Group::ID_GENERAL, Action::MODIFY_GROUP_USERS);
 		$locale = new XimLocale();
 		$locales = $locale->getEnabledLocales();
@@ -75,7 +74,7 @@ class Action_modifyuser extends ActionAbstract
 
     public function modifyuser()
     {
-    	$idNode = $this->request->getParam('nodeid');
+    	$idNode = (int) $this->request->getParam('nodeid');
     	$name = trim($this->request->getParam('name'));
     	$email = trim($this->request->getParam('email'));
     	$password = trim($this->request->getParam('password_'));
@@ -85,22 +84,17 @@ class Action_modifyuser extends ActionAbstract
     	    $this->sendJSON(['messages' => $this->messages->messages]);
     	}
     	$locale = trim($this->request->getParam('locale'));
-        $general_role = $this->request->getParam('generalrole');
-        if (! $general_role) {
-            $this->messages->add(_('User role in general group is necesary'), MSG_TYPE_ERROR);
-            $this->sendJSON(['messages' => $this->messages->messages]);
-        }
-        $idRegisteredUser = \Ximdex\Runtime\Session::get('userID');
-        $registeredUser = new User($idRegisteredUser);
+        $registeredUser = new User(\Ximdex\Runtime\Session::get('userID'));
         $canModifyUserGroup = $registeredUser->isAllowedAction(Group::ID_GENERAL, Action::MODIFY_GROUP_USERS);
-        $group = new Group();
-        $group->setID(Group::getGeneralGroup());
-        $group->getUserList();
-        $roleOnNode = $group->getRoleOnNode($idNode);
         if ($canModifyUserGroup) {
+            $group = new Group(Group::getGeneralGroup());
+            // $group->getUserList();
+            $general_role = (int) $this->request->getParam('generalrole');
+            if (! $general_role) {
+                $this->messages->add(_('User role in general group is necesary'), MSG_TYPE_ERROR);
+                $this->sendJSON(['messages' => $this->messages->messages]);
+            }
             $group->changeUserRole($idNode, $general_role);
-        } elseif ($roleOnNode != $general_role) {
-            $this->messages->add(_('You don\'t have enough permissions to modify the user role'), MSG_TYPE_WARNING);
         }
     	$user = new User($idNode);
     	$user->set('Name', $name);

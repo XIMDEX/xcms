@@ -50,7 +50,7 @@ include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
 class Action_workflow_forward extends ActionAbstract
 {
     /**
-     * Default method.
+     * Default method
      * Generate the next action form
      *
      * Request params:
