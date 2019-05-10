@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,7 +32,9 @@ use Ximdex\Data\GenericData;
 class PumpersOrm extends GenericData
 {
     public $_idField = 'PumperId';
+    
     public $_table = 'Pumpers';
+    
     public $_metaData = array(
         'PumperId' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true'),
         'IdServer' => array('type' => 'int(12)', 'not_null' => 'true'),
@@ -44,13 +46,22 @@ class PumpersOrm extends GenericData
         'Pace' => array('type' => 'double', 'not_null' => 'true'),
         'ProcessedTasks' => array('type' => 'int(12)', 'not_null' => 'true')
     );
+    
     public $PumperId;
+    
     public $IdServer;
+    
     public $State;
+    
     public $StartTime = 0;
+    
     public $CheckTime = 0;
+    
     public $ProcessId;
+    
     public $VacancyLevel = 0;
+    
     public $Pace = 0;
+    
     public $ProcessedTasks = 0;
 }

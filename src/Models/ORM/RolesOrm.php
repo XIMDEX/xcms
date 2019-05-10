@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,19 +32,27 @@ use Ximdex\Data\GenericData;
 class RolesOrm extends GenericData
 {
     public $_idField = 'IdRole';
+    
     public $_table = 'Roles';
+    
     public $_metaData = array(
         'IdRole' => array('type' => "int(12)", 'not_null' => 'true', 'primary_key' => true),
         'Name' => array('type' => "varchar(255)", 'not_null' => 'true'),
         'Icon' => array('type' => "varchar(255)", 'not_null' => 'false'),
         'Description' => array('type' => "varchar(255)", 'not_null' => 'false')
     );
+    
     public $_uniqueConstraints = array(
         'IdRole' => array('Name')
     );
+    
     public $_indexes = array('IdRole');
+    
     public $IdRole;
+    
     public $Name = 0;
+    
     public $Icon;
+    
     public $Description;
 }

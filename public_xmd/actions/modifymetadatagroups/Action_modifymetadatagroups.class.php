@@ -33,7 +33,7 @@ class Action_modifymetadatagroups extends ActionAbstract
 {
     public function index()
     {
-        $nodeId = $this->request->getParam('nodeid');
+        $nodeId = (int) $this->request->getParam('nodeid');
         $node = new Node($nodeId);
         $metadata = new Metadata();
         $metadataList = $metadata->find('idMetadata, name', null, null, MULTI, true, 'idMetadata', 'name', null, true);
@@ -56,9 +56,9 @@ class Action_modifymetadatagroups extends ActionAbstract
     public function add()
     {
         $data = json_decode(file_get_contents('php://input'), true);
-        $metadataId = $data['metadata'] ?? null;
-        $schemeId = $data['scheme'] ?? null;
-        $groupId = $data['group'] ?? null;
+        $metadataId = (int) $data['metadata'] ?? null;
+        $schemeId = (int) $data['scheme'] ?? null;
+        $groupId = (int) $data['group'] ?? null;
         if (! $metadataId or ! $schemeId or ! $groupId) {
             $values = array
             (

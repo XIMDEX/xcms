@@ -26,6 +26,8 @@
 {foreach from=$group['metadata'] key=i item=data}
     {if ($data['type'] == 'image')}
         {$type = 'text'}
+    {elseif ($data['type'] == 'integer')}
+        {$type = 'number'}
     {else}
         {$type = $data['type']}
     {/if}

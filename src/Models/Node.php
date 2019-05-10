@@ -747,11 +747,11 @@ class Node extends NodesOrm
 
     /**
      * Returns if a node is contained in the node with nodetype $nodeTypeID
-     *
-     * @param $nodeTypeID
-     * @return bool
+     * 
+     * @param int $nodeTypeID
+     * @return boolean
      */
-    function IsOnNodeWithNodeType($nodeTypeID)
+    public function isOnNodeWithNodeType(int $nodeTypeID)
     {
         $this->clearError();
         if ($this->IdNode > 0) {
@@ -772,38 +772,41 @@ class Node extends NodesOrm
 
     /**
      * Returned the Id of the nearest parent which can attach groups (nodeType)
+     * 
+     * @param Node $node
+     * @return boolean|NULL|mixed
      */
-    public function GetNearest(Node $node)
+    public function getNearest(Node $node)
     {
-        $this->ClearError();
+        $this->clearError();
         if ($this->IdNode) {
             $parent = FastTraverse::getParents($node->getID(), null, null, ['CanAttachGroups' => 1], 1);
             if ($parent === false) {
                 return false;
             }
-            if (!$parent) {
+            if (! $parent) {
                 return null;
             }
             return current($parent);
         }
-        $this->SetError(1);
+        $this->setError(1);
         return false;
     }
 
     /**
      * Returns a path in the file system from where children are pending
      * Function used for renderization
-     *
-     * @return null
+     * 
+     * @return string|NULL
      */
-    function GetChildrenPath()
+    public function getChildrenPath()
     {
-        $this->ClearError();
+        $this->clearError();
         if ($this->get('IdNode') > 0) {
             return $this->class->getChildrenPath();
         }
-        $this->SetError(1);
-        return NULL;
+        $this->setError(1);
+        return null;
     }
 
     /**
@@ -811,15 +814,15 @@ class Node extends NodesOrm
      *
      * @return array
      */
-    function GetCurrentAllowedChildren()
+    public function getCurrentAllowedChildren()
     {
-        $query = sprintf("SELECT NodeType" . " FROM NodeAllowedContents" . " WHERE IdNodeType = %d", $this->nodeType->getID());
+        $query = sprintf("SELECT NodeType FROM NodeAllowedContents WHERE IdNodeType = %d", $this->nodeType->getID());
         $allowedChildrens = array();
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Query($query);
-        while (!$dbObj->EOF) {
+        $dbObj->query($query);
+        while (! $dbObj->EOF) {
             $allowedChildrens[] = $dbObj->getValue('NodeType');
-            $dbObj->Next();
+            $dbObj->next();
         }
         return $allowedChildrens;
     }
@@ -830,7 +833,7 @@ class Node extends NodesOrm
      * @param null $recursive
      * @return boolean
      */
-    public function renderizeNode($recursive = null) : bool
+    public function renderizeNode(bool $recursive = null) : bool
     {
         $this->clearError();
         if ($this->get('IdNode') > 0) {
@@ -1000,22 +1003,22 @@ class Node extends NodesOrm
 
     /**
      * Checks if the node is blocked and returns the blocker user id
-     *
-     * @return bool|null|string
+     * 
+     * @return boolean|string|NULL
      */
-    function IsBlocked()
+    public function isBlocked()
     {
-        $this->ClearError();
+        $this->clearError();
         if ($this->get('IdNode') > 0) {
             if (time() < ($this->get('BlockTime') + App::getValue('BlockExpireTime'))) {
                 return $this->get('BlockUser');
             } else {
                 $this->unBlock();
-                return NULL;
+                return null;
             }
         }
-        $this->SetError(1);
-        return NULL;
+        $this->setError(1);
+        return null;
     }
 
     /**
@@ -1023,19 +1026,19 @@ class Node extends NodesOrm
      *
      * @return bool|null|string
      */
-    function GetBlockTime()
+    public function getBlockTime()
     {
-        $this->ClearError();
+        $this->clearError();
         if ($this->get('IdNode') > 0) {
             if (time() < ($this->get('BlockTime') + App::getValue('BlockExpireTime'))) {
                 return $this->get('BlockTime');
             } else {
                 $this->unBlock();
-                return NULL;
+                return null;
             }
         }
-        $this->SetError(1);
-        return NULL;
+        $this->setError(1);
+        return null;
     }
 
     /**
@@ -1044,39 +1047,35 @@ class Node extends NodesOrm
      * @param $userID
      * @return bool|null|string
      */
-    function Block($userID)
+    public function Block(int $userID)
     {
-        $this->ClearError();
-
+        $this->clearError();
         if ($this->get('IdNode') > 0) {
-
             $currentBlockUser = $this->IsBlocked();
-            if (!$currentBlockUser || $currentBlockUser == $userID) {
+            if (! $currentBlockUser || $currentBlockUser == $userID) {
                 $this->set('BlockTime', time());
                 $this->set('BlockUser', $userID);
                 $this->update();
                 return $this->get('BlockTime');
-            } else {
-                return NULL;
             }
+            return null;
         }
-        $this->SetError(1);
-        return NULL;
+        $this->setError(1);
+        return null;
     }
 
     /**
-     * Delete a block.
+     * Delete a block
      */
-    function unBlock()
+    public function unBlock()
     {
-        $this->ClearError();
-
+        $this->clearError();
         if ($this->get('IdNode') > 0) {
             $this->set('BlockTime', null);
             $this->set('BlockUser', '');
             $this->update();
         } else {
-            $this->SetError(1);
+            $this->setError(1);
         }
     }
 
@@ -1114,7 +1113,7 @@ class Node extends NodesOrm
             // en otro caso devuelve true
             return true;
         }
-        $this->SetError(1);
+        $this->setError(1);
         return false;
     }
 
@@ -1162,13 +1161,13 @@ class Node extends NodesOrm
 
     /**
      * Creates a new node and loads its ID in the class
-     *
-     * @param $name
-     * @param $parentID
-     * @param $nodeTypeID
-     * @param null $stateID
+     * 
+     * @param string $name
+     * @param int $parentID
+     * @param int $nodeTypeID
+     * @param int $stateID
      * @param array $subfolders
-     * @return bool|string
+     * @return boolean|boolean|string
      */
     public function createNode(string $name, int $parentID, int $nodeTypeID, int $stateID = null, $subfolders = [])
     {
@@ -1461,7 +1460,7 @@ class Node extends NodesOrm
         return $res;
     }
 
-    function CanDenyDeletion()
+    public function canDenyDeletion()
     {
         if (is_object($this->class) && method_exists($this->class, 'CanDenyDeletion')) {
             return $this->class->CanDenyDeletion();
@@ -1474,13 +1473,13 @@ class Node extends NodesOrm
      *
      * @return array|null
      */
-    function GetDependencies()
+    public function getDependencies()
     {
-        $this->ClearError();
+        $this->clearError();
         if ($this->get('IdNode') > 0) {
             return $this->class->getDependencies();
         }
-        $this->SetError(1);
+        $this->setError(1);
         return NULL;
     }
 
@@ -1491,31 +1490,27 @@ class Node extends NodesOrm
      * @param array $excludeNodes
      * @return array|null
      */
-    function GetGlobalDependencies($excludeNodes = array())
+    public function getGlobalDependencies(array $excludeNodes = array())
     {
-        $this->ClearError();
+        $this->clearError();
         if ($this->get('IdNode') > 0) {
             $deps = array_unique($this->TraverseTree(4));
             $list = array_unique($this->TraverseTree());
             $brokenDeps = array_diff($deps, $list);
             $brokenDeps = array_diff($brokenDeps, $excludeNodes);
-
             if (sizeof($brokenDeps)) {
                 foreach ($brokenDeps as $depID) {
                     if (is_array($excludeNodes) && in_array($depID, $excludeNodes)) {
                         $exclude = array_merge($excludeNodes, $brokenDeps, $list);
                         $dep = new Node($depID);
                         $brokenDeps = array_merge($brokenDeps, $dep->getGlobalDependencies($exclude));
-                        // unset($dep);
-                        unset($dep);
                     }
                 }
             }
-
             return (array_unique($brokenDeps));
         }
-        $this->SetError(1);
-        return NULL;
+        $this->setError(1);
+        return null;
     }
 
     /**
@@ -1677,12 +1672,11 @@ class Node extends NodesOrm
      *
      * @return array|null
      */
-    function GetGroupList()
+    public function getGroupList()
     {
-        $this->ClearError();
+        $this->clearError();
         if ($this->get('IdNode') > 0) {
-
-            if (!$this->nodeType->get('CanAttachGroups')) {
+            if (! $this->nodeType->get('CanAttachGroups')) {
                 $parent = $this->get('IdParent');
                 if ($parent) {
                     $parent = new Node($parent);
@@ -1696,77 +1690,76 @@ class Node extends NodesOrm
                 }
             } else {
                 $dbObj = new \Ximdex\Runtime\Db();
-                $dbObj->Query(sprintf("SELECT IdGroup FROM RelGroupsNodes WHERE IdNode = %d", $this->get('IdNode')));
+                $dbObj->query(sprintf("SELECT IdGroup FROM RelGroupsNodes WHERE IdNode = %d", $this->get('IdNode')));
                 $groupList = array();
-                while (!$dbObj->EOF) {
+                while (! $dbObj->EOF) {
                     $groupList[] = $dbObj->getValue("IdGroup");
-                    $dbObj->Next();
+                    $dbObj->next();
                 }
             }
             return $groupList;
         }
-        $this->SetError(1);
-        return NULL;
+        $this->setError(1);
+        return null;
     }
 
     /**
      * Returns the list of groups associated to this node
      *
-     * @param
-     *            $groupID
+     * @param int $groupID
      * @return null|String
      */
-    function GetRoleOfGroup($groupID)
+    public function getRoleOfGroup(int $groupID)
     {
-        $this->ClearError();
+        $this->clearError();
         if ($this->get('IdNode')) {
-            if (!$this->nodeType->get('CanAttachGroups')) {
+            if (! $this->nodeType->get('CanAttachGroups')) {
                 $parent = $this->getParent();
                 if ($parent) {
-                    if (!$this->numErr) {
+                    if (! $this->numErr) {
                         $node = new Node($parent);
                         $role = $node->getRoleOfGroup($groupID);
-                        if (!$node->numErr)
+                        if (! $node->numErr) {
                             return $role;
+                        }
                     }
                 }
             } else {
                 $sql = sprintf("SELECT IdRole FROM RelGroupsNodes WHERE IdNode = %d AND IdGroup = %d", $this->get('IdNode'), $groupID);
                 $dbObj = new \Ximdex\Runtime\Db();
-                $dbObj->Query($sql);
+                $dbObj->query($sql);
                 if ($dbObj->numRows > 0) {
                     return $dbObj->getValue("IdRole");
                 } else {
-                    $this->SetError(5);
+                    $this->setError(5);
                 }
             }
         }
-        $this->SetError(1);
-        return NULL;
+        $this->setError(1);
+        return null;
     }
 
     /**
-     * Returns the list of users associated to this node* @param $ignoreGeneralGroup
+     * Returns the list of users associated to this node
      *
-     * @param null $ignoreGeneralGroup
+     * @param bool $ignoreGeneralGroup
      * @return array|null
      */
-    function GetUserList($ignoreGeneralGroup = null)
+    public function getUserList(bool $ignoreGeneralGroup = null)
     {
-        $this->ClearError();
+        $this->clearError();
         $group = new Group();
         if ($this->get('IdNode') > 0) {
             $groupList = $this->getGroupList();
 
-            // / Taking off the General Group if needed
+            // Taking off the General Group if needed
             if ($ignoreGeneralGroup) {
                 $groupList = array_diff($groupList, array(
                     Group::getGeneralGroup()
                 ));
             }
-
             $userList = array();
-            if (!$this->numErr) {
+            if (! $this->numErr) {
                 foreach ($groupList as $groupID) {
                     $group = new Group($groupID);
                     $tempUserList = $group->getUserList();
@@ -1776,43 +1769,43 @@ class Node extends NodesOrm
                 return array_unique($userList);
             }
         }
-        $this->SetError(1);
-        return NULL;
+        $this->setError(1);
+        return null;
     }
 
     /**
      * This function does not delete an user from Users table, this disassociated from the group
      *
-     * @param $groupID
+     * @param int $groupID
      */
-    function DeleteGroup($groupID)
+    public function deleteGroup(int $groupID)
     {
-        $this->ClearError();
+        $this->clearError();
         if ($this->get('IdNode') > 0) {
             if ($this->nodeType->get('CanAttachGroups')) {
                 $dbObj = new \Ximdex\Runtime\Db();
                 $query = sprintf("DELETE FROM RelGroupsNodes WHERE IdNode = %d AND IdGroup = %d", $this->get('IdNode'), $groupID);
-                $dbObj->Execute($query);
+                $dbObj->execute($query);
                 if ($dbObj->numErr) {
-                    $this->SetError(5);
+                    $this->setError(5);
                 }
             }
         } else {
-            $this->SetError(1);
+            $this->setError(1);
         }
     }
 
     /**
      * Associated an user to a group with a concrete role
-     *
-     * @param $groupID
-     * @param $roleID
-     * @return bool
+     * 
+     * @param int $groupID
+     * @param int $roleID
+     * @return boolean
      */
-    function AddGroupWithRole($groupID, $roleID = null)
+    public function AddGroupWithRole(int $groupID, int $roleID = null)
     {
-        $this->ClearError();
-        if (!is_null($groupID)) {
+        $this->clearError();
+        if (! is_null($groupID)) {
             if ($this->nodeType->get('CanAttachGroups')) {
                 
                 /*
@@ -1823,7 +1816,7 @@ class Node extends NodesOrm
                 $sql = 'select * from RelGroupsNodes where IdGroup = ' . $groupID . ' and IdNode = ' . $this->get('IdNode');
                 $res = $dbObj->query($sql);
                 if ($res === false or $dbObj->numErr) {
-                    $this->SetError(5);
+                    $this->setError(5);
                     return false;
                 }
                 if ($dbObj->numRows) {
@@ -1836,15 +1829,15 @@ class Node extends NodesOrm
                 }
                 $query = 'INSERT INTO RelGroupsNodes (IdGroup, IdNode, IdRole) VALUES (' . $groupID . ', ' . $this->get('IdNode') 
                     . ', ' . $roleID . ')';
-                $dbObj->Execute($query);
+                $dbObj->execute($query);
                 if ($dbObj->numErr) {
-                    $this->SetError(5);
+                    $this->setError(5);
                     return false;
                 }
                 return true;
             }
         } else {
-            $this->SetError(1);
+            $this->setError(1);
         }
         return false;
     }
@@ -1876,76 +1869,73 @@ class Node extends NodesOrm
     /**
      * Returns true if an user belongs to a group
      *
-     * @param $groupID
+     * @param int $groupID
      * @return int|null
      */
-    function HasGroup($groupID)
+    public function hasGroup(int $groupID)
     {
-        $this->ClearError();
+        $this->clearError();
         if ($this->get('IdNode') > 0) {
             $dbObj = new \Ximdex\Runtime\Db();
             $dbObj->query(sprintf("SELECT IdGroup FROM RelGroupsNodes WHERE IdGroup = %d AND IdNode = %d", $groupID, $this->get('IdNode')));
             if ($dbObj->numErr) {
-                $this->SetError(5);
+                $this->setError(5);
             }
             return $dbObj->numRows;
         }
-        $this->SetError(1);
-        return NULL;
+        $this->setError(1);
+        return null;
     }
 
-    /**
-     * @return array|null
-     */
-    function GetAllGroups()
+    public function getAllGroups()
     {
         $salida = array();
-        $this->ClearError();
+        $this->clearError();
         if ($this->get('IdNode') > 0) {
             $dbObj = new \Ximdex\Runtime\Db();
-            $dbObj->Query(sprintf("SELECT IdGroup FROM RelGroupsNodes WHERE IdNode = %d", $this->get('IdNode')));
-            if (!$dbObj->numErr) {
+            $dbObj->query(sprintf("SELECT IdGroup FROM RelGroupsNodes WHERE IdNode = %d", $this->get('IdNode')));
+            if (! $dbObj->numErr) {
                 while (!$dbObj->EOF) {
                     $salida[] = $dbObj->getValue("IdGroup");
-                    $dbObj->Next();
+                    $dbObj->next();
                 }
                 return $salida;
             } else {
-                $this->SetError(5);
+                $this->setError(5);
             }
         }
-        return NULL;
+        return null;
     }
 
     /**
      * Function which makes a node to have a workflow as other node and depends on it
      *
-     * @param $nodeID
+     * @param int $nodeID
      */
-    function SetWorkFlowMaster($nodeID)
+    public function setWorkFlowMaster(int $nodeID)
     {
-        $this->ClearError();
+        $this->clearError();
         if ($this->get('IdNode') > 0) {
             if ($nodeID != $this->get('IdNode')) {
                 $this->set('SharedWorkflow', $nodeID);
                 $this->update();
             }
         } else {
-            $this->SetError(1);
+            $this->setError(1);
         }
     }
 
     /**
      * Function which makes the node to have a new independent workflow
      */
-    function ClearWorkFlowMaster()
+    public function clearWorkFlowMaster()
     {
-        $this->ClearError();
+        $this->clearError();
         if ($this->get('IdNode') > 0) {
             $this->set('SharedWorkflow', null);
             $this->update();
         } else {
-            $this->SetError(1);
+            $this->setError(1);
         }
     }
 
@@ -2147,32 +2137,22 @@ class Node extends NodesOrm
         return current($section);
     }
 
-    /**
-     * @return bool|null|String
-     */
-    function getServer()
+    public function getServer()
     {
         $result = $this->_getParentByType(NodeTypeConstants::SERVER);
         return $result;
     }
 
-    /**
-     * @return bool|null|String
-     */
-    function getProject()
+    public function getProject()
     {
         $result = $this->_getParentByType(NodeTypeConstants::PROJECT);
-        if (!($result > 0)) {
+        if (! $result) {
             $result = $this->_getParentByType(NodeTypeConstants::XSIR_REPOSITORY);
         }
         return $result;
     }
 
-    /**
-     * @param null $type
-     * @return bool|null|String
-     */
-    function _getParentByType($type = NULL)
+    public function _getParentByType(int $type = null)
     {
         if (is_null($type)) {
             Logger::fatal('Trying to call a function without params');
@@ -2189,7 +2169,7 @@ class Node extends NodesOrm
             return $db->getValue('IdNode');
         }
         Logger::warning(sprintf(_("The nodetype %s could not be obtained for node "), $type) . $this->get('IdNode'));
-        return NULL;
+        return null;
     }
     
     /**
@@ -2268,19 +2248,19 @@ class Node extends NodesOrm
     /**
      * Gets all ancestors of the node
      *
-     * @param null $fromNode
+     * @param int $fromNode
      * @return array
      */
-    function getAncestors($fromNode = null)
+    function getAncestors(int $fromNode = null)
     {
         unset($fromNode);
         $dbObj = new \Ximdex\Runtime\Db();
         $sql = sprintf("SELECT IdNode FROM FastTraverse WHERE IdChild= %d ORDER BY Depth DESC", $this->get('IdNode'), $this->get('IdNode'));
-        $dbObj->Query($sql);
+        $dbObj->query($sql);
         $list = array();
-        while (!$dbObj->EOF) {
+        while (! $dbObj->EOF) {
             $list[] = $dbObj->getValue('IdNode');
-            $dbObj->Next();
+            $dbObj->next();
         }
         return $list;
     }
@@ -2307,39 +2287,19 @@ class Node extends NodesOrm
     }
 
     /**
-     * @param $depth
-     * @param int $node_id
-     * @return array
-     */
-    function TraverseByDepth($depth, $node_id = 1)
-    {
-        $dbObj = new \Ximdex\Runtime\Db();
-        $sql = sprintf("SELECT IdChild FROM FastTraverse WHERE IdNode = %d AND Depth = %d ORDER BY IdNode", $node_id, $depth);
-        $dbObj->Query($sql);
-
-        $list = array();
-        while (!$dbObj->EOF) {
-            $list[] = $dbObj->getValue('IdChild');
-            $dbObj->Next();
-        }
-        return $list;
-    }
-
-    /**
      * JAP 20040617, GetSections_ximTREE
      *
-     * @param $langID
-     * @param $top
-     * @param $bottom
+     * @param int $langID
+     * @param int $top
+     * @param int $bottom
      * @return string
      */
-    function GetSections_ximTREE($langID, $top, $bottom)
+    public function getSections_ximTREE(int $langID, int $top, int $bottom)
     {
         // Getting the nodetypes to select
         $auxType = new NodeType();
         $auxType->SetByName("Section");
         $sectionTypeId = $auxType->get('IdNodeType');
-        // $auxType = new NodeType();
         $auxType->SetByName("Server");
         $serverTypeId = $auxType->get('IdNodeType');
 
@@ -2410,7 +2370,8 @@ class Node extends NodesOrm
      * @param $branch
      * @return string
      */
-    function expandChildren_ximTREE($nodeID, $sectionTypeId, $level, $langID, $sectionList, $endlevel, $branch = null)
+    public function expandChildren_ximTREE(int $nodeID, int $sectionTypeId, int $level, int $langID, array $sectionList, int $endlevel
+        , int $branch = null)
     {
         $node = new Node($nodeID);
         $nodoseleccionado = $sectionList[$level];
@@ -2519,10 +2480,7 @@ class Node extends NodesOrm
         return $ret;
     }
 
-    /**
-     * @return array
-     */
-    function DatosNodo()
+    public function DatosNodo()
     {
         $list = array();
         $list['IdNode'] = $this->get('IdNode');
@@ -2537,10 +2495,7 @@ class Node extends NodesOrm
         $this->numErr = null;
         $this->msgErr = null;
     }
-
-    /**
-     * @param $code
-     */
+    
     public function setError(int $code)
     {
         $this->numErr = $code;
@@ -2603,7 +2558,7 @@ class Node extends NodesOrm
         }
 
         // Getting node Properties
-        $nodeProperty = new \Ximdex\Models\NodeProperty();
+        $nodeProperty = new NodeProperty();
         $result = $nodeProperty->getPropertiesByNode($this->get('IdNode'));
         if (! is_null($result)) {
             foreach ($result as $resultData) {
@@ -2759,13 +2714,7 @@ class Node extends NodesOrm
         }
     }
 
-    /**
-     * @param $idNodeType
-     * @param null $parent
-     * @param bool $checkAmount
-     * @return bool
-     */
-    function checkAllowedContent($idNodeType, $parent = NULL, $checkAmount = true)
+    public function checkAllowedContent(int $idNodeType, int $parent = null, bool $checkAmount = true)
     {
         if (is_null($parent)) {
             if (is_null($this->get('IdParent'))) {
@@ -2775,24 +2724,24 @@ class Node extends NodesOrm
             $parent = $this->get('IdParent');
         }
         $parentNode = new Node($parent);
-        if (!$parentNode->getID()) {
+        if (! $parentNode->getID()) {
             Logger::error(_('Error checking if the node is allowed - parent does not exist [2]'));
             $this->messages->add(_('The specified parent node does not exist'), MSG_TYPE_ERROR);
             return false;
         }
         $nodeAllowedContents = $parentNode->getCurrentAllowedChildren();
-        if (!$nodeAllowedContents) {
+        if (! $nodeAllowedContents) {
             Logger::error(sprintf(_("The parent %s does not allow any nested node from him"), $parent));
             $this->messages->add(_('This node type is not allowed in this position'), MSG_TYPE_ERROR);
             return false;
         }
         $nodeType = new NodeType($idNodeType);
-        if (!$nodeType->getID()) {
+        if (! $nodeType->getID()) {
             Logger::error(sprintf(_("The introduced nodetype %s does not exist"), $idNodeType));
             $this->messages->add(_('The specified nodetype does not exist'), MSG_TYPE_ERROR);
             return false;
         }
-        if (!in_array($idNodeType, $nodeAllowedContents)) {
+        if (! in_array($idNodeType, $nodeAllowedContents)) {
             Logger::error("The nodetype $idNodeType is not allowed in the parent (idnode = " . $parent . ") - (idnodetype = " 
                 . $parentNode->get('IdNodeType') . ") which allowed nodetypes are: " . print_r($nodeAllowedContents, true));
             $this->messages->add(_('This node type is not allowed in this position'), MSG_TYPE_ERROR);
@@ -2802,11 +2751,11 @@ class Node extends NodesOrm
         $query = sprintf('SELECT Amount from NodeAllowedContents WHERE IdNodeType = %s AND NodeType = %s', 
             $dbObj->sqlEscapeString($parentNode->nodeType->get('IdNodeType')), $dbObj->sqlEscapeString($idNodeType));
         $dbObj->query($query);
-        if (!$dbObj->numRows) {
+        if (! $dbObj->numRows) {
             $this->messages->add(_('The node is not allowed inside this parent'), MSG_TYPE_ERROR);
             return false;
         }
-        if (!$checkAmount) {
+        if (! $checkAmount) {
             return true;
         }
         $amount = $dbObj->getValue('Amount');
@@ -2821,11 +2770,7 @@ class Node extends NodesOrm
         return false;
     }
 
-    /**
-     * @param int $detailLevel
-     * @return string
-     */
-    function toStr($detailLevel = DETAIL_LEVEL_LOW)
+    public function toStr(int $detailLevel = DETAIL_LEVEL_LOW)
     {
         $details = sprintf("Nombre: %s\n", $this->get('Name'));
         $details .= sprintf("IdNodeType: %s\n", $this->get('IdNodeType'));
@@ -2875,19 +2820,15 @@ class Node extends NodesOrm
         return null;
     }
 
-    /**
-     * @param bool $withInheritance
-     * @return array|null
-     */
-    function getAllProperties($withInheritance = false)
+    public function getAllProperties(bool $withInheritance = false)
     {
         $returnValue = array();
-        $nodeProperty = new \Ximdex\Models\NodeProperty();
+        $nodeProperty = new NodeProperty();
         if ($withInheritance) {
             $sql = "SELECT IdNode FROM FastTraverse WHERE IdChild = " . $this->get('IdNode') . " ORDER BY Depth ASC";
             $db = new \Ximdex\Runtime\Db();
-            $db->Query($sql);
-            while (!$db->EOF) {
+            $db->query($sql);
+            while (! $db->EOF) {
 
                 // Getting property
                 if ($db->getValue('IdNode') < 1) {
@@ -2908,14 +2849,14 @@ class Node extends NodesOrm
                         $returnValue[$propertyInfo['Property']][] = $propertyInfo['Value'];
                     }
                 }
-                $db->Next();
+                $db->next();
             }
         } else {
             $properties = $nodeProperty->find('Property, Value', 'IdNode = %s', array(
                 $this->get('IdNode')
             ));
             if (empty($properties)) {
-                return NULL;
+                return null;
             }
             foreach ($properties as $propertyInfo) {
                 $returnValue[$propertyInfo['Property']][] = $propertyInfo['Value'];
@@ -2932,16 +2873,16 @@ class Node extends NodesOrm
     }
 
     /**
-     * Returna boolean value for a property with 'true' or 'false'
-     *
-     * @param $property
+     * Return a boolean value for a property with 'true' or 'false'
+     * 
+     * @param string $property
      * @param bool $withInheritance
-     * @return bool
+     * @return boolean
      */
-    function getSimpleBooleanProperty($property, $withInheritance = true)
+    public function getSimpleBooleanProperty(string $property, bool $withInheritance = true)
     {
         $property = $this->getProperty($property, $withInheritance);
-        if (!((is_array($property)) && ($property[0] == "true"))) {
+        if (! ((is_array($property)) && ($property[0] == "true"))) {
             $value = false;
         } else {
             $value = true;
@@ -2949,13 +2890,9 @@ class Node extends NodesOrm
         return $value;
     }
 
-    /**
-     * @param $property
-     * @param $value
-     */
-    function setSingleProperty($property, $value)
+    public function setSingleProperty(string $property, string $value)
     {
-        $nodeProperty = new \Ximdex\Models\NodeProperty();
+        $nodeProperty = new NodeProperty();
         $properties = $nodeProperty->find('IdNodeProperty', 'IdNode = %s AND Property = %s AND Value = %s', array(
             $this->get('IdNode'),
             $property,
@@ -2966,18 +2903,13 @@ class Node extends NodesOrm
         }
     }
 
-    /**
-     * @param $property
-     * @param $values
-     */
-    function setProperty($property, $values)
+    function setProperty(string $property, $values)
     {
         // Removing previous values
-        if (!is_array($values))
-            $values = array(
-                "0" => $values
-            );
-        $nodeProperty = new \Ximdex\Models\NodeProperty();
+        if (! is_array($values)) {
+            $values[] = $values;
+        }
+        $nodeProperty = new NodeProperty();
         $nodeProperty->deleteByNodeProperty($this->get('IdNode'), $property);
 
         // Adding new values
@@ -2987,39 +2919,30 @@ class Node extends NodesOrm
         }
     }
 
-    /**
-     * @param $property
-     * @return bool|true
-     */
-    function deleteProperty($property)
+    public function deleteProperty(string $property)
     {
         if (!($this->get('IdNode') > 0)) {
             $this->messages->add(_('The node over which property want to be deleted does not exist ') . $property, MSG_TYPE_WARNING);
             return false;
         }
-        $nodeProperty = new \Ximdex\Models\NodeProperty();
+        $nodeProperty = new NodeProperty();
         return $nodeProperty->deleteByNodeProperty($this->get('IdNode'), $property);
     }
 
-    /**
-     * @param $property
-     * @param $value
-     * @return bool
-     */
-    function deletePropertyValue($property, $value)
+    public function deletePropertyValue(string $property, string $value)
     {
-        if (!($this->get('IdNode') > 0)) {
+        if (! $this->get('IdNode')) {
             $this->messages->add(_('The node over which property want to be deleted does not exist ') . $property, MSG_TYPE_WARNING);
             return false;
         }
-        $nodeProperty = new \Ximdex\Models\NodeProperty();
+        $nodeProperty = new NodeProperty();
         $properties = $nodeProperty->find('IdNodeProperty', 'IdNode = %s AND Property = %s AND Value = %s', array(
             $this->get('IdNode'),
             $property,
             $value
         ), MONO);
         foreach ($properties as $idNodeProperty) {
-            $nodeProperty = new \Ximdex\Models\NodeProperty($idNodeProperty);
+            $nodeProperty = new NodeProperty($idNodeProperty);
             $nodeProperty->delete();
         }
         return true;
@@ -3059,7 +2982,7 @@ class Node extends NodesOrm
                 $workflow = new Workflow($this->nodeType->getWorkflow(), $idNextState);
             } while (! $workflow->isFinalState());
         }
-        return NULL;
+        return null;
     }
 
     /**
@@ -3090,9 +3013,6 @@ class Node extends NodesOrm
         return true;
     }
 
-    /**
-     * @return array
-     */
     public function getLastVersion()
     {
         $sql = "SELECT V.IdVersion, V.Version, V.SubVersion, V.IdUser, V.Date, U.Name as UserName, V.File ";
@@ -3100,7 +3020,7 @@ class Node extends NodesOrm
         $sql .= " WHERE V.IdNode = '" . $this->get('IdNode') . "' ";
         $sql .= " ORDER BY V.IdVersion DESC LIMIT 1 ";
         $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->Query($sql);
+        $dbObj->query($sql);
         if ($dbObj->numRows > 0) {
             if ($dbObj->getValue("Version") == 0 && $dbObj->getValue("SubVersion") == 0) {
                 $state = 0;
@@ -3120,7 +3040,7 @@ class Node extends NodesOrm
                 "File" => $dbObj->getValue("File")
             );
         } else {
-            $this->SetError(5);
+            $this->setError(5);
         }
         return null;
     }
@@ -3178,26 +3098,21 @@ class Node extends NodesOrm
         return $schemas;
     }
 
-    /**
-     * @param $type
-     * @param int $schemaTypeID
-     * @return NULL|array|bool
-     */
-    function getSchemas($type = NULL)
+    public function getSchemas($type = NULL)
     {
         $idProject = $this->getProject();
-        if (!$idProject) {
+        if (! $idProject) {
             Logger::error(_('It was not possible to obtain the node project folder'));
             return NULL;
         }
         $project = new Node($idProject);
-        if (!$project->getID()) {
+        if (! $project->getID()) {
             Logger::error('A project with ID: ' . $idProject . ' could not be obtained');
             return NULL;
         }
         $dirName = App::getValue("SchemasDirName");
         $folder = new Node($project->getChildByName($dirName));
-        if (!$folder->getID()) {
+        if (! $folder->getID()) {
             Logger::error('Schemas folder could not be obtained');
             return NULL;
         }
@@ -3211,7 +3126,7 @@ class Node extends NodesOrm
             $folder->get('IdNode'),
             $schemas
         ), MONO, false);
-        if (!empty($type)) {
+        if (! empty($type)) {
             foreach ($schemas as $key => $idSchema) {
                 $schema = new Node($idSchema);
                 $schemaType = $schema->getProperty('SchemaType');
@@ -3223,20 +3138,16 @@ class Node extends NodesOrm
                 }
             }
         }
-        if (!is_array($schemas)) {
+        if (! is_array($schemas)) {
             Logger::info(sprintf('The specified folder (%s) is not containing schemas', $folder->get('IdNode')));
             return;
         }
         return $schemas;
     }
 
-    /**
-     * @param $destNodeId
-     * @return array
-     */
-    function checkTarget($destNodeId)
+    public function checkTarget(int $destNodeId = null)
     {
-        if (!$destNodeId) {
+        if (! $destNodeId) {
             return null;
         }
         $changeName = 0;    // Assuming by default they're not the same
@@ -3253,24 +3164,24 @@ class Node extends NodesOrm
         // Query to NodeAllowedContents
         $sql1 = "SELECT Amount FROM NodeAllowedContents WHERE IdNodeType = $destNodeType and NodeType = $actionNodeType";
         $db = new \Ximdex\Runtime\Db();
-        $db->Query($sql1);
-        while (!$db->EOF) {
+        $db->query($sql1);
+        while (! $db->EOF) {
             $amount = $db->getValue('Amount');
-            $db->Next();
+            $db->next();
         }
-        if ($amount == NULL) {
+        if ($amount == null) {
             $amount = -1;
         } // If there is not a relation allowed, abort the copy
         
         // Query to FastTraverse
         $sql2 = "SELECT count(Depth) FROM FastTraverse WHERE FastTraverse.IdNode = $destNodeId " . 
             "and IdChild in (SELECT IdNode FROM Nodes WHERE IdNodeType = $actionNodeType) and Depth = 1";
-        $db->Query($sql2);
-        while (!$db->EOF) {
+        $db->query($sql2);
+        while (! $db->EOF) {
             $existing = $db->getValue('count(Depth)');
-            $db->Next();
+            $db->next();
         }
-        if ($existing == NULL) {
+        if ($existing == null) {
             $existing = 0;
         } // Dont exist a relation yet
         
@@ -3301,10 +3212,7 @@ class Node extends NodesOrm
         );
     }
 
-    /**
-     * @return bool
-     */
-    function IsModified()
+    public function isModified()
     {
         $version = $this->getLastVersion();
         if ($version["SubVersion"] == "0") {

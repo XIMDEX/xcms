@@ -34,14 +34,14 @@
                 <h2 class="h2_general">{t}Associate metadata to group{/t}</h2>
             </div>
             <div>
-                <div class="input-text icon columns addMetadataFormField" style="width: 30%;">
+                <div class="input-select icon columns addMetadataFormField" style="width: 30%;">
                     <label class="label_title label_general lable-text label-select" for="metadata">{t}Metadata{/t} *</label>
                     <select ng-model="metadata" id="metadata">
                         <option ng-repeat="metadata in metadataList | orderObjectBy: 'name'" 
                                 value="#/metadata.idMetadata/#">#/metadata.name/#</option>
                     </select>
                 </div>
-                <div class="input-text icon columns addMetadataFormField" style="width: 35%;">
+                <div class="input-select icon columns addMetadataFormField" style="width: 35%;">
                     <label class="label_title label_general label-select" for="schema">{t}Scheme{/t} *</label>
                     <select ng-model="scheme" id="scheme">
                         <option ng-repeat="scheme in schemes | orderObjectBy: 'name'" value="#/scheme.id/#">#/scheme.name/#</option>

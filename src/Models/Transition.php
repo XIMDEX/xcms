@@ -38,7 +38,9 @@ class Transition extends GenericData
     const CALLBACK_FOLDER = XIMDEX_ROOT_PATH . '/src/Nodeviews/';
     
     public $_idField = 'id';
+    
     public $_table = 'Transitions';
+    
     public $_metaData = array(
         'id' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'cacheable' => array('type' => 'tinyint(1)', 'not_null' => 'true'),
@@ -46,13 +48,20 @@ class Transition extends GenericData
         'viewClass' => array('type' => 'varchar(50)', 'not_null' => 'false'),
         'previousTransitionId' => array('type' => 'int(12)', 'not_null' => 'false')
     );
+    
     public $_uniqueConstraints = ['name'];
+    
     public $_indexes = ['id'];
+    
     public $id;
+    
     public $cacheable = 0;
+    
     public $name;
-    public $viewClass = null;
-    public $previousTransitionId = null;
+    
+    public $viewClass;
+    
+    public $previousTransitionId;
     
     public function __construct(int $id = 0)
     {

@@ -62,10 +62,10 @@ class Response
     /**
      * Sets the response
      * 
-     * @param Response $response
+     * @param mixed $response
      * @return \XimdexApi\core\Response
      */
-    public function setResponse(Response $response)
+    public function setResponse($response)
     {
         $this->response = $response;
         return $this;

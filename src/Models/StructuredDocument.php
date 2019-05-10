@@ -48,8 +48,7 @@ class StructuredDocument extends StructuredDocumentsOrm
     
     public $msgErr;
     
-    public $errorList = array
-    (
+    public $errorList = array(
         1 => 'Error while connecting with the database',
         2 => 'The structured document does not exist',
         3 => 'Not implemented yet',
@@ -290,9 +289,8 @@ class StructuredDocument extends StructuredDocumentsOrm
      */
     public function getMetadata() : array
     {
-        $node = new Node($this->getId());
-        $metadata = (new Metadata)->getMetadataSchemeAndGroupByNodeType($node->getNodeType(), $this->getId());
-        return $metadata;
+        $node = new Node($this->getID());
+        return (new Metadata)->getMetadataSchemeAndGroupByNodeType($node->getNodeType(), $this->getID());
     }
 
     public function setMetadata(array $metadata) : array
@@ -300,8 +298,8 @@ class StructuredDocument extends StructuredDocumentsOrm
         $result = [];
         $metadataClass = new Metadata();
         foreach ($metadata as $group => $meta) {
-            $metadataClass->deleteMetadataValuesByNodeIdAndGroupId($this->getId(), $group);
-            $val = $metadataClass->addMetadataValuesByNodeId($meta, $this->getId());
+            $metadataClass->deleteMetadataValuesByNodeIdAndGroupId($this->getID(), $group);
+            $val = $metadataClass->addMetadataValuesByNodeId($meta, $this->getID());
             if ($val) {
                 $result[$group] = $meta;
             }

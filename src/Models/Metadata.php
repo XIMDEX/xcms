@@ -36,11 +36,7 @@ use Ximdex\Properties\InheritableProperty;
 
 class Metadata extends GenericData
 {
-    const META_FILES = [
-        'image',
-        'file',
-        'link'
-    ];
+    const META_FILES = ['image', 'file', 'link'];
     
     const META_TYPES = ['integer', 'float', 'text', 'boolean', 'date', 'array', 'image', 'link', 'file'];
     
@@ -60,8 +56,7 @@ class Metadata extends GenericData
         'type' => array('type' => 'varchar(255)', 'not_null' => 'true')
     );
     
-    public $_uniqueConstraints = array
-    (
+    public $_uniqueConstraints = array(
         'name' => array('name'),
     );
     
@@ -74,13 +69,16 @@ class Metadata extends GenericData
     public $defaultValue;
     
     public $type = 'text';
+    
+    public $schemeId;
 
     public function getMetadataSchemesAndGroups(bool $withValuesCount = false): array
     {
         $query = sprintf('SELECT MetadataGroup.idMetadataGroup, MetadataGroup.name as groupName,
             MetadataScheme.name as sectionName, MetadataScheme.idMetadataScheme 
             FROM MetadataScheme 
-            JOIN MetadataGroup ON MetadataScheme.idMetadataScheme = MetadataGroup.idMetadataScheme');
+            JOIN MetadataGroup ON MetadataScheme.idMetadataScheme = MetadataGroup.idMetadataScheme 
+            ORDER BY MetadataScheme.name, MetadataGroup.name');
         $dbObj = new \Ximdex\Runtime\Db();
         if ($dbObj->query($query) === false) {
             throw new \Exception('Query error in metadata scheme retrieve operation');
@@ -113,7 +111,8 @@ class Metadata extends GenericData
         }
         $dbObj = new \Ximdex\Runtime\Db();
         $query = sprintf('SELECT MetadataGroup.idMetadataGroup, MetadataGroup.name as groupName,
-              MetadataScheme.name as sectionName, MetadataScheme.idMetadataScheme FROM RelMetadataSchemeNodeType
+              MetadataScheme.name as sectionName, MetadataScheme.idMetadataScheme
+              FROM RelMetadataSchemeNodeType
               JOIN MetadataScheme ON MetadataScheme.idMetadataScheme = RelMetadataSchemeNodeType.idMetadataScheme
               JOIN MetadataGroup ON MetadataScheme.idMetadataScheme = MetadataGroup.idMetadataScheme
               WHERE idNodeType = %s
@@ -134,8 +133,11 @@ class Metadata extends GenericData
             foreach ($values[InheritableProperty::METADATA_SCHEME] as $group) {
                 $inheritedGroups[] = $group['Id'];
             }
-            $query .= ' AND MetadataScheme.idMetadataScheme IN (' . implode(', ', $inheritedGroups) . ')';
+            if ($inheritedGroups) {
+                $query .= ' AND MetadataScheme.idMetadataScheme IN (' . implode(', ', $inheritedGroups) . ')';
+            }
         }
+        $query .= ' ORDER BY MetadataScheme.name, MetadataGroup.name';
         if ($dbObj->query($query) === false) {
             throw new \Exception('Query error in metadata scheme retrieve operation');
         }
@@ -185,40 +187,6 @@ class Metadata extends GenericData
             if ($withValuesCount) {
                 $returnArray[$id]['values'] = Metadata::countMetadataValues($id, $idGroup);
             }
-            $dbObj->next();
-        }
-        return $returnArray;
-    }
-    
-    public function getMetadataByMetagroupAndNodeId(int $idGroup, int $nodeId): array
-    {
-        $query = sprintf('SELECT Metadata.name, Metadata.type, RelMetadataGroupMetadata.required,
-            RelMetadataGroupMetadata.idRelMetadataGroupMetadata,
-            (
-            	CASE
-                	WHEN MetadataValue.value IS NULL THEN Metadata.defaultValue
-                    ELSE MetadataValue.value
-                END
-            ) AS value
-            , RelMetadataGroupMetadata.readonly
-            FROM RelMetadataGroupMetadata 
-            JOIN Metadata ON RelMetadataGroupMetadata.idMetadata = Metadata.idMetadata AND RelMetadataGroupMetadata.enabled IS TRUE 
-            LEFT JOIN MetadataValue ON MetadataValue.idRelMetadataGroupMetadata = RelMetadataGroupMetadata.idRelMetadataGroupMetadata
-            AND MetadataValue.idNode = %s
-            WHERE idMetadataGroup = %s', $nodeId, $idGroup);
-        $dbObj = new \Ximdex\Runtime\Db();
-        $dbObj->query($query);
-        $returnArray = array();
-        while (! $dbObj->EOF) {
-            $value = static::getMetadataValue($nodeId, $dbObj->getValue('value'), $dbObj->getValue('type'));
-            $returnArray[] = [
-                'name' => $dbObj->getValue('name'),
-                'id' => (int) $dbObj->getValue('idRelMetadataGroupMetadata'),
-                'value' => $value,
-                'type' => $dbObj->getValue('type'),
-                'required' => (bool) $dbObj->getValue('required'),
-                'readonly' => (bool) $dbObj->getValue('readonly')
-            ];
             $dbObj->next();
         }
         return $returnArray;
@@ -403,6 +371,40 @@ class Metadata extends GenericData
             throw new \Exception(_("Could not create the relation between metadata scheme: {$schemeId} and node type: {$nodeTypeId}"));
         }
         return (int) $dbObj->newID;
+    }
+    
+    private function getMetadataByMetagroupAndNodeId(int $idGroup, int $nodeId): array
+    {
+        $query = sprintf('SELECT Metadata.name, Metadata.type, RelMetadataGroupMetadata.required,
+            RelMetadataGroupMetadata.idRelMetadataGroupMetadata,
+            (
+            	CASE
+                	WHEN MetadataValue.value IS NULL THEN Metadata.defaultValue
+                    ELSE MetadataValue.value
+                END
+            ) AS value
+            , RelMetadataGroupMetadata.readonly
+            FROM RelMetadataGroupMetadata
+            JOIN Metadata ON RelMetadataGroupMetadata.idMetadata = Metadata.idMetadata AND RelMetadataGroupMetadata.enabled IS TRUE
+            LEFT JOIN MetadataValue ON MetadataValue.idRelMetadataGroupMetadata = RelMetadataGroupMetadata.idRelMetadataGroupMetadata
+            AND MetadataValue.idNode = %s
+            WHERE idMetadataGroup = %s', $nodeId, $idGroup);
+        $dbObj = new \Ximdex\Runtime\Db();
+        $dbObj->query($query);
+        $returnArray = array();
+        while (! $dbObj->EOF) {
+            $value = static::getMetadataValue($nodeId, $dbObj->getValue('value'), $dbObj->getValue('type'));
+            $returnArray[] = [
+                'name' => $dbObj->getValue('name'),
+                'id' => (int) $dbObj->getValue('idRelMetadataGroupMetadata'),
+                'value' => $value,
+                'type' => $dbObj->getValue('type'),
+                'required' => (bool) $dbObj->getValue('required'),
+                'readonly' => (bool) $dbObj->getValue('readonly')
+            ];
+            $dbObj->next();
+        }
+        return $returnArray;
     }
 
     private static function getMetadataValue(int $idNode, string $val = null, string $type = null)

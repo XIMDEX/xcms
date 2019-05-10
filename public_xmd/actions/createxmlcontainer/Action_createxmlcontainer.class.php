@@ -271,7 +271,7 @@ class Action_createxmlcontainer extends ActionAbstract
         if ($res <= 0) {
             foreach ($baseIO->messages->messages as $error) {
                 Logger::warning($error['message']);
-                $this->messages->add($error, MSG_TYPE_WARNING);
+                $this->messages->add($error['message'], MSG_TYPE_WARNING);
             }
         }
         return $res;

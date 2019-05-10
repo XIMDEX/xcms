@@ -40,7 +40,9 @@ if (! defined('XIMDEX_CACHE_PATH')) {
 class TransitionCache extends GenericData
 {
     public $_idField = 'id';
+    
     public $_table = 'TransitionsCache';
+    
     public $_metaData = array(
         'id' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'versionId' => array('type' => 'int(12)', 'not_null' => 'true'),
@@ -48,12 +50,19 @@ class TransitionCache extends GenericData
         'file' => array('type' => 'varchar(255)', 'not_null' => 'true'),
         'channelId' => array('type' => 'int(12)', 'not_null' => 'false')
     );
+    
     public $_uniqueConstraints = [['versionId', 'transitionId', 'channelId']];
+    
     public $_indexes = ['id', 'versionId', 'transitionId', 'channelId'];
+    
     public $id;
+    
     public $versionId;
+    
     public $transitionId;
+    
     public $file;
+    
     public $channelId;
     
     public function load(int $versionId, int $transitionId, int $channelId = null) : ?int

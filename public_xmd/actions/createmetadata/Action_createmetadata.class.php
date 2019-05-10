@@ -28,12 +28,13 @@
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Models\Node;
 use Ximdex\Models\Metadata;
+use Ximdex\Models\MetadataScheme;
 
 class Action_createmetadata extends ActionAbstract
 {
     public function index()
     {
-        $nodeId = $this->request->getParam('nodeid');
+        $nodeId = (int) $this->request->getParam('nodeid');
         $node = new Node($nodeId);
         $types = Metadata::META_TYPES;
         $metadata = new Metadata();
@@ -67,11 +68,22 @@ class Action_createmetadata extends ActionAbstract
             $values = array('result' => 'notok', 'error' => sprintf(_('A metadata with the name %s already exists'), $name));
             $this->sendJSON($values);
         }
-        if (! in_array($type, Metadata::META_TYPES)) {
+        $defaultValue = $data['defaultValue'] ?? null;
+        if (strpos($type, '@') === 0) {
+            
+            // Type is a metadata schema
+            $metadataScheme = new MetadataScheme();
+            $scheme = $metadataScheme->find('idMetadataScheme AS id', 'name = \'' . ltrim($type, '@') . '\'');
+            if (! $scheme) {
+                $values = array('result' => 'notok', 'error' => sprintf(_('Type %s is not a valid scheme'), $type));
+                $this->sendJSON($values);
+            }
+            $metadata->set('schemeId', (int) $scheme[0]['id']);
+            $type = null;
+        } elseif (! in_array($type, Metadata::META_TYPES)) {
             $values = array('result' => 'notok', 'error' => sprintf(_('Type %s is not a valid metadata type'), $type));
             $this->sendJSON($values);
         }
-        $defaultValue = $data['defaultValue'] ?? null;
         $metadata->set('name', $name);
         $metadata->set('type', $type);
         $metadata->set('defaultValue', $defaultValue);

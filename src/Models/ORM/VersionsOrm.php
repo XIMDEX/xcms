@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,7 +32,9 @@ use Ximdex\Data\GenericData;
 class VersionsOrm extends GenericData
 {
     public $_idField = 'IdVersion';
+    
     public $_table = 'Versions';
+    
     public $_metaData = array(
         'IdVersion' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'IdNode' => array('type' => 'int(12)', 'not_null' => 'true'),
@@ -44,15 +46,26 @@ class VersionsOrm extends GenericData
         'Comment' => array('type' => 'text', 'not_null' => 'false'),
         'IdSync' => array('type' => 'int(12)', 'not_null' => 'false'),
     );
+    
     public $_uniqueConstraints = array();
+    
     public $_indexes = array('IdVersion');
+    
     public $IdVersion;
+    
     public $IdNode;
+    
     public $Version = 0;
+    
     public $SubVersion = 0;
+    
     public $File = null;
+    
     public $IdUser = null;
+    
     public $Date = null;
+    
     public $Comment = null;
+    
     public $IdSync = null;
 }

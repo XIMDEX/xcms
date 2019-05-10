@@ -92,7 +92,7 @@ class Action_modifygroupsnode extends ActionAbstract
         $node = new Node($idNode);
         $node->AddGroupWithRole($idGroup, $idRole);
         if ($isRecursive) {
-            $sectionList = $node->TraverseTree(3);
+            $sectionList = $node->traverseTree(3);
             foreach ($sectionList as $idSection) {
                 $section = new Node($idSection);
                 if ($section->HasGroup($idGroup)) {
@@ -118,15 +118,15 @@ class Action_modifygroupsnode extends ActionAbstract
                 if (is_array($recursive) && in_array($idGroup, $recursive)) {
                     $recursiveGroups[] = $idGroup;
                 }
-                $node->DeleteGroup($idGroup);
+                $node->deleteGroup($idGroup);
             }
         }
         if (count($recursiveGroups) > 0) {
-            $sectionList = $node->TraverseTree(3);
+            $sectionList = $node->traverseTree(3);
             foreach ($sectionList as $idSection) {
                 $node = new Node($idSection);
                 foreach ($recursiveGroups as $idGroup) {
-                    $node->DeleteGroup($idGroup);
+                    $node->deleteGroup($idGroup);
                 }
             }
         }

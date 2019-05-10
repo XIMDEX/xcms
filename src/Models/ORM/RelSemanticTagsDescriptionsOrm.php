@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,18 +31,26 @@ use Ximdex\Data\GenericData;
 
 class RelSemanticTagsDescriptionsOrm extends GenericData
 {
-    var $_idField = 'IdTagDescription';
-    var $_table = 'RelSemanticTagsDescriptions';
-    var $_metaData = array(
+    public $_idField = 'IdTagDescription';
+    
+    public $_table = 'RelSemanticTagsDescriptions';
+    
+    public $_metaData = array(
         'IdTagDescription' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'Tag' => array('type' => "int(11)", 'not_null' => 'true'),
         'Link' => array('type' => 'varchar(250)', 'not_null' => 'true'),
         'Description' => array('type' => 'text', 'not_null' => 'false')
     );
-    var $_uniqueConstraints = array();
-    var $_indexes = array('IdTagDescription');
-    var $IdTagDescription;
-    var $Tag;
-    var $Link;
-    var $Description;
+    
+    public $_uniqueConstraints = array();
+    
+    public $_indexes = array('IdTagDescription');
+    
+    public $IdTagDescription;
+    
+    public $Tag;
+    
+    public $Link;
+    
+    public $Description;
 }

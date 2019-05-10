@@ -54,9 +54,9 @@ class Router
      * Add new route and function to router
      * 
      * @param string $path
-     * @param string $func
+     * @param callable $func
      */
-    public function addRoute(string $path, string $func)
+    public function addRoute(string $path, callable $func)
     {
         $this->routes[$path] = $func;
     }

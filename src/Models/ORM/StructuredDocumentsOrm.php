@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,9 +31,11 @@ use Ximdex\Data\GenericData;
 
 class StructuredDocumentsOrm extends GenericData
 {
-    var $_idField = 'IdDoc';
-    var $_table = 'StructuredDocuments';
-    var $_metaData = array(
+    public $_idField = 'IdDoc';
+    
+    public $_table = 'StructuredDocuments';
+    
+    public $_metaData = array(
         'IdDoc' => array('type' => "int(12)", 'not_null' => 'true', 'primary_key' => true),
         'Name' => array('type' => "varchar(255)", 'not_null' => 'false'),
         'IdCreator' => array('type' => "int(12)", 'not_null' => 'false'),
@@ -44,15 +46,26 @@ class StructuredDocumentsOrm extends GenericData
         'TargetLink' => array('type' => "int(12)", 'not_null' => 'false'),
         'XsltErrors' => array('type' => "text", 'not_null' => 'false')
     );
-    var $_uniqueConstraints = array();
-    var $_indexes = array('IdDoc');
-    var $IdDoc = 0;
-    var $Name;
-    var $IdCreator = 0;
-    var $CreationDate = 'CURRENT_TIMESTAMP';
-    var $UpdateDate = 'CURRENT_TIMESTAMP';
-    var $IdLanguage = 0;
-    var $IdTemplate = 0;
-    var $TargetLink;
-    var $XsltErrors;
+    
+    public $_uniqueConstraints = array();
+    
+    public $_indexes = array('IdDoc');
+    
+    public $IdDoc = 0;
+    
+    public $Name;
+    
+    public $IdCreator = 0;
+    
+    public $CreationDate = 'CURRENT_TIMESTAMP';
+    
+    public $UpdateDate = 'CURRENT_TIMESTAMP';
+    
+    public $IdLanguage = 0;
+    
+    public $IdTemplate = 0;
+    
+    public $TargetLink;
+    
+    public $XsltErrors;
 }

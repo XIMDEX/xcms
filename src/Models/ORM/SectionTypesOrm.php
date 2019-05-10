@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -31,20 +31,28 @@ use Ximdex\Data\GenericData;
 
 class SectionTypesOrm extends GenericData
 {
-    var $_idField = 'idSectionType';
-    var $_table = 'SectionTypes';
-    var $_metaData = array(
+    public $_idField = 'idSectionType';
+    
+    public $_table = 'SectionTypes';
+    
+    public $_metaData = array(
         'idSectionType' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'sectionType' => array('type' => "varchar(255)", 'not_null' => 'true'),
         'idNodeType' => array('type' => "int(11)", 'not_null' => 'true'),
         'module' => array('type' => "varchar(255)", 'not_null' => 'false')
     );
-    var $_uniqueConstraints = array(
+    
+    public $_uniqueConstraints = array(
         'sectionType' => array('sectionType')
     );
-    var $_indexes = array('idSectionType');
-    var $idSectionType;
-    var $sectionType;
-    var $idNodeType;
-    var $module;
+    
+    public $_indexes = array('idSectionType');
+    
+    public $idSectionType;
+    
+    public $sectionType;
+    
+    public $idNodeType;
+    
+    public $module;
 }

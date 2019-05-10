@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -38,7 +38,7 @@ class SemanticTags extends SemanticTagsOrm
 	 * 
 	 * @return boolean|array
 	 */
-	function getTags()
+	public function getTags()
 	{
         $sql = sprintf("SELECT xt.IdTag, xt.Name, xt.IdNamespace, rtd.Link, rtd.Description FROM SemanticTags xt 
                 LEFT JOIN RelSemanticTagsDescriptions rtd on xt.IdTag = rtd.IdTagDescription");
@@ -51,7 +51,7 @@ class SemanticTags extends SemanticTagsOrm
 	 * 
 	 * @return array|boolean
 	 */
-	function getMaxValue()
+	public function getMaxValue()
 	{
         return parent::find('max(Total)');
     }
@@ -59,11 +59,11 @@ class SemanticTags extends SemanticTagsOrm
 	/**
 	 * Get info about $_tag
 	 * 
-	 * @param $_tag
-	 * @param $namespace
-	 * @return boolean|string|NULL|array
+	 * @param string $_tag
+	 * @param string $namespace
+	 * @return array|string|NULL
 	 */
-	public function getTag($_tag = null, $namespace = null)
+	public function getTag(string $_tag = null, string $namespace = null)
 	{
 		if (null == $_tag && is_numeric($this->get("IdTag")) ) {
 			return array("IdTag" => $this->get("IdTag"), "Name" => $this->get("Name"),"Total" => $this->get("Total") );
@@ -80,13 +80,13 @@ class SemanticTags extends SemanticTagsOrm
 	/**
 	 * Get info about $_tag
 	 * 
-	 * @param $_tagId
+	 * @param string $_tagId
 	 * @return NULL|string
 	 */
-	private function _getTagById($_tagId)
+	private function _getTagById(string $_tagId)
 	{
 	   $tag = parent::find(ALL, "IdTag = '$_tagId'");
-       if (!empty($tag)) {
+       if (! empty($tag)) {
            return $tag[0];
        }
        return null;
@@ -95,11 +95,11 @@ class SemanticTags extends SemanticTagsOrm
 	/**
 	 * Get info about $_tag
 	 * 
-	 * @param $_tagName
-	 * @param $namespace
+	 * @param string $_tagName
+	 * @param string $namespace
 	 * @return NULL|string
 	 */
-	private function _getTagByNameNamespace($_tagName, $namespace)
+	private function _getTagByNameNamespace(string $_tagName, string $namespace)
 	{
        $tag = parent::find(ALL, "Name = '".$_tagName."' AND IdNamespace = '".$namespace."'");
        if (!empty($tag)) {
@@ -111,11 +111,11 @@ class SemanticTags extends SemanticTagsOrm
 	/**
 	 * Save one tag $_tag
 	 * 
-	 * @param $_tag
-	 * @param $namespace
-	 * @return boolean|NULL|string
+	 * @param string $_tag
+	 * @param string $namespace
+	 * @return string|boolean|NULL
 	 */
-	function save($_tag = null, $namespace = null)
+	public function save(string $_tag = null, string $namespace = null)
 	{
 		// Get Data tag
       	$tag = $this->_getTagByNameNamespace($_tag, $namespace);
@@ -136,11 +136,11 @@ class SemanticTags extends SemanticTagsOrm
 	/**
 	 * Save all tags $_tags
 	 * 
-	 * @param $tags
+	 * @param array $tags
 	 */
-	function saveAll($tags = null)
+	function saveAll(array $tags = null)
 	{
-		if (!empty($tags)) {
+		if (! empty($tags)) {
 		    foreach($tags as $_tag) {
 				$this->save($_tag);
 			}
@@ -150,13 +150,13 @@ class SemanticTags extends SemanticTagsOrm
 	/**
 	 * Remove one tag $_tag
 	 * 
-	 * @param int $_tag
+	 * @param string $_tag
 	 * @return bool
 	 */
-	public function remove(int $_tag = null) : bool
+	public function remove(string $_tag = null) : bool
 	{
-	    if (!$_tag) {
-	        if (!$this->get('IdTag')) {
+	    if (! $_tag) {
+	        if (! $this->get('IdTag')) {
 	            Logger::error('No tag ID has been provided in order to remove it');
 	            return false;
 	        }
@@ -196,9 +196,9 @@ class SemanticTags extends SemanticTagsOrm
 	/**
 	 * Remove all tags $_tag
 	 * 
-	 * @param $_tags
+	 * @param array $_tags
 	 */
-	function removeAll($tags = null)
+	public function removeAll(array $tags = null)
 	{
 		if (!empty($tags)) {
 			foreach($tags as $_tag) {

@@ -39,9 +39,32 @@ use Ximdex\Models\ServerFrame;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\Language;
 use Ximdex\Models\IsoCode;
+use Ximdex\Models\RelSemanticTagsNodes;
 
 class ViewFilterMacros extends AbstractView
-{   
+{
+    const MACRO_SERVERNAME = "/@@@RMximdex\.servername\(\)@@@/";
+    
+    const MACRO_PROJECTNAME = "/@@@RMximdex\.projectname\(\)@@@/";
+    
+    const MACRO_NODENAME = "/@@@RMximdex\.nodename\(\)@@@/";
+    
+    const MACRO_SECTIONPATH = "/@@@RMximdex\.sectionpath\(([0-9]+)\)@@@/";
+    
+    const MACRO_SECTIONPATHABS = "/@@@RMximdex\.sectionpathabs\(([0-9]+)\)@@@/";
+    
+    const MACRO_DOTDOT = "/@@@RMximdex\.dotdot\(([^\)]*)\)@@@/";
+    
+    const MACRO_BREADCRUMB = "/@@@RMximdex\.breadcrumb\(([,-_#%=\.\w\s]+)\)@@@/";
+    
+    const MACRO_INCLUDE = "/@@@RMximdex\.include\(([^\)]*)\)@@@/";
+    
+    const MACRO_METADATA = "/@@@RMximdex\.metadata\(([^,\)]*),([\w\.\-\s]*)\)@@@/";
+    
+    const MACRO_NODE_LANG_NAME = "/@@@RMximdex\.langname\(([A-Z]+|)\)@@@/";
+    
+    const MACRO_STRUCTURED_METADATA = "/@@@RMximdex\.structuredmetadata\(([,-_#%=\.\w\s]+)\)@@@/";
+    
     private $_projectNode;
     
     private $_depth;
@@ -57,17 +80,6 @@ class ViewFilterMacros extends AbstractView
     private $originHasLangPath;
     
     private $originNodeID;
-
-    const MACRO_SERVERNAME = "/@@@RMximdex\.servername\(\)@@@/";
-    const MACRO_PROJECTNAME = "/@@@RMximdex\.projectname\(\)@@@/";
-    const MACRO_NODENAME = "/@@@RMximdex\.nodename\(\)@@@/";
-    const MACRO_SECTIONPATH = "/@@@RMximdex\.sectionpath\(([0-9]+)\)@@@/";
-    const MACRO_SECTIONPATHABS = "/@@@RMximdex\.sectionpathabs\(([0-9]+)\)@@@/";
-    const MACRO_DOTDOT = "/@@@RMximdex\.dotdot\(([^\)]*)\)@@@/";
-    const MACRO_BREADCRUMB = "/@@@RMximdex\.breadcrumb\(([,-_#%=\.\w\s]+)\)@@@/";
-    const MACRO_INCLUDE = "/@@@RMximdex\.include\(([^\)]*)\)@@@/";
-    const MACRO_METADATA = "/@@@RMximdex\.metadata\(([^,\)]*),([\w\.\-\s]*)\)@@@/";
-    const MACRO_NODE_LANG_NAME = "/@@@RMximdex\.langname\(([A-Z]+|)\)@@@/";
 
     /**
      * Constructor with mode preview choise parameter
@@ -85,10 +97,8 @@ class ViewFilterMacros extends AbstractView
      * Get a pointer content file and return a new transformed content file
      * This probably cames from Transformer (View_XSLT), so will be the renderized content
      *
-     * @param int $idVersion Node version
-     * @param string $pointer File name with the content to transform
-     * @param array $args Params about the current node
-     * @return string file name with the transformed content
+     * {@inheritDoc}
+     * @see \Ximdex\Nodeviews\AbstractView::transform()
      */
     public function transform(int $idVersion = null, string $content = null, array $args = null)
     {
@@ -112,7 +122,7 @@ class ViewFilterMacros extends AbstractView
      * @param int $idVersion
      * @return boolean True if everything is allright
      */
-    private function initializeParams(array $args, int $idVersion = null) : bool
+    private function initializeParams(array $args, int $idVersion = null): bool
     {
         if ($this->preview) {
             if (array_key_exists('NODETYPENAME', $args)) {
@@ -141,7 +151,7 @@ class ViewFilterMacros extends AbstractView
      * @param array $args Transformation args
      * @return boolean true if exists the project node
      */
-    private function setProjectNode(array $args = array()) : bool
+    private function setProjectNode(array $args = array()): bool
     {
         if ($this->node) {
             $this->_projectNode = $this->node->getProject();
@@ -163,7 +173,7 @@ class ViewFilterMacros extends AbstractView
      * @param array $args Transformation args
      * @return boolean true if exits depth form the current node
      */
-    private function setDepth(array $args = array()) : bool
+    private function setDepth(array $args = array()): bool
     {
         if ($this->node) {
             $this->_depth = $this->node->getPublishedDepth();
@@ -207,7 +217,7 @@ class ViewFilterMacros extends AbstractView
      * @param array $args Transformation args
      * @return boolean True if exits the section
      */
-    private function _setIdSection(array $args = array()) : bool
+    private function _setIdSection(array $args = array()): bool
     {
         if (array_key_exists('SECTION', $args)) {
             $this->_idSection = $args['SECTION'];
@@ -221,7 +231,7 @@ class ViewFilterMacros extends AbstractView
         return true;
     }
 
-    private function transformFromContent(string $content) : string
+    private function transformFromContent(string $content): string
     {
         /**
          * Available macros:
@@ -279,6 +289,12 @@ class ViewFilterMacros extends AbstractView
             'getLangName'
         ), $content);
         
+        // Semantic tags
+        $content = preg_replace_callback(self::MACRO_STRUCTURED_METADATA, array(
+            $this,
+            'getStructuredMetadata'
+        ), $content);
+        
         // Once macros are resolver, remove uid attribute from tags
         $content = preg_replace_callback("/(<.*?)(uid=\".*?\")(.*?\/?>)/", array(
             $this,
@@ -293,7 +309,7 @@ class ViewFilterMacros extends AbstractView
      * @param array $matches Array containing the matches of the regular expression
      * @return string String to be used to replace the matching of the regular expression
      */
-    private function removeUIDs(array $matches) : string
+    private function removeUIDs(array $matches): string
     {
         return str_replace(" >", ">", $matches[1] . $matches[3]);
     }
@@ -327,7 +343,7 @@ class ViewFilterMacros extends AbstractView
      * @param boolean $abs
      * @return string Link url
      */
-    private function getSectionPath(array $matches, bool $abs = false) : string
+    private function getSectionPath(array $matches, bool $abs = false): string
     {
         $target = $matches[1];
         $section = $this->getSectionNode($target);
@@ -357,7 +373,7 @@ class ViewFilterMacros extends AbstractView
      * @param array $matches
      * @return string
      */
-    private function getdotdotpath(array $matches) : string
+    private function getdotdotpath(array $matches): string
     {
         $targetPath = $matches[1];
         if ($this->preview) {
@@ -392,7 +408,7 @@ class ViewFilterMacros extends AbstractView
         }
     }
 
-    private function getBreadCrumb(array $matches) : string
+    private function getBreadCrumb(array $matches): string
     {
         $id = $matches[1];
         if ($id === 'THIS') {
@@ -421,7 +437,7 @@ class ViewFilterMacros extends AbstractView
      * @param int $idTargetChannel
      * @return string
      */
-    private function getRelativePathWithDotdot(Node $targetNode, int $idTargetChannel) : string
+    private function getRelativePathWithDotdot(Node $targetNode, int $idTargetChannel): string
     {
         $deep = 2;
         if (! $this->preview and App::getValue("PublishPathFormat") == App::PREFIX) {
@@ -498,14 +514,14 @@ class ViewFilterMacros extends AbstractView
         return $src;
     }
     
-    private function getLangName(array $matches) : string
+    private function getLangName(array $matches): string
     {
         if ($matches[1]) {
             $iso = strtolower($matches[1]);
         } else {
             $strDoc = new StructuredDocument($this->node->getID());
             $language = new Language($strDoc->getLanguage());
-            $iso = $language->GetIsoName();
+            $iso = $language->getIsoName();
         }
         $isoCode = new IsoCode();
         $res = $isoCode->find('NativeName', "Iso2 = '$iso' OR Iso3 = '$iso'");
@@ -513,5 +529,34 @@ class ViewFilterMacros extends AbstractView
             return '';
         }
         return $res[0]['NativeName'];
+    }
+    
+    private function getStructuredMetadata(array $matches): ?string
+    {
+        $type = strtoupper($matches[1]);
+        switch ($type) {
+            case 'HTML':
+                $code = 'html';
+                break;
+            case 'XML':
+                $code = 'xml';
+                break;
+            case 'JSON':
+                $relTags = (new RelSemanticTagsNodes)->getTags($this->node->getID());
+                $tags = [];
+                foreach ($relTags as $tag) {
+                    $tags[] = [
+                        'name' => $tag['Name'],
+                        'url' => $tag['Link'],
+                        'description' => (string) $tag['Description']
+                    ];
+                }
+                $code = json_encode($tags);
+                break;
+            default:
+                Logger::error("Type not {$type} supported");
+                return null;
+        }
+        return $code;
     }
 }

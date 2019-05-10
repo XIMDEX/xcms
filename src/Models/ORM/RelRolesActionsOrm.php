@@ -32,17 +32,25 @@ use Ximdex\Data\GenericData;
 class RelRolesActionsOrm extends GenericData
 {
     public $_idField = 'IdRel';
+    
     public $_table = 'RelRolesActions';
+    
     public $_metaData = array(
         'IdRel' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'IdRol' => array('type' => 'int(12)', 'not_null' => 'true'),
         'IdAction' => array('type' => 'int(12)', 'not_null' => 'true'),
         'IdState' => array('type' => 'int(12)', 'not_null' => 'false')
     );
+    
     public $_uniqueConstraints = array();
+    
     public $_indexes = array('PRIMARY', 'IdRol', 'IdAction', 'RelRolesActions_Status', 'IdRol_2');
+    
     public $IdRel;
+    
     public $IdRol;
+    
     public $IdAction;
+    
     public $IdState;
 }

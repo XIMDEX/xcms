@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,5 +32,6 @@ use Ximdex\Models\ORM\SectionTypesOrm;
 class SectionType extends SectionTypesOrm
 {
     const TYPE_NORMAL = 1;
+    
     const TYPE_XNEWS = 2;
 }

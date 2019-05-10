@@ -35,7 +35,7 @@ class ViewChannelFilter extends AbstractView
      * {@inheritDoc}
      * @see \Ximdex\Nodeviews\AbstractView::transform()
      */
-    public function transform(int $idVersion = null, string $content = null, array $args = null) : bool
+    public function transform(int $idVersion = null, string $content = null, array $args = null)
 	{
 	    if (! parent::transform($idVersion, $content, $args)) {
 	        return false;

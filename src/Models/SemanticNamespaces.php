@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -32,30 +32,77 @@ use Ximdex\Data\GenericData;
 class SemanticNamespaces extends GenericData
 {
     public $_idField = 'idNamespace';
+    
     public $_table = 'SemanticNamespaces';
+    
     public $_metaData = array(
-        'idNamespace' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'service' => array('type' => "varchar(255)", 'not_null' => 'true'),
-        'type' => array('type' => "varchar(255)", 'not_null' => 'true'),
-        'nemo' => array('type' => "varchar(255)", 'not_null' => 'true'),
-        'uri' => array('type' => "varchar(255)", 'not_null' => 'true'),
-        'recursive' => array('type' => "mediumint(8)", 'not_null' => 'true'),
-        'category' => array('type' => "varchar(255)", 'not_null' => 'true'),
-        'isSemantic' => array('type' => "mediumint(1)", 'not_null' => 'true'),
+        'idNamespace' => array('type' => 'int(11)', 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'service' => array('type' => 'varchar(255)', 'not_null' => 'true'),
+        'type' => array('type' => 'varchar(255)', 'not_null' => 'true'),
+        'nemo' => array('type' => 'varchar(255)', 'not_null' => 'true'),
+        'uri' => array('type' => 'varchar(255)', 'not_null' => 'true'),
+        'recursive' => array('type' => 'mediumint(8)', 'not_null' => 'true'),
+        'category' => array('type' => 'varchar(255)', 'not_null' => 'true'),
+        'isSemantic' => array('type' => 'mediumint(1)', 'not_null' => 'true'),
     );
+    
     public $_uniqueConstraints = array(
-        "Nemo" => array("nemo"),
-        "Type" => array("type")
+        'Nemo' => array('nemo'),
+        'Type' => array('type')
     );
+    
     public $_indexes = array('idNamespace');
-    public $idNamespace; //Autoincrement id.
-    public $service; //Source which provice the type. P.e Ximdex, DBpedia
-    public $type; //Specific type for a tag. P.e. DBPediaPeople
-    public $nemo; //mnemonic for ximdex document tag. it could be an attribute.
-    public $uri; //To source
-    public $recursive = 0; //If the type has more descendant types.
-    public $category; //Kind of the source. P.e. Images, Article, Generic.
-    public $isSemantic = 0; //Boolean
+    
+    /**
+     * Autoincrement id
+     * 
+     * @var int
+     */
+    public $idNamespace;
+    
+    /**
+     * Source which provice the type. P.e Ximdex, DBpedia
+     * 
+     * @var string
+     */
+    public $service;
+    
+    /**
+     * Specific type for a tag. P.e. DBPediaPeople
+     * 
+     * @var string
+     */
+    public $type;
+    
+    /**
+     * Mnemonic for ximdex document tag. it could be an attribute
+     * 
+     * @var string
+     */
+    public $nemo;
+    
+    /**
+     * To source
+     * 
+     * @var string
+     */
+    public $uri;
+    
+    /**
+     * If the type has more descendant types
+     * 
+     * @var integer
+     */
+    public $recursive = 0;
+    
+    /**
+     * Kind of the source. P.e. Images, Article, Generic
+     * 
+     * @var string
+     */
+    public $category;
+    
+    public $isSemantic = 0;
 
 
 	/**
@@ -66,43 +113,43 @@ class SemanticNamespaces extends GenericData
 	public function getAll()
 	{
 		$result = array();
-		$namespaces = $this->find("idNamespace");
+		$namespaces = $this->find('idNamespace');
 		if ($namespaces !== null) {
 			foreach ($namespaces as $nspace) {
-			    $result[] = new SemanticNamespaces($nspace["idNamespace"]);
+			    $result[] = new SemanticNamespaces($nspace['idNamespace']);
 			}
 		}
 		return $result;
 	}
 
-	public function getByUri($uri)
+	public function getByUri(string $uri)
 	{
 		$result = array();
-		$namespaces = $this->find("idNamespace", "uri='$uri'");
+		$namespaces = $this->find('idNamespace', "uri = '$uri'");
 		if ($namespaces !== null) {
 			foreach ($namespaces as $nspace) {
-			    $result[] = new SemanticNamespaces($nspace["idNamespace"]);
+			    $result[] = new SemanticNamespaces($nspace['idNamespace']);
 			}
 		}
 		return $result;
 	}
 
-	public function getByNemo($nemo)
+	public function getByNemo(string $nemo)
 	{
     	$result = array();
-		$namespaces = $this->find("idNamespace", "nemo='$nemo'");
+		$namespaces = $this->find('idNamespace', "nemo = '$nemo'");
 		if ($namespaces !== null) {
 			foreach ($namespaces as $nspace) {
-				$result[] = $nspace["idNamespace"];
+				$result[] = $nspace['idNamespace'];
 			}
 		}
 		$result = count($result)? $result[0]: false;
 		return $result;
 	}
 	
-    public function getNemo($idNamespace)
+    public function getNemo(int $idNamespace)
     {
-        $res = $this->find("nemo", "idNamespace = %s", array($idNamespace), MONO);
+        $res = $this->find('nemo', 'idNamespace = %s', array($idNamespace), MONO);
         return $res[0]; 
     }
 }
