@@ -179,13 +179,13 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                 $schemas = static::getChildSchemasBySections($doc, $schemas, $data['sections'], $extraData);
             }
         }
-        if (! is_null($doc)) {
+        if (!is_null($doc)) {
             $content = $doc->getContent() ?: $content;
         }
 
         // Properties
         $properties['id'] = $doc->getID();
-        $properties['content'] = ! is_null($content) ? $content : '';
+        $properties['content'] = !is_null($content) ? $content : '';
         $properties['title'] = $doc->getName();
         $properties['metadata'] = $metadata;
         $properties['attributes'] = [];
@@ -233,7 +233,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                 $js = isset($node['css']) ? array_merge($js, $node['js']) : $js;
                 if (isset($node['type']) && $node['type'] == static::CONTENT_DOCUMENT) {
                     $name = $node['title'];
-                    $body .= ! is_null($content) ? $content : $node['content'];
+                    $body .= !is_null($content) ? $content : $node['content'];
                     if (strpos($name, '_') !== 0) {
                         $body = static::START_XIMDEX_BODY_CONTENT . $body . static::END_XIMDEX_BODY_CONTENT;
                     }
@@ -260,7 +260,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                 $js = isset($node['css']) ? array_merge($js, $node['js']) : $js;
                 if (isset($node['type']) and $node['type'] == static::CONTENT_DOCUMENT) {
                     $name = $node['title'];
-                    $body .= ! is_null($content) ? $content : $node['content'];
+                    $body .= !is_null($content) ? $content : $node['content'];
                     if (strpos($name, '_') !== 0) {
                         $body = static::START_XIMDEX_BODY_CONTENT . $body . static::END_XIMDEX_BODY_CONTENT;
                     }
@@ -287,7 +287,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                 $js = isset($node['css']) ? array_merge($js, $node['js']) : $js;
                 if (isset($node['type']) && $node['type'] == static::CONTENT_DOCUMENT) {
                     $body .= static::START_XIMDEX_BODY_CONTENT;
-                    $body .= ! is_null($content) ? $content : $node['content'];
+                    $body .= !is_null($content) ? $content : $node['content'];
                     $body .= static::END_XIMDEX_BODY_CONTENT;
                     $name = $node['title'];
                 } else {
@@ -301,7 +301,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                     return $tag['Name'];
                 }, static::getTags($docId)));
                 $info = static::getInfo($docId);
-                if (! empty($tags)) {
+                if (!empty($tags)) {
                     $info['metadata']['keywords'] = $tags;
                 }
                 $render = static::createBasicHTMLTemplate($info, $body, $css, $js);
@@ -324,7 +324,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
     private static function getChildSchemasBySections(StructuredDocument $doc, array $schemas, array $sections, array &$extraData)
     {
         foreach ($sections as $section => $data) {
-            if (! array_key_exists($section, $schemas)) {
+            if (!array_key_exists($section, $schemas)) {
                 $schemas = static::getChildSchemasBySection($doc, $section, $data, $schemas, $extraData);
             }
         }
@@ -552,7 +552,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                 $result = array_merge($result, static::prepareMetadata($meta['groups'] ?? $meta['metadata'] ?? []));
                 continue;
             }
-            if (! $meta['value']) {
+            if (!$meta['value']) {
                 continue;
             }
             if ($meta['type'] == Metadata::TYPE_DATE) {
