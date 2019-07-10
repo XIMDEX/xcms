@@ -11,8 +11,8 @@ services:
   - docker
 
 env:
-  # - DB_SERVER=mysql:5.7
-  - DB_SERVER=mariadb:10.3
+  - DB_SERVER=mysql:5.7
+  # - DB_SERVER=mariadb:10.3
 
 before_install:
   - curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
