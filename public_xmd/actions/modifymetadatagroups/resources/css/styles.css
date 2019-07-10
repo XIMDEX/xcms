@@ -1,0 +1,86 @@
+/**
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+.sep
+{
+	clear: left;
+}
+
+#metadatagroups_success_message,
+#metadatagroups_error_message
+{
+    display: none;
+}
+
+.metadata_name_text
+{
+	width: 30% !important;
+}
+
+.metadata_values_text
+{
+    width: 10% !important;
+    margin-left: 10pt;
+}
+
+.metadata_info
+{
+	margin-top: 10pt;
+}
+
+.metadata_options,
+.metadata_checkbox_option
+{
+	margin-left: 10pt !important;
+}
+
+.metadata_group
+{
+	margin-bottom: 10pt;
+}
+
+.no_metadata_in_group
+{
+	color: gray;
+}
+
+.metadataInfo
+{
+    width: calc(100% - 25pt);
+    float: left;
+}
+
+.metadataOptions
+{
+    width: 25pt;
+    float: right;
+    text-align: right;
+    margin-top: 3pt;
+}
+
+.metadataDeleteButton
+{
+    left: calc(100% - 30pt) !important;
+}

@@ -26,13 +26,10 @@
  */
 use Ximdex\Runtime\App;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../"));
-}
 
 //
-ModulesManager::file('/inc/IndexerLifecycle.iface.php', 'XRAM');
-ModulesManager::file('/inc/AES.class.php', 'XRAM');
+\Ximdex\Modules\Manager::file('/inc/IndexerLifecycle.iface.php', 'XRAM');
+\Ximdex\Modules\Manager::file('/inc/AES.class.php', 'XRAM');
 
 class AESProcessor implements IndexerLifecycle
 {

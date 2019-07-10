@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	{URL_ROOT}			Ximdex base URL.
+	{XIMDEX_ROOT_PATH}	Ximdex base installation path.
+	{?}					Wildcard, use it with channels and languages for example.
+-->
+<project description="Hobbit based theme" title="The Hobbit theme" name="The_Hobbit" nodetypename="PROJECT" Transformer="xslt" channel="{?}" language="{?}">
+	<section
+		name="The_Hobbit_Server" nodetypename="SERVER" encode="UTF-8" 
+		protocol="LOCAL" login="" password="" host="localhost" port="0"
+		url="{URL_ROOT}/data/previos/" initialDirectory="{XIMDEX_ROOT_PATH}/data/previos/"
+		overrideLocalPaths="0" enabled="1" previsual="0" description="Local">
+
+		<ximdoccontainer>
+			<document name="index" nodetypename="XMLDOCUMENT" templatename="rng-vista-hobbit" channel="{?}" language="10003" />
+		</ximdoccontainer>
+		
+	</section>
+</project>

@@ -1,18 +1,14 @@
 <?php
 
-use Ximdex\Models\Language;
 use Ximdex\Models\Node;
-use Ximdex\Models\StructuredDocument;
-use Ximdex\Runtime\Db;
-use Ximdex\Services\NodeType;
+use Ximdex\NodeTypes\NodeTypeConstants;
 
-ModulesManager::file('/inc/metadata/MetadataManager.class.php');
-ModulesManager::file('/src/Exporter.php', 'XSearch');
-ModulesManager::file('/src/SolrConnection.php', 'XSearch');
+\Ximdex\Modules\Manager::file('/src/Exporter.php', 'XSearch');
+\Ximdex\Modules\Manager::file('/src/SolrConnection.php', 'XSearch');
 
 class SolrExporter implements Exporter
 {
-    const AVOIDED_NODETYPES = [NodeType::METADATA_DOCUMENT, NodeType::RNG_VISUAL_TEMPLATE];
+    const AVOIDED_NODETYPES = [NodeTypeConstants::RNG_VISUAL_TEMPLATE];
 
     private $client;
     public function __construct()
@@ -34,12 +30,12 @@ class SolrExporter implements Exporter
     {
         //Select all XSIR repo
         $node = new Node();
-        $XSIRIdNodes = $node->find('IdNode', 'IdNodeType = %s', [\Ximdex\Services\NodeType::XSIR_REPOSITORY], MONO);
+        $XSIRIdNodes = $node->find('IdNode', 'IdNodeType = %s', [NodeTypeConstants::XSIR_REPOSITORY], MONO);
 
         $sql = "SELECT n.IdNode FROM FastTraverse f INNER JOIN Nodes n on f.IdChild = n.IdNode INNER JOIN NodeTypes nt ON nt.IdNodeType = n.IdNodeType WHERE f.IdNode in (%s) AND nt.IsPlainFile AND nt.IdNodeType NOT IN (%s)";
 
         $sql = sprintf($sql, implode(',', $XSIRIdNodes), implode(',', self::AVOIDED_NODETYPES));
-        $db = new DB();
+        $db = new \Ximdex\Runtime\Db();
         $db->query($sql);
 
         while (!$db->EOF) {
@@ -63,14 +59,7 @@ class SolrExporter implements Exporter
     {
         $n = new Node($nodeid);
 
-        if($n->IdNodeType == NodeType::METADATA_DOCUMENT) {
-            $n = $this->getSourceNodeFromMetadataDoc($nodeid);
-            if(is_null($n)){
-                return;
-            }
-        }
-
-        if(!$n->IsOnNodeWithNodeType(NodeType::XSIR_REPOSITORY)){
+        if(!$n->IsOnNodeWithNodeType(NodeTypeConstants::XSIR_REPOSITORY)){
             return;
         }
 
@@ -134,48 +123,7 @@ class SolrExporter implements Exporter
 
         // TODO: Filter text files to add content
         //$doc->content = $node->GetContent();
-
-        $mm = new MetadataManager($node->IdNode);
-        $metadata_nodes = $mm->getMetadataNodes();
-
-        foreach ($metadata_nodes as $metadata_node_id) {
-            $structuredDocument = new StructuredDocument($metadata_node_id);
-            $idLanguage = $structuredDocument->get('IdLanguage');
-            $language = new Language($idLanguage);
-            $langIsoName = $language->GetIsoName();
-            $metadata_node = new Node($metadata_node_id);
-            $contentMetadata = $metadata_node->getContent();
-            $domDoc = new DOMDocument();
-            if ($domDoc->loadXML("<root>" . $contentMetadata . "</root>")) {
-                $xpathObj = new DOMXPath($domDoc);
-                $custom_info = $xpathObj->query("//custom_info/*");
-                if ($custom_info->length > 0) {
-                    foreach ($custom_info as $value) {
-                        $name = "{$value->nodeName}_metadata_{$langIsoName}";
-                        $doc->$name = $value->nodeValue;
-                    }
-                }
-                $file_data = $xpathObj->query("//file_data/*");
-                if ($file_data->length > 0) {
-                    foreach ($file_data as $value) {
-                        $name = "{$value->nodeName}_metadata_i";
-                        $doc->$name = $value->nodeValue;
-                    }
-                }
-                $tagsNodes = $xpathObj->query("//tags/*");
-                if ($tagsNodes->length > 0) {
-                    $tags_ss = [];
-                    foreach ($tagsNodes as $tag) {
-                        $tags_ss[] = $tag->nodeValue;
-                    }
-                    $doc->tags_ss = $tags_ss;
-                }
-            }
-        }
-
-        //$relTags = new RelTagsNodes();
-        //$tags = $relTags->getTags($idNode);
-
+        
         return $doc;
     }
 
@@ -273,22 +221,4 @@ class SolrExporter implements Exporter
         }
 
     }
-
-    /**
-     * @param $nodeid
-     * @return Node
-     */
-    private function getSourceNodeFromMetadataDoc($nodeid)
-    {
-        $node = new Node($nodeid);
-        $rnm = new RelNodeMetadata();
-        $resp = $rnm->find('IdRel, IdNode', 'IdMetadata = %s', [$node->GetParent()], MULTI);
-        if (count($resp) == 1) {
-            $id = $resp[0]['IdNode'];
-            $n = new Node($id);
-            return $n;
-        }
-        return null;
-    }
-
 }

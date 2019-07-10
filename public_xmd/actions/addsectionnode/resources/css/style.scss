@@ -1,0 +1,213 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+  @import "../../../../assets/style/jquery/ximdex_theme/widgets/themes/ximdex_theme";
+
+
+ 
+
+  .full-size{
+  	width: 100%;
+  }
+  .subfolder{
+  	background: #fff;
+  	width: 8em;
+  	height: 8em;
+  	display: inline-block;
+  	vertical-align: top;
+  	position: relative;
+  	margin: 0 1em 1em 0;
+
+	label{
+		display: block !important;
+		width: 100%;
+  		text-align: center;
+		height: 100%;
+		cursor: pointer;
+		border:1px solid #ccc;
+    padding-right: 0 !important;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+		&::before{
+			content: "";
+			display: inline-block;
+			vertical-align: bottom;
+			height: 100%;
+			width: 0;
+		}
+		&::after{
+  			position: absolute;
+			top: 1.25em;
+			font-size: 1.6em;
+			left: 1.7em;
+			color: #fff;
+  		}
+		&:hover{
+			background: #ddd;
+      background: lighten(#ACAFBB, 15%)
+
+		}
+
+		&:hover + .info{
+			opacity: 1;
+			bottom: 8em;
+			height: auto;
+			visibility: visible;
+		}
+	}
+  	strong{
+  		display: inline-block;
+  		text-transform: uppercase;
+  		color: $c_grey-l;
+  		font-size: 1.4rem;
+  		vertical-align: bottom;
+  		padding-bottom: .8em;
+  		&::before{
+  			content: "";
+  			position: absolute;
+  			width: 3em;
+  			height: 3em;
+  			-webkit-border-radius: 50%;
+  			-moz-border-radius: 50%;
+  			border-radius: 50%;
+  			background: #e45b5b;
+  			top: 2em;
+  			left: 3em;
+  			-webkit-box-shadow: 0 0 5px #fff;
+  			-moz-box-shadow: 0 0 5px #fff;
+  			box-shadow: 0 0 5px #fff;
+  		}
+
+  		&.common::before{
+  			background: #39AFC8;
+  		}
+
+  		&.documents::before{
+  			background: #7165B2;
+  		}
+
+  		&.images::before{
+  			background: #75CD9D;
+  		}
+
+  		&.templates::before{
+  			background: #9A2891;
+  		}
+  		&.ximclude::before{
+  			background: #E7AB65;
+  		}
+  		&.ximlet::before{
+  			background: #B190B1;
+  		}
+
+      &.news::before{
+        background: #D93E42;
+      }
+      &.bulletins::before{
+        background: #D8C9AE;
+      }
+  		
+  	}
+
+  	:checked + label {
+   background: lighten($c_mainlight, 10%);
+     border-color: $c_mainlight;
+      strong{
+  		&::after{
+  				position: absolute;
+  				top: 1.87em;
+  				left: 2.55em;
+  				font-size: 2.1rem;
+  				z-index: 3;
+  		}
+  		&.common::after{
+    			color: darken(#39AFC8, 10%);
+    		}
+
+    		&.documents::after{
+    			color: darken(#7165B2, 10%);
+    		}
+
+    		&.images::after{
+    			color: darken(#75CD9D, 10%);
+    		}
+
+    		&.templates::after{
+    			color: darken(#9A2891, 10%);
+    		}
+    		&.ximclude::after{
+    			color: darken(#E7AB65, 10%);
+    		}
+    		&.ximlet::after{
+          color: darken(#B190B1, 10%);
+        }
+        &.news::after{
+          color: darken(#D93E42, 10%);
+        }
+        &.bulletins::after{
+    			color: darken(#D8C9AE, 10%);
+    		}
+    		
+  		}
+  	}
+
+	.info{
+		background: rgba(35,35,35,.8);
+		color: #fff;
+		padding: .5em 1em;
+		-webkit-border-radius: 2px;
+		-moz-border-radius: 2px;
+		border-radius: 2px;
+		width: 250px;
+		position: absolute;
+		display: block;
+		-webkit-transition: all .5s .3s;
+		-moz-transition: all .5s .3s;
+		-ms-transition: all .5s .3s;
+		-o-transition: all .5s .3s;
+		transition: all .5s .3s;
+		bottom: 12em;
+		opacity: 0;		
+		left: -1em;
+		z-index: 3;
+		visibility: hidden;
+		-webkit-user-select: none;  /* Chrome all / Safari all */
+		-moz-user-select: none;     /* Firefox all */
+		-ms-user-select: none; 
+		&::before{
+			content: "";
+			position: absolute;
+			border: 10px solid transparent;
+			border-top-color: rgba(35,35,35,.8);
+			bottom: -20px;
+			left: 4.3em;
+		}
+
+	}
+
+  }
+
+ 

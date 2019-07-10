@@ -2,7 +2,7 @@
 
 use Solarium\QueryType\Select\Result\Result;
 
-ModulesManager::file('/src/SolrConnection.php', 'XSearch');
+\Ximdex\Modules\Manager::file('/src/SolrConnection.php', 'XSearch');
 
 class SolrSearchManager
 {

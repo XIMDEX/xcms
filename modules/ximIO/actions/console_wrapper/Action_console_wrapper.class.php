@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,26 +25,20 @@
  * @version $Revision$
  */
 
-
 use Ximdex\Models\Channel;
 use Ximdex\Models\Group;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
-use Ximdex\Runtime\Cli\Shell;
-
-
+use Ximdex\Cli\Shell;
 
 class Action_console_wrapper extends ActionAbstract
 {
     public function index()
     {
-
         $values = array(
-            'id_action' => $this->request->get('actionid'),
-//			'action' => $action
+            'id_action' => $this->request->get('actionid')
         );
-
         $this->render($values);
     }
 
@@ -53,42 +48,35 @@ class Action_console_wrapper extends ActionAbstract
             'id_action' => $this->request->get('actionid'),
             'go_method' => 'confirmExport'
         );
-
         if ($getParams) {
             return $values;
         }
         $this->render($values);
-        return NULL;
+        return null;
     }
 
     public function confirmExport($getCommand = false)
     {
         $idNode = $this->request->getParam('nodes');
         $file = $this->request->getParam('file');
-
         $node = new Node($idNode);
-
-        if (!($node->get('IdNode') > 0)) {
+        if (!$node->get('IdNode')) {
             $this->messages->add(_('Specified node is not correct'), MSG_TYPE_ERROR);
         }
-
-        if (!empty($file) && !(preg_match('/[a-zA-Z0-9\-\_]+/', $file) > 0)) {
+        if (!empty($file) && !preg_match('/[a-zA-Z0-9\-\_]+/', $file)) {
             $this->messages->add(_('Specified name to export should meet the following pattern') . ' [a-zA-Z0-9\-\_]+', MSG_TYPE_ERROR);
         }
-
         if ($this->messages->count(MSG_TYPE_ERROR) > 0) {
             $this->render(array_merge($this->export(true),
                 array('messages' => $this->messages->messages)
             ), 'export', 'default.tpl');
             return;
         }
-
-        $command = sprintf('php %s' . ModulesManager::path('ximIO') . '/actions/run.php --mode export --nodes %s --test 1',
+        $command = sprintf('php %s' . Ximdex\Modules\Manager::path('ximIO') . '/actions/run.php --mode export --nodes %s --test 1',
             XIMDEX_ROOT_PATH, $idNode);
         if (!empty($file)) {
             $command .= sprintf(' --file %s', $file);
         }
-
         if ($getCommand) {
             return $command;
         }
@@ -97,35 +85,29 @@ class Action_console_wrapper extends ActionAbstract
         foreach ($messages as $message) {
             $this->messages->add($message, MSG_TYPE_NOTICE);
         }
-
         $values = array('messages' => $this->messages->messages,
             'go_method' => 'executeExport',
             'nodes' => $idNode,
-            'file' => $file,
-            'recursive' => $recursive);
-
+            'file' => $file);
         $this->render($values, 'confirmExport', 'default.tpl');
-        return NULL;
+        return null;
     }
 
     function executeExport()
     {
         $command = $this->confirmExport(true);
         $command = str_replace(' --test 1', ' --no-require-confirm 1', $command);
-
         $commandExecuter = new Shell('');
         $messages = $commandExecuter->exec($command);
         $this->messages->add(_('It has been executed the command: ') . $command, MSG_TYPE_NOTICE);
         foreach ($messages as $message) {
             $this->messages->add($message, MSG_TYPE_NOTICE);
         }
-
         $this->render(array('messages' => $this->messages->messages));
     }
 
     public function import()
     {
-
         $ximIOFolder = XIMDEX_ROOT_PATH . '/data/backup/';
         $blackList = array('.', '..');
         $dirh = opendir($ximIOFolder);
@@ -142,7 +124,6 @@ class Action_console_wrapper extends ActionAbstract
                 if (!preg_match('/(.*)_ximio/', $dir_element, $matches) > 0) {
                     continue;
                 }
-
                 $backups[] = $matches[1];
             }
             unset($dir_element);
@@ -152,19 +133,15 @@ class Action_console_wrapper extends ActionAbstract
             'backups' => $backups,
             'go_method' => 'getImportValues'
         );
-
         $this->render($values);
     }
 
     public function getImportValues()
     {
         $backup = $this->request->getParam('backup');
-
         $idAction = $this->request->getParam('actionid');
-
         $xml = new XmlReader();
         $ximIOFolder = XIMDEX_ROOT_PATH . '/data/backup/';
-
         $xml->open($ximIOFolder . $backup . '_ximio/ximio.xml');
         $whiteList = array('ximio-structure', 'ChannelManager', 'Channel', 'LanguageManager', 'Language', 'GroupManager', 'Group');
         $stripList = array('Channel', 'Language', 'Group');
@@ -173,24 +150,19 @@ class Action_console_wrapper extends ActionAbstract
             if ($xml->nodeType != XMLReader::ELEMENT) {
                 continue;
             }
-
             if (!in_array($xml->localName, $whiteList)) {
                 break;
             }
-
             if (in_array($xml->localName, $stripList)) {
                 $importedValues[$xml->localName][] = array('id' => $xml->getAttribute('id'), 'name' => $xml->getAttribute('name'));
             }
         }
         $language = new Language();
         $allLanguages = $language->find('IdLanguage, Name');
-
         $channel = new Channel();
         $allChannels = $channel->find('IdChannel, Name');
-
         $group = new Group();
         $allGroups = $group->find('IdGroup, Name');
-
         $values = array(
             'languages' => $allLanguages,
             'channels' => $allChannels,
@@ -201,13 +173,11 @@ class Action_console_wrapper extends ActionAbstract
             'id_action' => $idAction,
             'go_method' => 'confirmImport'
         );
-
         $this->render($values);
     }
 
     public function confirmImport()
     {
-
         $idAction = $this->request->getParam('actionid');
         $node = $this->request->getParam('node');
         $file = $this->request->getParam('file');
@@ -218,70 +188,56 @@ class Action_console_wrapper extends ActionAbstract
         $channel = $this->request->getParam('channel');
         $language = $this->request->getParam('language');
         $group = $this->request->getParam('group');
-
-        $command = sprintf('php %s' . ModulesManager::path('ximIO') . '/actions/run.php --mode import --interfaceWeb 1',
+        $command = sprintf('php %s' . \Ximdex\Modules\Manager::path('ximIO') . '/actions/run.php --mode import --interfaceWeb 1',
             XIMDEX_ROOT_PATH);
-
         if (!empty($node) && is_numeric($node)) {
             $command .= ' --node ' . $node;
         }
-
         if (!empty($file)) {
             $command .= ' --file ' . $file;
         }
-
         if (!empty($user)) {
             $command .= ' --user ' . $user;
         }
-
         if (!empty($password)) {
             $command .= ' --password ' . $password;
         }
-
         if (!empty($processFirstNode) && $processFirstNode == 'on') {
             $command .= ' --processFirstNode 1';
         }
-
         if (!empty($copyMode) && $copyMode == 'on') {
             $command .= ' --copyMode 1';
         }
-
         $associations = array();
         if (!empty($channel) && is_array($channel)) {
             foreach ($channel as $key => $value) {
                 $associations[] = sprintf('%s=%s', $key, $value);
             }
         }
-
         if (!empty($language) && is_array($language)) {
             foreach ($language as $key => $value) {
                 $associations[] = sprintf('%s=%s', $key, $value);
             }
         }
-
         if (!empty($group) && is_array($group)) {
             foreach ($group as $key => $value) {
                 $associations[] = sprintf('%s=%s', $key, $value);
             }
         }
-
         if (!empty($associations) && !(!empty($copyMode) && $copyMode == 'on')) {
             $command .= ' --associations ' . implode(',', $associations);
         }
         $commandExecuter = new Shell('');
-
         $messages = $commandExecuter->exec($command);
         foreach ($messages as $message) {
             $this->messages->add($message, MSG_TYPE_NOTICE);
         }
-
         $values = array(
             'command' => $command,
             'id_action' => $idAction,
             'go_method' => 'executeImport',
             'messages' => $this->messages->messages
         );
-
         $this->render($values, 'executeImport', 'default.tpl');
     }
 
@@ -290,7 +246,6 @@ class Action_console_wrapper extends ActionAbstract
         $command = $this->request->getParam('command');
         $command = str_replace('interfaceWeb', 'interfaceWebRun', $command);
         $commandExecuter = new Shell('');
-
         $messages = $commandExecuter->exec($command);
         foreach ($messages as $message) {
             $this->messages->add($message, MSG_TYPE_NOTICE);
@@ -301,8 +256,7 @@ class Action_console_wrapper extends ActionAbstract
 
     public function file_import()
     {
-
-        $db = new DB();
+        $db = new \Ximdex\Runtime\Db();
         $query = "SELECT timeStamp FROM XimIOExportations";
         $db->query($query);
         $exportations = array();
@@ -314,31 +268,22 @@ class Action_console_wrapper extends ActionAbstract
             'backups' => $exportations,
             'go_method' => 'executeFileImport'
         );
-
         $this->render($values, 'import.tpl', 'default.tpl');
-
     }
 
     public function executeFileImport()
     {
         $backup = $this->request->getParam('backup');
-        $command = sprintf('php %s' . ModulesManager::path('ximIO') . '/actions/run.php --mode file_import',
+        $command = sprintf('php %s' . \Ximdex\Modules\Manager::path('ximIO') . '/actions/run.php --mode file_import',
             XIMDEX_ROOT_PATH);
-
         $command .= ' --file ' . $backup;
         $commandExecuter = new Shell('');
-
         $messages = $commandExecuter->exec($command);
         $this->messages->add(_('It has been executed the command: ') . $command, MSG_TYPE_NOTICE);
         foreach ($messages as $message) {
             $this->messages->add($message, MSG_TYPE_NOTICE);
         }
-
         $values = array('messages' => $this->messages->messages);
-
         $this->render($values);
-
     }
 }
-
-?>

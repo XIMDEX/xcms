@@ -1,6 +1,7 @@
-<?php
+ <?php
+ 
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,45 +25,28 @@
  *  @version $Revision$
  */
 
-
 use Ximdex\Models\Node;
-use Ximdex\Runtime\Cli\CliReader;
-
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../../../'));
-}
-
-//
- ModulesManager::file('/inc/ExportXml.class.php');
-ModulesManager::file('/actions/export/inc/ExportCli.class.php');
-
-$PROCESSED_NODES = 0;
-$LAST_REPORT = 0;
-$TOTAL_NODES = 0;
-
-$STOP_COUNT = 0;
+use Ximdex\Cli\CliReader;
 
 ini_set('memory_limit', '512M');
 
-$parameterCollector = new ExportCli($argc, $argv);
+Ximdex\Modules\Manager::file('/inc/ExportXml.class.php');
+Ximdex\Modules\Manager::file('/actions/export/inc/ExportCli.class.php');
 
+global $argv, $argc;
+$parameterCollector = new ExportCli($argc, $argv);
 $nodes = $parameterCollector->getParameter('--nodes');
 $fileName = $parameterCollector->getParameter('--file');
-
 if (is_array($nodes) && !empty($nodes)) {
 	echo _("Info about next nodes are going to be exported:")."\n\n";
-	
-	reset($nodes);
-	while(list(, $idNode) = each($nodes)) {
+	foreach ($nodes as $idNode) {
 		$node = new Node($idNode);
 		echo $node->toStr(DETAIL_LEVEL_MEDIUM);
 		echo "\n";
 	}
-	
 	if ($parameterCollector->getParameter('--test')) {
 		die();
 	}
-	
 	if (!$parameterCollector->getParameter('--no-require-confirm') && 
 		!CliReader::alert(array('y', 'Y', 's', 'S'), 
 			_("Do you want to continue with this process? (Y/n)")."\n", 
@@ -71,23 +55,16 @@ if (is_array($nodes) && !empty($nodes)) {
 		die();
 	}
 }
-
 $time = time();
-
 $recurrence = $parameterCollector->getParameter('--recursive');
-
 $export = new ExportXml($nodes);
 echo _("Obtaining information for project...")."\n";
+$files = null;
 $xml = $export->getXml($recurrence, $files);
 echo _("Writting information of backup...")."\n";
 $backupName = $export->writeData($xml, $files, $fileName);
-
-reset($export->messages->messages);
-while(list(, $message) = each($export->messages->messages)) {
+foreach ($export->messages->messages as $message) {
 	echo $message['message'] . "\n";
 }
-
 echo sprintf("\n"._("Elapsed time has been of %s seconds")."\n", time() - $time);
 echo sprintf(_("Generated package has been %s")."\n", $backupName);
-
-?>

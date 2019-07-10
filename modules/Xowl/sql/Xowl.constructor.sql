@@ -25,7 +25,7 @@
 
 -- Key set to empty from Config table
 
-INSERT INTO `Namespaces` (`service`, `type`, `nemo`, `uri`, `recursive`, `category`, `isSemantic`)
+INSERT INTO `SemanticNamespaces` (`service`, `type`, `nemo`, `uri`, `recursive`, `category`, `isSemantic`)
 VALUES
 ("Xowl","ZemantaImage","zImage","http://<ximdex_local_url>/service/rdfs/ZemantaImage", 0, "image",0),
 ("Xowl","ZemantaLink","zLink","http://<ximdex_local_url>/service/rdfs/ZemantaLink", 0, "link",0),

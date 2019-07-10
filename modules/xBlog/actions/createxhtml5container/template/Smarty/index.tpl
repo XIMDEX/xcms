@@ -38,7 +38,7 @@
 
 			</div>
 	
-	{include file="`$_APP_ROOT`/modules/xBlog/actions/createxhtml5container/template/Smarty/_ximdoc_languages.tpl"}
+	{include file="modules/xBlog/actions/createxhtml5container/template/Smarty/_ximdoc_languages.tpl"}
 	</fieldset>
 
 	</div>

@@ -1,0 +1,18 @@
+.html5editor {
+    height: 100%;
+    width: 100%;
+}
+
+#iframe-html5editor {
+    width: 100%;
+    height: 100%;
+}
+
+.html5editor .notice {
+    margin: 2%;
+}
+
+.html5editor .warning {
+    margin: 2%;
+    color: red;
+}

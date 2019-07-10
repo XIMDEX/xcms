@@ -1,0 +1,72 @@
+/**
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+.info--node .box-content {
+  padding: .8em;
+  font-size: 2rem;
+  color: #fff;
+  background: #ccc;
+  border-radius: 2px;
+  padding: 1em;
+  margin-bottom: 1em;
+  word-wrap: break-word;
+  min-height: 130pt;
+}
+
+.info--node .green {
+  background: #7bcabf;
+}
+
+.info--node h3{    
+    display: flex;
+}
+
+.info--node h3::before {
+	content: " ";
+	order: 0;
+    border-top: 3px solid #ccc;
+    font-style: normal;
+    margin: auto 15px auto 0;
+ 	flex-grow: 1;
+ 	max-width: 15px;
+ 	min-width: 15px;
+}
+
+.info--node h3::after {
+	content: " ";
+	order: 99;
+    border-top: 3px solid #ccc;
+    font-style: normal;
+    margin: auto 0 auto 15px;
+ 	flex-grow: 1; 	
+}
+
+.info--node strong {
+  display: block;
+  text-transform: uppercase;
+  font-size: 1.8rem;
+  color: #464646;
+  text-shadow: none;
+}

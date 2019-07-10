@@ -1,0 +1,187 @@
+<?php
+
+/**
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+use Ximdex\MVC\FrontController;
+use Ximdex\Runtime\App;
+use Ximdex\XML\Base;
+
+Ximdex\Modules\Manager::file('/actions/composer/Action_composer.class.php');
+Ximdex\Modules\Manager::file('/actions/browser3/inc/search/QueryProcessor.class.php');
+
+/**
+ * Standard data source
+ */
+class Datasource_Composer extends AbstractDatasource implements IDatasource
+{
+	private $fc = null;
+
+	public function __construct($conf=array())
+	{
+		parent::__construct($conf);
+		$this->fc = new FrontController();
+	}
+
+	/**
+	 * @param $request \Ximdex\Runtime\Request
+	 * @param $method
+	 */
+	protected function redirect($request, $method)
+	{
+		$request->setParam('action', null);
+		$request->setParam('actionid', null);
+		unset($_GET['action']);
+		unset($_GET['actionid']);
+		$_GET['method'] = $method;
+		unset($_REQUEST['action']);
+		unset($_REQUEST['actionid']);
+		$_REQUEST['method'] = $method;
+		$_GET["redirect_other_action"] = 1;
+		$this->fc->dispatch();
+		die();
+	}
+
+	/**
+	 * @param $request \Ximdex\Runtime\Request
+	 * @param bool $recursive
+	 * @return mixed
+	 */
+	public function read($request, $recursive = true)
+	{
+		$idNode = $request->getParam('nodeid');
+		$children = $request->getParam('children');
+		$from = $request->getParam('from');
+		$to = $request->getParam('to');
+		$items = $request->getParam('items');
+		$find = $request->getParam('find');
+
+		// Should we consider the IdNode 10000 directly?
+		$idNode = $idNode == '/' ? 10000 : $idNode;
+		$c = new Action_composer();
+		$ret = $c->readTreedata($idNode, $children, $from, $to, $items, $find);
+		$data = $this->normalizeNode($ret['node']);
+		if ($recursive) {
+			$data['collection'] = array();
+			foreach ($ret['children'] as $child) {
+				$data['collection'][] = $this->normalizeNode($child);
+			}
+		}
+		return $data;
+	}
+
+	/**
+	 * @param $request \Ximdex\Runtime\Request
+	 * @param bool $recursive
+	 * @return array
+	 */
+	public function quickRead($request, $recursive = true)
+	{
+		unset($recursive);
+		$idNode = $request->getParam('nodeid');
+		$items = $request->getParam('items');
+		$from = $request->getParam('from');
+		$to = $request->getParam('to');
+
+		// Should we consider the IdNode 10000 directly?
+		$idNode = $idNode == '/' ? 10000 : $idNode;
+		$c = new Action_composer();
+		$ret = $c->quickRead($idNode, $from, $to, $items);
+		return $ret;
+	}
+
+	/**
+	 * @param $request \Ximdex\Runtime\Request
+	 * @param bool $recursive
+	 * @return array
+	 */
+	public function readFiltered($request, $recursive = true)
+	{
+		unset($recursive);
+		$idNode = $request->getParam('nodeid');
+		$from = $request->getParam('from');
+		$to = $request->getParam('to');
+		$items = $request->getParam('items');
+		$find = $request->getParam('find');
+
+		// Should we consider the IdNode 10000 directly?
+		$idNode = $idNode == '/' ? 10000 : $idNode;
+		$c = new Action_composer();
+		$ret = $c->readTreedataFiltered($idNode, $find, $from, $to, $items);
+		return $ret;
+	}
+
+	private function normalizeNode($node)
+	{
+		return $node;
+	}
+
+	/**
+	 * @param $request \Ximdex\Runtime\Request
+	 */
+	public function parents($request) {
+		return $this->redirect($request, 'parents');
+	}
+	/**
+	 * @param $request \Ximdex\Runtime\Request
+	 */
+	public function nodetypes($request) {
+		return $this->redirect($request, 'nodetypes');
+	}
+
+	/**
+	 * @param $request \Ximdex\Runtime\Request
+	 * @return array
+	 */
+	public function search($request) {
+
+		$handler = strtoupper($request->getParam('handler'));
+		$output = strtoupper($request->getParam('output'));
+		$query = $request->getParam('query');
+
+		$handler = $handler !== null ? $handler : 'SQL';	// SQL / Solr
+		$output = $output !== null ? $output : 'JSON';		// JSON / XML
+
+		if (is_string($query)) {
+			$query = Base::recodeSrc($query,  App::getValue( 'workingEncoding'));
+			$query = str_replace('\\"', '"', $query);
+		}
+
+		$qh = QueryProcessor::getInstance($handler);
+		if (is_object($qh)) {
+			$format = $output == 'XML' ? 'XML' : 'ARRAY';
+			$results = $qh->search($query, $format);
+		} else {
+			$results = array('error'=>1, 'msg'=>_('The query handler was not found.'));
+		}
+
+		return $results;
+	}
+
+	public function write($request) {
+		return null;
+	}
+
+}

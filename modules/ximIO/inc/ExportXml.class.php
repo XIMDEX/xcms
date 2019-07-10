@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,7 +25,7 @@
  *  @version $Revision$
  */
 
-
+use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Runtime\App;
@@ -32,60 +33,56 @@ use Ximdex\Utils\TarArchiver;
 
 define ('CONST_FIRST_ALLOWED_NODE', 'Projects');
 
-class ExportXml {
-
-//	var $xml = '';
-	var $nodeID = 0;
-	var $_arrNodeId = null;
-	var $dbObj = null;
-	var $messages = null;
+class ExportXml
+{
+	public $nodeID = 0;
+	public $_arrNodeId = null;
+	public $dbObj = null;
+    public $messages = null;
 	
 	/**
 	 * Construct
 	 *
-	 * @param int $nodeID when the object was obtained, we can check if the node id is the passed one
-	 * 		to see if is an allowed node or not; if not, the xml generation process will return an empty string
+	 * @param int $nodeID when the object was obtained, we can check if the node id is the passed one 
+	 *         to see if is an allowed node or not; if not, the xml generation process will return an empty string
 	 * @return ExportXml
 	 */
-	function __construct($nodeID) {
-		$this->dbObj = new DB();
+	function __construct($nodeID)
+	{
+		$this->dbObj = new Ximdex\Runtime\Db();	
+		$this->messages = new Ximdex\Utils\Messages();
 		
-		$this->messages = new \Ximdex\Utils\Messages();
-		
-		// Checking if the node is inside the Projects folder or not.
+		// Checking if the node is inside the Projects folder or not
 		$this->_arrNodeId = array();
-		// homogenizing input
+		
+		// Homogenizing input
 		if (!is_array($nodeID)) {
 			$nodeID = array($nodeID);
 		}
-
-		reset($nodeID);
-		while (list(, $idNode) = each($nodeID)) {
+		foreach ($nodeID as $idNode) {
 			$node = new Node($idNode);
-			if (!($node->GetID() > 0)) {
+			if (!$node->GetID()) {
 				$this->messages->add(sprintf(_('The node %s does not exist'), $idNode), MSG_TYPE_ERROR);
 				continue;
 			}
-			
 			if ($node->nodeType->GetName() == CONST_FIRST_ALLOWED_NODE) {
 				$this->_arrNodeId[] = array($idNode);
 				continue;
 			}
-			
-			$nodeIsInProyect = false;
-			
+			$nodeIsInProject = false;
 			do {
 				$idParentNode = $node->GetParent();
-				if((int) $idParentNode > 0) {
+				if ($idParentNode > 0) {
 					$node = new Node($idParentNode);
 					if ($node->nodeType->GetName() == CONST_FIRST_ALLOWED_NODE) {
-						$nodeIsInProyect = true;
+						$nodeIsInProject = true;
 						$this->_arrNodeId[] = $idNode;
 					}
 				}
-			} while($idParentNode && !$nodeIsInProyect);
-			if (!$nodeIsInProyect) {
-				$this->messages->add(sprintf(_('The node %s does not exists or is not included inside of %s'), $idNode, CONST_FIRST_ALLOWED_NODE), MSG_TYPE_ERROR);
+			} while ($idParentNode && !$nodeIsInProject);
+			if (!$nodeIsInProject) {
+				$this->messages->add(sprintf(_('The node %s does not exists or is not included inside of %s'), $idNode
+				    , CONST_FIRST_ALLOWED_NODE), MSG_TYPE_ERROR);
 			}
 		}
 	}
@@ -96,54 +93,40 @@ class ExportXml {
 	 * @param bool $recurrence
 	 * @return bool Operation result
 	 */
-	
-	function getXml($recurrence = true, &$files) {
-		
+	function getXml($recurrence, & $files)
+	{	
 		$ximId =  App::getValue( 'ximid');
-		//header
+		
+		// Header
 		$xml = sprintf("<ximio-structure id=\"%s\">\n", $ximId);
 		
-		//Part corresponding with usefull information for the porject importation
+		// Part corresponding with usefull information for the porject importation
 		$xml .= $this->_getControlFolder('ChannelManager');
 		$xml .= $this->_getControlFolder('LanguageManager');
 		$xml .= $this->_getControlFolder('GroupManager');
-		
 		$xml .= $this->getContentXml($recurrence, $files);
-		
 		$xml .= "</ximio-structure>";
-
 		return $xml;
 	}
 	
-	function writeData($xml, $files, $fileName = NULL) {
-/*		if (!is_null($fileName)) {
-			if (!(preg_match('/^[^\s\\\./\*\?\"<>\|]{1}[^\s\\/\*\?\"<>\|]{0,254}$/', $fileName, $matches) > 0)) {
-				var_dump($matches);
-				unset($fileName);
-			}
-		}*/
-		
+	function writeData($xml, $files, $fileName = null)
+	{
 		if (is_null($fileName)) {
 			$fileName = date("YmdHi");
 		}
-
 		$backupLocation = sprintf("%s/data/backup/%s_ximio",XIMDEX_ROOT_PATH, $fileName);
-		$tmpFolder = sprintf('%s/data/tmp/%s', XIMDEX_ROOT_PATH, $fileName);
+		$tmpFolder = sprintf('%s/' . App::getValue('TempRoot') . '/%s', XIMDEX_ROOT_PATH, $fileName);
 		if (! mkdir($backupLocation, 0775)) {
 			error_log(_('Error creating the backup folder, check data folder permits and user&#39;s ones configured in Apache server are compatible.'));
 		}
-		
 		$tar = new TarArchiver($backupLocation . '/files.tar');
 		$tar->addEntity($files);
 		$tar->pack($tmpFolder);
-		
 		$xmlFile = fopen($backupLocation . '/ximio.xml', 'w');
 		fwrite($xmlFile, $xml);
 		fclose($xmlFile);
-		
 		return $fileName;
 	}
-	
 	
 	/**
 	 * Obtaining the content to export XML
@@ -152,12 +135,12 @@ class ExportXml {
 	 * @param array $files array of files
 	 * @return string
 	 */
-	function getContentXml($recurrence, &$files) {
+	function getContentXml($recurrence, &$files)
+	{
 		global $TOTAL_NODES;
-		$db = new DB();
+		$db = new Ximdex\Runtime\Db();
 		$files = array();
-		reset($this->_arrNodeId);
-		while (list(, $idNode) = each($this->_arrNodeId)) {
+		foreach ($this->_arrNodeId as $idNode) {
 			$node = new Node($idNode);
 			if (defined('COMMAND_MODE_XIMIO')) {
 				$query = sprintf('SELECT COUNT(DISTINCT(IdChild)) as total_nodes' . 
@@ -167,8 +150,9 @@ class ExportXml {
 				echo sprintf(_("The exportation that has as origin the node %s contains %d nodes")." \n", 
 					$node->get('Name'), $db->getValue('total_nodes'));
 				$TOTAL_NODES = $db->getValue('total_nodes');
+				Logger::debug('Total nodes: ' . $TOTAL_NODES);
 			}
-			if ($node->GetID() > 0) {
+			if ($node->GetID()) {
 				$xml = $node->ToXml(0, $files, $recurrence);
 			}
 			unset($node);
@@ -181,46 +165,44 @@ class ExportXml {
 	 *
 	 * @param string $nodeTypeName Name of the father of the folder we want to obtain
 	 * @param string $tagName Name of the XML tag which is going to contain this information
-	 * 
 	 * @return string returns the XML of the folder
 	 */
-	function _getControlFolder($nodeTypeName, $tagName = '') {
-		if (empty($nodeTypeName)) return '';
-		if (empty($tagName)) $tagName = $nodeTypeName;
+	function _getControlFolder($nodeTypeName, $tagName = '')
+	{
+	    if (empty($nodeTypeName)) {
+	        return '';
+	    }
+	    if (empty($tagName)) {
+	        $tagName = $nodeTypeName;
+	    }
 		
-		// Assuming that nodetypename is unique, as it's a folder located in the control center
-		
+		// Assuming that nodetypename is unique, as it's a folder located in the control center	
 		$nodeType = new NodeType();
 		$nodeType->SetByName($tagName);
-		if (!$nodeType->get('IdNodeType') > 0) {
+		if (!$nodeType->get('IdNodeType')) {
 			return '';
 		}
-		
-		$query = sprintf("SELECT IdNode FROM Nodes"
-				. " WHERE IdNodeType = %d", $nodeType->ID);
+		$query = sprintf('SELECT IdNode FROM Nodes WHERE IdNodeType = %d', $nodeType->ID);
 		$this->dbObj->Query($query);
+		
 		// If there is more than one folder with this name, nothing is returned due to possible ambiguity
 		if ($this->dbObj->numRows != 1) {
 			return '';
 		}
 		$idNode = $this->dbObj->GetValue('IdNode');
-
 		$node = new Node($idNode);
 		$childrensToExport = $node->GetChildren();
-		
-		$xmlResult = '';
-		$xmlResult .= sprintf("\t<%s>\n", $tagName);
+		$xmlResult = sprintf("\t<%s>\n", $tagName);
 		$files = array();
 		if (is_array($childrensToExport)) {
 			foreach ($childrensToExport as $idChildren) {
 				$children = new Node($idChildren);
-				// $files is ignored, because it is assumed that the nodes are located in the control center and there are no files there.
+				
+				// $files is ignored, because it is assumed that the nodes are located in the control center and there are no files there
 				$xmlResult .= sprintf("%s\n", $children->ToXml(2, $files));
 				unset($children);
 			}
-			
 		}
-
 		$xmlResult .= sprintf("\t</%s>\n", $tagName);
 		return $xmlResult;
 	}

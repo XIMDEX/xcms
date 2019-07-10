@@ -1,0 +1,132 @@
+<?php
+
+/**
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+use Ximdex\Logger;
+use Ximdex\Models\Node;
+use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
+use Ximdex\Utils\FsUtils;
+
+class Action_filedownload_multiple extends ActionAbstract
+{
+    public function index()
+    {
+        $idNod = (int) $this->request->getParam('nodeid');
+        $nod = new Node($idNod);
+        $nodName = $nod->get('Name');
+        $tmpFolder = FsUtils::getUniqueFolder(XIMDEX_ROOT_PATH . App::getValue('TempRoot'), '', 'export_');
+        if (! FsUtils::mkdir($tmpFolder)) {
+            $this->messages->add(_('A temporal directory to export could not be created'), MSG_TYPE_ERROR);
+            $this->render([
+                    $this->messages
+                ], null, 'messages.tpl');
+            return;
+        }
+        $values = [
+            'numChildren' => 0,
+            'nodeTypeID' => $nod->nodeType->getID(),
+            'node_Type' => $nod->nodeType->getName(),
+            'name' => $nodName
+        ];
+        $nodes = $this->request->getParam('nodes');
+        if (! empty($nodes)) {
+            $files = 0;
+            foreach ($nodes as $nodeid) {
+                $node = new Node($nodeid);
+                if (! $node->get('IdNode')) {
+                    continue;
+                }
+                $children = $node->getChildren();
+                $files += $numChildren = count($children);
+                if ($numChildren > 0) {
+                    $folder = $tmpFolder . '/' . $node->get('Name');
+                    $this->copyContents($folder, $children);
+                }
+            }
+            if ($files) {
+                $values['numChildren'] = $files;
+                $tarFile = $this->tarContents($tmpFolder);
+                $this->deleteContents($tmpFolder);
+                if (! is_file($tarFile)) {
+                    Logger::error('All selected documents could not be exported. Do you have zip installed?');
+                } else {
+                    $tarFile = preg_replace(sprintf('#^%s#', XIMDEX_ROOT_PATH), App::getValue('UrlRoot'), $tarFile);
+                    $values['nodeName'] = basename($tarFile);
+                    $values['tarFile'] = $tarFile;
+                }
+            }
+        }
+        $this->addJs('/actions/filedownload_multiple/resources/js/index.js');
+        $this->render($values, '', 'default-3.0.tpl');
+    }
+
+    private function copyContents(string $folder, array $nodes)
+    {
+        if (! FsUtils::mkdir($folder)) {
+            return false;
+        }
+        $errors = array();
+        if (! empty($nodes)) {
+            foreach ($nodes as $nodeid) {
+                $node = new Node($nodeid);
+                if (! $node->get('IdNode')) {
+                    continue;
+                }
+                $fileName = $node->get('Name');
+                $filePath = $folder . '/' . $fileName;
+                $nodetype = new \Ximdex\Models\NodeType($node->GetNodeType());
+                if ($nodetype->IsFolder) {
+                    if (! $this->copyContents($filePath, $node->GetChildren())) {
+                        $errors[] = $fileName;
+                    }
+                } elseif (! FsUtils::file_put_contents($filePath, $node->getContent())) {
+                    $errors[] = $fileName;
+                }
+            }
+        }
+
+        if (count($errors) == 0) {
+            $errors = false;
+        }
+        return $errors;
+    }
+
+    private function deleteContents($tmpFolder)
+    {
+        $ret = FsUtils::deltree($tmpFolder);
+        if (! $ret) {
+            Logger::info('Can not delete recursively directory: ' . $tmpFolder);
+        }
+    }
+
+    private function tarContents($folderToTar)
+    {
+        $tarName = sprintf('%s/%s.zip', dirname($folderToTar), basename($folderToTar));
+        exec(sprintf('cd %s && zip -r %s %s', $folderToTar, $tarName, '*'));
+        return $tarName;
+    }
+}

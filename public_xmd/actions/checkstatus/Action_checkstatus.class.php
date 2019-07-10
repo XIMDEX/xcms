@@ -1,0 +1,113 @@
+<?php
+
+/**
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
+ */
+
+use Ximdex\Models\Node;
+use Ximdex\Models\WorkflowStatus;
+use Ximdex\Models\Workflow;
+use Ximdex\Models\ServerFrame;
+use Ximdex\MVC\ActionAbstract;
+use Ximdex\NodeTypes\NodeTypeConstants;
+
+class Action_checkstatus extends ActionAbstract
+{
+    /**
+     * Main method: shows initial form
+     * 
+     * @return boolean
+     */
+    function index()
+    {
+        $idNode = $this->request->getParam('nodeid');
+        $node = new Node($idNode);
+        if (! $node->get('IdNode')) {
+            $this->messages->add(_('Node could not be found'), MSG_TYPE_ERROR);
+            $values = array('messages' => $node->messages->messages);
+            $this->render($values, NULL, 'messages.tpl');
+            return false;
+        }
+
+        // We obtain the project and the server name to filter on the query.
+        $server = new Node($idNode);
+        $serverName = $server->GetNodeName();
+        $project = new Node($server->getProject());
+        $projectName = $project->GetNodeName();
+        $dbObj = new \Ximdex\Runtime\Db();
+        $query = 'SELECT n.IdState,n.IdNode,n.Path,n.Name,v1.Version, v1.SubVersion,v1.Date 
+                  FROM Versions v1 INNER JOIN Nodes n USING (IdNode) WHERE n.IdNodetype in (' 
+                . NodeTypeConstants::XML_DOCUMENT . ',' . NodeTypeConstants::TEXT_FILE . ',' . NodeTypeConstants::IMAGE_FILE
+                . ',' . NodeTypeConstants::BINARY_FILE . ',' . NodeTypeConstants::CSS_FILE . ',' . NodeTypeConstants::JS_FILE 
+                . ') AND n.Path like \'%' . $projectName . '%' . $serverName 
+                . '%\' AND NOT v1.SubVersion=0 AND NOT EXISTS (select Idnode from Versions v2 where v2.IdNOde=v1.IdNOde 
+                and (v2.Version>v1.Version OR (v1.Version=v2.Version AND v2.SubVersion>v1.Subversion))) ORDER BY n.IdNode';
+
+        $dbObj->query($query);
+        $data = array();
+        while (! $dbObj->EOF) {
+            $data[$dbObj->getValue('IdState')][] = array(
+                'Version' => $dbObj->getValue('Version'),
+                'SubVersion' => $dbObj->getValue('SubVersion'),
+                'Date' => date('d/m/Y H:i', $dbObj->getValue('Date')),
+                'Name' => $dbObj->getValue('Name'),
+                'Path' => $dbObj->getValue('Path'),
+                'isLastVersion' => 'false');
+            $dbObj->Next();
+        }
+
+        // Creates another array with all the states info
+        $wf = new Workflow($node->nodeType->getWorkflow());
+        $states = $wf->getAllStates();
+        $statesFull = [];
+        foreach ($states as $state) {
+            $ws = new WorkflowStatus($state);
+            $count = isset($data[$state]) ? count($data[$state]) : 0;
+            $statesFull[$state] = array(
+                'stateName' => $ws->get('name'),
+                'count' => $count
+            );
+        }
+        $this->addJs('/actions/checkstatus/resources/js/index.js');
+        $this->addCss('/actions/checkstatus/resources/css/index.css');
+        $values = array('files' => $data,
+            'statesFull' => $statesFull,
+            'id_node' => $idNode,
+            'actionid' => $this->request->getParam('actionid'),
+            'name' => $node->GetNodeName()
+        );
+        $this->render($values, null, 'default-3.0.tpl');
+    }
+
+    public function getPublicationQueue()
+    {
+        $frames = new ServerFrame();
+        $values = array();
+        $etag = null;
+        $etag = $this->request->getParam('etag');
+        $nodeid = $this->request->getParam('nodeid');
+        $values['publications'] = $frames->getPublicationQueue($nodeid);
+        $this->sendJSON_cached($values, $etag);
+    }
+}

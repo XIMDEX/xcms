@@ -28,13 +28,8 @@ use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\Models\Version;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../"));
-}
 
-require_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 require_once("ISolrService.iface.php");
-require_once(XIMDEX_ROOT_PATH . '/extensions/vendors/autoload.php');
 
 /**
  * <p>SolrService class</p>
@@ -94,7 +89,7 @@ class SolariumSolrService implements ISolrService
 
         $node = new Node($version->get('IdNode'));
         if (!($node->get('IdNode') > 0)) {
-            $this->Debug('Se ha solicitado indexar una versión de un nodo que no existe');
+            $this->debug('Se ha solicitado indexar una versión de un nodo que no existe');
             return false;
         }
 

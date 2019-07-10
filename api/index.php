@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2013  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2019 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,108 +25,45 @@
  * @version $Revision$
  */
 
-use Ximdex\MVC\FrontControllerAPI;
-use Ximdex\Runtime\App;
-use Ximdex\Utils\FsUtils;
+use XimdexApi\core\Request;
+use XimdexApi\core\Response;
+use XimdexApi\core\Router;
+use Ximdex\Modules\Manager;
+use XimdexApi\actions\LoginAction;
+use XimdexApi\actions\XeditAction;
+use XimdexApi\actions\NodeAction;
 
-include_once '../bootstrap/start.php';
+if (! defined('XIMDEX_ROOT_PATH')) {
+    require_once '../bootstrap.php';
+}
+session_set_cookie_params(0, '/');
+$router = new Router(new Request());
+$router->addAllowedRequest('ping');
+$router->addRoute('ping', function (Request $r, Response $w) {
+    $w->setStatus(0);
+    $w->setMessage('');
+    $w->setResponse('PONG!');
+    $w->send();
+});
 
-//Including composer autoloader
-ModulesManager::file('/inc/io/BaseIO.class.php');
-ModulesManager::file('/inc/i18n/I18N.class.php');
+/*
+ * Actions
+ */
+LoginAction::addMethods($router);
+XeditAction::addMethods($router);
+NodeAction::addMethods($router);
 
+/*
+ * Modules actions
+ */
 
-function echo_gt_or_not($msg)
-{
-    if (function_exists('_')) {
-        return _($msg);
+// Añadimos ahora las rutas de cada módulo (si lo hay)
+$mManager = new Manager();
+foreach (Manager::getEnabledModules() as $module) {
+    $name = $module['name'];
+    $module = $mManager->instanceModule($name);
+    if (method_exists($module, 'addApiRoutes')) {
+        $module->addApiRoutes($router);
     }
-    return $msg;
 }
-
-function check_php_version()
-{
-    if (version_compare(PHP_VERSION, '5', '<')) {
-        $msg = "ERROR: PHP5 is needed. PHP version detected: [" . PHP_VERSION . "].";
-        die(echo_gt_or_not($msg));
-    }
-}
-
-function check_config_files()
-{
-    $install_params = file_exists(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php');
-    $install_modules = file_exists(XIMDEX_ROOT_PATH . '/conf/install-modules.php');
-
-    if (!$install_params || !$install_modules) {
-        $_GET["action"] = "installer";
-    }
-}
-
-function checkFolders()
-{
-    $msg = null;
-
-    $foldersToCheck = array(
-        array('FOLDER' => '/data/cache', 'MODULE' => ''),
-        array('FOLDER' => '/data/files', 'MODULE' => ''),
-        array('FOLDER' => '/data/nodes', 'MODULE' => ''),
-        array('FOLDER' => '/data/sync', 'MODULE' => ''),
-        array('FOLDER' => '/data/tmp', 'MODULE' => ''),
-        array('FOLDER' => '/data/tmp/uploaded_files', 'MODULE' => ''),
-        array('FOLDER' => '/data/tmp/js', 'MODULE' => ''),
-        array('FOLDER' => '/data/tmp/templates_c', 'MODULE' => ''),
-        array('FOLDER' => '/data/trash', 'MODULE' => 'ximTRASH'),
-        array('FOLDER' => '/logs', 'MODULE' => '')
-    );
-    reset($foldersToCheck);
-    while (list(, $folderInfo) = each($foldersToCheck)) {
-        if (!empty($folderInfo['MODULE'])) {
-            if (!ModulesManager::isEnabled($folderInfo['MODULE'])) {
-                continue;
-            }
-        }
-        $folder = XIMDEX_ROOT_PATH . $folderInfo['FOLDER'];
-        if (!is_dir($folder)) {
-            $msg = sprintf(echo_gt_or_not("Folder %s could not be found"), $folder);
-            continue;
-        }
-
-        $file = FsUtils::getUniqueFile($folder);
-        $file = $folder . DIRECTORY_SEPARATOR . $file;
-
-        FsUtils::file_put_contents($file, 'test');
-
-        if (FsUtils::file_get_contents($file) != 'test') {
-            $msg = sprintf(echo_gt_or_not("Temporary file created in %s could not be read or written"), $folder);
-        }
-
-        if (is_file($file)) {
-            FsUtils::delete($file);
-        }
-    }
-
-
-    if (!empty($msg))
-        die(echo_gt_or_not($msg));
-
-}
-
-function goLoadAction()
-{
-    header(sprintf("Location: %s", App::getValue('UrlHost') . App::getValue('UrlRoot')));
-}
-
-//Main thread
-if (!file_exists(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php')) {
-    header(sprintf("Location: %s", "./xmd/uninstalled/index.html"));
-} else {
-    $locale = \Ximdex\Utils\Session::get('locale');
-    I18N::setup($locale); // Check coherence with HTTP_ACCEPT_LANGUAGE
-
-    check_php_version();
-    checkFolders();
-    check_config_files();
-
-    $frontController = new FrontControllerAPI();
-    $frontController->dispatch();
-}
+$router->execute();

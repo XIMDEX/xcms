@@ -1,0 +1,312 @@
+/**
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+.status-buttons {
+	margin-top: 2em;
+}
+
+.file-icon {
+	font-size: 32px;
+	position: relative;
+	top: .1em;
+	color: #166565;
+}
+
+.unfinished-task {
+	color: #800000;
+	font-size: 23px;
+	top: .85em;
+	position: relative;
+}
+
+.finished-task {
+	color: #43a1a2;
+	font-size: 23px;
+	top: .85em;
+	position: relative;
+}
+
+.resume-btn {
+	background-color: #22B8C1 !important;
+}
+
+.pause-btn {
+	background-color: #D1AC2A !important;
+}
+
+.color-trans{
+	-webkit-transition: color 2s;
+	-moz-transition: color 2s;
+	-ms-transition: color 2s;
+	-o-transition: color 2s;
+	transition: color 2s;
+}
+
+.media .progress {
+	margin-bottom: 5pt;
+	width: 100%;
+}
+
+.progress-bar {
+	background-color: #1D8687;
+}
+
+.progress-bar-pending {
+    background-color: #0B0B61; /* #045FB4; */
+}
+
+.progress-bar-active {
+    background-color: #0174DF;  /* #DF0174; */
+}
+
+.progress-bar-success {
+	background-color: #0B615E !important;  /* #75CD9D; */
+}
+
+.progress-bar-errored-fatal {
+    background-color: #610B0B;  /* #B40404; */
+}
+
+.progress-bar-errored-soft {
+    background-color: #B43104; /* #8A4B08; */
+}
+
+.progress-bar-closing {
+    background-color: #8000FF;
+}
+
+.progress-bar-delayed {
+    background-color: #FFBF00;
+    color: black;
+}
+
+.progress-bar-stopped {
+    background-color: #848484;  /* #8A0808; */
+}
+
+.media .clock::before {
+	padding: 0px;
+	font-size: 1.3em;
+}
+
+.media .type-icon {
+	width: 14pt;
+	margin-right: 2pt;
+	font-size: 10pt;
+}
+
+.media .Up-icon {
+	color: #045FB4;
+}
+
+.media .Down-icon {
+    color: #B40431;
+}
+
+.media .servers {
+	margin-top: 5pt;
+	padding: 0;
+	width: 97%;
+    float: right;
+}
+
+.media .batchs {
+	margin-top: 2pt;
+    padding: 0;
+    width: 97%;
+    float: right;
+}
+
+.media .server {
+	margin-bottom: 0;
+}
+
+.media .portal-disabled {
+    color: red;
+    float: right;
+    margin-top: 5pt;
+    margin-right: 20pt;
+    font-size: 9pt;
+}
+
+.media .server-disabled-by-user {
+	color: #8A2908;
+	float: right;
+	margin-top: 2pt;
+	font-size: 8pt;
+	margin-right: 20pt;
+}
+
+.media .server-disabled {
+    color: red;
+    float: right;
+    margin-top: 2pt;
+    margin-right: 20pt;
+    font-size: 8pt;
+}
+
+.media .server-details-link {
+	color: #CCC;
+	font-size: 9pt;
+	float: left;
+}
+
+.media .boost-buttons {
+    color: #666;
+    font-size: 9pt;
+    float: right;
+    text-align: right;
+    margin-right: 20pt;
+}
+
+.media .server-detail {
+	font-size: 9pt;
+	margin-top: 1pt;
+}
+
+.media .portal-server-info {
+	margin-bottom: 1pt;
+	font-size: 9pt;
+}
+
+.media .portal-frames-sep {
+	clear: left;
+}
+
+.media .batch-info {
+	margin-bottom: 1pt;
+    font-size: 9pt;
+}
+
+.media .portal-detail {
+    width: calc(100% - 20pt);
+    float: left;
+}
+
+.media .portal-buttons {
+    width: 20pt;
+    float: right;
+    text-align: right;
+}
+
+.media .portal-server-detail {
+	width: calc(100% - 20pt);
+    float: left;
+}
+
+.media .portal-server-progress {
+    height: 15px;
+}
+
+.media .portal-batchs-detail {
+    width: calc(100% - 20pt);
+    float: left;
+}
+
+.media .portal-batchs-progress {
+    height: 15px;
+}
+
+.media .portal-server-buttons {
+	width: 20pt;
+	float: right;
+	text-align: right;
+}
+
+.media .portal-batchs-buttons {
+    width: 20pt;
+    float: right;
+    text-align: right;
+}
+
+.media .server-progress-bar {
+	line-height: 15px;
+	font-size: 8pt;
+}
+
+.media .batch-progress-bar {
+    line-height: 15px;
+    font-size: 8pt;
+}
+
+.media .play {
+	color: #088A29;
+    cursor: pointer;
+}
+
+.media .reload {
+    color: #084B8A;
+    cursor: pointer;
+}
+
+.media .pause {
+    color: #DF7401;
+    cursor: pointer;
+}
+
+.media .portal-button {
+    font-size: 14pt;
+}
+
+.media .server-button {
+    font-size: 10pt; 
+}
+
+.media .batchs-button {
+    font-size: 10pt; 
+}
+
+.media .check-icon {
+	color: #0B615E;
+}
+
+.media .exclamation-icon {
+    color: #610B0B;
+}
+
+.media .boost-icon {
+    margin-left: 5pt;
+    cursor: pointer;
+}
+
+.media .boost-icon-1x-selected {
+    color: #088A68;
+}
+
+.media .boost-icon-2x-selected {
+    color: #DF7401;
+}
+.media .boost-icon-4x-selected {
+    color: #B40404;
+}
+
+.media .cancel-portal-button {
+	color: #B40431;
+	cursor: pointer;
+	float: right;
+	font-size: 9pt;
+	margin-right: 20pt;
+	margin-top: 4pt;
+}

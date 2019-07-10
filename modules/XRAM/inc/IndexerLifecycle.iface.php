@@ -24,9 +24,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../"));
-}
+
 
 /**
  * <p>Indexer Lifecycle interface</p>
@@ -38,7 +36,7 @@ interface IndexerLifecycle
      * <p>Function called before the indexing is performed</p>
      * <p>It allows the developers to modify the document to be indexed</p>
      * 
-     * @param $document The document to be indexed
+     * @param $document : The document to be indexed
      */
     public function beforeIndex($document);
     
@@ -46,7 +44,7 @@ interface IndexerLifecycle
      * <p>Function called after the indexing process</p>
      * <p>It allows the developers to perform some action after the indexing process</p>
      * 
-     * @param $document The document which has been indexed
+     * @param $document : The document which has been indexed
      */
     public function afterIndex($document);
     
@@ -60,8 +58,8 @@ interface IndexerLifecycle
      * <p>Function called after the retrieving process</p>
      * <p>It allows the developers to perform some action after retrieving a document</p>
      * 
-     * @param $document The document which has been retrieved
-     * @return the document retrieved after some process has been applied to it
+     * @param $document : The document which has been retrieved
+     * @return : the document retrieved after some process has been applied to it
      */
     public function afterRetrieve($document);
     
@@ -75,7 +73,7 @@ interface IndexerLifecycle
      * <p>Function called after the deletion process</p>
      * <p>It allows the developers to perform some action after deleting a document</p>
      * 
-     * @param $document The document which has been deleted
+     * @param $document : The document which has been deleted
      */
     public function afterDelete($id);
     

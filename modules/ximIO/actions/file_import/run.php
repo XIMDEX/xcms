@@ -1,6 +1,7 @@
 <?php
+
 /**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2018 Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -24,40 +25,30 @@
  *  @version $Revision$
  */
 
-
 use Ximdex\Runtime\Constants;
-use Ximdex\Runtime\Cli\CliReader;
+use Ximdex\Cli\CliReader;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-		define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../../../');
-	}
-	//
-	ModulesManager::file('/inc/FileUpdater.class.php', 'ximIO');
-	ModulesManager::file('/actions/file_import/inc/FileUpdaterCli.class.php', 'ximIO');
+Ximdex\Modules\Manager::file('/inc/FileUpdater.class.php', 'ximIO');
+Ximdex\Modules\Manager::file('/actions/file_import/inc/FileUpdaterCli.class.php', 'ximIO');
 
-	$parameterCollector = new FileUpdaterCli($argc, $argv);
-	$revision = $parameterCollector->getParameter('--file');
-	$autoDelete = $parameterCollector->getParameter('--autodelete');
-
-	if (empty($autoDelete)) {
-		$autoDelete = true;
-	}
-	
-	echo _("It is going to proceed the content importation of nodes for package ")."{$revision}:\n\n";
-	
-	if (!CliReader::alert(array('y', 'Y', 's', 'S'), _("Do you want to continue with the process? (Y/n)")."\n", array('n', 'N'), _("The importation process has been aborted as user applied")."\n")) {
-		die();
-	}
-	
-	$time = time();
-	$fileUpdater = new FileUpdater($revision);
-	$fileUpdater->updateFiles(Constants::IMPORT_FILES);
-	$timeConsumed = time() - $time;
-
-	echo sprintf(_("The time consumed by the process has been of %s seconds"),$timeConsumed);
-
-
-	if ($autoDelete) {
-		passthru(sprintf('php %s'.ModulesManager::path('ximIO').'/actions/remove/run.php --file %s', 
-			XIMDEX_ROOT_PATH,  $revision));
-	}
+global $argc, $argv;
+$parameterCollector = new FileUpdaterCli($argc, $argv);
+$revision = $parameterCollector->getParameter('--file');
+$autoDelete = $parameterCollector->getParameter('--autodelete');
+if (empty($autoDelete)) {
+	$autoDelete = true;
+}
+echo _("It is going to proceed the content importation of nodes for package ")."{$revision}:\n\n";
+if (!CliReader::alert(array('y', 'Y', 's', 'S'), _("Do you want to continue with the process? (Y/n)") . "\n", array('n', 'N')
+    , _("The importation process has been aborted as user applied")."\n")) {
+	die();
+}
+$time = time();
+$fileUpdater = new FileUpdater($revision);
+$fileUpdater->updateFiles(Constants::IMPORT_FILES);
+$timeConsumed = time() - $time;
+echo sprintf(_("The time consumed by the process has been of %s seconds"),$timeConsumed);
+if ($autoDelete) {
+	passthru(sprintf('php %s'.\Ximdex\Modules\Manager::path('ximIO').'/actions/remove/run.php --file %s',
+		XIMDEX_ROOT_PATH,  $revision));
+}

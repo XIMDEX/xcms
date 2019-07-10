@@ -106,7 +106,6 @@ if angular.module('ximdex').notRegistred('listPostsCtrl')
                 action =
                     command: "setmetadata"
                     name: "Semantic tags"
-                    module: "ximTAGS"
                 nodes = [
                     nodeid: nodeid
                 ]
@@ -114,7 +113,7 @@ if angular.module('ximdex').notRegistred('listPostsCtrl')
 
             $scope.preview = (nodeid) ->
                 action =
-                    command: "prevdoc"
+                    command: "rendernode"
                     name: "Preview"
                 nodes = [
                     nodeid: nodeid

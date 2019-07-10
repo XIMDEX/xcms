@@ -1,0 +1,164 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+ @import "../../../../assets/style/jquery/ximdex_theme/widgets/themes/ximdex_theme";
+ @import "../../../../assets/style/jquery/ximdex_theme/widgets/themes/extends";
+
+
+
+
+.result_name, .result_url{
+	display: block;
+}
+
+.result_url{
+	color: $c_mainlight;
+	margin-top: .5em;
+	font-weight: bold;
+}
+
+.description_btn{
+	display: inline-block;
+}
+
+.result_info{
+	padding-right: 6em;
+	.row-item-actions{
+		top: 50%;
+		margin-top: -.8em;
+		-webkit-transform: none;
+		-moz-transform: none;
+		-ms-transform: none;
+		-o-transform: none;
+		transform: none;
+		z-index: auto;
+
+		a{
+			.status_tooltip{
+			margin-top: 3em;
+			right: 0;
+			text-align: center;
+			text-transform: none;
+			z-index: 3;
+				&::before{
+					right: 1.5em;
+				}
+			}
+		}
+		
+		.xtooltip{
+			right: 3.5em;
+			white-space: normal;
+			width: 300%;
+			margin-top: 3em;
+			text-transform: none;
+			padding: 1em;
+			z-index: 3;
+			&::before{
+				right: 1.7em;
+			}
+
+			p{
+				font-size: 1.5rem;
+				line-height: 1.4;
+
+				&:first-child{
+					border-bottom: 1px solid rgba(255,255,255,.5);
+					padding-bottom: 0.5em;
+					margin-bottom: .8em;
+					font-size: 1.6rem;
+				}
+				&:last-child{
+					margin-bottom: 0;
+				}
+			}
+		}
+	}
+}
+
+.btn-unlabel-rounded.result_description{
+	background:#42dada;
+	&:hover{
+		background:#42dada; 
+	}
+}
+
+.btn-unlabel-rounded.checked_not_checked{
+	background:#e2bf46;
+	p.status {
+		color: #e2bf46;
+	}	
+	&:hover{
+		background:darken(#e2bf46, 3%);
+	}
+}
+.btn-unlabel-rounded.checked_ok{
+	background:#5ad479;
+	p.status {
+		color: #5ad479;
+	}
+	&:hover{
+		background:darken(#5ad479, 3%);
+	}
+}
+
+.btn-unlabel-rounded.checked_fail{
+	background:#f03c3c;
+	p.status {
+		color: #f03c3c;
+	}
+	&:hover{
+		background:darken(#f03c3c, 3%);
+	}
+}
+
+
+.btn-unlabel-rounded.checking_status{
+	&::before{
+		@include loading-loader;
+		border-width: .85em;
+		right: .8em;
+		margin-top: -.8em;
+		left: auto;
+	}
+	background:#fff;
+}
+
+
+
+p.status{
+	text-transform: uppercase;
+	margin-top: .5em;
+	margin-bottom: .5em;
+	padding-bottom: .5em;
+	border-bottom: 1px solid rgba(255,255,255,.3);
+}
+.status_tooltip {
+	.date_check{
+		font-size: 1.2em;
+	}
+}
+
+		@include loading-animation;

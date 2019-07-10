@@ -1,6 +1,7 @@
 <?php
 use DiDom\Document;
 use DiDom\Element;
+use Ximdex\Models\Link;
 use Ximdex\Models\Node;
 use Ximdex\Runtime\App;
 

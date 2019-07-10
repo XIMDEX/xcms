@@ -8,7 +8,6 @@
 *.idea
 
 node_modules/
-/data/
 
 conf/_STATUSFILE
 conf/install-params.conf.php
@@ -16,7 +15,6 @@ conf/install-modules.php
 conf/install-params.conf_bk_*.php
 conf/install-params.conf.phpbck_*.php
 
-modules/dexT/xslt/dext_main.xsl
 modules/modules_PRO/
 modules/xlyre
 
@@ -29,3 +27,8 @@ pi.php
 /.buildpath
 /.project
 /.data
+/vendors/
+/data/
+/logs/
+/.plata-config
+/conf/*(copia)*

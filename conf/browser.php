@@ -35,22 +35,6 @@
 return array(
 	'defaultDatasource' => 'Composer',
 	'datasources' => array(
-		'Composer' => array(),
-		'XVFS' => array(
-			'MOUNTPOINTS' => array(
-				array(
-					'mountpoint' => '/',
-					'uri' => 'xnodes://user:passwd@localhost/'
-				)/*,
-				array(
-					'mountpoint' => '/web',
-					'uri' => 'file:///var/www/'
-				),
-				array(
-					'mountpoint' => '/tmp',
-					'uri' => 'file:///tmp/'
-				)*/
-			)
-		)
+		'Composer' => array()
 	)
 );

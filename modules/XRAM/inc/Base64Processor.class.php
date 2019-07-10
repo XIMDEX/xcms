@@ -24,12 +24,9 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../"));
-}
 
 //
-ModulesManager::file('/inc/IndexerLifecycle.iface.php', 'XRAM');
+\Ximdex\Modules\Manager::file('/inc/IndexerLifecycle.iface.php', 'XRAM');
 
 class Base64Processor implements IndexerLifecycle
 {

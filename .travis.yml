@@ -5,21 +5,22 @@ group: edge
 
 language: php
 php:
-  - '7.1'
+  - '7.2'
 
 services:
   - docker
 
 env:
-  - DB_SERVER=mysql:5.7
-  - DB_SERVER=mariadb:10.2
+  # - DB_SERVER=mysql:5.7
+  - DB_SERVER=mariadb:10.3
 
 before_install:
   - curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
-  - cd tests
+  - cd tests/
   - docker-compose up -d ximdex
+  # - docker-compose up db ximdex test
 
 script:
   - docker-compose run test
@@ -30,3 +31,7 @@ notifications:
       - travis@ximdex.com
     on_success: change
     on_failure: always
+    
+  slack:
+    rooms:
+      - ximdexteam:tJAT66V6VSJeHR3H2CDCImnK#travis-ci

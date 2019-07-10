@@ -25,7 +25,7 @@
 
 <tr>
 	<td>
-		{include file="$_APP_ROOT/xmd/template/Smarty/helper/messages.tpl"}
+		{include file="actions/commons/views/helper/messages.tpl"}
 		<form action="{$action}" method="post" id="console_wrapper">
 			<input type="hidden" name="nodeid" value=""/>
 			<input type="hidden" name="actionid" value="{$id_action}"/>
@@ -47,7 +47,7 @@
 				<input type="checkbox" id="processFirstNode" name="processFirstNode" />
 				<label for="processFirstNode">{t}Indicate if first node should be generated or not.{/t}</label>
 				<p>
-				<strong>{t}Explanation:{/t}</strong>{t}If we copy a ximdoc folder, destination node should be a ximdoc folder, and in this case we should not indicate than first node was generated. If we copy a ximnews folder, we should choose as container a server or section, and we will need create the ximnews section, therefore in this case we should tick the checkbox{/t}.
+				<strong>{t}Explanation:{/t}</strong>{t}If we copy a ximdoc folder, destination node should be a ximdoc folder, and in this case we should not indicate than first node was generated.{/t}.
 				</p>
 			</div>
 			

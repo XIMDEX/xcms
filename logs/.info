@@ -1,0 +1,21 @@
+This file explain what information is writed on each log into this folder.
+
+
+Publication:
+------------
+
+scheduler.log -> exit of the commands executed on every time the crontab is called.
+
+publication.log -> show the result of publishing reports
+
+
+Ximdex:
+-------
+
+xmd.log -> Ximdex general log.
+
+
+Transformation:
+---------------
+
+xslt.log -> XSL transformation errors in structured documents

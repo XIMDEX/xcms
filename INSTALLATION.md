@@ -1,192 +1,191 @@
-# Installing the Semantic Web headless CMS Ximdex
+
+
+
+# Installing XCMS v.4
 
 Ximdex CMS requires a Linux host, a Database server (MySQL or MariaDB) and the Apache Web Server with PHP or NGINX with PHP-fpm.
 
-Install Ximdex CMS as a docker container or using the web installer on your server.
+To run XCMS on a docker container you can see [docker_deployment_guide.md](docker_deployment_guide.md)
 
-## A) Running Ximdex CMS using Docker composer
+Follow this guide to install XCMS on your Linux server...
 
-1. **Download Ximdex** package (https://github.com/XIMDEX/ximdex/archive/develop.zip) and expand it:
+### Server Requirements
 
-	```
-  	wget --no-check-certificate https://github.com/XIMDEX/ximdex/archive/develop.zip
-	unzip develop.zip && rm develop.zip
-  	```
-	or
-	```
-  	curl -L https://github.com/XIMDEX/ximdex/archive/develop.zip > develop.zip
-	unzip develop.zip && rm develop.zip
-  	```
-  	
-	You should end with a directory (i.e.: ximdex-develop) containing all the Ximdex files and directories.
+To use **XCMS** you need an updated web browser as Firefox, Google Chrome, ... with Javascript and cookies enabled.
 
+To install **XCMS** you need a Linux server with:
 
-2. From the Ximdex directory (i.e.: ximdex-develop, where the docker-compose.yml file is locate) run the command:
-    ```
-	sudo docker-compose up
-    ```
-    That will run the containers for Apache2, PHP, MySQL and Ximdex running on the host ximdex:80 
-	
-3. Add to your /etc/hosts file the line:
-	```
-	127.0.0.1		ximdex
-	```    
+#### 1.- A Relational Database Management System as
 
-4. Visit http://ximdex to start the web installer:
-    
-    > For docker, you will need to use the host **db** instead of the suggested **localhost** and the password **ximdex** in the **"Database password"** field.
+##### MySQL
 
-5. Use Ximdex CMS at http://ximdex with the user Ximdex and your choosen password.
+* Recommended version: **5.7** (or greater)
+* Linux install: `sudo apt-get install mysql-server`
 
-6. To **stop the services**, run
-	```
-	sudo docker-compose down
-	```
-	from the root directory where the composer was launched.
+##### or MariaDB
 
+* Recommended version: **10.2** (or greater)
+* Alternative versions: prior versions, like **10.1**, reported some errors.
+* Linux install: `sudo apt-get install mariadb-server`
 
-### Docker problems and solutions:
+#### 2.- A web server as Apache with PHP 7.2 or greater
 
-The ximdex directory has to be a shared path for docker!
-	    
-If you **don´t have installed the docker-composer package**, install it using the next command line in a terminal console:
-	    
-```
-sudo apt-get install docker-compose
-```
-	
-If the **installation is aborted**, please use the next conmmand to remove the .data directory at ximdex to clean the database data:
-```
-sudo rm -rf .data
-```
-	
-You may need to grant read and write permissions to web server user and group:
-	
-```
-sudo chown -R www-data:www-data ximdex-develop
-cd ximdex-develop
-sudo chmod -R ug+rw data
-sudo chmod -R ug+rw logs
-sudo chmod -R ug+rw conf
+  * Install Apache web server and PHP:   
+     ```shell
+     sudo apt-get install apache2
+     sudo apt-get install php
+     ```
+  
+  * PHP Modules:
+     ```shell
+     sudo apt-get install php-xml
+     sudo apt-get install php-cli
+     sudo apt-get install php-curl
+     sudo apt-get install php-gd
+     sudo apt-get install php-mysql
+     sudo apt-get install php-pear
+     sudo apt-get install php-mbstring
+     sudo apt-get install php-enchant
+     ```
 
-sudo chmod -R g+s data (optional)
-sudo chmod g+s logs (optional)
-sudo chmod g+s conf (optional)
-```
-	
-## B) Installing from Github with the Web Installer
-When Apache2 and PHP are running with the requested packages, download Ximdex CMS, move it to the final destination on your document root (i.e.: /var/www/myximdex, in some cases this may be /var/www/html/), set directory permissions and file owners (user/group) and configure it using your web browser pointing to the desired URL (i.e.: http://yourhost/myximdex). You will need root access to a unix console to execute some steps...
+#### 3.- Install PHP Composer
 
-### Requirements
-*  A terminal with Telnet or SSH.
-*  A user with the power to create the directory where Ximdex CMS will be installed (under a document root for your web server)
-*  Enough free space in the filesystem. See 'conf/diskspace.php' file for further information.
-*  A **database server** like *MySQL Server* (>= 5.7) or *MariaDB* (>= 10.2) and a database user that can create the Ximdex Database.
-    i.e. you can execute in a terminal console for MySQL server:
-    ```
-    sudo apt-get install mysql-server
-    ```
-    or for MariaDB server:
-    ```
-    sudo apt-get install mariadb-server
-    ```
-    If you need to install one of them.
-    
-*  **Apache2 web server** with modules libapache2-mod-php, apache-mpm-itk (recommended).
-    ```
-    sudo apt-get install apache2
-    sudo apt-get install libapache2-mod-php
-    sudo apt-get install libapache2-mpm-itk
-    ```
-    
-*  **PHP** (>= 7.1.0)
-    * PHP package:
-        ```
-        sudo apt-get install php
-        ```
-	* PHP modules: php-xml, php-cli, php-curl, php-gd, php-mysql, php-mcrypt, php-pear:
-        ```
-        sudo apt-get install php-xml
-        sudo apt-get install php-cli
-        sudo apt-get install php-curl
-        sudo apt-get install php-gd
-        sudo apt-get install php-mysql
-        sudo apt-get install php-mcrypt
-        sudo apt-get install php-pear
-        ```
-	*  To use the spelling checker in Xedit (our wysiwyg XML editor), install php-enchant module:
-        ```
-	    sudo apt-get install php-enchant
-	    ```
-    *  Other packages: wget
-        ```
-        sudo apt-get install wget
-        ```
-        
-*  A **modern web browser** (with javascript and cookies enabled): Firefox, Google Chrome, Safari, Opera, Microsoft Edge, etc.
+To install composer please visit this [link](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-macos) and follow the instructions.
 
-*  An **internet connection** if you want to use some features as the automatic suggestion system based on ontologies (XOWL module), Dynamic Semantic Publishing (DSP) of semantic entities or to publish your content into the cloud.
+#### 4.- Email notifications
 
-*  *Postfix* or *Sendmail* (if you want to use notification by mail see 'conf/mail.php').
-    So, for Postfix use:
-    ```
-    sudo apt-get install postfix
-    ```
-    or for Sendmail use:
-    ```
-    sudo apt-get install sendmail
-    ```
-
-### Installation Steps
-1. **Download Ximdex** package (https://github.com/XIMDEX/ximdex/archive/develop.zip) and expand it:
-	```
-  	wget --no-check-certificate https://github.com/XIMDEX/ximdex/archive/develop.zip
-	unzip develop.zip
-  	```
-	or
-	```
-  	curl -L https://github.com/XIMDEX/ximdex/archive/develop.zip > develop.zip
-	unzip develop.zip
-  	```
-	> You should end with a directory (i.e.: ximdex-develop) containing all the Ximdex files and directories.
-
-2. **Move it to your Web Server Document Root** with the service name to use (i.e.: myximdex)
-	```
-	mv ximdex-develop /var/www/myximdex
-	```
-	In this example, 'myximdex' will be your Ximdex instance.
-
-    	> You may **need superuser privileges** to do that! In that case type sudo before the command (i.e.: sudo mv ...)
-
-3. **Set File Owners and Permissions** to the ones required by your web server:
-
-	```
-	cd /var/www/
-	sudo chown -R www-data:www-data myximdex
-	cd myximdex
-	sudo chmod -R ug+rw data
-	sudo chmod -R ug+rw logs
-	sudo chmod -R ug+rw conf
-	
-	sudo chmod -R g+s data (optional)
-	sudo chmod g+s logs (optional)
-	sudo chmod g+s conf (optional)
-	```
-
-	In this example, 'www-data' are the user and group that apache runs with.
-	> You may **need superuser privileges** to do that! (Type *sudo* before the above commands)
+To use email notifications **Postfix** or **Sendmail** are needed. You can install postfix with `sudo apt-get install postfix` and **Sendmail** with `sudo apt-get install sendmail`.
 
 
-4. **Create a new database and a new user**:
-    ```
-    CREATE DATABASE `ximdex-db`;
-    CREATE USER 'ximdex-user'@'localhost' IDENTIFIED BY 'ximdex-pass';
-    GRANT ALL PRIVILEGES ON `ximdex-db`.* TO 'ximdex-user'@'localhost' WITH GRANT OPTION;
-    ```
-    > This information will be requested in the following step.
+---
 
-5. **Point your web browser** to your just installed Ximdex CMS instance URL (i.e.: http://YOURHOST/myximdex or http://localhost/myximdex) to run the configuration tool that will load the database, create users and install Ximdex's modules.
+## XCMS v4 installation
 
-**Thank you for installing Ximdex CMS**. Please, contact us at help@ximdex.org if you need further assistance.
+To install XCMS:
+
+##### 1. Download XCMS
+
+Download it from github (develop branch) at https://github.com/XIMDEX/ximdex/tree/develop or use **curl** or **wget**:
+
+   ```shell
+   wget --no-check-certificate https://github.com/XIMDEX/ximdex/archive/develop.zip
+   ```
+
+   ```shell
+   curl -L https://github.com/XIMDEX/ximdex/archive/develop.zip > develop.zip
+   ```
+
+(Install wget with ```sudo apt-get install wget```)
+
+Unpack the package (Manually or using unzip):
+
+   ```shell
+   unzip develop.zip
+   ```
+
+![](https://raw.githubusercontent.com/XIMDEX/resources/master/img/XCMS-install/Selección_020.png)
+
+##### 2. Move it to the server root
+
+You need to move the **ximdex-develop** folder to the server documents root. You can use `mv ximdex-develop /YOUR/ROOT/ADDRESS/myximdex` to move it and rename the instance from 'ximdex-develop' to 'myximdex'.
+
+![](https://raw.githubusercontent.com/XIMDEX/resources/master/img/XCMS-install/Selección_021.png)
+
+In this example, our root is located at **www** and our instance is renamed **myximdex**.
+
+##### 3. Set File Owners and Permissions
+
+We need to set file owners and permissions adequated to our web server. So, if apache runs as 'www-data:www-data' we can run:
+
+   ```shell
+   cd /var/www/
+   sudo chown -R www-data:www-data myximdex
+   cd myximdex
+   sudo chmod -R ug+rw data
+   sudo chmod -R ug+rw logs
+   sudo chmod -R ug+rw conf
+   ```
+
+Optionally, if the owner is not the apache unix user, you have to set the sticky bit to assign the right group owner to new files:
+
+   ```shell
+   sudo chmod -R g+s data
+   sudo chmod g+s logs
+   sudo chmod g+s conf
+   ```
+
+##### 4. Install third-party needed repositories with **composer**
+
+Move to the XCMS root folder (**myximdex** in this case) and run **composer** to configure additional packages:
+
+   ```shell
+   cd /var/www/myximdex
+   composer install --no-dev
+   ```
+
+##### 5. Create your XCMS Database
+
+Open a connection to your DDBB engine and type the following SQL commands:
+
+* To create the DB for XCMS:
+
+   ```sql
+   CREATE DATABASE `ximdex_db`;
+   ```
+
+* Create a specific db user for XCMS:
+
+   ```sql
+   CREATE USER `ximdex-user`@`localhost` IDENTIFIED BY 'ximdex-pass';
+   GRANT ALL PRIVILEGES ON `ximdex_db`.* TO `ximdex-user`@`localhost` WITH GRANT OPTION;
+   ```
 
 
+
+---
+
+## Configure Ximdex CMS v4
+
+Once XCMS is installed at the Web Server, point your browser to <http://YOURHOST/myximdex> (In this case <http://localhost/myximdex>) and follow the suggested steps to load the DataBase, create the XCMS admin user and install additional XCMS modules.
+
+The landing page will greet us with a button to check if all requirements have been satisfied:
+
+![](https://raw.githubusercontent.com/XIMDEX/resources/master/img/XCMS-install/023.png)
+
+Once clicked, if all the requirements are fullfiled, the browser will show a success notification:
+
+![](https://raw.githubusercontent.com/XIMDEX/resources/master/img/XCMS-install/Selección_024.png)
+
+The "start installation" button will launch the DB configuration screen where we will be prompted for a user and pass for the database (we must provide the previously created ones)
+
+Press the **create database** button (select "yes" if it shows a overwrite warning)
+
+![](https://raw.githubusercontent.com/XIMDEX/resources/master/img/XCMS-install/026.png)
+
+In the following step, an **unprivileged user** to access the DataBase from XCMS can be created. It is highly recommended to create it and do not skip this step. In this case, we will create one called **ximdex_user** with password **ximdex_user**:
+
+![](https://raw.githubusercontent.com/XIMDEX/resources/master/img/XCMS-install/Selección_027.png)
+
+In the following screen, we assign the password for **XCMS superuser** (the priviledged user is called "ximdex").
+
+![](https://raw.githubusercontent.com/XIMDEX/resources/master/img/XCMS-install/028.png)
+
+Next, additional components (as XML editors, publishing reports, semantic tag management, ...) will be installed when pressing the **install modules** button:
+
+![](https://raw.githubusercontent.com/XIMDEX/resources/master/img/XCMS-install/029.png)
+
+The last screen configures the semantic service to enrich your content and data automatically. If you click **continue**, a  default key will be in use. Visit my.ximdex.net to generate your private key.
+
+![](https://raw.githubusercontent.com/XIMDEX/resources/master/img/XCMS-install/031.png)
+
+---
+
+### Run Automatically the Transforming and Publishing System
+
+Remember that XCMS is an omnichannel headless CMS that transform and publish your documents in remote locations. To do it, add the following crontab job to your root user:
+   ```
+   * * * * * php /var/www/html/myximdex/bootstrap.php src/Sync/scripts/scheduler/scheduler.php
+   ```
+
+---
+Thank you for installing **Ximdex CMS**. Please, contact us at **help@ximdex.org** if you need further assistance.

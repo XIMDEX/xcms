@@ -27,10 +27,10 @@ use Ximdex\Models\Node;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 use DiDom\Document;
-use Ximdex\Services\NodeType;
+use Ximdex\NodeTypes\NodeTypeConstants;
 
-ModulesManager::file("/actions/browser3/Action_browser3.class.php");
-ModulesManager::file('/inc/utils/XHTMLEditorUtils.php', 'xBlog');
+\Ximdex\Modules\Manager::file("/actions/browser3/Action_browser3.class.php");
+\Ximdex\Modules\Manager::file('/inc/utils/XHTMLEditorUtils.php', 'xBlog');
 
 class Action_listposts extends ActionAbstract
 {
@@ -43,14 +43,14 @@ class Action_listposts extends ActionAbstract
         $idnode = $this->request->getParam('nodeid');
         $node = new Node($idnode);
         $values["documentsid"] = $node->GetChildByName("documents");
-        $values["user"] = \Ximdex\Utils\Session::get("user_name");
+        $values["user"] = \Ximdex\Runtime\Session::get("user_name");
         $this->render($values, "index.tpl", 'default-3.0.tpl');
     }
 
     public function getPosts(){
         $idnode = $this->request->getParam('nodeid');
-        $user = new User(\Ximdex\Utils\Session::get("userID"));
-        $lastestDocs = $user->getLastestNodes(NodeType::XHTML5_DOC, $idnode);
+        $user = new User(\Ximdex\Runtime\Session::get("userID"));
+        $lastestDocs = $user->getLastestNodes(NodeTypeConstants::XHTML5_DOC, $idnode);
         $consultaTitle = "//x-meta[@data-key='title']";
         $consultaMeta = "//x-meta[@data-key='image']";
         $consultaIntro = "//x-meta[@data-key='intro']";
