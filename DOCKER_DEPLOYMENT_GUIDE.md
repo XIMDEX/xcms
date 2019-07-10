@@ -1,14 +1,14 @@
 ## Running Ximdex CMS using Docker composer
 
-1. **Download Ximdex** package (https://github.com/XIMDEX/ximdex/archive/develop.zip) and expand it:
+1. **Download Ximdex** package (https://github.com/XIMDEX/xcms/archive/develop.zip) and expand it:
 
     ```
-    wget --no-check-certificate https://github.com/XIMDEX/ximdex/archive/develop.zip
+    wget --no-check-certificate https://github.com/XIMDEX/xcms/archive/develop.zip
     unzip develop.zip && rm develop.zip
     ```
     or
     ```
-    curl -L https://github.com/XIMDEX/ximdex/archive/develop.zip > develop.zip
+    curl -L https://github.com/XIMDEX/xcms/archive/develop.zip > develop.zip
     unzip develop.zip && rm develop.zip
     ```
     

@@ -88,21 +88,21 @@
 			<h2 class="h2_general">{t}Learn how to{/t}...</h2>
 			<ul>
 				<li>
-					<a href="https://github.com/XIMDEX/ximdex/wiki/Recipes#create-a-new-project-easy" 
+					<a href="https://github.com/XIMDEX/xcms/wiki/Recipes#create-a-new-project-easy" 
 					       target="_blank">{t}Create a new project{/t}</a>
 				</li>
 				<li>
-					<a href="https://github.com/XIMDEX/ximdex/wiki/Recipes#create-a-new-server-medium" 
+					<a href="https://github.com/XIMDEX/xcms/wiki/Recipes#create-a-new-server-medium" 
 					       target="_blank">{t}Create a new Server and publish data{/t}</a>
 				</li>
 				<li>					
-					<a href="https://github.com/ximdex/ximdex/wiki/Ximdex-Basics" target="_blank">{t}Ximdex CMS, the basics{/t}</a>
+					<a href="https://github.com/ximdex/xcms/wiki/Ximdex-Basics" target="_blank">{t}Ximdex CMS, the basics{/t}</a>
 				</li>
 				<li>					
-					<a href="https://github.com/ximdex/ximdex/wiki/Recipes" target="_blank">{t}RNG schemes and XSL templates{/t}</a>
+					<a href="https://github.com/ximdex/xcms/wiki/Recipes" target="_blank">{t}RNG schemes and XSL templates{/t}</a>
 				</li>
 				<li>					
-					<a href="https://github.com/XIMDEX/ximdex/wiki/Faqs" target="_blank">{t}FAQs{/t}</a>
+					<a href="https://github.com/XIMDEX/xcms/wiki/Faqs" target="_blank">{t}FAQs{/t}</a>
 				</li>
 				<li>					
 					<a href="mailto:help@ximdex.org">{t}Contact us{/t}</a>
