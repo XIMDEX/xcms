@@ -29,8 +29,6 @@ use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
-use Ximdex\Runtime\DataFactory;
-use Ximdex\Sync\SyncManager;
 
 class Action_edittext extends ActionAbstract
 {
@@ -42,8 +40,8 @@ class Action_edittext extends ActionAbstract
     public function index()
     {
         $this->addCss('/actions/edittext/resources/css/style.css');
-        $this->addCss('/vendors/codemirror/Codemirror/lib/codemirror.css');
-        $this->addCss('/vendors/codemirror/Codemirror/addon/fold/foldgutter.css');
+        $this->addCss('/vendor/codemirror/Codemirror/lib/codemirror.css');
+        $this->addCss('/vendor/codemirror/Codemirror/addon/fold/foldgutter.css');
         $idNode = $this->request->getParam('nodeid');
         $strDoc = new StructuredDocument($idNode);
         if ($strDoc->GetSymLink()) {
@@ -79,35 +77,35 @@ class Action_edittext extends ActionAbstract
             case "js":
             case "json":
             case "java":
-                $this->addJs('/vendors/codemirror/Codemirror/addon/edit/closebrackets.js');
-                $this->addJs('/vendors/codemirror/Codemirror/addon/fold/brace-fold.js');
+                $this->addJs('/vendor/codemirror/Codemirror/addon/edit/closebrackets.js');
+                $this->addJs('/vendor/codemirror/Codemirror/addon/fold/brace-fold.js');
                 break;
             case "coffee":
             case "py":
             case "yml":
-                $this->addJs('/vendors/codemirror/Codemirror/addon/fold/indent-fold.js');
-                $this->addJs('/vendors/codemirror/Codemirror/addon/fold/brace-fold.js');
+                $this->addJs('/vendor/codemirror/Codemirror/addon/fold/indent-fold.js');
+                $this->addJs('/vendor/codemirror/Codemirror/addon/fold/brace-fold.js');
                 break;
             case "xml":
             case "xsl":
             case "html":
-                $this->addJs('/vendors/codemirror/Codemirror/addon/edit/closetag.js');
-                $this->addJs('/vendors/codemirror/Codemirror/addon/fold/xml-fold.js');
-                $this->addJs('/vendors/codemirror/Codemirror/addon/edit/closebrackets.js');
+                $this->addJs('/vendor/codemirror/Codemirror/addon/edit/closetag.js');
+                $this->addJs('/vendor/codemirror/Codemirror/addon/fold/xml-fold.js');
+                $this->addJs('/vendor/codemirror/Codemirror/addon/edit/closebrackets.js');
                 break;
             case "md":
-                $this->addJs('/vendors/codemirror/Codemirror/addon/fold/markdown-fold.js');
+                $this->addJs('/vendor/codemirror/Codemirror/addon/fold/markdown-fold.js');
         }
-        $this->addJs('/vendors/codemirror/Codemirror/addon/fold/foldcode.js');
-        $this->addJs('/vendors/codemirror/Codemirror/addon/fold/foldgutter.js');
-        $this->addJs('/vendors/codemirror/Codemirror/addon/fold/comment-fold.js');
-        $this->addJs('/vendors/codemirror/Codemirror/addon/selection/active-line.js');
-        $this->addJs('/vendors/codemirror/Codemirror/addon/mode/loadmode.js');
-        $this->addJs('/vendors/codemirror/Codemirror/mode/meta.js');
+        $this->addJs('/vendor/codemirror/Codemirror/addon/fold/foldcode.js');
+        $this->addJs('/vendor/codemirror/Codemirror/addon/fold/foldgutter.js');
+        $this->addJs('/vendor/codemirror/Codemirror/addon/fold/comment-fold.js');
+        $this->addJs('/vendor/codemirror/Codemirror/addon/selection/active-line.js');
+        $this->addJs('/vendor/codemirror/Codemirror/addon/mode/loadmode.js');
+        $this->addJs('/vendor/codemirror/Codemirror/mode/meta.js');
         $this->addJs('/actions/edittext/resources/js/init.js');
         $values = array(
             'id_node' => $idNode,
-            'codemirror_url' => App::getUrl('/vendors/codemirror/Codemirror'),
+            'codemirror_url' => App::getUrl('/vendor/codemirror/Codemirror'),
             'ext' => $ext,
             'content' => $content,
             'go_method' => 'edittext',

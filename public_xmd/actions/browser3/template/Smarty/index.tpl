@@ -40,7 +40,7 @@
 	    <!-- css widgets -->
 	    %=css_widgets%
 	    <!-- constant js includes -->
-	    <script type="text/javascript" src="{url}/vendors/ckeditor/ckeditor.js{/url}"></script>
+	    <script type="text/javascript" src="{url}/vendor/ckeditor/ckeditor.js{/url}"></script>
 	    <script type="text/javascript" src="{url}/assets/js/vars_js.php?id={$time_id}{/url}"></script>
 	    {foreach from=$js_files key=id item=src}
 	        <script type="text/javascript" src="{$src}"></script>

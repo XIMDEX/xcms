@@ -39,8 +39,8 @@
 	<script type="text/javascript" src="{EXTENSIONS::Jquery(true)}"></script>
 	<script type="text/javascript" src="{EXTENSIONS::Jquery_ui(true)}"></script>
 	<script type="text/javascript" src="{url}/assets/js/helpers.js{/url}"></script>
-        <script type="text/javascript" src="{url}/vendors/jquery/plugins/jquery-validate/jquery.validate.js"{/url}></script>
-        <script type="text/javascript" src="{url}/vendors/jquery/plugins/jquery-validate/localization/messages_{$user_locale.Lang}.js{/url}"></script>
+        <script type="text/javascript" src="{url}/vendor/jquery/plugins/jquery-validate/jquery.validate.js"{/url}></script>
+        <script type="text/javascript" src="{url}/vendor/jquery/plugins/jquery-validate/localization/messages_{$user_locale.Lang}.js{/url}"></script>
         <script type="text/javascript" src="{url}/actions/composer/resources/js/widgets_controllers/default.js{/url}"></script>
         <script type="text/javascript" src="{url}/assets/js/helper/query_manager.js{/url}"></script>
 	<script type="text/javascript" src="{url}/assets/js/collection.class.js"{/url}></script>

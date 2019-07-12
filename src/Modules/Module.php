@@ -27,10 +27,8 @@
 
 namespace Ximdex\Modules;
 
-use Symfony\Component\Console\Application;
 use Ximdex\Cli\Shell,
-    Ximdex\Logger,
-    Ximdex\Tasks\Worker;
+    Ximdex\Logger;
 
 class Module implements iModule
 {
@@ -344,15 +342,9 @@ class Module implements iModule
     }
 
     /**
-     * @param Worker $worker
+     * @param $worker
      */
-    public function addTasks(Worker & $worker)
-    {}
-
-    /**
-     * @param Application $application
-     */
-    public function addCommands(Application & $application)
+    public function addTasks(& $worker)
     {}
     
     public function getName()
@@ -369,4 +361,5 @@ class Module implements iModule
 
     public function info()
     {}
+
 }

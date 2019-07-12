@@ -44,7 +44,7 @@ msgstr ""
 "X-Poedit-SearchPath-3: modules\n"
 "X-Poedit-SearchPath-4: public_xmd\n"
 "X-Poedit-SearchPath-5: src\n"
-"X-Poedit-SearchPathExcluded-0: public_xmd/vendors\n"
+"X-Poedit-SearchPathExcluded-0: public_xmd/vendor\n"
 
 #: conf/notifications.php:34
 #, php-format

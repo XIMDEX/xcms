@@ -124,8 +124,8 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         $xmlFile = $this->_base_url . '&method=getXmlFile&view=' . $view;
         $actionUrlShowPost = $this->_base_url . '&method=showPost';
         $actionURL = App::getUrl('/actions/xmleditor2', false);
-        $vendorsURL = App::getUrl('/vendors', false);
-        $kupuURL = $vendorsURL . '/kupu';
+        $vendorURL = App::getUrl('/vendor', false);
+        $kupuURL = $vendorURL . '/kupu';
         $jsFiles = array(
             App::getUrl(Extensions::JQUERY, false),
             App::getUrl(Extensions::JQUERY_UI, false),
@@ -141,15 +141,15 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             App::getUrl('/assets/js/console.js', false),
             App::getUrl('/src/Widgets/select/js/ximdex.select.js', false),
             App::getUrl('/assets/js/i18n.js', false),
-            $vendorsURL . '/hammerjs/hammer.js/hammer.js',
-            $vendorsURL . '/angular/angular.min.js',
-            $vendorsURL . '/RyanMullins/angular-hammer/angular.hammer.js',
-            $vendorsURL . '/angular-bootstrap/dist/ui-bootstrap-custom-tpls-0.13.0-SNAPSHOT.min.js',
-            $vendorsURL . '/react/react-with-addons.min.js',
-            $vendorsURL . '/react/ngReact.min.js',
+            $vendorURL . '/hammerjs/hammer.js/hammer.js',
+            $vendorURL . '/angular/angular.min.js',
+            $vendorURL . '/RyanMullins/angular-hammer/angular.hammer.js',
+            $vendorURL . '/angular-bootstrap/dist/ui-bootstrap-custom-tpls-0.13.0-SNAPSHOT.min.js',
+            $vendorURL . '/react/react-with-addons.min.js',
+            $vendorURL . '/react/ngReact.min.js',
             $actionURL . '/js/angular/app.js',
             $actionURL . '/js/angular/ximOntologyBrowser.js',
-            $vendorsURL . '/d3js/d3.v3.min.js',
+            $vendorURL . '/d3js/d3.v3.min.js',
             //'/assets/js/angular/app.js',
             App::getUrl('/assets/js/angular/services/xTranslate.js', false), 
             App::getUrl('/assets/js/angular/services/xBackend.js', false),
@@ -273,7 +273,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         $i18n = new ParsingJsGetText();
         $jsFiles = $i18n->getTextArrayOfJs($jsFiles);
         $actionURL =  App::getUrl('/actions/xmleditor2');
-        $kupuURL = App::getUrl('/vendors/kupu');
+        $kupuURL = App::getUrl('/vendor/kupu');
         $cssFiles = array(
             App::getUrl('/assets/style/jquery/custom_theme/jquery-ui-1.7.custom.css'),
             $actionURL . '/views/common/css/kupustyles.css',
@@ -283,8 +283,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             $actionURL . '/views/common/css/xlinks.css',
             $actionURL . '/views/common/css/ximages.css',
             $actionURL . '/views/common/css/popover.css',
-            App::getUrl( '/vendors/bootstrap/dist/css/bootstrap.min.css'),
-            // Future		$actionURL . '/views/common/css/colorpicker.css',
+            App::getUrl( '/vendor/bootstrap/dist/css/bootstrap.min.css'),
             App::getUrl('/assets/style/fonts.css'),
             App::getUrl('/assets/style/jquery/ximdex_theme/widgets/tabs/common_views.css'),
             App::getUrl('/src/Widgets/select/css/ximdex.select.css'),

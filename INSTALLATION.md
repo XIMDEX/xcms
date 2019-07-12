@@ -65,14 +65,14 @@ To install XCMS:
 
 ##### 1. Download XCMS
 
-Download it from github (develop branch) at https://github.com/XIMDEX/ximdex/tree/develop or use **curl** or **wget**:
+Download it from github (develop branch) at https://github.com/XIMDEX/xcms/tree/develop or use **curl** or **wget**:
 
    ```shell
-   wget --no-check-certificate https://github.com/XIMDEX/ximdex/archive/develop.zip
+   wget --no-check-certificate https://github.com/XIMDEX/xcms/archive/develop.zip
    ```
 
    ```shell
-   curl -L https://github.com/XIMDEX/ximdex/archive/develop.zip > develop.zip
+   curl -L https://github.com/XIMDEX/xcms/archive/develop.zip > develop.zip
    ```
 
 (Install wget with ```sudo apt-get install wget```)

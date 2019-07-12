@@ -89,7 +89,7 @@ abstract class WidgetAbstract
 		$getTextJs = new ParsingJsGetText();
 		for ($i = 0; $i < $c; $i++) {
 		    if (App::getValue('UrlRoot')) {
-		        $array[$i] = str_replace('//', '/', str_replace_first(App::getValue('UrlRoot'), '', $array[$i]));
+		        $array[$i] = str_replace('//', '/', FsUtils::str_replace_first(App::getValue('UrlRoot'), '', $array[$i]));
 		    }
 			$array[$i] = $getTextJs->getFile($array[$i]);
 		}

@@ -34,8 +34,8 @@ if (! defined('XIMDEX_ROOT_PATH')) {
 } else {
     return false; //only once this file
 }
-if (! defined('XIMDEX_VENDORS')) {
-    define('XIMDEX_VENDORS', '/vendors');
+if (! defined('XIMDEX_VENDOR')) {
+    define('XIMDEX_VENDOR', '/vendor');
 }
 
 /**
@@ -58,7 +58,7 @@ if (! defined('CLI_MODE')) {
     define('CLI_MODE', $cli_mode);
 }
 
-include_once XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/autoload.php';
+include_once XIMDEX_ROOT_PATH . XIMDEX_VENDOR . '/autoload.php';
 
 // Initialize XIMDEX_ROOT_PATH
 App::setValue('XIMDEX_ROOT_PATH', dirname(dirname(__FILE__)));

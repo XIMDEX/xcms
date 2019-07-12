@@ -195,7 +195,7 @@ class ParsingJsGetText
     {
         static $no_cacheable = null;
         if (! isset($no_cacheable) ) {
-            $no_cacheable = array(App::getUrl("/assets/js/"), App::getUrl('/vendors/') );
+            $no_cacheable = array(App::getUrl("/assets/js/"), App::getUrl('/vendor/') );
         }
         $this->setParam($_lang, $_js);
         foreach ($no_cacheable as $n_c) {

@@ -61,7 +61,7 @@ abstract class AbstractView implements IView
     
     public function transform(int $idVersion = null, string $content = null, array $args = null)
     {
-        Logger::info('Transforming with ' . class_basename($this));
+        Logger::info('Transforming with ' . get_class($this));
      
         // Load base node
         if (isset($args['NODEID']) and $args['NODEID']) {

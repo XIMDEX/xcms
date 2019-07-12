@@ -37,19 +37,19 @@ use Ximdex\Runtime\App;
         <link rel="shortcut icon" href="<?php echo App::getUrl('/favicon.ico'); ?>" >
         <link rel="stylesheet" href="<?php echo App::getUrl('/assets/style/installer/normalize.css'); ?>">
         <link rel="stylesheet" href="<?php echo App::getUrl('/assets/style/installer/main.css'); ?>">
-        <link rel="stylesheet" href="<?php echo App::getUrl('/vendors/ladda/dist/ladda-themeless.min.css'); ?>">
-        <link rel="stylesheet" href="<?php echo App::getUrl('/vendors/humane/flatty.css'); ?>">
+        <link rel="stylesheet" href="<?php echo App::getUrl('/vendor/ladda/dist/ladda-themeless.min.css'); ?>">
+        <link rel="stylesheet" href="<?php echo App::getUrl('/vendor/humane/flatty.css'); ?>">
         <link href='<?php echo App::getUrl('/assets/style/fonts.css'); ?>' rel='stylesheet' type='text/css' />
         <title>Ximdex Installer</title>
         <!--[if lt IE 9]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
-        <script type="text/javascript" src="<?php echo App::getUrl('/vendors/angular/angular.min.js'); ?>"></script>
-        <script type="text/javascript" src="<?php echo App::getUrl('/vendors/angular/angular-animate.min.js'); ?>"></script>
-        <script type="text/javascript" src="<?php echo App::getUrl('/vendors/angular/angular-animate.min.js'); ?>"></script>
-        <script type="text/javascript" src="<?php echo App::getUrl('/vendors/ladda/dist/spin.min.js'); ?>"></script>
-        <script type="text/javascript" src="<?php echo App::getUrl('/vendors/ladda/dist/ladda.min.js'); ?>"></script>
-        <script type="text/javascript" src="<?php echo App::getUrl('/vendors/humane/humane.min.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo App::getUrl('/vendor/angular/angular.min.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo App::getUrl('/vendor/angular/angular-animate.min.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo App::getUrl('/vendor/angular/angular-animate.min.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo App::getUrl('/vendor/ladda/dist/spin.min.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo App::getUrl('/vendor/ladda/dist/ladda.min.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo App::getUrl('/vendor/humane/humane.min.js'); ?>"></script>
         <script type="text/javascript" >
             var ximdexInstallerApp = angular.module('ximdexInstallerApp',[]);
         </script>

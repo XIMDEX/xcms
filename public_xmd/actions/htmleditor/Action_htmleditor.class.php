@@ -45,7 +45,7 @@ class Action_htmleditor extends ActionAbstract
 			$this->renderMessages();
 			return;
 		}
-		$this->addJs('/vendors/ckeditor/ckeditor.js');
+		$this->addJs('/vendor/ckeditor/ckeditor.js');
 		$this->addJs('/actions/htmleditor/resources/js/htmleditor.js');
 		$values = array(
 			'html' => $node->GetContent(),
