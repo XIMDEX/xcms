@@ -47,4 +47,4 @@ services:
         chmod a+s data conf logs && 
         curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && 
         composer install && 
-        vendors/bin/codecept run --steps"
+        vendor/bin/codecept run --steps"

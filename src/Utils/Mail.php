@@ -30,9 +30,9 @@ namespace Ximdex\Utils;
 use PHPMailer\PHPMailer\PHPMailer;
 use Ximdex\Runtime\App;
 
-require_once XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/phpmailer/phpmailer/src/Exception.php';
-require_once XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/phpmailer/phpmailer/src/PHPMailer.php';
-require_once XIMDEX_ROOT_PATH . XIMDEX_VENDORS . '/phpmailer/phpmailer/src/SMTP.php';
+require_once XIMDEX_ROOT_PATH . XIMDEX_VENDOR . '/phpmailer/phpmailer/src/Exception.php';
+require_once XIMDEX_ROOT_PATH . XIMDEX_VENDOR . '/phpmailer/phpmailer/src/PHPMailer.php';
+require_once XIMDEX_ROOT_PATH . XIMDEX_VENDOR . '/phpmailer/phpmailer/src/SMTP.php';
 
 // Include mail configuration
 include_once XIMDEX_ROOT_PATH . "/conf/mail.php";

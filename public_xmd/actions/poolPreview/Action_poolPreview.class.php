@@ -259,7 +259,7 @@ class Action_poolPreview extends ActionAbstract
     	$this->addCss('/actions/poolPreview/resources/css/jquery-ui-1.8.2.custom.css');
     	$this->addCss('/actions/poolPreview/resources/css/poolPreview.css');
     	$this->addCss('/actions/poolPreview/resources/css/ui.dropdownchecklist.css');
-    	$this->addCss('/vendors/jquery/plugins/thickbox/thickbox.css');
+    	$this->addCss('/vendor/jquery/plugins/thickbox/thickbox.css');
     	$this->addCss('/actions/manageList/resources/css/common.css');
 		$this->addCss('/assets/style/jquery/ximdex_theme/jquery-ui-1.8.2.custom.css');
 		$this->addCss('/assets/style/main_extended.css');	

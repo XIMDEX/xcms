@@ -29,11 +29,11 @@ use Ximdex\Runtime\App;
 
 class Extensions
 {
-    const JQUERY_PATH = '/vendors/jquery';
+    const JQUERY_PATH = '/vendor/jquery';
     const JQUERY      = self::JQUERY_PATH . '/jquery-1.8.3.min.js';
     const JQUERY_UI   = self::JQUERY_PATH . '/jquery-ui-1.9.1.custom.min.js';
-    const SMARTY      = '/vendors/smarty/libs/Smarty.class.php';
-    const BOOTSTRAP   = '/vendors/bootstrap/dist';
+    const SMARTY      = '/vendor/smarty/libs/Smarty.class.php';
+    const BOOTSTRAP   = '/vendor/bootstrap/dist';
     
     /**
      * If function is called then we retrieve  UrlRoot + constant

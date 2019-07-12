@@ -7,7 +7,7 @@
  */
 namespace Ximdex\MVC\Render;
 
-include_once (APP_ROOT_PATH . '/vendors/smarty/libs/Smarty.class.php');
+include_once (APP_ROOT_PATH . '/vendor/smarty/libs/Smarty.class.php');
 
 use Ximdex\Runtime\App;
 use Smarty;
