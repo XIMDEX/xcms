@@ -13,7 +13,7 @@ conf/_STATUSFILE
 conf/install-params.conf.php
 conf/install-modules.php
 conf/install-params.conf_bk_*.php
-conf/install-params.conf.phpbck_*.php
+conf/install-params.conf.phpbck_*
 
 modules/modules_PRO/
 modules/xlyre
