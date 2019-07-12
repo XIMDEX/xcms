@@ -1670,7 +1670,7 @@ class Node extends NodesOrm
     /**
      * Returns a list of groups associated to this node
      *
-     * @return array|null
+     * @return array
      */
     public function getGroupList()
     {
@@ -1700,7 +1700,7 @@ class Node extends NodesOrm
             return $groupList;
         }
         $this->setError(1);
-        return null;
+        return [];
     }
 
     /**

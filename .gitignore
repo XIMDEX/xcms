@@ -27,7 +27,7 @@ pi.php
 /.buildpath
 /.project
 /.data
-/vendors/
+/vendor/
 /data/
 /logs/
 /.plata-config

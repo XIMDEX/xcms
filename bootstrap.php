@@ -35,7 +35,7 @@ if (! defined('XIMDEX_ROOT_PATH')) {
     return false; //only once this file
 }
 if (! defined('XIMDEX_VENDORS')) {
-    define('XIMDEX_VENDORS', '/vendors');
+    define('XIMDEX_VENDORS', '/vendor');
 }
 
 /**

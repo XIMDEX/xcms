@@ -36,13 +36,13 @@ use Ximdex\NodeTypes\XsltNode;
 use Ximdex\Runtime\App;
 use Ximdex\IO\BaseIOInferer;
 
-require_once APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/ConfigInterface.php';
-require_once APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/Config.php';
-require_once APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/Exception.php';
-require_once APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/File.php';
-require_once APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/RequestInterface.php';
-require_once APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/Request.php';
-require_once APP_ROOT_PATH . XIMDEX_VENDORS . '/flow/Uploader.php';
+require_once APP_ROOT_PATH . '/vendors/flow/ConfigInterface.php';
+require_once APP_ROOT_PATH . '/vendors/flow/Config.php';
+require_once APP_ROOT_PATH . '/vendors/flow/Exception.php';
+require_once APP_ROOT_PATH . '/vendors/flow/File.php';
+require_once APP_ROOT_PATH . '/vendors/flow/RequestInterface.php';
+require_once APP_ROOT_PATH . '/vendors/flow/Request.php';
+require_once APP_ROOT_PATH . '/vendors/flow/Uploader.php';
 
 class Action_fileupload_common_multiple extends ActionAbstract
 {

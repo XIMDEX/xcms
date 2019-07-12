@@ -584,17 +584,17 @@ abstract class AbstractStructuredDocument extends FileNode
             switch ($i) {
                 case 1:
                     $s .= ' project_name="' . $ancestor->get('Name') . '"';
-                    continue;
+                    continue 2;
                 case 2:
                     $s .= ' server="' . $ancestor->get('Name') . '"';
-                    continue;
+                    continue 2;
                 default:
                     if ($ancestor->nodeType->get('IsSection') == 1) {
                         $j++;
                         $s .= " level$j=\"" . $ancestor->get('Name') . "\" level_name$j=\"" .
                             $ancestor->getAliasForLang($langID) . "\"\n";
                     }
-                    continue;
+                    continue 2;
             }
         }
         return $s;
