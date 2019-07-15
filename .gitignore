@@ -33,3 +33,4 @@ pi.php
 /.plata-config
 /conf/*(copia)*
 /.scannerwork/
+/sonar-project.properties

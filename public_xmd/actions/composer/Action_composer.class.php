@@ -271,6 +271,9 @@ class Action_composer extends ActionAbstract
 
     private function _echoNodeTree($node, $encoding)
     {
+        if (! $node) {
+            return;
+        }
         if (is_numeric($node)) {
             $node = new Node($node);
             if (!($node->get('IdNode') > 0)) {
@@ -651,7 +654,7 @@ class Action_composer extends ActionAbstract
                         } else {
                             $my_in = false;
                         }
-                        $user_ison_node = $user->IsOnNode($children[$i], true);
+                        $user_ison_node = $user->IsOnNode($children[$i]['id'], true);
                         if ($user_perm_van or $my_in or $user_ison_node) {
                             $selectedNode = new Node($children[$i]['id']);
                             $data['children'][] = $this->_echoNodeTree($selectedNode, $this->displayEncoding);
