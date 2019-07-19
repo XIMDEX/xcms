@@ -31,23 +31,6 @@ use Ximdex\Models\ORM\ChannelsOrm;
 
 class Channel extends ChannelsOrm
 {
-    public $nodeID;
-    
-    public $autoCleanErr;
-    
-    public $msgErr;
-    
-    public $errorList = array
-    (
-        1 => 'Database connection error',
-        2 => 'Channel does not exist',
-        3 => 'Database inconsistency'
-    );
-    
-    public $flagErr;
-    
-    public $numErr;
-    
     const RENDERTYPE_STATIC = 'static';
     
     const RENDERTYPE_INCLUDE = 'include';
@@ -60,6 +43,22 @@ class Channel extends ChannelsOrm
         , self::RENDERTYPE_INDEX => 'Ximdex Index Format'];
     
     const JSON_CHANNEL = 10005;
+    
+    public $nodeID;
+    
+    public $autoCleanErr;
+    
+    public $msgErr;
+    
+    public $errorList = [
+        1 => 'Database connection error',
+        2 => 'Channel does not exist',
+        3 => 'Database inconsistency'
+    ];
+    
+    public $flagErr;
+    
+    public $numErr;
 
     public function getChannelsForNode(int $idNode)
     {

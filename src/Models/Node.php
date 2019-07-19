@@ -3358,7 +3358,7 @@ class Node extends NodesOrm
             }
 
             // Checks content existence
-            if ($content !== null) {
+            if ($content === null) {
                 $content = $structuredDocument->getContent($version, $subversion);
             } elseif ($this->getNodeType() == NodeTypeConstants::XML_DOCUMENT) {
                 $content = XmlDocumentNode::normalizeXmlDocument($content);
@@ -3423,6 +3423,7 @@ class Node extends NodesOrm
             } catch (\Exception $e) {
 
                 // The transformation process did not work !
+                Logger::error($e->getMessage());
                 if ($this->getNodeType() == NodeTypeConstants::XML_DOCUMENT) {
 
                     // If content is false, show the xslt errors instead the document preview
@@ -3439,7 +3440,7 @@ class Node extends NodesOrm
                 return false;
             }
 
-            // Specific FilterMacros View for previsuals
+            // Specific FilterMacros View for previews
             $viewFilterMacrosPreview = new ViewFilterMacros(true);
             $content = $viewFilterMacrosPreview->transform(null, $res, $args);
             if ($content === false) {

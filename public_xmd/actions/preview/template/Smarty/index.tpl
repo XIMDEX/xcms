@@ -27,7 +27,7 @@
 	<fieldset class="action-controls">
 		<input type="hidden" name="node_id" class="node_id" value="{$id_node}" />
 		{*  If it is a document, it shows combo with channels *}
-		{if isset($channelId) and $channelId > 0}
+		{if isset($channels)}
 		    {t}Channel{/t}:&nbsp;
 		    <select id="channellist{$id_node}" name="channellist" class="prevdoc-channel-selector" style="width: auto;">
 				{foreach from=$channels item=channel}

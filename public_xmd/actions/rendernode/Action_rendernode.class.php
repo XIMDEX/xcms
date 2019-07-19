@@ -29,6 +29,10 @@ use Ximdex\Logger;
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Parsers\ParsingPathTo;
+use Ximdex\Nodeviews\ViewPreviewInServer;
+use Ximdex\NodeTypes\ServerNode;
+use Ximdex\Runtime\DataFactory;
+use Ximdex\Models\StructuredDocument;
 
 class Action_rendernode extends ActionAbstract
 {
@@ -83,12 +87,40 @@ class Action_rendernode extends ActionAbstract
         if ($node->nodeType->getIsStructuredDocument()) {
             
             // Receives request params for structured documents
-            $idChannel = (int) $this->request->getParam('channelId');
+            $idChannel = (int) ($this->request->getParam('channelId')) ?? $this->request->getParam('channel');
             if (! $idChannel) {
-                $idChannel = $this->request->getParam('channel');
+                $this->messages->add('No channel given', MSG_TYPE_ERROR);
+                $this->render(array('messages' => $this->messages->messages), null, 'messages.tpl');
+                return false;
+            }
+            if ($this->request->getParam('content')) {
+                $content = stripslashes($this->request->getParam('content'));
+            } else {
+                $content = null;
+            }
+            
+            // If channel uses a preview server, send the content to that server and redirect to published URL
+            $serverNode = new ServerNode($node->getServer());
+            if ($previewServer = $serverNode->getPreviewServersForChannel($idChannel)) {
+                $args = [
+                    'NODEID' => $idNode,
+                    'CHANNEL' => $idChannel,
+                    'SERVER' => $previewServer
+                ];
+                $dataFactory = new DataFactory($idNode);
+                if ($version !== null) {
+                    $versionId = $dataFactory->getVersionId($version, $subversion);
+                } else {
+                    $versionId = $dataFactory->getLastVersionId();
+                }
+                if ($content === null) {
+                    $structuredDocument = new StructuredDocument($node->getID());
+                    $content = $structuredDocument->getContent($version, $subversion);
+                }
+                $viewPreviewInServer = new ViewPreviewInServer();
+                $content = $viewPreviewInServer->transform($versionId, $content, $args);
             }
             $showprev = (bool) $this->request->getParam('showprev');
-            $content = stripslashes($this->request->getParam('content'));
             $mode = $this->request->getParam('mode');
         } else {
             $idChannel = null;

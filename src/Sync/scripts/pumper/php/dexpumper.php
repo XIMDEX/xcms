@@ -108,29 +108,39 @@ class DexPumperCli extends CliParser
 
 class DexPumper
 {
-    private $idUser;
-    private $verbose;
-    private $maxVoidCycles;
-    private $sleepTime;
-    private $localBasePath;
-    private $pumper;
-    private $connection;
-    private $serverFrame;
-    private $server;
     const RETRIES_TO_HARD_ERROR = 2;
+    
     const RETRIES_TO_FATAL_ERROR = 5;
+    
+    private $idUser;
+    
+    private $verbose;
+    
+    private $maxVoidCycles;
+    
+    private $sleepTime;
+    
+    private $localBasePath;
+    
+    private $pumper;
+    
+    private $connection;
+    
+    private $serverFrame;
+    
+    private $server;
     
     public function __construct(array $params)
     {
         // Collect parameters
         if (isset($params['--tryserver'])) {
-            $this->tryserver = trim($params['--tryserver']);
+            $this->tryserver = (int) $params['--tryserver'];
         }
-        $this->idUser = trim($params['--iduser']);
+        $this->idUser = (int) $params['--iduser'];
         $this->verbose = trim($params['--verbose']);
-        $this->maxVoidCycles = trim($params['--maxvoidcycles']);
-        $this->sleepTime = trim($params['--sleeptime']);
-        $this->pumper = new Pumper(trim($params['--pumperid']));
+        $this->maxVoidCycles = (int) $params['--maxvoidcycles'];
+        $this->sleepTime = (int) $params['--sleeptime'];
+        $this->pumper = new Pumper((int) $params['--pumperid']);
         if (! $this->pumper->get('PumperId')) {
             $this->fatal('Pumper Id NOT found for id: ' . $params['--pumperid']);
         }
@@ -382,7 +392,10 @@ class DexPumper
                     $batchManager = new BatchManager();
                     $batchManager->setBatchsActiveOrEnded(null, null, true, $idBatch);
                 } else {
-                    $this->error('Server frame ' . $this->serverFrame->get('IdSync') . ' without batch associated');
+                    
+                    // $this->error('Server frame ' . $this->serverFrame->get('IdSync') . ' without batch associated');
+                    $this->unRegisterPumper();
+                    exit(200);
                 }
             }
             

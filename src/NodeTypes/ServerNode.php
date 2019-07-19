@@ -352,7 +352,7 @@ class ServerNode extends FolderNode
         if (sizeof($servers) > 0) {
             $retList = [];
             foreach ($servers as $idServer) {
-                if ($this->GetPreview($idServer) && $this->HasChannel($idServer, $idChannel)) {
+                if ($this->getPreview($idServer) && $this->HasChannel($idServer, $idChannel)) {
                     $retList[] = $idServer;
                 }
             }

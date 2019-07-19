@@ -340,8 +340,7 @@ class DataFactory
         $data['DISABLE_CACHE'] = App::getValue('DisableCache');
         $transformer = $node->getProperty('Transformer');
         $data['TRANSFORMER'] = $transformer[0];
-        $channels = $node->getChannels();
-        if ($channels) {
+        if ($channels = $node->getChannels()) {
             foreach ($channels as $idChannel) {
                 Logger::info('Generation cache for version ' . $idVersion . ' and the channel ' . $idChannel);
                 $data['CHANNEL'] = $idChannel;

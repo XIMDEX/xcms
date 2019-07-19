@@ -54,7 +54,7 @@ class ChannelFrameManager
 		$channelFrame = new ChannelFrame($serverFrame->get('IdChannelFrame'));
 		$channel = new Channel($channelFrame->get('ChannelId'));
 		$renderMode = $channel->get('RenderMode');
-		if ($renderMode == 'client'){
+		if ($renderMode == 'client') {
 			$operation = Batch::TYPE_UP;
 		}
 		$serverFrameManager = new ServerFrameManager();

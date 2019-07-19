@@ -150,7 +150,7 @@ class ServerFrame extends ServerFramesOrm
      * @param string $name
      * @param int $publishLinked
      * @param int $idNodeFrame
-     * @param string $idChannel
+     * @param int $idChannel
      * @param int $idChannelFrame
      * @param int $idBatchUp
      * @param int $idPortalFrame
@@ -158,11 +158,12 @@ class ServerFrame extends ServerFramesOrm
      * @param int $size
      * @param bool $cache
      * @param int $idbatchDown
-     * @return int|null|bool
+     * @param int $pumperId
+     * @return int|NULL
      */
-    public function create(int $nodeId, int $server, int $dateUp, string $path, string $name, int $publishLinked, int $idNodeFrame
-        , ?int $idChannel, ?int $idChannelFrame, int $idBatchUp, int $idPortalFrame, int $dateDown = null, int $size = 0, bool $cache = true
-        , int $idbatchDown = null) : ?int
+    public function create(int $nodeId, int $server, int $dateUp, string $path, string $name, int $publishLinked, int $idNodeFrame = null
+        , ?int $idChannel, ?int $idChannelFrame = null, int $idBatchUp = null, int $idPortalFrame = null, int $dateDown = null
+        , int $size = 0, bool $cache = true, int $idbatchDown = null, int $pumperId = null) : ?int
     {
         $this->set('IdServer', $server);
         $this->set('DateUp', $dateUp);
@@ -184,6 +185,7 @@ class ServerFrame extends ServerFramesOrm
             $this->set('ChannelId', $idChannel);
         }
         $this->set('IdBatchDown', $idbatchDown);
+        $this->set('PumperId', $pumperId);
         $id = parent::add();
         if (! $id) {
             Logger::error('Creating server frame');
@@ -570,9 +572,10 @@ class ServerFrame extends ServerFramesOrm
      */
     public function getPublishableNodesForPumper(int $idPumper)
     {
-        $query = "SELECT sf.* FROM ServerFrames sf, Batchs b WHERE (sf.IdBatchUp = b.IdBatch OR sf.IdBatchDown = b.IdBatch) AND (sf.State = '" 
-            . ServerFrame::DUE2IN . "' OR " . "sf.State = '" . ServerFrame::DUE2OUT . "' OR (sf.State = '" . ServerFrame::PUMPED 
-            . "' AND b.State = '" . Batch::CLOSING . "')) AND sf.PumperId = $idPumper ORDER BY sf.Retry LIMIT 1";
+        $query = "SELECT sf.* FROM ServerFrames sf LEFT JOIN Batchs b ON (sf.IdBatchUp = b.IdBatch OR sf.IdBatchDown = b.IdBatch)" 
+            . " WHERE (sf.State = '" . ServerFrame::DUE2IN . "' OR " . "sf.State = '" . ServerFrame::DUE2OUT . "' "
+            . " OR (sf.State = '" . ServerFrame::PUMPED . "' AND b.State = '" . Batch::CLOSING . "')) "
+            . " AND sf.PumperId = $idPumper ORDER BY sf.Retry LIMIT 1";
         return $this->query($query);
     }
 

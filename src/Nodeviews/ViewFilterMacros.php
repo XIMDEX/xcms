@@ -476,6 +476,10 @@ class ViewFilterMacros extends AbstractView
 
     private function getInclude(array $matches)
     {
+        if (! $this->server) {
+            return null;
+        }
+        
         // Get parentesis content
         $nodeId = (int) $matches[1];
         if ($nodeId <= 1) {
