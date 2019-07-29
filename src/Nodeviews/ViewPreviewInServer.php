@@ -49,8 +49,7 @@ class ViewPreviewInServer extends AbstractView
             Logger::error('PreviewInServer mode is disabled');
             return false;
         }
-        $previewServer = $this->serverNode->class->getPreviewServersForChannel($this->channel->getId());
-        if (! $previewServer) {
+        if (! $this->serverNode->class->getPreviewServersForChannel($this->channel->getId())) {
             Logger::error('No Preview Servers for this channel');
             return false;
         }
@@ -59,15 +58,14 @@ class ViewPreviewInServer extends AbstractView
         
         // Pumper creation
         $pumper = new Pumper();
-        $pumperId = $pumper->create($this->server->get('IdServer'), -1);
-        if (! $pumperId) {
+        if (! $pumper->create($this->server->get('IdServer'), -1)) {
             return false;
         }
         
         // Server frame creation and status update
         $sf = new ServerFrame();
         $sfFile = $sf->create($this->node->getID(), $this->server->get('IdServer'), time(), $publishedPath, $publishedName, false, null
-            , $this->channel->getID(), null, null, null, null, 0, false, null, $pumperId);
+            , $this->channel->getID(), null, null, null, null, 0, false, null, $pumper->get('PumperId'));
         if (! $sfFile) {
             return false;
         }
@@ -83,7 +81,7 @@ class ViewPreviewInServer extends AbstractView
         }
         
         // Start pumper process
-        if ($pumper->startPumper($pumperId, 'php', false) === false) {
+        if ($pumper->startPumper($pumper->get('PumperId'), 'php', false) === false) {
             return false;
         }
         
@@ -94,19 +92,28 @@ class ViewPreviewInServer extends AbstractView
             $res = $client->request('GET', $url);
         } catch (\Exception $e) {
             Logger::error($e->getMessage());
+            
+            // Unpublish the remote file
+            $this->remove($pumper, $sf);
             return false;
         }
         
         // Unpublish the remote file
+        $this->remove($pumper, $sf);
+        
+        // echo $res->getStatusCode();
+        return $res->getBody();
+    }
+    
+    private function remove(Pumper $pumper, ServerFrame $sf): bool
+    {
         $sf->set('State', ServerFrame::DUE2OUT);
         if ($sf->update() === false) {
             return false;
         }
-        if ($pumper->startPumper($pumperId, 'php', false) === false) {
+        if ($pumper->startPumper($pumper->get('PumperId'), 'php', false) === false) {
             return false;
         }
-        
-        // echo $res->getStatusCode();
-        return $res->getBody();
+        return true;
     }
 }

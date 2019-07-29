@@ -119,6 +119,11 @@ class Action_rendernode extends ActionAbstract
                 }
                 $viewPreviewInServer = new ViewPreviewInServer();
                 $content = $viewPreviewInServer->transform($versionId, $content, $args);
+                if ($content === false) {
+                    $this->messages->add('Cannot publish the document in the preview server', MSG_TYPE_ERROR);
+                    $this->render(array('messages' => $this->messages->messages), null, 'messages.tpl');
+                    return false;
+                }
             }
             $showprev = (bool) $this->request->getParam('showprev');
             $mode = $this->request->getParam('mode');
