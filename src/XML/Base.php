@@ -116,7 +116,7 @@ class Base extends XML
             //utf8_encode encode the null value in ''
             $ret = $src;
         } else if ($encoding == \Ximdex\XML\XML::UTF8) {
-            if (!$isUtf8) {
+            if (! $isUtf8) {
                 $ret = self::_unicodeToHtmlEntities($src);
                 $ret = str_replace('&amp;', 'MAP_GEN_CODE_AMP', $ret);
                 $ret = html_entity_decode($ret);

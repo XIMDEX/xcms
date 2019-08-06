@@ -3334,10 +3334,11 @@ class Node extends NodesOrm
      * @param int $version
      * @param int $subversion
      * @param string $mode
+     * @param int $previewServer
      * @return boolean|array
      */
     public function filemapper(int $idChannel = null, bool $showprev = false, string $content = null, int $version = null
-        , int $subversion = null, string $mode = null)
+        , int $subversion = null, string $mode = null, int $previewServer = null)
     {
         // Checks node existence
         if (! $this->IdNode) {
@@ -3412,6 +3413,9 @@ class Node extends NodesOrm
             }
             $args['TRANSFORMER'] = $transformer[0];
             $args['PREVIEW'] = true;
+            if ($previewServer) {
+                $args['SERVER'] = $previewServer;
+            }
             if ($this->getNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
                 $process = 'PrepareHTML';
             } else {

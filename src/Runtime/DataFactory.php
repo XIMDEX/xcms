@@ -283,12 +283,12 @@ class DataFactory
             }
         }
         if (is_null($version) || is_null($subversion)) {
-            Logger::warning('Unable to estimate version or subversion');
+            Logger::error('Unable to estimate version or subversion');
             return false;
         }
         $uniqueName = $this->getTmpFile($version, $subversion);
         if (! $uniqueName) {
-            Logger::warning('Unable to get file');
+            Logger::error('Unable to get file');
             $this->setError(3);
             return false;
         }

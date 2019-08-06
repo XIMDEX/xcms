@@ -91,6 +91,13 @@ class DexPumperCli extends CliParser
             'type' => TYPE_INT, 'group' => array(
                 'name' => 'operation', 'value' => 2
             )
+        ),
+        array(
+            'name' => '--delay', 'mandatory' => false,
+            'message' => 'Delay time to start the main process',
+            'type' => TYPE_INT, 'group' => array(
+                'name' => 'operation', 'value' => 1
+            )
         )
     );
     
@@ -130,6 +137,8 @@ class DexPumper
     
     private $server;
     
+    private $delay;
+    
     public function __construct(array $params)
     {
         // Collect parameters
@@ -146,10 +155,17 @@ class DexPumper
         }
         $this->debug('NEW PUMPER: ' . $params['--pumperid']);
         $this->localBasePath = trim($params['--localbasepath']);
+        if (! empty($params['--delay'])) {
+            $this->delay = (int) $params['--delay'];
+        }
     }
     
     public function start()
     {
+        if ($this->delay) {
+            Logger::info("Waiting {$this->delay} seconds to start this pumper");
+            sleep($this->delay);
+        }
         $cycle = 0;
         $this->registerPumper();
         while (true) {
@@ -329,9 +345,12 @@ class DexPumper
         $this->pumper->update();
     }
     
-    private function activeWaiting()
+    private function activeWaiting(int $time = null)
     {
-        sleep($this->sleepTime);
+        if (! $time) {
+            $time = $this->sleepTime;
+        }
+        sleep($time);
     }
     
     private function getHostConnection() : bool

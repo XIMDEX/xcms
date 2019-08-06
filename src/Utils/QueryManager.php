@@ -84,9 +84,11 @@ class QueryManager
         if (is_array($queryParams)) {
             $queryPreImploded = array();
             foreach($queryParams as $key => $value) {
+                /*
                 if (empty($value)) {
                     continue;
                 }
+                */
                 if (is_array($value)) {
                     $this->levels = array();
                     array_push($this->levels, urlencode($key));

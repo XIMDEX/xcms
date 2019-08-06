@@ -31,8 +31,6 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\Parsers\ParsingPathTo;
 use Ximdex\Nodeviews\ViewPreviewInServer;
 use Ximdex\NodeTypes\ServerNode;
-use Ximdex\Runtime\DataFactory;
-use Ximdex\Models\StructuredDocument;
 
 class Action_rendernode extends ActionAbstract
 {
@@ -98,8 +96,7 @@ class Action_rendernode extends ActionAbstract
             } else {
                 $content = null;
             }
-            
-            // If channel uses a preview server, send the content to that server and redirect to published URL
+            /*
             $serverNode = new ServerNode($node->getServer());
             if ($previewServer = $serverNode->getPreviewServersForChannel($idChannel)) {
                 $args = [
@@ -125,23 +122,45 @@ class Action_rendernode extends ActionAbstract
                     return false;
                 }
             }
+            */
             $showprev = (bool) $this->request->getParam('showprev');
             $mode = $this->request->getParam('mode');
+            $serverNode = new ServerNode($node->getServer());
+            $previewServer = $serverNode->getPreviewServersForChannel($idChannel);
         } else {
             $idChannel = null;
             $showprev = false;
             $content = null;
             $mode = null;
+            $previewServer = null;
         }
         
         // Obtain the content and data to render the node
-        $data = $node->filemapper($idChannel, $showprev, $content, $version, $subversion, $mode);
+        $data = $node->filemapper($idChannel, $showprev, $content, $version, $subversion, $mode, $previewServer);
         if ($data === false) {
             $this->messages->mergeMessages($node->messages);
             $this->render(array('messages' => $this->messages->messages), null, 'messages.tpl');
             return false;
         }
         
+        // If channel uses a preview server, send the content to that server and redirect to published URL
+        if ($previewServer) {
+            $args = [
+                'NODEID' => $node->getID(),
+                'CHANNEL' => $idChannel,
+                'SERVER' => $previewServer
+            ];
+            $viewPreviewInServer = new ViewPreviewInServer();
+            $url = $viewPreviewInServer->transform(null, $data['content'], $args);
+            if ($url === false) {
+                $this->messages->add('Cannot publish the document in the preview server', MSG_TYPE_ERROR);
+                $this->render(array('messages' => $this->messages->messages), null, 'messages.tpl');
+                return false;
+            }
+            $this->redirectToURL($url);
+            return true;
+        }
+            
         // Response headers
         foreach ($data['headers'] as $header => $info) {
             $this->response->set($header, $info);

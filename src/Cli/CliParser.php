@@ -62,6 +62,7 @@ define('PARAM_FILE', '--paramsFile');
 abstract class CliParser
 {
     public $messages = null;
+    
     public $_metadata = null;
     
     private $arguments = null;

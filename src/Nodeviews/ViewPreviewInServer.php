@@ -32,7 +32,8 @@ use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Models\ServerFrame;
 use Ximdex\Models\Pumper;
-use GuzzleHttp\Client;
+use Ximdex\XML\Base;
+// use GuzzleHttp\Client;
 
 class ViewPreviewInServer extends AbstractView
 {
@@ -76,6 +77,7 @@ class ViewPreviewInServer extends AbstractView
         }
         
         // Server frame file creation
+        $content = Base::recodeSrc($content, $this->server->get('idEncode'));
         if (! FsUtils::file_put_contents(SERVERFRAMES_SYNC_PATH . '/' . $sfFile, $content)) {
             return false;
         }
@@ -85,6 +87,7 @@ class ViewPreviewInServer extends AbstractView
             return false;
         }
         
+        /*
         // Read the content from the preview server URL
         $url = parent::getAbsolutePath($this->node, $this->server, $this->channel->getID());
         $client = new Client();
@@ -103,15 +106,23 @@ class ViewPreviewInServer extends AbstractView
         
         // echo $res->getStatusCode();
         return $res->getBody();
+        */
+        
+        // Remove remote file
+        $this->remove($pumper, $sf, 120);
+        
+        // Return the URL to the uploaded document
+        return parent::getAbsolutePath($this->node, $this->server, $this->channel->getID());
     }
     
-    private function remove(Pumper $pumper, ServerFrame $sf): bool
+    private function remove(Pumper $pumper, ServerFrame $sf, int $delayTimeInSeconds = 0): bool
     {
         $sf->set('State', ServerFrame::DUE2OUT);
+        // $sf->set('DateDown', time() + $delayTimeInSeconds);
         if ($sf->update() === false) {
             return false;
         }
-        if ($pumper->startPumper($pumper->get('PumperId'), 'php', false) === false) {
+        if ($pumper->startPumper($pumper->get('PumperId'), 'php', true, $delayTimeInSeconds) === false) {
             return false;
         }
         return true;

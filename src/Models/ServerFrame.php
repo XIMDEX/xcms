@@ -33,6 +33,7 @@ use Ximdex\NodeTypes\HTMLDocumentNode;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
+use Ximdex\XML\Base;
 use Ximdex\Runtime\Db;
 
 include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
@@ -334,16 +335,13 @@ class ServerFrame extends ServerFramesOrm
             }
             
             // Only encoding the content if the node is not one of this 3
-            $nodeTypeContent = $node->nodeType->get('Name');
-            if ($nodeTypeContent != 'ImageFile' and $nodeTypeContent != 'BinaryFile') {
+            if ($node->nodeType->getID() != NodeTypeConstants::IMAGE_FILE and $node->nodeType->getID() != NodeTypeConstants::BINARY_FILE) {
                 
                 // Looking for idEncode for this server
-                $db = new \Ximdex\Runtime\Db();
-                $sql = "SELECT idEncode FROM Servers WHERE IdServer = $server";
-                $db->Query($sql);
-                $encodingServer = $db->GetValue('idEncode');
-                Logger::info("Encoding content to $encodingServer with server: $server");
-                $content = \Ximdex\XML\Base::recodeSrc($content, $encodingServer);
+                $serverTo = new Server($server);
+                $encodingServer = $serverTo->get('idEncode');
+                Logger::debug("Encoding content to {$encodingServer} with server: {$server}");
+                $content = Base::recodeSrc($content, $encodingServer);
             } else {
                 Logger::warning('The node is not a structured document with a channel');
             }

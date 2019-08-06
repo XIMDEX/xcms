@@ -34,6 +34,7 @@ use Ximdex\Models\Channel;
 use Ximdex\Models\Section;
 use Ximdex\Models\Language;
 use Ximdex\Models\Metadata;
+use Ximdex\Models\Server;
 use Ximdex\Runtime\Constants;
 use Ximdex\Models\SectionType;
 use Ximdex\Utils\SimpleXMLExtended;
@@ -203,7 +204,8 @@ class HTMLDocumentNode extends AbstractStructuredDocument
      * @param string $mode
      * @return string || bool
      */
-    public static function renderHTMLDocument(int $docId, string $content = null, string $channel = null, string $mode = null)
+    public static function renderHTMLDocument(int $docId, string $content = null, string $channel = null, string $mode = null
+        , Server $server = null)
     {
         $render = '';
         $css = $js = [];
@@ -222,6 +224,10 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         $docHTML = static::getNodesHTMLDocument($docId);
         if ($docHTML === false) {
             return false;
+        }
+        $info = [];
+        if ($server) {
+            $info['server'] = $server;
         }
         if (strcmp($mode, static::MODE_DYNAMIC) == 0) {
 
@@ -245,7 +251,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
             }
             $render = $body;
             if (strpos($name, '_') !== 0) {
-                $info = static::getInfo($docId);
+                $info += static::getInfo($docId);
                 $info['id'] = $docId;
                 $info['channel'] = $channel;
                 $render = static::createDynamic($info, $render, $css, $js);
@@ -260,7 +266,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                 $js = isset($node['css']) ? array_merge($js, $node['js']) : $js;
                 if (isset($node['type']) and $node['type'] == static::CONTENT_DOCUMENT) {
                     $name = $node['title'];
-                    $body .= !is_null($content) ? $content : $node['content'];
+                    $body .= ! is_null($content) ? $content : $node['content'];
                     if (strpos($name, '_') !== 0) {
                         $body = static::START_XIMDEX_BODY_CONTENT . $body . static::END_XIMDEX_BODY_CONTENT;
                     }
@@ -273,7 +279,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
             $render = $body;
             $pos = strpos($name, '_');
             if ($pos !== 0) {
-                $info = static::getInfo($docId);
+                $info += static::getInfo($docId);
                 $info['id'] = $docId;
                 $info['channel'] = $channel;
                 $render = static::createBasicHTMLTemplate($info, $body, $css, $js, true);
@@ -300,8 +306,8 @@ class HTMLDocumentNode extends AbstractStructuredDocument
                 $tags = implode(',', array_map(function ($tag) {
                     return $tag['Name'];
                 }, static::getTags($docId)));
-                $info = static::getInfo($docId);
-                if (!empty($tags)) {
+                $info += static::getInfo($docId);
+                if (! empty($tags)) {
                     $info['metadata']['keywords'] = $tags;
                 }
                 $render = static::createBasicHTMLTemplate($info, $body, $css, $js);
@@ -463,7 +469,12 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         }
         $html = '<!DOCTYPE html>' . PHP_EOL;
         $html .= '<html lang="' . $info['language'] . '">' . PHP_EOL . '<head>' . PHP_EOL;
-        $html .= '<meta charset="UTF-8">' . PHP_EOL;
+        if (isset($info['server'])) {
+            $charset = $info['server']->get('idEncode');
+        } else {
+            $charset = App::getValue('displayEncoding');
+        }
+        $html .= "<meta charset=\"{$charset}\">" . PHP_EOL;
         $html .= '<meta name="viewport" content="width=device-width, initial-scale=1.0">' . PHP_EOL;
         $html .= '<meta http-equiv="X-UA-Compatible" content="ie=edge">' . PHP_EOL;
         if (Constants::HTML_GENERATOR_TAG) {
@@ -500,7 +511,7 @@ class HTMLDocumentNode extends AbstractStructuredDocument
 
     private static function createDynamic(array $info, string $body, array $css = [], array $js = [])
     {
-        $head = self::headTemplate($css, $js);
+        $head = self::headTemplate($css, $js, $info);
         $metadata = isset($info['metadata']) ? self::metadataTemplate($info['metadata']) : [];
         $html = self::generateMacroExec('var', 'xim_head', str_replace(PHP_EOL, '<ximeol>', $head));
         $html .= self::generateMacroExec('var', 'xim_lang', $info['language']);
@@ -577,9 +588,14 @@ class HTMLDocumentNode extends AbstractStructuredDocument
         return $result;
     }
 
-    private static function headTemplate(array $css = [], array $js = []): string
+    private static function headTemplate(array $css = [], array $js = [], array $info = []): string
     {
-        $tpl = '<meta charset="UTF-8">' . PHP_EOL;
+        if (isset($info['server'])) {
+            $charset = $info['server']->get('idEncode');
+        } else {
+            $charset = App::getValue('displayEncoding');
+        }
+        $tpl = "<meta charset=\"{$charset}\">" . PHP_EOL;
         $tpl .= '<meta name="viewport" content="width=device-width, initial-scale=1.0">' . PHP_EOL;
         $tpl .= '<meta http-equiv="X-UA-Compatible" content="ie=edge">' . PHP_EOL;
         if (Constants::HTML_GENERATOR_TAG) {
