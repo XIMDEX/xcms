@@ -31,7 +31,7 @@ use Ximdex\Logger;
 use Exception;
 use Ximdex\Utils\FsUtils;
 
-class ConnectionLocal extends Connector implements IConnector
+class ConnectionLocal extends Connector
 {	
 	/**
 	 * {@inheritDoc}

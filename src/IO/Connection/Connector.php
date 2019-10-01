@@ -29,7 +29,7 @@ namespace Ximdex\IO\Connection;
 
 use Ximdex\Models\Server;
 
-class Connector
+abstract class Connector implements IConnector
 {
     const TYPE_API = 'API';
     
