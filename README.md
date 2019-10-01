@@ -1,7 +1,7 @@
 # Ximdex 4.0 - README
 
-[![Build Status](https://travis-ci.org/XIMDEX/xcms.svg?branch=develop)](https://travis-ci.org/XIMDEX/xcms)
-[![PHP 7 ready](https://php7ready.timesplinter.ch/XIMDEX/xcms/develop/badge.svg)](https://travis-ci.org/XIMDEX/xcms)
+[![Build Status](https://travis-ci.org/XIMDEX/xcms.svg?branch=master)](https://travis-ci.org/XIMDEX/xcms)
+[![PHP 7 ready](https://php7ready.timesplinter.ch/XIMDEX/xcms/master/badge.svg)](https://travis-ci.org/XIMDEX/xcms)
 
 Ximdex CMS is a Decoupled Headless Semantic Content and Data Management System (headless CMS DMS) that allows the manipulation and generation of content, data and apps to be published in different target technologies: PHP, J2EE, .NET, XML/XSLT, JS, RDF, JSON, RoR, ...
 

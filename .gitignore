@@ -34,3 +34,4 @@ pi.php
 /conf/*(copia)*
 /.scannerwork/
 /sonar-project.properties
+/.vscode/
