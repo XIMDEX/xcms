@@ -80,8 +80,11 @@ class Pumper extends PumpersOrm
      * @param int idServer
      * @return int|null
      */
-    public function create(int $idServer) : ?int
+    public function create(int $idServer, int $maxVoidCycles = null) : ?int
     {
+        if ($maxVoidCycles !== null) {
+            $this->maxvoidcycles = $maxVoidCycles;
+        }
         $this->set('IdServer', $idServer);
         $this->set('State', Pumper::NEW);
         $this->set('StartTime', time());
@@ -117,11 +120,13 @@ class Pumper extends PumpersOrm
     /**
      * Calls to command for start a Pumper
      * 
-     * @param int pumperId
-     * @param string modo
+     * @param int $pumperId
+     * @param string $mode
+     * @param bool $runInBackground
+     * @param int $delay
      * @return bool
      */
-    public function startPumper(int $pumperId, string $modo = 'php') : bool
+    public function startPumper(int $pumperId, string $mode = 'php', bool $runInBackground = true, int $delay = 0) : bool
     {
         $pumper = new Pumper($pumperId);
         if ($pumper->get('ProcessId') and Pumper::isAlive($pumper)) {
@@ -137,9 +142,12 @@ class Pumper extends PumpersOrm
         // Initialize the pumper to Starting state
         $this->set('State', Pumper::STARTING);
         $this->update();
-        $startCommand = 'php ' . XIMDEX_ROOT_PATH . '/bootstrap.php ' . PUMPERPHP_PATH . '/dexpumper.' . $modo 
-            . " --pumperid=$pumperId --sleeptime=" . $this->sleeptime . ' --maxvoidcycles=' . $this->maxvoidcycles 
-            . ' --localbasepath=' . SERVERFRAMES_SYNC_PATH . ' > ' . sys_get_temp_dir() . '/pumpers.err &';
+        $startCommand = 'php ' . XIMDEX_ROOT_PATH . '/bootstrap.php ' . PUMPERPHP_PATH . '/dexpumper.' . $mode 
+            . " --pumperid=$pumperId --sleeptime=" . $this->sleeptime . ' --maxvoidcycles=' . $this->maxvoidcycles . ' --delay=' . $delay
+            . ' --localbasepath=' . SERVERFRAMES_SYNC_PATH . ' > ' . sys_get_temp_dir() . '/pumpers.err';
+        if ($runInBackground) { 
+            $startCommand .= ' &';
+        }
         Logger::debug("Pumper call: $startCommand");
         $var = 0;
         system($startCommand, $var);

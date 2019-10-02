@@ -532,6 +532,11 @@ abstract class ActionAbstract extends IController
         return ($result === null || $result < $numReps) ? true : false;
     }
     
+    public function redirectToURL(string $url): void
+    {
+        header('Location:' . $url);
+    }
+    
     protected function logEndAction(bool $success = true, string $message = null)
     {
         $message = $message ? ". $message" : '';

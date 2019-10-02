@@ -26,13 +26,14 @@
  */
 
 use Ximdex\Logger;
+use Ximdex\Modules\Manager;
 use Ximdex\Runtime\App;
 
 // For legacy compatibility
 if (! defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', __DIR__);
 } else {
-    return false; //only once this file
+    return false; // Only once this file
 }
 if (! defined('XIMDEX_VENDOR')) {
     define('XIMDEX_VENDOR', '/vendor');
@@ -50,7 +51,7 @@ if (! defined('XIMDEX_DIRECT')) {
 // Checking cli mode
 if (! defined('CLI_MODE')) {
     global $argv, $argc;
-    if('cli' != php_sapi_name() || empty($argv) || 0 == $argc) {
+    if ('cli' != php_sapi_name() || empty($argv) || 0 == $argc) {
         $cli_mode = false;
     } else {
         $cli_mode = true;
@@ -113,13 +114,11 @@ if (! empty($dbConfig)) {
 $installModulesPath = XIMDEX_ROOT_PATH . '/conf/install-modules.php';
 if (file_exists($installModulesPath)) {
     $modulesConfString = file_get_contents($installModulesPath);
-} else {
-    $modulesConfString = '';
-}
-$matches = array();
-preg_match_all('/define\(\'(.*)\',(.*)\);/iUs', $modulesConfString, $matches);
-foreach ($matches[1] as $key => $value) {
-    App::setValue($value, str_replace('\'', '', $matches[2][$key]));
+    $matches = array();
+    preg_match_all('/define\(\'(.*)\',(.*)\);/iUs', $modulesConfString, $matches);
+    foreach ($matches[1] as $key => $value) {
+        App::setValue($value, str_replace('\'', '', $matches[2][$key]));
+    }
 }
 
 // From MVC
@@ -134,11 +133,11 @@ if (! defined('APP_ROOT_PATH')) {
 }
 
 // Initialize Modules Manager
-$modulesFile = Ximdex\Modules\Manager::get_modules_install_params();
+$modulesFile = Manager::get_modules_install_params();
 if (file_exists(XIMDEX_ROOT_PATH . $modulesFile)) {
-    Ximdex\Modules\Manager::file($modulesFile, 'XIMDEX');
+    Manager::file($modulesFile, 'XIMDEX');
 } else {
-    Ximdex\Modules\Manager::file('/install/InstallController.class.php');
+    Manager::file('/install/InstallController.class.php');
     if (InstallController::isInstalled()) {
         Logger::error('Cannot load the modules configuration file');
     }
@@ -149,13 +148,13 @@ class_alias('Ximdex\Utils\Messages', 'Messages');
 
 // Extensions setup
 include_once XIMDEX_ROOT_PATH . '/conf/extensions.conf.php';
-$mManager = new Ximdex\Modules\Manager;
 
 /**
  * Execute function init for each enabled module
  */
-foreach (Ximdex\Modules\Manager::getEnabledModules() as $module) {
+foreach (Manager::getEnabledModules() as $module) {
     $name = $module["name"];
+    $mManager = new Manager;
     $moduleInstance = $mManager->instanceModule($name);
     if (method_exists($moduleInstance, 'init')) {
         $moduleInstance->init();

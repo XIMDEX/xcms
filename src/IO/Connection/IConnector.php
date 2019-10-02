@@ -36,21 +36,21 @@ interface IConnector
 	 * @param int $port
 	 * @return bool
 	 */
-	public function connect(string $host = null, int $port = null) : bool;
+	public function connect(string $host = null, int $port = null): bool;
 	
 	/**
 	 * Disconnect from server
 	 * 
 	 * @return bool
 	 */
-	public function disconnect() : bool;
+	public function disconnect(): bool;
 	
 	/**
 	 * Check the status of the connection
 	 * 
 	 * @return bool
 	 */
-	public function isConnected() : bool;
+	public function isConnected(): bool;
 	
 	/**
 	 * Authenticate into server
@@ -59,7 +59,7 @@ interface IConnector
 	 * @param string $password
 	 * @return bool
 	 */
-	public function login(string $username = null, string $password = null) : bool;
+	public function login(string $username = null, string $password = null): bool;
 	
 	/**
 	 * Change directory in server
@@ -67,7 +67,7 @@ interface IConnector
 	 * @param string $dir
 	 * @return bool
 	 */
-	public function cd(string $dir) : bool;
+	public function cd(string $dir): bool;
 	
 	/**
 	 * Get the server folder
@@ -84,7 +84,7 @@ interface IConnector
 	 * @param bool $recursive
 	 * @return bool
 	 */
-	public function mkdir(string $dir, int $mode = 0755, bool $recursive = false) : bool;
+	public function mkdir(string $dir, int $mode = 0755, bool $recursive = false): bool;
 	
 	/**
 	 * Manage permissions on a file/folder
@@ -94,7 +94,7 @@ interface IConnector
 	 * @param bool $recursive
 	 * @return bool
 	 */
-	public function chmod(string $target, int $mode = 0755, bool $recursive = false) : bool;
+	public function chmod(string $target, int $mode = 0755, bool $recursive = false): bool;
 	
 	/**
 	 * Rename a file in the server
@@ -103,7 +103,7 @@ interface IConnector
 	 * @param string $renameTo
 	 * @return bool
 	 */
-	public function rename(string $renameFrom, string $renameTo) : bool;
+	public function rename(string $renameFrom, string $renameTo): bool;
 	
 	/**
 	 * Get the size of a given file
@@ -120,7 +120,7 @@ interface IConnector
 	 * @param int $mode
 	 * @return array
 	 */
-	public function ls(string $dir, int $mode = null) : array;
+	public function ls(string $dir, int $mode = null): array;
 	
 	/**
 	 * Removes a file from server
@@ -129,7 +129,7 @@ interface IConnector
 	 * @param int $id
 	 * @return bool
 	 */
-	public function rm(string $path, int $id = null) : bool;
+	public function rm(string $path, int $id = null): bool;
 	
 	/**
 	 * Copies a given file from server to local
@@ -157,7 +157,7 @@ interface IConnector
 	 * @param string $path
 	 * @return bool
 	 */
-	public function isDir(string $path) : bool;
+	public function isDir(string $path): bool;
 	
 	/**
 	 * Checks if the especified path is a file and is exists

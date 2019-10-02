@@ -30,7 +30,7 @@ namespace Ximdex\IO\Connection;
 use Ximdex\Logger;
 use Exception;
 
-class ConnectionFtp extends Connector implements IConnector
+class ConnectionFtp extends Connector
 {
     const TIMEOUT = 90;
     

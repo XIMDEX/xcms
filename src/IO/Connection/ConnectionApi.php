@@ -31,7 +31,7 @@ use GuzzleHttp\Client;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
-class ConnectionApi extends Connector implements IConnector
+class ConnectionApi extends Connector
 {
     const API_TRANSACTION_DELAY = 0;
     

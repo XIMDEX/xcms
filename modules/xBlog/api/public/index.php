@@ -105,7 +105,7 @@ $app->any($basePath . '/new/save', function (Request $request, Response $respons
 		];
 		$response->getBody()->write(json_encode($resp, true));
 		return;
-		return $response->withStatus(301)->withHeader('Location', $basePath . "/$docId");
+		// return $response->withStatus(301)->withHeader('Location', $basePath . "/$docId");
 	}
 	$response->withStatus(500);
 
@@ -136,7 +136,7 @@ $app->post($basePath . '/upload-image', function (Request $request, Response $re
 	Image::configure(array('driver' => 'gd'));
 	$img = Image::make($image["tmp_name"]);
 
-	if(!is_null($left) && !is_null($left) && !is_null($left) && !is_null($left)){
+	if (! is_null($left)) {
 		// thumb
 		$img->crop($width, $height, $left, $top);
 		$img->widen(300, function ($constraint) {

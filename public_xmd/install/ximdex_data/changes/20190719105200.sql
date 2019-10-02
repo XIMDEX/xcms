@@ -1,0 +1,2 @@
+ALTER TABLE `ServerFrames` CHANGE `IdNodeFrame` `IdNodeFrame` INT(12) UNSIGNED NULL DEFAULT NULL, 
+CHANGE `IdPortalFrame` `IdPortalFrame` INT(12) UNSIGNED NULL DEFAULT NULL;

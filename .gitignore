@@ -32,3 +32,6 @@ pi.php
 /logs/
 /.plata-config
 /conf/*(copia)*
+/.scannerwork/
+/sonar-project.properties
+/.vscode/

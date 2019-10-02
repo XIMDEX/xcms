@@ -33,6 +33,7 @@ use Ximdex\NodeTypes\HTMLDocumentNode;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
+use Ximdex\XML\Base;
 use Ximdex\Runtime\Db;
 
 include_once XIMDEX_ROOT_PATH . '/src/Sync/conf/synchro_conf.php';
@@ -150,7 +151,7 @@ class ServerFrame extends ServerFramesOrm
      * @param string $name
      * @param int $publishLinked
      * @param int $idNodeFrame
-     * @param string $idChannel
+     * @param int $idChannel
      * @param int $idChannelFrame
      * @param int $idBatchUp
      * @param int $idPortalFrame
@@ -158,11 +159,12 @@ class ServerFrame extends ServerFramesOrm
      * @param int $size
      * @param bool $cache
      * @param int $idbatchDown
-     * @return int|null|bool
+     * @param int $pumperId
+     * @return int|NULL
      */
-    public function create(int $nodeId, int $server, int $dateUp, string $path, string $name, int $publishLinked, int $idNodeFrame
-        , ?int $idChannel, ?int $idChannelFrame, int $idBatchUp, int $idPortalFrame, int $dateDown = null, int $size = 0, bool $cache = true
-        , int $idbatchDown = null) : ?int
+    public function create(int $nodeId, int $server, int $dateUp, string $path, string $name, int $publishLinked, int $idNodeFrame = null
+        , ?int $idChannel, ?int $idChannelFrame = null, int $idBatchUp = null, int $idPortalFrame = null, int $dateDown = null
+        , int $size = 0, bool $cache = true, int $idbatchDown = null, int $pumperId = null) : ?int
     {
         $this->set('IdServer', $server);
         $this->set('DateUp', $dateUp);
@@ -184,6 +186,7 @@ class ServerFrame extends ServerFramesOrm
             $this->set('ChannelId', $idChannel);
         }
         $this->set('IdBatchDown', $idbatchDown);
+        $this->set('PumperId', $pumperId);
         $id = parent::add();
         if (! $id) {
             Logger::error('Creating server frame');
@@ -332,16 +335,13 @@ class ServerFrame extends ServerFramesOrm
             }
             
             // Only encoding the content if the node is not one of this 3
-            $nodeTypeContent = $node->nodeType->get('Name');
-            if ($nodeTypeContent != 'ImageFile' and $nodeTypeContent != 'BinaryFile') {
+            if ($node->nodeType->getID() != NodeTypeConstants::IMAGE_FILE and $node->nodeType->getID() != NodeTypeConstants::BINARY_FILE) {
                 
                 // Looking for idEncode for this server
-                $db = new \Ximdex\Runtime\Db();
-                $sql = "SELECT idEncode FROM Servers WHERE IdServer = $server";
-                $db->Query($sql);
-                $encodingServer = $db->GetValue('idEncode');
-                Logger::info("Encoding content to $encodingServer with server: $server");
-                $content = \Ximdex\XML\Base::recodeSrc($content, $encodingServer);
+                $serverTo = new Server($server);
+                $encodingServer = $serverTo->get('idEncode');
+                Logger::debug("Encoding content to {$encodingServer} with server: {$server}");
+                $content = Base::recodeSrc($content, $encodingServer);
             } else {
                 Logger::warning('The node is not a structured document with a channel');
             }
@@ -570,9 +570,10 @@ class ServerFrame extends ServerFramesOrm
      */
     public function getPublishableNodesForPumper(int $idPumper)
     {
-        $query = "SELECT sf.* FROM ServerFrames sf, Batchs b WHERE (sf.IdBatchUp = b.IdBatch OR sf.IdBatchDown = b.IdBatch) AND (sf.State = '" 
-            . ServerFrame::DUE2IN . "' OR " . "sf.State = '" . ServerFrame::DUE2OUT . "' OR (sf.State = '" . ServerFrame::PUMPED 
-            . "' AND b.State = '" . Batch::CLOSING . "')) AND sf.PumperId = $idPumper ORDER BY sf.Retry LIMIT 1";
+        $query = "SELECT sf.* FROM ServerFrames sf LEFT JOIN Batchs b ON (sf.IdBatchUp = b.IdBatch OR sf.IdBatchDown = b.IdBatch)" 
+            . " WHERE (sf.State = '" . ServerFrame::DUE2IN . "' OR " . "sf.State = '" . ServerFrame::DUE2OUT . "' "
+            . " OR (sf.State = '" . ServerFrame::PUMPED . "' AND b.State = '" . Batch::CLOSING . "')) "
+            . " AND sf.PumperId = $idPumper ORDER BY sf.Retry LIMIT 1";
         return $this->query($query);
     }
 

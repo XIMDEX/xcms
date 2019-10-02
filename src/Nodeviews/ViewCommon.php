@@ -86,7 +86,7 @@ class ViewCommon extends AbstractView
                 Logger::error('Channel not found for ID: ' . $args['CHANNEL']);
                 return false;
             }
-            if ($this->channel->getRenderType() && $this->channel->getRenderType() == Channel::RENDERTYPE_INDEX) {
+            if ($this->channel->getRenderType() == Channel::RENDERTYPE_INDEX) {
                 if (strcmp(FsUtils::get_extension($this->node->getNodeName()), 'pdf') == 0) {
                     $content = $this->createXIF($this->node, $content, $this->channel, $server);
                 } else {

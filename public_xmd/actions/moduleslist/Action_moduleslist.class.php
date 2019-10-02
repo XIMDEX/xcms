@@ -81,10 +81,9 @@ class Action_moduleslist extends ActionAbstract
         $lang = strtolower(Ximdex\Runtime\Session::get('locale'));
         $base = APP_ROOT_PATH . '/actions/moduleslist/template/Smarty/modules';
         $userId = Ximdex\Runtime\Session::get('userID');
-
         $module_name = $this->request->getParam('modsel');
         $module_exists = Manager::moduleExists($module_name);
-        if (!$module_exists) {
+        if (! $module_exists) {
             return $this->moduleNotFound();
         }
         $module_actived = Manager::isEnabled($module_name);

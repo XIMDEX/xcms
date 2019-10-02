@@ -69,6 +69,9 @@ class Action_preview extends ActionAbstract
         $channelList = $doc->getChannels();
         $channels = array();
         if (count($channelList)) {
+            if (! $channelId) {
+                $channelId = current($channelList);
+            }
             foreach ($channelList as $id) {
                 $channel = new Channel($id);
                 $channels[] = array(

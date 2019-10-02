@@ -158,10 +158,9 @@ Class App
             return $value;
         }
         $objectData = self::getInstance()->getRuntimeValue('class::definition::' . $key, null);
-        if (is_null($objectData)) {
-            return self::getObject($key);
+        if (! is_null($objectData)) {
+            require_once(XIMDEX_ROOT_PATH . $objectData);
         }
-        require_once(XIMDEX_ROOT_PATH . $objectData);
         return self::getObject($key);
     }
 

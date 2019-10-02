@@ -3334,10 +3334,11 @@ class Node extends NodesOrm
      * @param int $version
      * @param int $subversion
      * @param string $mode
+     * @param int $previewServer
      * @return boolean|array
      */
     public function filemapper(int $idChannel = null, bool $showprev = false, string $content = null, int $version = null
-        , int $subversion = null, string $mode = null)
+        , int $subversion = null, string $mode = null, int $previewServer = null)
     {
         // Checks node existence
         if (! $this->IdNode) {
@@ -3358,7 +3359,7 @@ class Node extends NodesOrm
             }
 
             // Checks content existence
-            if ($content !== null) {
+            if ($content === null) {
                 $content = $structuredDocument->getContent($version, $subversion);
             } elseif ($this->getNodeType() == NodeTypeConstants::XML_DOCUMENT) {
                 $content = XmlDocumentNode::normalizeXmlDocument($content);
@@ -3412,6 +3413,9 @@ class Node extends NodesOrm
             }
             $args['TRANSFORMER'] = $transformer[0];
             $args['PREVIEW'] = true;
+            if ($previewServer) {
+                $args['SERVER'] = $previewServer;
+            }
             if ($this->getNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
                 $process = 'PrepareHTML';
             } else {
@@ -3423,6 +3427,7 @@ class Node extends NodesOrm
             } catch (\Exception $e) {
 
                 // The transformation process did not work !
+                Logger::error($e->getMessage());
                 if ($this->getNodeType() == NodeTypeConstants::XML_DOCUMENT) {
 
                     // If content is false, show the xslt errors instead the document preview
@@ -3439,7 +3444,7 @@ class Node extends NodesOrm
                 return false;
             }
 
-            // Specific FilterMacros View for previsuals
+            // Specific FilterMacros View for previews
             $viewFilterMacrosPreview = new ViewFilterMacros(true);
             $content = $viewFilterMacrosPreview->transform(null, $res, $args);
             if ($content === false) {

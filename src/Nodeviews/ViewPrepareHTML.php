@@ -52,7 +52,9 @@ class ViewPrepareHTML extends AbstractView
         }
         
         // Channel
-        if ($this->channel) {
+        if ($this->isPreviewServer) {
+            $mode = HTMLDocumentNode::MODE_STATIC;
+        } elseif ($this->channel) {
             if ($this->channel->getRenderType()) {
                 $mode = $this->channel->getRenderType();
             } else {
@@ -61,7 +63,7 @@ class ViewPrepareHTML extends AbstractView
         } else {
             $mode = HTMLDocumentNode::MODE_STATIC;
         }
-        $document = HTMLDocumentNode::renderHTMLDocument($this->node->getID(), $content, $this->channel->getID(), $mode);
+        $document = HTMLDocumentNode::renderHTMLDocument($this->node->getID(), $content, $this->channel->getID(), $mode, $this->server);
 
         // Process macros
         if ($document !== false) {

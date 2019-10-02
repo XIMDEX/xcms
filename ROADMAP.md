@@ -3,7 +3,7 @@
 Just a very schematic brief of the product releases as they are currently
 planed in Headless CMS Ximdex:
 
-v4.1 (Decoupled Repository and Editor - 4th quarter 2017)
+v4.0 (Decoupled Repository and Editor - 4th quarter 2017)
 ----
 - New code organization to provide better separation core/services
 - Former modules removed

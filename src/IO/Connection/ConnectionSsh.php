@@ -31,7 +31,7 @@ use Ximdex\Logger;
 use Ximdex\Runtime\App;
 use phpseclib\Net\SFTP;
 
-class ConnectionSsh extends Connector implements IConnector
+class ConnectionSsh extends Connector
 {
     private $host;
     

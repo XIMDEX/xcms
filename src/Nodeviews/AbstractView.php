@@ -104,7 +104,7 @@ abstract class AbstractView implements IView
                 Logger::error('Server ' . $args['SERVER'] . ' where you want to render the node not specified');
                 return false;
             }
-            $this->isPreviewServer = $this->server->get('Previsual');
+            $this->isPreviewServer = (bool) $this->server->get('Previsual');
         }
         if ($this->node) {
             $this->serverNode = new Node($this->node->getServer());
@@ -224,7 +224,7 @@ abstract class AbstractView implements IView
         
         // When external link, return the url
         if ($targetNode->getNodeType() == NodeTypeConstants::LINK) {
-            return $targetNode->class->GetUrl();
+            return $targetNode->class->getUrl();
         }
         
         // Generate the path
@@ -236,7 +236,9 @@ abstract class AbstractView implements IView
                     return "javascript:parent.loadDivsPreview(" . $idNode . ")";
                 } else {
                     $query = App::get('\Ximdex\Utils\QueryManager');
-                    $src = $query->getPage(false) . $query->buildWith(array('nodeid' => $idNode, 'token' => uniqid()));
+                    // $src = $query->getPage() . $query->buildWith(array('nodeid' => $idNode, 'token' => uniqid()));
+                    $src = $query->getPage() . '?expresion=' . (($idNode) ? $idNode : $pathToParams) . '&channelId=' . $idTargetChannel
+                        . '&action=rendernode&token=' . uniqid();
                     if ($parserPathTo->getAnchor()) {
                         $src .= '#' . $parserPathTo->getAnchor();
                     }
@@ -245,10 +247,12 @@ abstract class AbstractView implements IView
             }
             
             // Generate the URL to the rendernode action
-            $url = App::getValue('UrlRoot') . '/?expresion=' . (($idNode) ? $idNode : $pathToParams)
+            $query = App::get('\Ximdex\Utils\QueryManager');
+            $url = $query->getPage() . '?expresion=' . (($idNode) ? $idNode : $pathToParams)
                 . '&action=rendernode&token=' . uniqid();
             return $url;
         }
+        /*
         if ($this->isPreviewServer) {
             if ($isStructuredDocument) {
                 $src = App::getValue('UrlRoot') . App::getValue('NodeRoot') . $targetNode->getPublishedPath($idTargetChannel, true);
@@ -260,6 +264,7 @@ abstract class AbstractView implements IView
                 return $targetNode->class->getNodeURL();
             }
         }
+        */
         if (App::getValue('PullMode') == 1) {
             return App::getValue('UrlRoot') . '/src/Rest/Pull/index.php?idnode=' . $targetNode->get('IdNode')
             . '&idchannel=' . $idTargetChannel . '&idportal=' . $this->serverNode->get('IdNode');

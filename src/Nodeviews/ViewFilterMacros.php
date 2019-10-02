@@ -300,6 +300,11 @@ class ViewFilterMacros extends AbstractView
             $this,
             'removeUIDs'
         ), $content);
+        
+        // Replace root path for #ROOT# contants
+        if ($this->server and $this->server->get('InitialDirectory')) {
+            $content = str_replace('#ROOT#', $this->server->get('InitialDirectory'), $content);
+        }
         return $content;
     }
 
@@ -351,7 +356,7 @@ class ViewFilterMacros extends AbstractView
             return $this->getLinkTo404($abs);
         }
         if ($this->isPreviewServer) {
-            return App::getValue('UrlRoot') . App::getValue('NodeRoot') . '/' . $section->GetPublishedPath(null, true);
+            return App::getValue('UrlRoot') . App::getValue('NodeRoot') . '/' . $section->getPublishedPath(null, true);
         }
         $sync = new SynchroFacade();
         if ($this->preview) {
@@ -476,6 +481,10 @@ class ViewFilterMacros extends AbstractView
 
     private function getInclude(array $matches)
     {
+        if (! $this->server) {
+            return null;
+        }
+        
         // Get parentesis content
         $nodeId = (int) $matches[1];
         if ($nodeId <= 1) {
@@ -487,8 +496,7 @@ class ViewFilterMacros extends AbstractView
             Logger::error('Could not load a node with ID ' . $nodeId);
             return false;
         }
-        $targetServer = new server($this->server->get('IdServer'));
-        if (! $targetServer->get('IdServer')) {
+        if (! $this->server or ! $this->server->get('IdServer')) {
             Logger::error('Cannot include the file in unknown server with node ID: ' . $nodeId);
             return false;
         }
@@ -497,11 +505,11 @@ class ViewFilterMacros extends AbstractView
         $idChannel = $this->channel->getID();
         if (! $targetNode->nodeType->getIsFolder()) {
             $targetFrame = new ServerFrame();
-            $frameID = $targetFrame->getCurrent($targetNode->getID(), $idChannel, $targetServer->get('IdServer'));
+            $frameID = $targetFrame->getCurrent($targetNode->getID(), $idChannel, $this->server->get('IdServer'));
             if (! $frameID) {
                 
                 // Not published in the current channel
-                $frames = $targetFrame->getFramesOnDate($targetNode->getID(), time(), $targetServer->get('IdServer'));
+                $frames = $targetFrame->getFramesOnDate($targetNode->getID(), time(), $this->server->get('IdServer'));
                 if ($frames) {
                     $sync = new SynchroFacade();
                     $idChannel = $sync->getFrameChannel($frames[0]['IdSync']);
@@ -509,9 +517,15 @@ class ViewFilterMacros extends AbstractView
             }
         }
         
-        // Get the path
-        $src = $targetServer->get('InitialDirectory') . $targetNode->getPublishedPath($idChannel, true);
-        return $src;
+        // Load target server for absolute path
+        $targetServer = new server($this->server->get('IdServer'));
+        if (! $targetServer->get('IdServer')) {
+            Logger::error('Cannot include the file in unknown server with node ID: ' . $nodeId);
+            return false;
+        }
+        
+        // Get the relative path
+        return $targetServer->get('InitialDirectory') . $targetNode->getPublishedPath($idChannel, true);
     }
     
     private function getLangName(array $matches): string

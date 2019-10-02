@@ -767,13 +767,13 @@ class StructuredDocument extends StructuredDocumentsOrm
                     // Load the documents root folder inside the previous node, if it exists
                     $documentsFolder = new Node($node->getChildByType(NodeTypeConstants::XML_ROOT_FOLDER));
                     if (! $documentsFolder->getID()) {
-                        continue;
+                        continue 2;
                     }
 
                     // Load the correspondant documents container folder for the include string given
                     $documentFolder = new Node($documentsFolder->getChildByName($include));
                     if (! $documentFolder->getID()) {
-                        continue;
+                        continue 2;
                     }
 
                     // Create an instance of the XML container handler
@@ -871,7 +871,7 @@ class StructuredDocument extends StructuredDocumentsOrm
                     // Load the layouts root folder inside the previous node, if it exists
                     $layoutsFolder = new Node($node->GetChildByType(NodeTypeConstants::HTML_LAYOUT_FOLDER));
                     if (! $layoutsFolder->getID()) {
-                        continue;
+                        continue 2;
                     }
 
                     // Load the components folder
@@ -885,7 +885,7 @@ class StructuredDocument extends StructuredDocumentsOrm
                     // Load the component by the name given and json extension
                     $componentNode = new Node($componentsFolder->GetChildByName($component . '.json'));
                     if (! $componentNode->GetID()) {
-                        continue;
+                        continue 2;
                     }
                     return $componentNode;
             }
@@ -929,7 +929,7 @@ class StructuredDocument extends StructuredDocumentsOrm
                     // Load the layouts root folder inside the previous node, if it exists
                     $layoutsFolder = new Node($node->GetChildByType(NodeTypeConstants::HTML_LAYOUT_FOLDER));
                     if (! $layoutsFolder->getID()) {
-                        continue;
+                        continue 2;
                     }
 
                     // Load the components folder
@@ -943,7 +943,7 @@ class StructuredDocument extends StructuredDocumentsOrm
                     // Load the view by the name given and html extension
                     $viewNode = new Node($viewsFolder->GetChildByName($view . '.html'));
                     if (! $viewNode->GetID()) {
-                        continue;
+                        continue 2;
                     }
                     return $viewNode;
             }

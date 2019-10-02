@@ -36,9 +36,11 @@ class Manager
     public static $msg = null;
     
     public $modules;
+    
     public $caller;
     
     private static $core_modules = array("ximIO");
+    
     private static $deprecated_modules = array("ximTEST");
 
     public static function get_modules_dir()
@@ -174,21 +176,6 @@ class Manager
         }
     }
 
-    private function parseMetaParent(string $constModule, array & $metaParent = null)
-    {
-        $paths = FsUtils::readFolder($constModule, false);
-        if ($paths) {
-            foreach ($paths as $moduleName) {
-                $modulePath = $constModule . $moduleName;
-                if (is_dir($modulePath) && file_exists($modulePath . "/conf.ini")) {
-                    $conf = parse_ini_file($modulePath . "/conf.ini");
-                    foreach ($conf['module'] as $childrenModName)
-                        $metaParent[$childrenModName] = $moduleName;
-                }
-            }
-        }
-    }
-
     public static function getModules()
     {
         $modules = array();
@@ -197,24 +184,7 @@ class Manager
         return $modules;
     }
 
-    private function getMetaParent()
-    {
-        $metaParent = null;
-        self::parseMetaParent(self::get_modules_dir(), $metaParent);
-        self::parseMetaParent(self::get_modules_pro_dir(), $metaParent);
-        return $metaParent;
-    }
-
-    private function hasMetaParent(string $name)
-    {
-        $metaParent = self::getMetaParent();
-        if (! empty($metaParent) && in_array($name, array_keys($metaParent)) && $this->caller != $metaParent[$name]) {
-            return $metaParent;
-        }
-        return false;
-    }
-
-    public function moduleExists(string $name)
+    public static function moduleExists(string $name)
     {
         $path = Manager::path($name);
         if (! empty($path)) {
@@ -407,6 +377,38 @@ class Manager
             }
         } else {
             Logger::error('Could not load the file: ' . $path . $_file);
+        }
+    }
+    
+    private function getMetaParent()
+    {
+        $metaParent = null;
+        self::parseMetaParent(self::get_modules_dir(), $metaParent);
+        self::parseMetaParent(self::get_modules_pro_dir(), $metaParent);
+        return $metaParent;
+    }
+    
+    private function hasMetaParent(string $name)
+    {
+        $metaParent = self::getMetaParent();
+        if (! empty($metaParent) && in_array($name, array_keys($metaParent)) && $this->caller != $metaParent[$name]) {
+            return $metaParent;
+        }
+        return false;
+    }
+    
+    private function parseMetaParent(string $constModule, array & $metaParent = null)
+    {
+        $paths = FsUtils::readFolder($constModule, false);
+        if ($paths) {
+            foreach ($paths as $moduleName) {
+                $modulePath = $constModule . $moduleName;
+                if (is_dir($modulePath) && file_exists($modulePath . "/conf.ini")) {
+                    $conf = parse_ini_file($modulePath . "/conf.ini");
+                    foreach ($conf['module'] as $childrenModName)
+                        $metaParent[$childrenModName] = $moduleName;
+                }
+            }
         }
     }
 }
