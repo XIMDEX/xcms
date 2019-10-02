@@ -517,8 +517,15 @@ class ViewFilterMacros extends AbstractView
             }
         }
         
+        // Load target server for absolute path
+        $targetServer = new server($this->server->get('IdServer'));
+        if (! $targetServer->get('IdServer')) {
+            Logger::error('Cannot include the file in unknown server with node ID: ' . $nodeId);
+            return false;
+        }
+        
         // Get the relative path
-        return $targetNode->getPublishedPath($idChannel, true);
+        return $targetServer->get('InitialDirectory') . $targetNode->getPublishedPath($idChannel, true);
     }
     
     private function getLangName(array $matches): string
