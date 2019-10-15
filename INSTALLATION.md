@@ -32,21 +32,12 @@ To install **XCMS** you need a Linux server with:
 
   * Install Apache web server and PHP:   
      ```shell
-     sudo apt-get install apache2
-     sudo apt-get install php
+     sudo apt-get install apache2 php
      ```
   
   * PHP Modules:
      ```shell
-     sudo apt-get install php-xml
-     sudo apt-get install php-cli
-     sudo apt-get install php-curl
-     sudo apt-get install php-gd
-     sudo apt-get install php-mysql
-     sudo apt-get install php-pear
-     sudo apt-get install php-mbstring
-     sudo apt-get install php-enchant
-     sudo apt-get install php-zip
+     sudo apt-get install php-xml php-cli php-curl php-gd php-mysql php-pear php-mbstring php-enchant php-zip
      ```
 
 #### 3.- Install PHP Composer
