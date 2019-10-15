@@ -46,6 +46,7 @@ To install **XCMS** you need a Linux server with:
      sudo apt-get install php-pear
      sudo apt-get install php-mbstring
      sudo apt-get install php-enchant
+     sudo apt-get install php-zip
      ```
 
 #### 3.- Install PHP Composer
@@ -98,8 +99,9 @@ In this example, our root is located at **www** and our instance is renamed **my
 We need to set file owners and permissions adequated to our web server. So, if apache runs as 'www-data:www-data' we can run:
 
    ```shell
-   cd /var/www/
-   sudo chown -R www-data:www-data myximdex
+   cd /var/www/html/
+   sudo chgrp -R www-data myximdex
+   sudo chmod -R a+rx myximdex
    cd myximdex
    sudo chmod -R ug+rw data
    sudo chmod -R ug+rw logs
@@ -119,28 +121,9 @@ Optionally, if the owner is not the apache unix user, you have to set the sticky
 Move to the XCMS root folder (**myximdex** in this case) and run **composer** to configure additional packages:
 
    ```shell
-   cd /var/www/myximdex
+   cd /var/www/html/myximdex
    composer install --no-dev
    ```
-
-##### 5. Create your XCMS Database
-
-Open a connection to your DDBB engine and type the following SQL commands:
-
-* To create the DB for XCMS:
-
-   ```sql
-   CREATE DATABASE `ximdex_db`;
-   ```
-
-* Create a specific db user for XCMS:
-
-   ```sql
-   CREATE USER `ximdex-user`@`localhost` IDENTIFIED BY 'ximdex-pass';
-   GRANT ALL PRIVILEGES ON `ximdex_db`.* TO `ximdex-user`@`localhost` WITH GRANT OPTION;
-   ```
-
-
 
 ---
 
