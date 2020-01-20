@@ -74,7 +74,7 @@ class Action_filedownload extends ActionAbstract
         /// Expiration headers
         $this->response->set('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT');
         $this->response->set('Last-Modified', $gmDate . ' GMT');
-        $this->response->set('Cache-Control',array('no-store, no-cache, must-revalidate', 'post-check=0, pre-check=0'));
+        $this->response->set('Cache-Control','no-store, no-cache, must-revalidate');
         $this->response->set('Pragma', 'no-cache');
         $this->response->set('ETag', md5($idNode . $gmDate));
         $this->response->set('Content-transfer-encoding', 'binary');
