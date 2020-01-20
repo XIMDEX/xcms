@@ -40,7 +40,7 @@ class Action_filepreview extends ActionAbstract
      */
     public function index()
     {
-        $this->response->set('Cache-Control', array('no-store, no-cache, must-revalidate', 'post-check=0, pre-check=0'));
+        $this->response->set('Cache-Control', 'no-store, no-cache, must-revalidate');
         $this->response->set('Pragma', 'no-cache');
         $idNode = (int) $this->request->getParam('nodeid');
         $version = $this->request->getParam('version');
