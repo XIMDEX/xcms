@@ -63,7 +63,7 @@ class Action_createlink extends ActionAbstract
             'inputName' => 'url',
             'url' => $url
         ];
-        if (! FormValidation::isUniqueUrl($params)) {
+        if (! FormValidation::isUniqueUrl($params, false)) {
             $this->messages->add(_('The URL link is already in use'), MSG_TYPE_ERROR);
             $values = [
                 'messages' => $this->messages->messages
