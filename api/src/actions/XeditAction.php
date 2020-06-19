@@ -29,6 +29,7 @@ namespace XimdexApi\actions;
 
 use Ximdex\Logger;
 use Ximdex\Models\Node;
+use Ximdex\Parsers\ParsingPathTo;
 use Ximdex\Runtime\App;
 use Ximdex\Models\Metadata;
 use XimdexApi\core\Request;
@@ -241,17 +242,31 @@ class XeditAction extends Action
      */
     public static function file(Request $r, Response $w)
     {
-        $nodeId = $_GET['id'];
+        $resource = $_GET['id'];
+        $currentNode = $_GET['currentNode'];
         $response = '';
         $headers = [];
-        if (intval($nodeId)) {
-            $node = new Node($nodeId);
-            if ($node->GetID() !== null) {
-                $data = $node->filemapper();
-                $headers = $data['headers'];
-                $response = $data['content'];
+        $node = null;
+
+        // If the resource is an identifier, we rescue the node
+        if (intval($resource)) {
+            $node = new Node($resource);
+        } else if ( !empty($currentNode) ) {
+            // If the resource is a route, we parse it looking for the node
+            $parserPathTo = new ParsingPathTo();
+
+            // currentNode is necessary when we search for a resource because it is from where we started looking
+            if ( $parserPathTo->parsePathTo($resource, $currentNode) ) {
+                $node = $parserPathTo->getNode();
             }
         }
+
+        if ($node && $node->GetID() !== null) {
+            $data = $node->filemapper();
+            $headers = $data['headers'];
+            $response = $data['content'];
+        }
+
         $w->setResponse($response);
         $w->send($headers);
     }
