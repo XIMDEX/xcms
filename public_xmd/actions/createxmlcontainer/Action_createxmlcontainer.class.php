@@ -58,8 +58,9 @@ class Action_createxmlcontainer extends ActionAbstract
         // If node type is HTML then obtain JSON schemas, otherwise the schemas will be the RNG ones
         if ($type == 'HTML') {
             $schemes = $node->getLayoutSchemas();
+        } else if ($type == 'JSON') {
+            $schemes = $node->getJsonSchemas();
         } else {
-            
             // Gets default schema for XML documents through propInheritance
             $schemes = null;
             $section = $node->getSection();
@@ -153,8 +154,10 @@ class Action_createxmlcontainer extends ActionAbstract
             );
             $this->sendJSON($values);
         }
-        if ($type == 'HTML') {
+        if ( $type == 'HTML' ) {
             $nodeTypeID = NodeTypeConstants::HTML_CONTAINER;
+        } else if ( $type == 'JSON' ) {
+            $nodeTypeID = NodeTypeConstants::JSON_CONTAINER;
         } else {
             $nodeTypeID = null;
         }
