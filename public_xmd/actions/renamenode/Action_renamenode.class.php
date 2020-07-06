@@ -41,7 +41,7 @@ class Action_renamenode extends ActionAbstract
     {
         $idNode = (int) $this->request->getParam('nodeid');
         $node = new Node($idNode);
-        $isProject = $node->getNodeType() == NodeTypeConstants::PROJECT;
+        $isProject = in_array( $node->GetNodeType(),NodeTypeConstants::NODE_PROJECTS );
         $isSection = $node->nodeType->get('IsSection') && $node->getNodeType() != NodeTypeConstants::SERVER;
         $allLanguages = null;
         if ($isSection) {
@@ -111,7 +111,7 @@ class Action_renamenode extends ActionAbstract
                 }
                 
                 // Update all the references in the templates includes of the old name of this node to the new one
-                if ($node->getNodeType() == NodeTypeConstants::PROJECT or $node->getNodeType() == NodeTypeConstants::SERVER 
+                if ( in_array( $node->GetNodeType(),NodeTypeConstants::NODE_PROJECTS ) or $node->getNodeType() == NodeTypeConstants::SERVER
                         or $node->getNodeType() == NodeTypeConstants::SECTION) {
                     $xsltNode = new XsltNode($node);
                     if (! $xsltNode->reload_templates_include(new Node($node->GetProject()))) {
