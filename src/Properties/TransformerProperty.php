@@ -63,7 +63,7 @@ class TransformerProperty extends InheritableProperty
 		    $nodeTransformers = array();
 		}
 		$availableTransformers = array();
-		if ($this->nodeTypeId == NodeTypeConstants::PROJECT) {
+		if ( in_array( $this->nodeTypeId,NodeTypeConstants::NODE_PROJECTS ) ) {
 			// The Project node shows all the system transformers
 			$availableTransformers = $_availableTransformers;
 			unset($availableTransformers[0]);
