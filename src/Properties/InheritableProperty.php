@@ -107,7 +107,7 @@ abstract class InheritableProperty
         if (empty($nodeProperties)) {
             $nodeProperties = array();
         }
-        if ($this->nodeTypeId != \Ximdex\NodeTypes\NodeTypeConstants::PROJECT) {
+        if ( !in_array( $this->nodeTypeId,NodeTypeConstants::NODE_PROJECTS ) ) {
             
             // All the project properties will be the available ones
             $projectNode = new Node($this->node->getProject());
