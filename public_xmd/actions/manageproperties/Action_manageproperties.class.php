@@ -59,7 +59,7 @@ class Action_manageproperties extends ActionAbstract
         $nodeId = $nodeId < 10000 ? 10000 : $nodeId;
         $node = new Node($nodeId);
         $properties = InheritedPropertiesManager::getValues($nodeId);
-        $inProject = ($node->GetNodeType() == NodeTypeConstants::PROJECT);
+        $inProject = in_array( $node->GetNodeType(),NodeTypeConstants::NODE_PROJECTS );
         $values = array(
             'properties' => $properties,
             'go_method' => 'save_changes',
