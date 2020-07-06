@@ -120,6 +120,10 @@ class ParsingDependencies
             case NodeTypeConstants::HTML_DOCUMENT:
                 $result = self::parseXMLDependencies($node, $content, $idVersion);
                 break;
+            case NodeTypeConstants::JSON_DOCUMENT:
+            case NodeTypeConstants::JSON_SCHEMA_FILE:
+                $result = self::parseJSONDependencies($node, $content, $idVersion);
+                break;
             case NodeTypeConstants::CSS_FILE:
                 $result = self::parseCssDependencies($node, $content, $idVersion);
                 break;
@@ -175,6 +179,29 @@ class ParsingDependencies
             }
             return false;
         }
+        return true;
+    }
+
+    /**
+     * Search Dependencies in $content for $node and save it.
+     *
+     * @param Node $node
+     * @param String $content
+     * @param int $idVersion
+     * @return bool
+     */
+    public static function parseJSONDependencies(Node $node, string $content, int $idVersion)
+    {
+        $idNode = $node->get("IdNode");
+        $structuredDocument = new StructuredDocument($idNode);
+        if (!self::clearDependencies($node)) {
+            $GLOBALS['parsingDependenciesError'] = 'The dependencies of the given XML cant\'t be cleared';
+            return false;
+        }
+        if (self::buildDependenciesFromStructuredDocument($node, $structuredDocument) === false) {
+            return false;
+        }
+
         return true;
     }
 
@@ -318,7 +345,8 @@ class ParsingDependencies
         $assets = self::getAssets($content, $node->nodeType->get('Name'));
         $links = self::getLinks($content, $node->nodeType->get('Name'));
         $pathToByChannel = array();
-        if ($node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT) {
+        if ( $node->GetNodeType() == NodeTypeConstants::HTML_DOCUMENT ||
+             $node->GetNodeType() == NodeTypeConstants::JSON_DOCUMENT ) {
             $process = 'PrepareHTML';
         } else {
             $process = 'FromPreFilterToDexT';
