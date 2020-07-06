@@ -708,9 +708,12 @@ DOCXAP;
     {
         if ($init) {
             
-            // Only project, servers and section/subsections can storage template folders
-            if ($node->getNodeType() != NodeTypeConstants::PROJECTS and $node->getNodeType() != NodeTypeConstants::PROJECT 
-                    and $node->getNodeType() != NodeTypeConstants::SERVER and $node->getNodeType() != NodeTypeConstants::SECTION) {
+            // Only project this nodetypes can storage template folders
+            if ( $node->getNodeType() != NodeTypeConstants::PROJECTS
+                and $node->getNodeType() != NodeTypeConstants::PROJECT
+                and $node->getNodeType() != NodeTypeConstants::XLMS_PROJECT
+                and $node->getNodeType() != NodeTypeConstants::SERVER
+                and $node->getNodeType() != NodeTypeConstants::SECTION ) {
                 $this->messages->add('Cannot reload nodes with a node type diferent than project, server or section', MSG_TYPE_ERROR);
                 return false;
             }
