@@ -858,6 +858,7 @@ class StructuredDocument extends StructuredDocumentsOrm
         foreach ($parents as $nodeID => $nodeTypeID) {
             switch ($nodeTypeID) {
                 case NodeTypeConstants::PROJECT:
+                case NodeTypeConstants::XLMS_PROJECT:
                 case NodeTypeConstants::SERVER:
                 case NodeTypeConstants::SECTION:
 
@@ -916,6 +917,7 @@ class StructuredDocument extends StructuredDocumentsOrm
         foreach ($parents as $nodeID => $nodeTypeID) {
             switch ($nodeTypeID) {
                 case NodeTypeConstants::PROJECT:
+                case NodeTypeConstants::XLMS_PROJECT:
                 case NodeTypeConstants::SERVER:
                 case NodeTypeConstants::SECTION:
 
