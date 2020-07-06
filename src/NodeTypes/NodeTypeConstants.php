@@ -118,4 +118,25 @@ class NodeTypeConstants
     const PERMISSION = 5038;
     const METADATA_MANAGER = 5019;
     const SITEMAP = 5111;
+
+    const XLMS_PROJECT = 5112;
+    const XLMS_ROOT_FOLDER_UNIT = 5113;
+    const XLMS_ROOT_FOLDER_COURSE = 5114;
+    const XLMS_ROOT_FOLDER_MULTIMEDIA = 5115;
+    const XLMS_ROOT_FOLDER_TEST = 5116;
+    const XLMS_ROOT_FOLDER_SCHEMA = 5119;
+
+    const JSON_CONTAINER = 5118;
+    const JSON_DOCUMENT = 5117;
+
+    const JSON_SCHEMA_CONTAINER = 5119;
+    const JSON_SCHEMA_FILE = 5120;
+
+    const XLMS_TYPE_FOLDERS = [ NodeTypeConstants::XLMS_ROOT_FOLDER_COURSE,
+                                NodeTypeConstants::XLMS_ROOT_FOLDER_UNIT,
+                                NodeTypeConstants::XLMS_ROOT_FOLDER_MULTIMEDIA,
+                                NodeTypeConstants::XLMS_ROOT_FOLDER_TEST ];
+    const NODE_PROJECTS = [ NodeTypeConstants::PROJECT,
+        NodeTypeConstants::XLMS_PROJECT ];
+
 }
