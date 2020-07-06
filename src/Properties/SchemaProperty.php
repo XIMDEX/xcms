@@ -57,7 +57,7 @@ class SchemaProperty extends InheritableProperty
 		    $nodeSchemas = array();
 		}
 		$availableSchemas = array();
-		if ($this->nodeTypeId == NodeTypeConstants::PROJECT) {
+		if ( in_array( $this->nodeTypeId,NodeTypeConstants::NODE_PROJECTS ) ) {
 
 			// The Project node shows all the system schemas
 			$availableSchemas = $_availableSchemas;
