@@ -72,7 +72,11 @@ class Action_edittext extends ActionAbstract
             
             // For the documents
             $ext = 'html';
-        } else {
+        }
+        elseif ($idNodeType == \Ximdex\NodeTypes\NodeTypeConstants::JSON_DOCUMENT) {
+            // For the JSON
+            $ext = 'json';
+        }  else {
             $ext = 'txt';
         }
         $content = $node->GetContent();
@@ -89,6 +93,9 @@ class Action_edittext extends ActionAbstract
             case 'html':
                 $this->addJs('/vendor/codemirror/Codemirror/addon/edit/closetag.js');
                 $this->addJs('/vendor/codemirror/Codemirror/addon/fold/xml-fold.js');
+                $this->addJs('/vendor/codemirror/Codemirror/addon/edit/closebrackets.js');
+                break;
+            case 'json':
                 $this->addJs('/vendor/codemirror/Codemirror/addon/edit/closebrackets.js');
                 break;
             case 'md':
