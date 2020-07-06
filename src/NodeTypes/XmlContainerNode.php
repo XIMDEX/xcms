@@ -87,7 +87,11 @@ class XmlContainerNode extends FolderNode
         if ($idNodeMaster) {
             $this->setNodeMaster($idNodeMaster);
         }
-        if ($nodeTypeID == NodeTypeConstants::XML_CONTAINER or $nodeTypeID == NodeTypeConstants::HTML_CONTAINER) {
+        /* Update node for current available structured documents */
+        if ( $nodeTypeID == NodeTypeConstants::XML_CONTAINER ||
+             $nodeTypeID == NodeTypeConstants::HTML_CONTAINER ||
+             $nodeTypeID == NodeTypeConstants::JSON_CONTAINER )
+        {
             $this->UpdatePath();
         }
         return true;
@@ -95,7 +99,7 @@ class XmlContainerNode extends FolderNode
 
     /**
      * Add a new language version for the current document
-     * 
+     *
      * @param int $idLang
      * @param string $alias Description name for the language version. Useful in breadcrum.
      * @param array $channelList Array within idchannels
@@ -106,6 +110,9 @@ class XmlContainerNode extends FolderNode
         $xmldoc = new Node();
         $childrenNodeType = new NodeType();
         switch ($this->nodeType->GetName()) {
+            case 'JSONContainer':
+                $childrenNodeType->SetByName('JSONDocument');
+                break;
             case 'XmlContainer':
                 $childrenNodeType->SetByName('XmlDocument');
                 break;
