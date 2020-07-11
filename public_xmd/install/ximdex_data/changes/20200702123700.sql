@@ -12,96 +12,81 @@ INSERT INTO NodeTypes (IdNodeType , Name,Class,Icon,Description,IsRenderizable,H
 ,(5112, 'XLMSProject','XLMSProject','project','XLMS Project',1,1,0,1,1,1,0,0,1,0,0,0,0,0,NULL,NULL,0)
 ;
 
-INSERT INTO NodeTypes (IdNodeType , Name,Class,Icon,Description,IsRenderizable,HasFSEntity,CanAttachGroups,IsSection,IsFolder,IsVirtualFolder,IsPlainFile,IsStructuredDocument,IsPublishable,IsHidden,CanDenyDeletion,isGenerator,IsEnriching,`System`,Module,workflowId,HasMetadata) VALUES
-(5121, 'XLMSRootFolderCatalog','XLMSRootFolderCatalog','folder_xml','XLMS Root Folder Catalog',1,1,0,0,1,1,0,0,0,0,1,0,0,1,NULL,NULL,0);
-
+INSERT INTO NodeAllowedContents
+(IdNodeAllowedContent, IdNodeType, NodeType, Amount)
+VALUES(117, 5012, 5112, 0);
 
 INSERT INTO NodeAllowedContents
 (IdNodeAllowedContent, IdNodeType, NodeType, Amount)
-VALUES(117, 5012, 5112, 7);
+VALUES(118, 5112, 5113, 0);
 
 INSERT INTO NodeAllowedContents
 (IdNodeAllowedContent, IdNodeType, NodeType, Amount)
-VALUES(118, 5112, 5113, 7);
+VALUES(119, 5112, 5114, 0);
 
 INSERT INTO NodeAllowedContents
 (IdNodeAllowedContent, IdNodeType, NodeType, Amount)
-VALUES(119, 5112, 5114, 7);
+VALUES(120, 5112, 5115, 0);
 
 INSERT INTO NodeAllowedContents
 (IdNodeAllowedContent, IdNodeType, NodeType, Amount)
-VALUES(120, 5112, 5115, 7);
+VALUES(121, 5112, 5116, 0);
 
 INSERT INTO NodeAllowedContents
 (IdNodeAllowedContent, IdNodeType, NodeType, Amount)
-VALUES(121, 5112, 5116, 7);
-
-INSERT INTO NodeAllowedContents
-(IdNodeAllowedContent, IdNodeType, NodeType, Amount)
-VALUES(122, 5112, 5119, 7);
+VALUES(122, 5112, 5119, 0);
 
 
 /* Root Folder Unit */
 INSERT INTO NodeAllowedContents
 (IdNodeAllowedContent, IdNodeType, NodeType, Amount)
-VALUES(123, 5113, 5022, 7);
+VALUES(123, 5113, 5022, 0);
 INSERT INTO NodeAllowedContents
 (IdNodeAllowedContent, IdNodeType, NodeType, Amount)
-VALUES(124, 5113, 5118, 7);
+VALUES(124, 5113, 5118, 0);
 
 
 
 /* Root Folder Course */
 INSERT INTO NodeAllowedContents
 (IdNodeAllowedContent, IdNodeType, NodeType, Amount)
-VALUES(125, 5114, 5022, 7);
+VALUES(125, 5114, 5022, 0);
 INSERT INTO NodeAllowedContents
 (IdNodeAllowedContent, IdNodeType, NodeType, Amount)
-VALUES(126, 5114, 5118, 7);
+VALUES(126, 5114, 5118, 0);
 
 
 /* Root Folder Multimedia */
 INSERT INTO NodeAllowedContents
 (IdNodeAllowedContent, IdNodeType, NodeType, Amount)
-VALUES(127, 5115, 5022, 7);
+VALUES(127, 5115, 5022, 0);
 
 INSERT INTO NodeAllowedContents
 (IdNodeAllowedContent, IdNodeType, NodeType, Amount)
-VALUES(128, 5115, 5118, 7);
+VALUES(128, 5115, 5118, 0);
 
 INSERT INTO NodeAllowedContents
 (IdNodeAllowedContent, IdNodeType, NodeType, Amount)
-VALUES(129, 5115, 5016, 7);
+VALUES(129, 5115, 5016, 0);
 
 /* Root Folder Test */
 INSERT INTO NodeAllowedContents
 (IdNodeAllowedContent, IdNodeType, NodeType, Amount)
-VALUES(130, 5116, 5022, 7);
+VALUES(130, 5116, 5022, 0);
 INSERT INTO NodeAllowedContents
 (IdNodeAllowedContent, IdNodeType, NodeType, Amount)
-VALUES(131, 5116, 5118, 7);
+VALUES(131, 5116, 5118, 0);
 
 /* JSon Container */
 INSERT INTO NodeAllowedContents
 (IdNodeAllowedContent, IdNodeType, NodeType, Amount)
-VALUES(132, 5118, 5117, 7);
+VALUES(132, 5118, 5117, 0);
 
 /* Schema Folder */
 INSERT INTO NodeAllowedContents
 (IdNodeAllowedContent, IdNodeType, NodeType, Amount)
-VALUES(133, 5119, 5120, 7);
+VALUES(133, 5119, 5120, 0);
 
-INSERT INTO NodeAllowedContents
-(IdNodeAllowedContent, IdNodeType, NodeType, Amount)
-VALUES(134, 5112, 5121, 7);
-
-INSERT INTO NodeAllowedContents
-(IdNodeAllowedContent, IdNodeType, NodeType, Amount)
-VALUES(135, 5121, 5022, 7);
-
-INSERT INTO NodeAllowedContents
-(IdNodeAllowedContent, IdNodeType, NodeType, Amount)
-VALUES(136, 5121, 5118, 7);
 
 /* XLMSProject */
 INSERT
@@ -223,24 +208,6 @@ INSERT INTO Actions (IdAction, IdNodeType,Name,Command,Icon,Description,Sort,Mod
 ,(8177, 5120,'Edit Schema File','edittext','edit_template_view.png','Edit a Schema File',20,NULL,0,NULL,0)
 ,(8178, 5120,'Modify properties','renamenode','modiy_templateview','Modify properties of a Schema File',60,NULL,0,NULL,0)
 ;
-
-
-/* XLMS Root Folder Catalogs */
-INSERT
-	INTO
-	Actions (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, IsBulk)
-VALUES (8179, 5121, 'Add new Catalog', 'createxmlcontainer', 'create_proyect.png', 'Create a new Catalog', 11, NULL, 0, 'type=JSON', 0);
-
-INSERT
-	INTO
-	Actions (IdAction, IdNodeType, Name, Command, Icon, Description, Sort, Module, Multiple, Params, IsBulk)
-VALUES (8180, 5121, 'Add common folder', 'addfoldernode', 'add_folder_common.png', 'Create a new common folder', 11, NULL, 0, 'nodetypeid=5022', 0);
-
-INSERT
-	INTO
-	Actions (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, IsBulk)
-VALUES (8181, 5121, 'Associated groups', 'modifygroupsnode', 'groups_server.png', 'Manage associations of groups with this node', 60, NULL, 0, '', 0);
-
 
 
 INSERT  INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`) VALUES (NULL,201,8138,NULL);
@@ -414,21 +381,6 @@ INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`) VALUES (N
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`) VALUES (NULL,203,8178,NULL);
 
 
-INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`) VALUES (NULL,201,8179,NULL);
-INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`) VALUES (NULL,202,8179,NULL);
-INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`) VALUES (NULL,203,8179,NULL);
-
-
-INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`) VALUES (NULL,201,8180,NULL);
-INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`) VALUES (NULL,202,8180,NULL);
-INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`) VALUES (NULL,203,8180,NULL);
-
-
-INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`) VALUES (NULL,201,8181,NULL);
-INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`) VALUES (NULL,202,8181,NULL);
-INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`) VALUES (NULL,203,8181,NULL);
-
-
 INSERT INTO RelNodeTypeMimeType (idNodeType,extension,`filter`) VALUES
 (5117,';json;','json')
 ,(5120,';json;','json')
@@ -446,9 +398,6 @@ INSERT INTO NodeDefaultContents (IdNodeType,NodeType,Name,State,Params) VALUES
 ,(5115,5022,'Others',NULL,NULL)
 ,(5119,5120,'validate.json',NULL,NULL)
 ;
-
-INSERT INTO NodeDefaultContents (IdNodeType,NodeType,Name,State,Params) VALUES
-(5112,5121,'Catalogs',NULL,NULL);
 
 
 SET FOREIGN_KEY_CHECKS=1;
