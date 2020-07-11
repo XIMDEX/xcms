@@ -118,7 +118,7 @@ class NodeAction extends Action
 
     }
 
-    public static function setNodeContent( Node $node, $content, $filename = null, $lang = null )
+    public static function setNodeContent( Node $node, $content, $filename = null, $paramNodeType = null, $lang = null )
     {
         $nodeType = $node->nodeType;
         $isFolder = $nodeType->getIsFolder();
@@ -136,37 +136,42 @@ class NodeAction extends Action
             // delete the first element of the array, because it is the node itself, not its children
             array_shift($childrensTree);
 
-            $targetIdNodeType = null;
+            if ( !$paramNodeType ) {
+                $targetIdNodeType = null;
 
-            if ( !empty( $childrensTree) ) {
-                // We get its nodetype
-                foreach ( $childrensTree as $childrenArr ) {
-                    foreach ( $childrenArr as $children ) {
-                        if ( !$children["nodeType"]["isFolder"] ) {
-                            $targetIdNodeType = $children["nodeType"]["IdNodeType"];
-                            break 2;
+                if ( !empty( $childrensTree) ) {
+                    // We get its nodetype
+                    foreach ( $childrensTree as $childrenArr ) {
+                        foreach ( $childrenArr as $children ) {
+                            if ( !$children["nodeType"]["isFolder"] ) {
+                                $targetIdNodeType = $children["nodeType"]["IdNodeType"];
+                                break 2;
+                            }
+                        }
+                    }
+                } else {
+                    $allowedChildrens = $node->getCurrentAllowedChildren();
+                    foreach ( $allowedChildrens as $childId ) {
+                        $childNodeType = new NodeType($childId);
+                        if ( !$childNodeType->isFolder() ) {
+                            $targetIdNodeType = $childNodeType->getID();
+                            break;
                         }
                     }
                 }
-            } else {
-                $allowedChildrens = $node->getCurrentAllowedChildren();
-                foreach ( $allowedChildrens as $childId ) {
-                    $childNodeType = new NodeType($childId);
-                    if ( !$childNodeType->isFolder() ) {
-                        $targetIdNodeType = $childNodeType->getID();
-                        break;
-                    }
-                }
-            }
 
-            if ( !$targetIdNodeType ) {
-                return null;
+                if ( !$targetIdNodeType && $paramNodeType ) {
+                    return null;
+                }
+            } else {
+                $targetIdNodeType = $paramNodeType;
             }
 
             // we will a child to the folder with nodetype
             $newChildId = $node->CreateNode($filename, $node->getID(), $targetIdNodeType, null);
-            $childNode = new Node($newChildId);
-            $response = $childNode->setContent( $content);
+            $childNode = new Node( $newChildId );
+            $childNode->setContent( $content);
+            $response = $newChildId;
         }
 
         return $response;
