@@ -33,6 +33,7 @@ use Ximdex\Models\NodeType;
 use Ximdex\Modules\Module;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\NodeTypes\NodeTypeConstants;
+use Ximdex\NodeTypes\NodeTypeGroupConstants;
 use Ximdex\Runtime\App;
 use Ximdex\NodeTypes\XsltNode;
 use Ximdex\IO\BaseIO;
@@ -81,7 +82,7 @@ class Action_addfoldernode extends ActionAbstract
 
         /* If we can attachgroups, we check that we are a xlms folder */
         if ( $CanAttachGroups ) {
-            $isXlms = in_array($node->nodeType->getID(), NodeTypeConstants::XLMS_TYPE_FOLDERS);
+            $isXlms = in_array($node->nodeType->getID(), NodeTypeGroupConstants::XLMS_TYPE_FOLDERS);
             $this->request->setParam('xlms', $isXlms);
         }
 
@@ -327,7 +328,7 @@ class Action_addfoldernode extends ActionAbstract
             if (!isset($node)) {
                 $node = new Node($idFolder);
             }
-            if ( in_array( $node->GetNodeType(),NodeTypeConstants::NODE_PROJECTS )
+            if ( in_array( $node->GetNodeType(),NodeTypeGroupConstants::NODE_PROJECTS )
                 or $node->GetNodeType() == NodeTypeConstants::TEMPLATES_ROOT_FOLDER
                 or $node->GetNodeType() == NodeTypeConstants::SERVER 
                 or $node->GetNodeType() == NodeTypeConstants::SECTION ) {

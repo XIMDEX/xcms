@@ -30,6 +30,7 @@ use Ximdex\Models\Node;
 use Ximdex\Properties\InheritedPropertiesManager;
 use Ximdex\Runtime\App;
 use Ximdex\NodeTypes\NodeTypeConstants;
+use Ximdex\NodeTypes\NodeTypeGroupConstants;
 use Ximdex\Models\NodeProperty;
 
 /**
@@ -59,7 +60,7 @@ class Action_manageproperties extends ActionAbstract
         $nodeId = $nodeId < 10000 ? 10000 : $nodeId;
         $node = new Node($nodeId);
         $properties = InheritedPropertiesManager::getValues($nodeId);
-        $inProject = in_array( $node->GetNodeType(),NodeTypeConstants::NODE_PROJECTS );
+        $inProject = in_array( $node->GetNodeType(),NodeTypeGroupConstants::NODE_PROJECTS );
         $values = array(
             'properties' => $properties,
             'go_method' => 'save_changes',
