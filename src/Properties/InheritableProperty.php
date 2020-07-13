@@ -33,6 +33,7 @@ use Ximdex\Models\NodeType;
 use Ximdex\Models\FastTraverse;
 use Ximdex\NodeTypes\NodeTypeConstants;
 use Ximdex\Models\NodeProperty;
+use Ximdex\NodeTypes\NodeTypeGroupConstants;
 
 /**
  * Abstract inheritable property class
@@ -107,7 +108,7 @@ abstract class InheritableProperty
         if (empty($nodeProperties)) {
             $nodeProperties = array();
         }
-        if ( !in_array( $this->nodeTypeId,NodeTypeConstants::NODE_PROJECTS ) ) {
+        if ( !in_array( $this->nodeTypeId,NodeTypeGroupConstants::NODE_PROJECTS ) ) {
             
             // All the project properties will be the available ones
             $projectNode = new Node($this->node->getProject());

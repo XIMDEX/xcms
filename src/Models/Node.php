@@ -33,6 +33,7 @@ use Ximdex\Logger;
 use Ximdex\Models\ORM\NodesOrm;
 use Ximdex\NodeTypes\Factory;
 use Ximdex\NodeTypes\NodeTypeConstants;
+use Ximdex\NodeTypes\NodeTypeGroupConstants;
 use Ximdex\NodeTypes\XmlDocumentNode;
 use Ximdex\Nodeviews\ViewFilterMacros;
 use Ximdex\Parsers\ParsingDependencies;
@@ -930,7 +931,7 @@ class Node extends NodesOrm
                         $templatesNode = new Node($this->getParent());
                         if ($templatesNode->getNodeType() == NodeTypeConstants::TEMPLATES_ROOT_FOLDER) {
                             $projectNode = new Node($templatesNode->getParent());
-                            if ( in_array( $projectNode->GetNodeType(),NodeTypeConstants::NODE_PROJECTS ) )
+                            if ( in_array( $projectNode->GetNodeType(),NodeTypeGroupConstants::NODE_PROJECTS ) )
                                 $idServer = false;
                         }
                         if (! isset($idServer)) {
@@ -3097,7 +3098,7 @@ class Node extends NodesOrm
                         ), MONO, false, 'Name');
 
                     // If the is the project one, the process end
-                    if ( in_array($nodeTypeID,NodeTypeConstants::NODE_PROJECTS) ) {
+                    if ( in_array($nodeTypeID,NodeTypeGroupConstants::NODE_PROJECTS) ) {
                         break;
                     }
             }
@@ -3147,7 +3148,7 @@ class Node extends NodesOrm
                         ), MONO, false, 'Name');
 
                     // If the is the project one, the process end
-                    if ( in_array($nodeTypeID,NodeTypeConstants::NODE_PROJECTS) ) {
+                    if ( in_array($nodeTypeID,NodeTypeGroupConstants::NODE_PROJECTS) ) {
                         break;
                     }
             }

@@ -27,6 +27,7 @@
 namespace Ximdex\Properties;
 
 use Ximdex\NodeTypes\NodeTypeConstants;
+use Ximdex\NodeTypes\NodeTypeGroupConstants;
 
 class TransformerProperty extends InheritableProperty
 {
@@ -63,7 +64,7 @@ class TransformerProperty extends InheritableProperty
 		    $nodeTransformers = array();
 		}
 		$availableTransformers = array();
-		if ( in_array( $this->nodeTypeId,NodeTypeConstants::NODE_PROJECTS ) ) {
+		if ( in_array( $this->nodeTypeId,NodeTypeGroupConstants::NODE_PROJECTS ) ) {
 			// The Project node shows all the system transformers
 			$availableTransformers = $_availableTransformers;
 			unset($availableTransformers[0]);

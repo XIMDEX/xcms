@@ -29,6 +29,7 @@ namespace Ximdex\Properties;
 
 use Ximdex\Models\Node;
 use Ximdex\NodeTypes\NodeTypeConstants;
+use Ximdex\NodeTypes\NodeTypeGroupConstants;
 
 class SchemaProperty extends InheritableProperty
 {
@@ -57,7 +58,7 @@ class SchemaProperty extends InheritableProperty
 		    $nodeSchemas = array();
 		}
 		$availableSchemas = array();
-		if ( in_array( $this->nodeTypeId,NodeTypeConstants::NODE_PROJECTS ) ) {
+		if ( in_array( $this->nodeTypeId,NodeTypeGroupConstants::NODE_PROJECTS ) ) {
 
 			// The Project node shows all the system schemas
 			$availableSchemas = $_availableSchemas;
