@@ -131,12 +131,4 @@ class NodeTypeConstants
 
     const JSON_SCHEMA_CONTAINER = 5119;
     const JSON_SCHEMA_FILE = 5120;
-
-    const XLMS_TYPE_FOLDERS = [ NodeTypeConstants::XLMS_ROOT_FOLDER_COURSE,
-                                NodeTypeConstants::XLMS_ROOT_FOLDER_UNIT,
-                                NodeTypeConstants::XLMS_ROOT_FOLDER_MULTIMEDIA,
-                                NodeTypeConstants::XLMS_ROOT_FOLDER_TEST ];
-    const NODE_PROJECTS = [ NodeTypeConstants::PROJECT,
-        NodeTypeConstants::XLMS_PROJECT ];
-
 }
