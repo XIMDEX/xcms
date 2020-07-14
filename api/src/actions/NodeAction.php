@@ -64,7 +64,7 @@ class NodeAction extends Action
             // If the resource is a route, we parse it looking for the node
             $parserPathTo = new ParsingPathTo();
             // currentNode is necessary when we search for a resource because it is from where we started looking
-            if ( $parserPathTo->parsePathTo( $nodeId, $parent ) ) {
+            if ( $parserPathTo->parsePathTo( $nodeId, $parent->getID() ) ) {
                 $result = $parserPathTo->getNode();
             }
         } else if ( is_string($nodeId) && !$parent ) {
