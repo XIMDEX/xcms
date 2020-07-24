@@ -160,7 +160,15 @@ class Action_rendernode extends ActionAbstract
             $this->redirectToURL($url);
             return true;
         }
-            
+
+        // if get this flag, modify the headers so that the resource is displayed in the browser
+        $prev = intval($this->request->getParam('prev'));
+
+        if ( $prev ) {
+            // modify the headers so that the resource is previewed
+            $data[ 'headers']['Content-Disposition'] = 'inline';
+        }
+
         // Response headers
         foreach ($data['headers'] as $header => $info) {
             $this->response->set($header, $info);
