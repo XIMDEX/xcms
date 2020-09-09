@@ -164,9 +164,11 @@ class Action_rendernode extends ActionAbstract
         // if get this flag, modify the headers so that the resource is displayed in the browser
         $prev = intval($this->request->getParam('prev'));
 
+        $data[ 'headers' ][ 'Access-Control-Allow-Origin' ] = '*';
+
         if ( $prev ) {
             // modify the headers so that the resource is previewed
-            $data[ 'headers']['Content-Disposition'] = 'inline';
+            $data[ 'headers' ][ 'Content-Disposition' ] = 'inline';
         }
 
         // Response headers
