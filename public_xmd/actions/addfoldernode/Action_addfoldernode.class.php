@@ -114,31 +114,23 @@ class Action_addfoldernode extends ActionAbstract
                 $newNodeTypeName = 'Project';
                 $friendlyName = 'Project';
                 break;
+            case 'XLMSProject':
             case 'Project':
                 $newNodeTypeName = 'Server';
                 $friendlyName = 'Server';
                 break;
+            case 'Section':
             case 'Server':
                 $newNodeTypeName = 'Section';
                 $friendlyName = 'Section';
                 break;
-            case 'Section':
-                $newNodeTypeName = 'Section';
-                $friendlyName = 'Section';
-                break;
+            case 'ImagesFolder':
             case 'ImagesRootFolder':
                 $newNodeTypeName = 'ImagesFolder';
                 $friendlyName = 'Image folder';
                 break;
-            case 'ImagesFolder':
-                $newNodeTypeName = 'ImagesFolder';
-                $friendlyName = 'Image folder';
-                break;
-            case 'XmlRootFolder':
-                $newNodeTypeName = 'XmlFolder';
-                $friendlyName = 'XML Folder';
-                break;
             case 'XmlFolder':
+            case 'XmlRootFolder':
                 $newNodeTypeName = 'XmlFolder';
                 $friendlyName = 'XML Folder';
                 break;
@@ -146,28 +138,19 @@ class Action_addfoldernode extends ActionAbstract
                 $newNodeTypeName = 'XLMSRootFolderMultimedia';
                 $friendlyName = 'XML Root Folder Multimedia';
                 break;
+            case 'ImportFolder':
             case 'ImportRootFolder':
                 $newNodeTypeName = 'ImportFolder';
                 $friendlyName = 'Ximclude folder';
                 break;
-            case 'ImportFolder':
-                $newNodeTypeName = 'ImportFolder';
-                $friendlyName = 'Ximclude folder';
-                break;
+            case 'XOTFFolder':
+            case 'CommonFolder':
             case 'CommonRootFolder':
                 $newNodeTypeName = 'CommonFolder';
                 $friendlyName = 'Common folder';
                 break;
-            case 'CommonFolder':
-            case 'XOTFFolder':
-                $newNodeTypeName = 'CommonFolder';
-                $friendlyName = 'Common folder';
-                break;
-            case 'CssRootFolder':
-                $newNodeTypeName = 'CssFolder';
-                $friendlyName = 'CSS folder';
-                break;
             case 'CssFolder':
+            case 'CssRootFolder':
                 $newNodeTypeName = 'CssFolder';
                 $friendlyName = 'CSS folder';
                 break;
@@ -180,19 +163,13 @@ class Action_addfoldernode extends ActionAbstract
                 $newNodeTypeName = 'TemplateViewFolder';
                 $friendlyName = 'Template folder';
                 break;
+            case 'LinkFolder':
             case 'LinkManager':
                 $newNodeTypeName = 'LinkFolder';
                 $friendlyName = 'Link folder';
                 break;
-            case 'LinkFolder':
-                $newNodeTypeName = 'LinkFolder';
-                $friendlyName = 'Link folder';
-                break;
-            case 'XimletRootFolder':
-                $newNodeTypeName = 'XimletFolder';
-                $friendlyName = 'Ximlet folder';
-                break;
             case 'XimletFolder':
+            case 'XimletRootFolder':
                 $newNodeTypeName = 'XimletFolder';
                 $friendlyName = 'Ximlet folder';
                 break;
@@ -200,11 +177,8 @@ class Action_addfoldernode extends ActionAbstract
                 $newNodeTypeName = 'OpenDataDataset';
                 $friendlyName = 'Dataset';
                 break;
-            case 'JsRootFolder':
-                $newNodeTypeName = 'JsFolder';
-                $friendlyName = 'JS folder';
-                break;
             case 'JsFolder':
+            case 'JsRootFolder':
                 $newNodeTypeName = 'JsFolder';
                 $friendlyName = 'JS folder';
                 break;
