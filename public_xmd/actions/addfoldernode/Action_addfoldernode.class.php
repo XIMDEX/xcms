@@ -33,6 +33,7 @@ use Ximdex\Models\NodeType;
 use Ximdex\Modules\Module;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\NodeTypes\NodeTypeConstants;
+use Ximdex\NodeTypes\NodeTypeGroupConstants;
 use Ximdex\Runtime\App;
 use Ximdex\NodeTypes\XsltNode;
 use Ximdex\IO\BaseIO;
@@ -78,14 +79,22 @@ class Action_addfoldernode extends ActionAbstract
         $this->request->setParam('go_method', $go_method);
         $this->request->setParam('friendlyName', $friendlyName);
         $this->request->setParam('CanAttachGroups', $CanAttachGroups);
+
+        /* If we can attachgroups, we check that we are a xlms folder */
+        if ( $CanAttachGroups ) {
+            $isXlms = in_array($node->nodeType->getID(), NodeTypeGroupConstants::XLMS_TYPE_FOLDERS);
+            $this->request->setParam('xlms', $isXlms);
+        }
+
         $values = array(
             'go_method' => 'addNode',
             'nodeID' => $nodeID,
             'nodeTypeID' => $node->nodeType->getID(),
             'node_Type' => $node->nodeType->GetName(),
-            'name' => $node->GetNodeName()
+            'name' => $node->GetNodeName(),
+            'type' => $nodeType['name']
         );
-        if (isset($nodeType['name']) and $nodeType['name'] == 'Project'){
+        if (isset($nodeType['name']) and ( $nodeType['name'] == 'Project' || $nodeType['name'] == 'XLMSProject') ){
             $this->loadNewProjectForm($values);
         } else {
             $this->render($values, 'index', 'default-3.0.tpl');
@@ -132,6 +141,10 @@ class Action_addfoldernode extends ActionAbstract
             case 'XmlFolder':
                 $newNodeTypeName = 'XmlFolder';
                 $friendlyName = 'XML Folder';
+                break;
+            case 'XLMSRootFolderMultimedia':
+                $newNodeTypeName = 'XLMSRootFolderMultimedia';
+                $friendlyName = 'XML Root Folder Multimedia';
                 break;
             case 'ImportRootFolder':
                 $newNodeTypeName = 'ImportFolder';
@@ -234,21 +247,27 @@ class Action_addfoldernode extends ActionAbstract
         $values['channels'] = $channels;
         
         // Load projects
-        $themes = ProjectTemplate::getAllProjectTemplates();
+
         $cssFolder = '/actions/addfoldernode/resources/css/';
-        $this->addCss($cssFolder . 'style.css');
         $jsFolder = '/actions/addfoldernode/resources/js/';
+
+        $this->addCss($cssFolder . 'style.css');
         $this->addJs($jsFolder . 'init.js');
-        $arrayTheme = array();
-        foreach ($themes as $theme) {
-            $themeDescription = [];
-            $themeDescription['name'] = $theme->__get('name');
-            $themeDescription['title'] = $theme->__get('title');
-            $themeDescription['description'] = $theme->__get('description');
-            $themeDescription['configurable'] = $theme->configurable == '1' ? true : false;
-            $arrayTheme[] = $themeDescription;
+
+        // Only Project has theme, XLMSProject dont have a associated theme
+        if ( $values['type'] == 'Project' ) {
+            $themes = ProjectTemplate::getAllProjectTemplates();
+            $arrayTheme = array();
+            foreach ($themes as $theme) {
+                $themeDescription = [];
+                $themeDescription['name'] = $theme->__get('name');
+                $themeDescription['title'] = $theme->__get('title');
+                $themeDescription['description'] = $theme->__get('description');
+                $themeDescription['configurable'] = $theme->configurable == '1' ? true : false;
+                $arrayTheme[] = $themeDescription;
+            }
+            $values['themes'] = $arrayTheme;
         }
-        $values['themes'] = $arrayTheme;
         $this->render($values, 'addProject', 'default-3.0.tpl');
     }
 
@@ -283,7 +302,7 @@ class Action_addfoldernode extends ActionAbstract
         $idFolder = $folder->createNode($name, $nodeID, $nodeType->GetID(), null);
 
         // Adding channel and language properties (if project)
-        if ($idFolder > 0 && $nodeTypeName == 'Project') {
+        if ($idFolder > 0 && ($nodeTypeName == 'Project' || $nodeTypeName == 'XLMSProject' )) {
             $node = new Node($idFolder);
             if (!empty($channels) && is_array($channels)) {
                 $node->setProperty('channel', array_keys($channels));
@@ -309,10 +328,10 @@ class Action_addfoldernode extends ActionAbstract
             if (!isset($node)) {
                 $node = new Node($idFolder);
             }
-            if ($node->GetNodeType() == NodeTypeConstants::PROJECT 
+            if ( in_array( $node->GetNodeType(),NodeTypeGroupConstants::NODE_PROJECTS )
                 or $node->GetNodeType() == NodeTypeConstants::TEMPLATES_ROOT_FOLDER
                 or $node->GetNodeType() == NodeTypeConstants::SERVER 
-                or $node->GetNodeType() == NodeTypeConstants::SECTION) {
+                or $node->GetNodeType() == NodeTypeConstants::SECTION ) {
                 $xsltNode = new XsltNode($node);
                 if ($xsltNode->reload_templates_include(new Node($node->getProject())) === false)
                     $this->messages->mergeMessages($xsltNode->messages);

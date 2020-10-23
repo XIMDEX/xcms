@@ -160,7 +160,7 @@ class FrontControllerHTTP extends FrontController
     function checkSession()
     {
         $session_exists = \Ximdex\Runtime\Session::get('userID');
-        $action_without_session = array('createaccount', 'logout', 'installer');
+        $action_without_session = array('createaccount', 'logout', 'installer', 'rendernode');
         $actionName = $this->request->getParam('action');
         $method = $this->request->getParam('method');
         $session_exists = \Ximdex\Runtime\Session::get('userID');

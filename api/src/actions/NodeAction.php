@@ -33,7 +33,6 @@ use Ximdex\Models\FastTraverse;
 use Ximdex\Models\Node;
 use Ximdex\Modules\XBUK\Manager as XBUKManager;
 use Ximdex\NodeTypes\NodeTypeConstants;
-use Ximdex\Utils\Mail;
 use XimdexApi\core\Request;
 use XimdexApi\core\Response;
 use Ximdex\Models\NodeType;
@@ -48,16 +47,12 @@ class NodeAction extends Action
     const GET_CONTENT = 'getContent/(.d|.*)';
     const SET_CONTENT = 'setContent/(.d|.*)';
     const GET_CHILDRENS = 'getChildrens/(.d|.*)';
-    const ADD_NODE = 'addNode(.d|.*)';
-    const REMOVE_NODE = 'removeNode(.d|.*)';
 
     protected const ROUTES = [
         self::GET => 'infonode',
         self::GET_CONTENT => 'getContent',
         self::SET_CONTENT => 'setContent',
-        self::GET_CHILDRENS => 'getChildrens',
-        self::ADD_NODE => 'addNode',
-        self::REMOVE_NODE => 'removeNode'
+        self::GET_CHILDRENS => 'getChildrens'
     ];
 
     public static function getNode( $nodeId, $parent = null )
@@ -89,7 +84,7 @@ class NodeAction extends Action
     {
         $response = null;
 
-        if ( $node->nodeID ) {
+        if ( $node ) {
 
             if ( $node->nodeType->isFolder() ) {
                 $childrens = $node->getChildren();
@@ -294,118 +289,6 @@ class NodeAction extends Action
 
         } else {
             $w->setResponse('Node not contains childrens');
-        }
-
-        $w->send();
-    }
-
-    /**
-     * @param Request $r
-     * @param Response $w
-     * Method to add a new node under a certain parent, the node can be of type file or of type folder
-     */
-    public static function addNode( Request $r, Response $w )
-    {
-        define ("TYPE_FILE",  'file');
-        define ("TYPE_FOLDER",  'folder');
-
-
-        // input parameters nodename and type
-        $nodeName = $_GET[ "nodeName" ];
-        $type = $_GET[ "type" ];
-
-        if ( !$type ) {
-            $w->setMessage('Type is not defined, can be FOLDER OR FILE');
-            $w->setResponse( false );
-            $w->send();
-        }
-
-        // input parameters parentId from path of the request
-        $pathElements = explode( '/', $r->getPath() );
-        $parentNodeID = $pathElements[2];
-        $parentNode = self::getNode( $parentNodeID );
-
-        if ( !$parentNode->nodeID ) {
-            $w->setMessage("Target folder node not found")->setStatus( 1 );
-            $w->setResponse( false );
-            $w->send();
-        }
-
-        // files cannot be created out a folder
-        $parentIsAFolder = $parentNode->nodeType->isFolder();
-        if ( $type == TYPE_FILE && !$parentIsAFolder ) {
-            $w->setMessage('Cannot create node file outside a folder');
-            $w->setResponse( false );
-            $w->send();
-        }
-
-        $node = new Node();
-
-        // depending on the type of file we create a folder or a binary
-        if ( $type == TYPE_FILE ) {
-            $newIdNode = $node->CreateNode( $nodeName, $parentNode->nodeID, NodeTypeConstants::BINARY_FILE );
-        } else {
-            $newIdNode = $node->CreateNode( $nodeName, $parentNode->nodeID, NodeTypeConstants::COMMON_FOLDER );
-        }
-
-        // if an error has occurred in the creation show the error
-        if ( !$newIdNode ) {
-            $w->setStatus( 1 );
-            $errorMsg = "";
-            foreach ( $node->messages->messages as $message ){
-                $errorMsg .= $message["message"] . " ";
-            }
-            $w->setMessage( $errorMsg );
-            $w->setResponse( false );
-            $w->send();
-        } else {
-            $node = new Node( $newIdNode );
-        }
-
-        // if the type is file and we have content to add we modify the node
-        if ( $type == TYPE_FILE ) {
-
-            // input parameters content
-            $dataToSet = file_get_contents( 'php://input' );
-            $response = null;
-
-            if ( empty($dataToSet) ) {
-                $w->setMessage("Content for node not found")->setStatus( 1 );
-                $w->setResponse( false );
-                $w->send();
-            }
-
-            $response = self::setNodeContent( $node, $dataToSet, $nodeName );
-        }
-
-        if ( !$response ) {
-            $w->setMessage('Failed to set content to node');
-            $w->setResponse( false );
-        } else {
-            $w->setMessage('Send');
-            $w->setResponse( true );
-
-        }
-
-        $w->send();
-    }
-
-    /**
-     * Method to remove a node
-     */
-    public static function removeNode( Request $r, Response $w )
-    {
-        $pathElements = explode( '/', $r->getPath() );
-        $nodeId = $pathElements[2];
-
-        $node = self::getNode( $nodeId );
-
-        if ( !$node || !$node->nodeID ) {
-            $w->setStatus( 1 );
-            $w->setMessage('Failed to get node');
-            $w->setResponse( false );
-        } else {
-            $node->delete();
         }
 
         $w->send();

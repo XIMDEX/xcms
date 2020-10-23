@@ -72,30 +72,33 @@
             	{/foreach}
             	<div class="sep"></div>
             </div>
-           	<label class="label_title label_general">{t}Available themes{/t}</label>
-            <div class="row themes">
-            	{$i = 0}
-                {foreach from=$themes key=index item=theme}
-                	{if $i > 0 and $i % 4 eq 0}
-                		<div class="sep"></div>
-                	{/if}
-                    <div class="themeContainer">
-                        <div class="theme">
-                            <div class="img_container">
-                                <img src="{url}actions/addfoldernode/themes/{$theme.name}/{$theme.name}.png{/url}" alt="{$theme.title}" />
-                                <div class="actions">
-                                    <a href="" class="icon select" data-theme="{$theme.name}">Select</a> {if $theme.configurable}
-                                        <a data-theme="{$theme.name}" href="" class="icon custom">Custom</a> {/if}
+            {if {!empty($themes)}}
+                <label class="label_title label_general">{t}Available themes{/t}</label>
+                <div class="row themes">
+                    {$i = 0}
+                    {foreach from=$themes key=index item=theme}
+                        {if $i > 0 and $i % 4 eq 0}
+                            <div class="sep"></div>
+                        {/if}
+                        <div class="themeContainer">
+                            <div class="theme">
+                                <div class="img_container">
+                                    <img src="{url}actions/addfoldernode/themes/{$theme.name}/{$theme.name}.png{/url}" alt="{$theme.title}" />
+                                    <div class="actions">
+                                        <a href="" class="icon select" data-theme="{$theme.name}">Select</a> {if $theme.configurable}
+                                            <a data-theme="{$theme.name}" href="" class="icon custom">Custom</a> {/if}
+                                    </div>
                                 </div>
-                            </div>
 
-                            <p class="title">{t}{$theme.title}{/t}</p>
-                            <p class="type">{t}{$theme.description}{/t}</p>
+                                <p class="title">{t}{$theme.title}{/t}</p>
+                                <p class="type">{t}{$theme.description}{/t}</p>
+                            </div>
                         </div>
-                    </div>
-                    {$i = $i + 1}
-                {/foreach}
-            </div>
+                        {$i = $i + 1}
+                    {/foreach}
+                </div>
+            {/if}
+
             <div class="small-12 columns">
                 <fieldset class="buttons-form ">
                     {button label="{t}Create project{/t}" class='validate btn main_action'}

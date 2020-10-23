@@ -131,7 +131,4 @@ class NodeTypeConstants
 
     const JSON_SCHEMA_CONTAINER = 5119;
     const JSON_SCHEMA_FILE = 5120;
-
-    const DAM_PROJECT = 5121;
-    const DAM_FOLDER = 5122;
 }

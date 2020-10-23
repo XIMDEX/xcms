@@ -33,6 +33,7 @@ use Ximdex\Logger;
 use Ximdex\Models\ORM\NodesOrm;
 use Ximdex\NodeTypes\Factory;
 use Ximdex\NodeTypes\NodeTypeConstants;
+use Ximdex\NodeTypes\NodeTypeGroupConstants;
 use Ximdex\NodeTypes\XmlDocumentNode;
 use Ximdex\Nodeviews\ViewFilterMacros;
 use Ximdex\Parsers\ParsingDependencies;
@@ -606,7 +607,7 @@ class Node extends NodesOrm
             $sql = sprintf('SELECT Nodes.IdNode, Nodes.Name, NodeTypes.Icon, Nodes.IdParent FROM Nodes, NodeTypes
 				WHERE Nodes.IdNodeType = NodeTypes.IdNodeType
 				AND Nodes.Name like %s
-				AND Nodes.Path like %s', $dbObj->sqlEscapeString($name), $dbObj->sqlEscapeString($path));
+				AND Nodes.Path like %s', $dbObj->sqlEscapeString($name), $dbObj->sqlEscapeString($path . "%" ));
             $dbObj->query($sql);
             while (! $dbObj->EOF) {
                 $result[] = array(
@@ -930,7 +931,7 @@ class Node extends NodesOrm
                         $templatesNode = new Node($this->getParent());
                         if ($templatesNode->getNodeType() == NodeTypeConstants::TEMPLATES_ROOT_FOLDER) {
                             $projectNode = new Node($templatesNode->getParent());
-                            if ($projectNode->getNodeType() == NodeTypeConstants::PROJECT)
+                            if ( in_array( $projectNode->GetNodeType(),NodeTypeGroupConstants::NODE_PROJECTS ) )
                                 $idServer = false;
                         }
                         if (! isset($idServer)) {
@@ -981,7 +982,11 @@ class Node extends NodesOrm
                 }
 
                 // Validation of the JSON schemas
-                if ($this->getNodeType() == NodeTypeConstants::HTML_LAYOUT or $this->getNodeType() == NodeTypeConstants::HTML_COMPONENT) {
+                if ( $this->getNodeType() == NodeTypeConstants::HTML_LAYOUT
+                    || $this->getNodeType() == NodeTypeConstants::HTML_COMPONENT
+                    || $this->getNodeType() == NodeTypeConstants::JSON_SCHEMA_FILE
+                    || $this->getNodeType() == NodeTypeConstants::JSON_DOCUMENT
+                ) {
                     $res = json_decode($content);
                     if ($res === null or $res === false) {
                         $error = 'Invalid JSON schema';
@@ -2147,6 +2152,9 @@ class Node extends NodesOrm
     {
         $result = $this->_getParentByType(NodeTypeConstants::PROJECT);
         if (! $result) {
+            $result = $this->_getParentByType(NodeTypeConstants::XLMS_PROJECT);
+        }
+        if (! $result) {
             $result = $this->_getParentByType(NodeTypeConstants::XSIR_REPOSITORY);
         }
         return $result;
@@ -3090,7 +3098,57 @@ class Node extends NodesOrm
                         ), MONO, false, 'Name');
 
                     // If the is the project one, the process end
-                    if ($nodeTypeID == NodeTypeConstants::PROJECT) {
+                    if ( in_array($nodeTypeID,NodeTypeGroupConstants::NODE_PROJECTS) ) {
+                        break;
+                    }
+            }
+        }
+        return $schemas;
+    }
+
+
+    /**
+     * Return an array with all the layout schemas for the current node
+     *
+     * @return bool|array
+     */
+    public function getJsonSchemas()
+    {
+        $currentNodeType = $this->getNodeType();
+
+        // Load parent nodes
+        $parents = FastTraverse::getParents($this->IdNode, 'IdNodeType', 'ft.IdNode');
+        if ($parents === false) {
+            Logger::error('An error ocurred while getting the parents node for document with node ID: ' . $this->IdNode);
+            return false;
+        }
+
+        $schemas = array();
+        foreach ($parents as $nodeID => $nodeTypeID) {
+            switch ($nodeTypeID) {
+                case NodeTypeConstants::XLMS_PROJECT:
+                case NodeTypeConstants::PROJECT:
+                    // Load the node for the section, server or project ID given
+                    $node = new Node($nodeID);
+                    if (! $node->getID()) {
+                        $this->messages->add('Cannot load a node with the ID: ' . $nodeID, MSG_TYPE_ERROR);
+                        return false;
+                    }
+
+                    // Load the layouts root folder inside the previous node, if it exists
+                    $layoutFolder = new Node($node->getChildByType(NodeTypeConstants::JSON_SCHEMA_CONTAINER));
+                    if (! $layoutFolder->getID()) {
+                        continue 2;
+                    }
+
+                    // Load the JSON layout schemas
+                    $schemas = $schemas + $layoutFolder->find('Name, IdNode', 'IdParent = %s AND IdNodeType = %s ORDER BY Name', array(
+                            $layoutFolder->getID(),
+                            NodeTypeConstants::JSON_SCHEMA_FILE
+                        ), MONO, false, 'Name');
+
+                    // If the is the project one, the process end
+                    if ( in_array($nodeTypeID,NodeTypeGroupConstants::NODE_PROJECTS) ) {
                         break;
                     }
             }
@@ -3605,7 +3663,7 @@ class Node extends NodesOrm
             return true;
         }
         if (in_array($this->getNodeType(), [NodeTypeConstants::XSL_TEMPLATE, NodeTypeConstants::TEMPLATES_ROOT_FOLDER,
-                NodeTypeConstants::SECTION, NodeTypeConstants::SERVER, NodeTypeConstants::PROJECT])) {
+                NodeTypeConstants::SECTION, NodeTypeConstants::SERVER, NodeTypeConstants::PROJECT, NodeTypeConstants::XLMS_PROJECT])) {
             return true;
         }
         return false;
