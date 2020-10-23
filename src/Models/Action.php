@@ -431,7 +431,8 @@ class Action extends ActionsOrm
     public function setByCommand(string $name, int $idNodeType)
     {
         $result = $this->find('IdAction', 'Command = %s AND IdNodeType = %s', array($name, $idNodeType), MONO);
-        if (count($result) != 1) {
+        /* if it returns less than 1 action we return false */
+        if ( count($result) < 1 ) {
             return false;
         }
         $this->__construct($result[0]);
