@@ -169,6 +169,11 @@ class Action_rendernode extends ActionAbstract
         if ( $prev ) {
             // modify the headers so that the resource is previewed
             $data[ 'headers' ][ 'Content-Disposition' ] = 'inline';
+            $contentType = $data[ 'headers' ][ 'Content-type' ];
+            if ($contentType == 'image/svg') {
+                echo  $data[ 'content' ];
+                die();
+            }
         }
 
         // Response headers
