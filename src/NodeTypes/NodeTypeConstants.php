@@ -125,6 +125,7 @@ class NodeTypeConstants
     const XLMS_ROOT_FOLDER_MULTIMEDIA = 5115;
     const XLMS_ROOT_FOLDER_TEST = 5116;
     const XLMS_ROOT_FOLDER_SCHEMA = 5119;
+    const XLMS_ROOT_FOLDER_SECTION = 5121;
 
     const JSON_CONTAINER = 5118;
     const JSON_DOCUMENT = 5117;
