@@ -5,11 +5,15 @@ INSERT INTO NodeTypes (IdNodeType , Name,Class,Icon,Description,IsRenderizable,H
 ,(5119,'JSONSchemaFolder','JSONSchemaFolder','doc','Json Schema Folder',0,1,0,0,1,1,0,0,0,0,0,0,0,0,NULL,NULL,0)
 ,(5118,'JSONContainer','XmlContainerNode','contenedordoc','Json Container',1,0,1,0,1,1,0,0,0,0,0,0,0,0,NULL,NULL,0)
 ,(5117,'JSONDocument','JSONDocument','doc','Json Document',1,1,0,0,0,0,0,1,1,0,0,0,0,0,NULL,NULL,0)
-,(5116, 'XLMSRootFolderSection','XLMSRootFolderSection','folder_xml','XLMS Folder Section',1,1,0,0,1,1,0,0,0,0,1,0,0,1,NULL,NULL,0)
+,(5116, 'XLMSRootFolderTest','XLMSRootFolderTest','folder_xml','XLMS Folder Test',1,1,0,0,1,1,0,0,0,0,1,0,0,1,NULL,NULL,0)
 ,(5115, 'XLMSRootFolderMultimedia','XLMSRootFolderMultimedia','folder_xml','XLMS Folder Multimedia',0,1,0,0,1,1,0,0,0,0,0,0,0,0,NULL,NULL,0)
 ,(5114, 'XLMSRootFolderCourse','XLMSRootFolderCourse','folder_xml','XLMS Folder Course',1,1,0,0,1,1,0,0,0,0,1,0,0,1,NULL,NULL,0)
 ,(5113, 'XLMSRootFolderUnit','XLMSRootFolderUnit','folder_xml','XLMS Root Folder Unit',1,1,0,0,1,1,0,0,0,0,1,0,0,1,NULL,NULL,0)
 ,(5112, 'XLMSProject','XLMSProject','project','XLMS Project',1,1,0,1,1,1,0,0,1,0,0,0,0,0,NULL,NULL,0)
+;
+
+INSERT INTO NodeTypes (IdNodeType , Name,Class,Icon,Description,IsRenderizable,HasFSEntity,CanAttachGroups,IsSection,IsFolder,IsVirtualFolder,IsPlainFile,IsStructuredDocument,IsPublishable,IsHidden,CanDenyDeletion,isGenerator,IsEnriching,`System`,Module,workflowId,HasMetadata) VALUES
+(5121, 'XLMSRootFolderSection','XLMSRootFolderSection','folder_xml','XLMS Folder Section',1,1,0,0,1,1,0,0,0,0,1,0,0,1,NULL,NULL,0)
 ;
 
 INSERT INTO NodeAllowedContents
@@ -31,6 +35,7 @@ VALUES(120, 5112, 5115, 0);
 INSERT INTO NodeAllowedContents
 (IdNodeAllowedContent, IdNodeType, NodeType, Amount)
 VALUES(121, 5112, 5116, 0);
+
 
 INSERT INTO NodeAllowedContents
 (IdNodeAllowedContent, IdNodeType, NodeType, Amount)
@@ -69,7 +74,7 @@ INSERT INTO NodeAllowedContents
 (IdNodeAllowedContent, IdNodeType, NodeType, Amount)
 VALUES(129, 5115, 5016, 0);
 
-/* Root Folder Section */
+/* Root Folder Test */
 INSERT INTO NodeAllowedContents
 (IdNodeAllowedContent, IdNodeType, NodeType, Amount)
 VALUES(130, 5116, 5022, 0);
@@ -87,6 +92,18 @@ INSERT INTO NodeAllowedContents
 (IdNodeAllowedContent, IdNodeType, NodeType, Amount)
 VALUES(133, 5119, 5120, 0);
 
+
+/* Root Folder Section */
+INSERT INTO NodeAllowedContents
+(IdNodeAllowedContent, IdNodeType, NodeType, Amount)
+VALUES(134, 5121, 5022, 0);
+INSERT INTO NodeAllowedContents
+(IdNodeAllowedContent, IdNodeType, NodeType, Amount)
+VALUES(135, 5121, 5118, 0);
+
+INSERT INTO NodeAllowedContents
+(IdNodeAllowedContent, IdNodeType, NodeType, Amount)
+VALUES(136, 5112, 5121, 0);
 
 /* XLMSProject */
 INSERT
@@ -147,11 +164,11 @@ INSERT
 	Actions (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, IsBulk)
 VALUES (8148, 5115, 'Associated groups', 'modifygroupsnode', 'groups_server.png', 'Manage associations of groups with this node', 60, NULL, 0, '', 0);
 
-/* XLMS Root Folder Section */
+/* XLMS Root Folder Test */
 INSERT
 	INTO
 	Actions (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, IsBulk)
-VALUES (8149, 5116, 'Add new Section', 'createxmlcontainer', 'create_proyect.png', 'Create a new Section', 11, NULL, 0, 'type=JSON', 0);
+VALUES (8149, 5116, 'Add new Test', 'createxmlcontainer', 'create_proyect.png', 'Create a new Test', 11, NULL, 0, 'type=JSON', 0);
 
 INSERT
 	INTO
@@ -208,6 +225,23 @@ INSERT INTO Actions (IdAction, IdNodeType,Name,Command,Icon,Description,Sort,Mod
 ,(8177, 5120,'Edit Schema File','edittext','edit_template_view.png','Edit a Schema File',20,NULL,0,NULL,0)
 ,(8178, 5120,'Modify properties','renamenode','modiy_templateview','Modify properties of a Schema File',60,NULL,0,NULL,0)
 ;
+
+/* XLMS Root Folder Section */
+INSERT
+INTO
+    Actions (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, IsBulk)
+VALUES (8179, 5121, 'Add new Section', 'createxmlcontainer', 'create_proyect.png', 'Create a new Section', 11, NULL, 0, 'type=JSON', 0);
+
+INSERT
+INTO
+    Actions (IdAction, IdNodeType, Name, Command, Icon, Description, Sort, Module, Multiple, Params, IsBulk)
+VALUES (8180, 5121, 'Add common folder', 'addfoldernode', 'add_folder_common.png', 'Create a new common folder', 11, NULL, 0, 'nodetypeid=5022', 0);
+
+INSERT
+INTO
+    Actions (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, IsBulk)
+VALUES (8181, 5121, 'Associated groups', 'modifygroupsnode', 'groups_server.png', 'Manage associations of groups with this node', 60, NULL, 0, '', 0);
+
 
 
 INSERT  INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`) VALUES (NULL,201,8138,NULL);
@@ -380,6 +414,17 @@ INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`) VALUES (N
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`) VALUES (NULL,202,8178,NULL);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`) VALUES (NULL,203,8178,NULL);
 
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`) VALUES (NULL,201,8179,NULL);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`) VALUES (NULL,202,8179,NULL);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`) VALUES (NULL,203,8179,NULL);
+
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`) VALUES (NULL,201,8180,NULL);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`) VALUES (NULL,202,8180,NULL);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`) VALUES (NULL,203,8180,NULL);
+
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`) VALUES (NULL,201,8181,NULL);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`) VALUES (NULL,202,8181,NULL);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`) VALUES (NULL,203,8181,NULL);
 
 INSERT INTO RelNodeTypeMimeType (idNodeType,extension,`filter`) VALUES
 (5117,';json;','json')
@@ -390,13 +435,14 @@ INSERT INTO NodeDefaultContents (IdNodeType,NodeType,Name,State,Params) VALUES
 (5112,5113,'Units',NULL,NULL)
 ,(5112,5114,'Courses',NULL,NULL)
 ,(5112,5115,'Multimedia',NULL,NULL)
-,(5112,5116,'Sections',NULL,NULL)
+,(5112,5116,'Test',NULL,NULL)
 ,(5112,5119,'Schemas',NULL,NULL)
 ,(5114,5022,'Common',NULL,NULL)
 ,(5115,5016,'Images',NULL,NULL)
 ,(5115,5022,'Video',NULL,NULL)
 ,(5115,5022,'Others',NULL,NULL)
 ,(5119,5120,'validate.json',NULL,NULL)
+,(5112,5121,'Sections',NULL,NULL)
 ;
 
 
