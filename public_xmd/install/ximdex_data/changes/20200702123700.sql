@@ -5,7 +5,7 @@ INSERT INTO NodeTypes (IdNodeType , Name,Class,Icon,Description,IsRenderizable,H
 ,(5119,'JSONSchemaFolder','JSONSchemaFolder','doc','Json Schema Folder',0,1,0,0,1,1,0,0,0,0,0,0,0,0,NULL,NULL,0)
 ,(5118,'JSONContainer','XmlContainerNode','contenedordoc','Json Container',1,0,1,0,1,1,0,0,0,0,0,0,0,0,NULL,NULL,0)
 ,(5117,'JSONDocument','JSONDocument','doc','Json Document',1,1,0,0,0,0,0,1,1,0,0,0,0,0,NULL,NULL,0)
-,(5116, 'XLMSRootFolderTest','XLMSRootFolderTest','folder_xml','XLMS Folder Test',1,1,0,0,1,1,0,0,0,0,1,0,0,1,NULL,NULL,0)
+,(5116, 'XLMSRootFolderSection','XLMSRootFolderSection','folder_xml','XLMS Folder Section',1,1,0,0,1,1,0,0,0,0,1,0,0,1,NULL,NULL,0)
 ,(5115, 'XLMSRootFolderMultimedia','XLMSRootFolderMultimedia','folder_xml','XLMS Folder Multimedia',0,1,0,0,1,1,0,0,0,0,0,0,0,0,NULL,NULL,0)
 ,(5114, 'XLMSRootFolderCourse','XLMSRootFolderCourse','folder_xml','XLMS Folder Course',1,1,0,0,1,1,0,0,0,0,1,0,0,1,NULL,NULL,0)
 ,(5113, 'XLMSRootFolderUnit','XLMSRootFolderUnit','folder_xml','XLMS Root Folder Unit',1,1,0,0,1,1,0,0,0,0,1,0,0,1,NULL,NULL,0)
@@ -69,7 +69,7 @@ INSERT INTO NodeAllowedContents
 (IdNodeAllowedContent, IdNodeType, NodeType, Amount)
 VALUES(129, 5115, 5016, 0);
 
-/* Root Folder Test */
+/* Root Folder Section */
 INSERT INTO NodeAllowedContents
 (IdNodeAllowedContent, IdNodeType, NodeType, Amount)
 VALUES(130, 5116, 5022, 0);
@@ -147,11 +147,11 @@ INSERT
 	Actions (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, IsBulk)
 VALUES (8148, 5115, 'Associated groups', 'modifygroupsnode', 'groups_server.png', 'Manage associations of groups with this node', 60, NULL, 0, '', 0);
 
-/* XLMS Root Folder Test */
+/* XLMS Root Folder Section */
 INSERT
 	INTO
 	Actions (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, IsBulk)
-VALUES (8149, 5116, 'Add new Test', 'createxmlcontainer', 'create_proyect.png', 'Create a new Test', 11, NULL, 0, 'type=JSON', 0);
+VALUES (8149, 5116, 'Add new Section', 'createxmlcontainer', 'create_proyect.png', 'Create a new Section', 11, NULL, 0, 'type=JSON', 0);
 
 INSERT
 	INTO
@@ -390,7 +390,7 @@ INSERT INTO NodeDefaultContents (IdNodeType,NodeType,Name,State,Params) VALUES
 (5112,5113,'Units',NULL,NULL)
 ,(5112,5114,'Courses',NULL,NULL)
 ,(5112,5115,'Multimedia',NULL,NULL)
-,(5112,5116,'Test',NULL,NULL)
+,(5112,5116,'Sections',NULL,NULL)
 ,(5112,5119,'Schemas',NULL,NULL)
 ,(5114,5022,'Common',NULL,NULL)
 ,(5115,5016,'Images',NULL,NULL)
