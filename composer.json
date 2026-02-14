@@ -16,14 +16,10 @@
         "phpseclib/phpseclib": "2.0.*",
         "phpmailer/phpmailer": "^6.0",
         "kevinlebrun/colors.php": "1.0.*",
-        "ximdex/plata": "dev-master",
         "guzzlehttp/guzzle": ">=4.1.4 <7.0",
-        "ximdex/xedit": "dev-feature_metadata",
-        "nesbot/carbon": "2.0.*"
+        "nesbot/carbon": "^2.72"
     },
     "require-dev": {
-        "codeception/codeception": "3.0.*",
-        "icanhazstring/composer-unused": "^0.5.6"
     },
     "autoload": {
         "psr-4": {

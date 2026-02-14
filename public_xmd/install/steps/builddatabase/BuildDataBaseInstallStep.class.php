@@ -147,10 +147,12 @@ class BuildDataBaseInstallStep extends GenericInstallStep
            	}
            	$this->sendJSON($values);
         }
-        
+
+        // Always initialize params (create install-params.conf.php) after database is loaded
+        $this->initParams($host, $port, $name, $user, $pass);
+
         // If the app is working under a Docker instance, the new user creation will be omited
         if (isset($_SERVER['DOCKER_CONF_HOME'])) {
-            $this->initParams($host, $port, $name, $user, $pass);
             $values['skipNewDBUser'] = true;
         } else {
             $values['skipNewDBUser'] = false;
@@ -174,7 +176,6 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         $values = array();
         if ($user == $root_user) {
             $values["success"] = true;
-            $this->initParams($host, $port, $name, $user, $pass);
             $this->sendJson($values);
         }
         $idbManager = new InstallDataBaseManager();
@@ -203,7 +204,6 @@ class BuildDataBaseInstallStep extends GenericInstallStep
             }
         } else {
             $values["success"] = true;
-            $this->initParams($host, $port, $name, $user, $pass);
         }
         $this->sendJson($values);
     }
