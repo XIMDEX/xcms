@@ -28,6 +28,21 @@ ximdexInstallerApp.controller('XowlConfigurationController', ['$scope', 'install
         $scope.apikey = "";
         $scope.error = false;
         $scope.success = false;
+        $scope.loading_skip = false;
+
+        $scope.skipStep = function () {
+            $scope.loading_skip = true;
+            installerService.sendAction("skip").then(function (response) {
+                $scope.loading_skip = false;
+                if (response.data.error == 1) {
+                    $scope.error = true;
+                    $scope.message = response.data.message;
+                } else {
+                    location.reload();
+                }
+            });
+        };
+
         $scope.processForm = function () {
             $scope.loading = true;
             if ($scope.serviceurl == "" && $scope.apikey == "") {

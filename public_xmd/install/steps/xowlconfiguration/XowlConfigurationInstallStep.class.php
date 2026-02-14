@@ -72,4 +72,12 @@ class XowlConfigurationInstallStep extends GenericInstallStep
         }
         $this->sendJSON($data);
     }
+
+    public function skip()
+    {
+        $data = array();
+        $data['error'] = 0;
+        $data['message'] = 'Xowl configuration skipped.';
+        $this->sendJSON($data);
+    }
 }

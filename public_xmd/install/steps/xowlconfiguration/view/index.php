@@ -27,6 +27,18 @@
 
 global $goMethod;
 ?>
+<style>
+.secondary-button {
+    background-color: #7f8c8d;
+    color: white;
+    border: 2px solid #5a6268;
+    margin-left: 10px;
+}
+.secondary-button:hover {
+    background-color: #5a6268;
+}
+</style>
+
 
 <form method="post" ng-controller="XowlConfigurationController" name="form" ng-submit="processForm()" ng-cloak>
     <input type="hidden" name="method" value="<?php echo $goMethod ?>">
@@ -52,8 +64,9 @@ global $goMethod;
         <p class="success_element">{{message}}</p>
     </div>
     <div class="form_item full-width" >
-        <label>If you don't have an API key yet, <a target="_blank" href="http://xowl.ximdex.net/register">visit here</a> to get one. 
+        <label>If you don't have an API key yet, <a target="_blank" href="http://xowl.ximdex.net/register">visit here</a> to get one.
         		If you don't want to configure this module, please leave API key field in blank.</label>
         <button class="action_launcher ladda-button" ui-ladda xim-state="loading" data-style="slide-up">Continue</button>
+        <button class="action_launcher secondary-button" ui-ladda xim-state="loading_skip" ng-click="skipStep()">Skip this step</button>
     </div>
 </form>
